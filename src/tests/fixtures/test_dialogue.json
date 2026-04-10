@@ -3,21 +3,21 @@
   "nodes": {
     "start": {
       "lines": [
-        {"speaker": "artemisa", "speaker_type": "companion", "mood": "neutral", "text_key": "DLG_TEST_LINE_1"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "DLG_TEST_LINE_1"},
         {"speaker": "narrator", "speaker_type": "narrator", "text_key": "DLG_TEST_LINE_2"}
       ],
       "next": "choice_node"
     },
     "choice_node": {
-      "lines": [{"speaker": "artemisa", "speaker_type": "companion", "mood": "happy", "text_key": "DLG_TEST_CHOICE_PROMPT"}],
+      "lines": [{"speaker": "artemis", "speaker_type": "companion", "mood": "happy", "text_key": "DLG_TEST_CHOICE_PROMPT"}],
       "choices": [
-        {"text_key": "DLG_CHOICE_A", "next": "end_node", "effects": [{"type": "relationship", "companion": "artemisa", "delta": 5}]},
-        {"text_key": "DLG_CHOICE_B", "next": "end_node", "conditions": [{"type": "flag_set", "flag": "ch01_met_artemisa"}]},
+        {"text_key": "DLG_CHOICE_A", "next": "end_node", "effects": [{"type": "relationship", "companion": "artemis", "delta": 5}]},
+        {"text_key": "DLG_CHOICE_B", "next": "end_node", "conditions": [{"type": "flag_set", "flag": "ch01_met_artemis"}]},
         {"text_key": "DLG_CHOICE_C", "next": "end_node", "effects": [{"type": "flag_set", "flag": "test_flag"}]}
       ]
     },
     "end_node": {
-      "lines": [{"speaker": "artemisa", "speaker_type": "companion", "mood": "happy", "text_key": "DLG_TEST_END"}],
+      "lines": [{"speaker": "artemis", "speaker_type": "companion", "mood": "happy", "text_key": "DLG_TEST_END"}],
       "next": ""
     }
   }

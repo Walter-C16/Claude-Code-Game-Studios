@@ -31,7 +31,7 @@ Divine Blessings is the mechanical bridge between Romance & Social and Poker Com
 | TR-divine-blessings-008 | All 20 blessings data-driven from config resource; no hardcoded values | ADR-0012 |
 | TR-divine-blessings-009 | Blessing computation within 1ms per PLAY action | ADR-0012 |
 | TR-divine-blessings-010 | Blessing VFX: subtle 0.2s icon pulse per hand; no full-screen interruption | ADR-0012 |
-| TR-divine-blessings-011 | Per-card variable blessings: Artemisa +8/Club, Hipolita +10/Heart, Atenea +0.8 mult/Spade, Nyx +7/Diamond | ADR-0012 |
+| TR-divine-blessings-011 | Per-card variable blessings: Artemis +8/Club, Hipolita +10/Heart, Atenea +0.8 mult/Spade, Nyx +7/Diamond | ADR-0012 |
 | TR-divine-blessings-012 | hand_context must include: cards_played, hand_rank, suit_counts, current_score, hands_played, discards_used, discards_remaining, discards_allowed | ADR-0012 |
 | TR-divine-blessings-013 | Blessing states: LOCKED, UNLOCKED, ACTIVE, INACTIVE_TRIGGER; transitions on romance_stage_changed and captain selection | ADR-0012 |
 | TR-divine-blessings-014 | Unlock state derived from romance_stage (already persisted); no additional save data needed | ADR-0012 |

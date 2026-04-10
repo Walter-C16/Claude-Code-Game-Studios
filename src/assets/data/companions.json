@@ -1,7 +1,7 @@
 {
-  "artemisa": {
-    "id": "artemisa",
-    "display_name": "Artemisa",
+  "artemis": {
+    "id": "artemis",
+    "display_name": "Artemis",
     "role": "Goddess of the Hunt",
     "element": "Earth",
     "STR": 17,
@@ -9,7 +9,7 @@
     "AGI": 20,
     "card_value": 13,
     "starting_location": "forest",
-    "portrait_path_base": "res://assets/images/companions/artemisa/artemisa"
+    "portrait_path_base": "res://assets/images/companions/artemis/artemis"
   },
   "hipolita": {
     "id": "hipolita",

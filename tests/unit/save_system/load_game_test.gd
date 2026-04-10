@@ -117,7 +117,7 @@ func test_load_game_restores_game_store_last_captain_id_after_save() -> void:
 
 func test_load_game_restores_game_store_story_flags_after_save() -> void:
 	# Arrange
-	GameStore.set_flag("ch01_met_artemisa")
+	GameStore.set_flag("ch01_met_artemis")
 	GameStore.set_flag("ch01_first_date")
 	SaveManager.save_game()
 	GameStore._initialize_defaults()
@@ -126,7 +126,7 @@ func test_load_game_restores_game_store_story_flags_after_save() -> void:
 	SaveManager.load_game()
 
 	# Assert
-	assert_bool(GameStore.has_flag("ch01_met_artemisa")).is_true()
+	assert_bool(GameStore.has_flag("ch01_met_artemis")).is_true()
 	assert_bool(GameStore.has_flag("ch01_first_date")).is_true()
 
 func test_load_game_restores_game_store_combat_buff_after_save() -> void:

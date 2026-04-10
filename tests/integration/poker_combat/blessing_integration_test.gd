@@ -75,12 +75,12 @@ func _captain_ctx_with_blessing(
 		stub: StubBlessingSystem,
 		overrides: Dictionary = {}) -> Dictionary:
 	var base: Dictionary = {
-		"captain_id":            "artemisa",
+		"captain_id":            "artemis",
 		"captain_chip_bonus":    0,
 		"captain_mult_modifier": 1.0,
 		"social_buff_chips":     0,
 		"social_buff_mult":      0.0,
-		"romance_stages":        {"artemisa": 2, "hipolita": 1},
+		"romance_stages":        {"artemis": 2, "hipolita": 1},
 		"blessing_system":       stub,
 	}
 	for key in overrides:
@@ -124,7 +124,7 @@ func test_blessing_integration_compute_receives_captain_id_key() -> void:
 	# Arrange
 	var stub = StubBlessingSystem.new()
 	var cm = CombatManagerScript.new()
-	cm.setup(_enemy(), _captain_ctx_with_blessing(stub, {"captain_id": "artemisa"}))
+	cm.setup(_enemy(), _captain_ctx_with_blessing(stub, {"captain_id": "artemis"}))
 
 	# Act
 	cm.play_hand([0] as Array[int])
@@ -132,13 +132,13 @@ func test_blessing_integration_compute_receives_captain_id_key() -> void:
 	# Assert
 	var ctx: Dictionary = stub.received_contexts[0] as Dictionary
 	assert_bool(ctx.has("captain_id")).is_true()
-	assert_str(ctx.get("captain_id", "") as String).is_equal("artemisa")
+	assert_str(ctx.get("captain_id", "") as String).is_equal("artemis")
 
 
 func test_blessing_integration_compute_receives_romance_stages_key() -> void:
 	# Arrange
 	var stub = StubBlessingSystem.new()
-	var stages: Dictionary = {"artemisa": 3, "nyx": 1}
+	var stages: Dictionary = {"artemis": 3, "nyx": 1}
 	var cm = CombatManagerScript.new()
 	cm.setup(_enemy(), _captain_ctx_with_blessing(stub, {"romance_stages": stages}))
 
@@ -149,7 +149,7 @@ func test_blessing_integration_compute_receives_romance_stages_key() -> void:
 	var ctx: Dictionary = stub.received_contexts[0] as Dictionary
 	assert_bool(ctx.has("romance_stages")).is_true()
 	var received_stages: Dictionary = ctx.get("romance_stages", {}) as Dictionary
-	assert_int(received_stages.get("artemisa", -1) as int).is_equal(3)
+	assert_int(received_stages.get("artemis", -1) as int).is_equal(3)
 
 
 func test_blessing_integration_compute_received_played_cards_match_selection() -> void:
@@ -306,13 +306,13 @@ func test_blessing_integration_no_blessing_system_returns_zeros() -> void:
 # ── AC5 — romance_stages snapshot frozen at SETUP ────────────────────────────
 
 func test_blessing_integration_romance_stages_snapshot_frozen_at_setup() -> void:
-	# Arrange — romance_stages captured at SETUP: artemisa=2
+	# Arrange — romance_stages captured at SETUP: artemis=2
 	# After setup, we mutate the captain_ctx dict to simulate a mid-combat change.
 	# CombatManager must still send the SETUP snapshot (not the mutated version).
 	var stub = StubBlessingSystem.new()
-	var stages_at_setup: Dictionary = {"artemisa": 2}
+	var stages_at_setup: Dictionary = {"artemis": 2}
 	var captain_ctx: Dictionary = {
-		"captain_id":            "artemisa",
+		"captain_id":            "artemis",
 		"captain_chip_bonus":    0,
 		"captain_mult_modifier": 1.0,
 		"social_buff_chips":     0,
@@ -325,8 +325,8 @@ func test_blessing_integration_romance_stages_snapshot_frozen_at_setup() -> void
 	cm.setup(_enemy({"score_threshold": 999999, "hands_allowed": 2}), captain_ctx)
 
 	# Mutate the original dict AFTER setup (simulates a hypothetical mid-combat change)
-	stages_at_setup["artemisa"] = 99
-	captain_ctx["romance_stages"] = {"artemisa": 99}
+	stages_at_setup["artemis"] = 99
+	captain_ctx["romance_stages"] = {"artemis": 99}
 
 	# Act — play hand 1 (should use SETUP snapshot)
 	cm.play_hand([0] as Array[int])
@@ -335,7 +335,7 @@ func test_blessing_integration_romance_stages_snapshot_frozen_at_setup() -> void
 	if stub.call_count > 0:
 		var ctx: Dictionary = stub.received_contexts[0] as Dictionary
 		var received_stages: Dictionary = ctx.get("romance_stages", {}) as Dictionary
-		assert_int(received_stages.get("artemisa", -1) as int).is_equal(2)
+		assert_int(received_stages.get("artemis", -1) as int).is_equal(2)
 
 
 # ── AC6 — CombatManager accesses ONLY compute() on BlessingSystem ────────────

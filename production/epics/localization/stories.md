@@ -48,7 +48,7 @@
 - **ADR Guidance**: ADR-0005 — `{{name}}` double-curly-brace syntax; `_interpolate()` uses `String.replace()` for each param key; multiple params supported; unknown params leave their `{{placeholder}}` in place
 - **Acceptance Criteria**:
   - [ ] AC1: GIVEN English table has `"POKER_SCORE": "Score: {{score}}"`, WHEN `get_text("POKER_SCORE", {"score": "150"})` is called, THEN it returns `"Score: 150"`
-  - [ ] AC2: GIVEN a string `"{{name}} attacks {{target}}"`, WHEN `get_text()` is called with `{"name": "Artemisa", "target": "Beast"}`, THEN it returns `"Artemisa attacks Beast"`
+  - [ ] AC2: GIVEN a string `"{{name}} attacks {{target}}"`, WHEN `get_text()` is called with `{"name": "Artemis", "target": "Beast"}`, THEN it returns `"Artemis attacks Beast"`
   - [ ] AC3: GIVEN a string with `{{name}}` and params dict has no "name" key, WHEN `get_text()` runs, THEN the placeholder `{{name}}` remains in the output (no crash, no null substitution)
   - [ ] AC4: GIVEN a string with no placeholders, WHEN `get_text()` is called with a non-empty params dict, THEN the string is returned unchanged (no corruption from unnecessary replacements)
   - [ ] AC5: GIVEN `_interpolate()` is called with an empty params Dictionary, WHEN it runs, THEN it returns the text unchanged with no iterations

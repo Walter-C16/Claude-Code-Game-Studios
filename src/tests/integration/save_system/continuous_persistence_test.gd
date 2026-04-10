@@ -168,7 +168,7 @@ func test_continuous_persistence_three_setters_guard_not_re_raised_on_third() ->
 	# Arrange
 	GameStore.add_gold(10)
 	GameStore.set_streak(3)
-	GameStore.set_last_captain_id("artemisa")
+	GameStore.set_last_captain_id("artemis")
 
 	# Assert — guard still held by the single queued deferred call
 	assert_bool(GameStore._save_pending).is_true()
@@ -177,7 +177,7 @@ func test_continuous_persistence_three_setters_single_flush_clears_flags() -> vo
 	# Arrange — 3 setters in the same synchronous block
 	GameStore.add_gold(10)
 	GameStore.set_streak(3)
-	GameStore.set_last_captain_id("artemisa")
+	GameStore.set_last_captain_id("artemis")
 
 	# Act — let the single deferred flush execute
 	await get_tree().process_frame
@@ -190,7 +190,7 @@ func test_continuous_persistence_three_setters_all_values_in_single_save() -> vo
 	# Arrange — 3 mutations, all must appear in the one save that results
 	GameStore.add_gold(10)
 	GameStore.set_streak(3)
-	GameStore.set_last_captain_id("artemisa")
+	GameStore.set_last_captain_id("artemis")
 
 	# Act
 	await get_tree().process_frame
@@ -200,13 +200,13 @@ func test_continuous_persistence_three_setters_all_values_in_single_save() -> vo
 	var game: Dictionary = data.get("game", {}) as Dictionary
 	assert_int(int(game.get("player_gold", -1))).is_equal(10)
 	assert_int(int(game.get("current_streak", -1))).is_equal(3)
-	assert_str(str(game.get("last_captain_id", ""))).is_equal("artemisa")
+	assert_str(str(game.get("last_captain_id", ""))).is_equal("artemis")
 
 func test_continuous_persistence_three_setters_save_file_exists_after_flush() -> void:
 	# Arrange
 	GameStore.add_gold(10)
 	GameStore.set_streak(3)
-	GameStore.set_last_captain_id("artemisa")
+	GameStore.set_last_captain_id("artemis")
 
 	# Act
 	await get_tree().process_frame

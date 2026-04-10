@@ -44,7 +44,7 @@ func test_accessibility_line_ready_preserves_extra_fields() -> void:
 		"start": {
 			"lines": [
 				{
-					"speaker": "artemisa",
+					"speaker": "artemis",
 					"speaker_type": "companion",
 					"text_key": "DLG_A11Y_01",
 					"mood": "neutral",
@@ -78,7 +78,7 @@ func test_accessibility_line_ready_accessibility_text_value_unchanged() -> void:
 		"start": {
 			"lines": [
 				{
-					"speaker": "artemisa",
+					"speaker": "artemis",
 					"speaker_type": "companion",
 					"text_key": "DLG_A11Y_02",
 					"mood": "serious",

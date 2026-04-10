@@ -57,13 +57,13 @@ func test_portrait_fallback_hipolita_angry_path_has_correct_format() -> void:
 	# Assert — path string format is correct regardless of file existence
 	assert_str(built_path).is_equal(expected)
 
-func test_portrait_fallback_artemisa_neutral_path_has_correct_format() -> void:
+func test_portrait_fallback_artemis_neutral_path_has_correct_format() -> void:
 	# Arrange
 	var registry = _make_registry()
-	var expected: String = "res://assets/images/companions/artemisa/artemisa_neutral.png"
+	var expected: String = "res://assets/images/companions/artemis/artemis_neutral.png"
 
 	# Act
-	var base: String = registry.get_profile("artemisa").get("portrait_path_base", "")
+	var base: String = registry.get_profile("artemis").get("portrait_path_base", "")
 	var built_path: String = base + "_neutral.png"
 
 	# Assert
@@ -74,7 +74,7 @@ func test_portrait_fallback_portrait_path_base_contains_companion_id_and_res_pre
 	var registry = _make_registry()
 
 	# Act — verify portrait_path_base convention for each companion
-	var companion_ids: Array[String] = ["artemisa", "hipolita", "atenea", "nyx"]
+	var companion_ids: Array[String] = ["artemis", "hipolita", "atenea", "nyx"]
 	for id: String in companion_ids:
 		var base: String = registry.get_profile(id).get("portrait_path_base", "")
 
@@ -160,7 +160,7 @@ func test_portrait_fallback_each_mood_path_ends_with_png_extension() -> void:
 	# Arrange
 	var registry = _make_registry()
 	var moods: Array[String] = ["neutral", "happy", "sad", "angry", "surprised", "seductive"]
-	var base: String = registry.get_profile("artemisa").get("portrait_path_base", "")
+	var base: String = registry.get_profile("artemis").get("portrait_path_base", "")
 
 	# Act / Assert
 	for mood: String in moods:
@@ -174,7 +174,7 @@ func test_portrait_fallback_invalid_mood_bored_does_not_crash() -> void:
 	var registry = _make_registry()
 
 	# Act — "bored" is not a valid mood; must not crash
-	var path: String = registry.get_portrait_path("artemisa", "bored")
+	var path: String = registry.get_portrait_path("artemis", "bored")
 
 	# Assert — returned a non-empty string (either neutral or placeholder)
 	assert_bool(path.is_empty()).is_false()

@@ -39,12 +39,12 @@ func test_speaker_portrait_companion_line_has_speaker_field() -> void:
 	var runner = _make_runner()
 	var lines = _collect_lines(runner)
 
-	# Act — first line in fixture is companion "artemisa"
+	# Act — first line in fixture is companion "artemis"
 	runner.start_dialogue(FIXTURE_CHAPTER, FIXTURE_SEQ)
 
 	# Assert
 	assert_bool(lines[0].has("speaker")).is_true()
-	assert_str(lines[0]["speaker"]).is_equal("artemisa")
+	assert_str(lines[0]["speaker"]).is_equal("artemis")
 
 func test_speaker_portrait_companion_line_has_speaker_type_field() -> void:
 	# Arrange
@@ -85,7 +85,7 @@ func test_speaker_portrait_companion_line_speaker_allows_portrait_path() -> void
 	var portrait_path: String = "res://assets/images/companions/%s/%s_%s.png" % [speaker, speaker, mood]
 
 	# Assert — path is deterministically constructable from line_data
-	assert_str(portrait_path).is_equal("res://assets/images/companions/artemisa/artemisa_neutral.png")
+	assert_str(portrait_path).is_equal("res://assets/images/companions/artemis/artemis_neutral.png")
 
 func test_speaker_portrait_companion_mood_happy_path_correct() -> void:
 	# Arrange — advance to the choice_node line which has mood="happy"
@@ -95,7 +95,7 @@ func test_speaker_portrait_companion_mood_happy_path_correct() -> void:
 	runner.complete_typewriter()
 	runner.advance() # second line (narrator)
 	runner.complete_typewriter()
-	runner.advance() # third line — choice_node, artemisa mood=happy
+	runner.advance() # third line — choice_node, artemis mood=happy
 
 	# Act — find the happy line
 	var happy_line: Dictionary = {}
@@ -104,13 +104,13 @@ func test_speaker_portrait_companion_mood_happy_path_correct() -> void:
 			happy_line = l
 			break
 
-	# Assert — portrait path for happy artemisa
+	# Assert — portrait path for happy artemis
 	var portrait_path: String = "res://assets/images/companions/%s/%s_%s.png" % [
 		happy_line.get("speaker", ""),
 		happy_line.get("speaker", ""),
 		happy_line.get("mood", "")
 	]
-	assert_str(portrait_path).is_equal("res://assets/images/companions/artemisa/artemisa_happy.png")
+	assert_str(portrait_path).is_equal("res://assets/images/companions/artemis/artemis_happy.png")
 
 # ── AC3 — narrator speaker_type has no portrait ───────────────────────────────
 

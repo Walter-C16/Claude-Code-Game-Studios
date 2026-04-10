@@ -55,8 +55,8 @@ func test_game_store_dirty_flag_multiple_setters_set_dirty_true() -> void:
 
 	# Act — 5 different setters in the same synchronous call block
 	store.add_gold(10)
-	store.set_flag("ch01_met_artemisa")
-	store.set_trust("artemisa", 5)
+	store.set_flag("ch01_met_artemis")
+	store.set_trust("artemis", 5)
 	store.set_streak(3)
 	store.set_last_captain_id("nyx")
 
@@ -69,8 +69,8 @@ func test_game_store_dirty_flag_multiple_setters_set_save_pending_true() -> void
 
 	# Act — 5 different setters
 	store.add_gold(10)
-	store.set_flag("ch01_met_artemisa")
-	store.set_trust("artemisa", 5)
+	store.set_flag("ch01_met_artemis")
+	store.set_trust("artemis", 5)
 	store.set_streak(3)
 	store.set_last_captain_id("nyx")
 
@@ -124,7 +124,7 @@ func test_game_store_dirty_flag_set_flag_sets_save_pending() -> void:
 
 func test_game_store_dirty_flag_set_trust_sets_save_pending() -> void:
 	var store := _make_store()
-	store.set_trust("artemisa", 1)
+	store.set_trust("artemis", 1)
 	assert_bool(store._save_pending).is_true()
 
 func test_game_store_dirty_flag_set_met_sets_save_pending() -> void:
@@ -184,7 +184,7 @@ func test_game_store_dirty_flag_set_last_captain_id_sets_save_pending() -> void:
 
 func test_game_store_dirty_flag_set_relationship_level_internal_sets_save_pending() -> void:
 	var store := _make_store()
-	store._set_relationship_level("artemisa", 2)
+	store._set_relationship_level("artemis", 2)
 	assert_bool(store._save_pending).is_true()
 
 # ---------------------------------------------------------------------------

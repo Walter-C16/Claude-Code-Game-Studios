@@ -21,7 +21,7 @@ Deck Management encompasses two tightly related concerns: (1) captain selection 
 
 ## Player Fantasy
 
-Choosing your captain is choosing which goddess fights beside you. Each companion brings a distinct element, a distinct card embedded in your deck, and a distinct arithmetic bonus to every hand you play. When Hipolita stands at your side, fire floods the Hearts suit and her raw strength pads every chip count; when Atenea takes her place, lightning crackles through Spades and her keen mind bends multipliers upward. The Deck Viewer makes this visible: you can scroll through all 52 cards, find your captain's signature card -- the King of Clubs glowing subtly for Artemisa, the Ace of Hearts burning for Hipolita -- and feel the weight of the bond you've built. The act of choosing is itself a moment of connection. You are not picking a stat bonus; you are deciding who you trust today.
+Choosing your captain is choosing which goddess fights beside you. Each companion brings a distinct element, a distinct card embedded in your deck, and a distinct arithmetic bonus to every hand you play. When Hipolita stands at your side, fire floods the Hearts suit and her raw strength pads every chip count; when Atenea takes her place, lightning crackles through Spades and her keen mind bends multipliers upward. The Deck Viewer makes this visible: you can scroll through all 52 cards, find your captain's signature card -- the King of Clubs glowing subtly for Artemis, the Ace of Hearts burning for Hipolita -- and feel the weight of the bond you've built. The act of choosing is itself a moment of connection. You are not picking a stat bonus; you are deciding who you trust today.
 
 *Pillar 1: "Combat is poker hand evaluation with chips x mult scoring. Every card play is a strategic decision."*
 *Pillar 3: "Romance is not a cosmetic layer -- it directly enhances combat via divine blessings."*
@@ -38,7 +38,7 @@ Choosing your captain is choosing which goddess fights beside you. Each companio
 
    | Companion | Element | Suit | Card Value | Signature Card |
    |-----------|---------|------|-----------|----------------|
-   | Artemisa | Earth | Clubs | 13 | King of Clubs |
+   | Artemis | Earth | Clubs | 13 | King of Clubs |
    | Hipolita | Fire | Hearts | 14 | Ace of Hearts |
    | Atenea | Lightning | Spades | 14 | Ace of Spades |
    | Nyx | Water | Diamonds | 14 | Ace of Diamonds |
@@ -143,7 +143,7 @@ captain_mult_bonus = 1.0 + (captain.INT * 0.025)
 
 | Companion | STR | INT | Chip Bonus | Mult Bonus |
 |-----------|-----|-----|-----------|-----------|
-| Artemisa | 17 | 13 | +8 chips | 1.325x |
+| Artemis | 17 | 13 | +8 chips | 1.325x |
 | Hipolita | 20 | 9 | +10 chips | 1.225x |
 | Atenea | 13 | 19 | +6 chips | 1.475x |
 | Nyx | 18 | 19 | +9 chips | 1.475x |
@@ -160,7 +160,7 @@ No formula; the deck is constructed as a deterministic set of 52 CardData object
 
 1. **No captain ever selected (first launch).** If `last_captain_id` is null in SaveData and no companion is highlighted, the Confirm button remains disabled. The player cannot proceed to combat without selecting a captain. The UI shows a tooltip: "Choose a companion to fight beside you."
 
-2. **All companions locked (met=false).** Impossible in normal Story Flow -- Artemisa is always met before the first combat encounter. If this state is reached (corrupted save, debug skip), the system falls back to Artemisa and logs a warning. Artemisa's `met` flag is set to `true` during save initialisation and cannot be false at combat entry.
+2. **All companions locked (met=false).** Impossible in normal Story Flow -- Artemis is always met before the first combat encounter. If this state is reached (corrupted save, debug skip), the system falls back to Artemis and logs a warning. Artemis's `met` flag is set to `true` during save initialisation and cannot be false at combat entry.
 
 3. **Only one companion met.** The captain select grid shows all four companions; unmet companions are visually greyed out and non-tappable. The player must choose from the available (met) companions, which may be only one. The Confirm button activates on tap of that companion.
 
@@ -168,7 +168,7 @@ No formula; the deck is constructed as a deterministic set of 52 CardData object
 
 5. **Player cancels after opening Deck Viewer.** Dismissing the Deck Viewer returns to `CAPTAIN_CONFIRMED` (or `CAPTAIN_SELECT` if no captain was confirmed). No state is lost. The deck is not re-shuffled on Deck Viewer open/close -- shuffle only happens at handoff.
 
-6. **Signature card collision (three Aces).** Hipolita, Atenea, and Nyx all have `card_value=14` (Ace). Their signature cards are Ace of Hearts, Ace of Spades, and Ace of Diamonds respectively -- three distinct cards with three distinct suits. No collision. Artemisa's signature is King of Clubs (value 13). All four signature cards are unique by suit+value combination.
+6. **Signature card collision (three Aces).** Hipolita, Atenea, and Nyx all have `card_value=14` (Ace). Their signature cards are Ace of Hearts, Ace of Spades, and Ace of Diamonds respectively -- three distinct cards with three distinct suits. No collision. Artemis's signature is King of Clubs (value 13). All four signature cards are unique by suit+value combination.
 
 7. **Captain stat values at boundaries.** STR=1 yields `floor(0.5) = 0` chip bonus (valid, not negative). INT=1 yields `1.025x` (valid). STR=30 yields `15` chip bonus; INT=30 yields `1.75x`. No formula produces negative or zero-mult values within the defined stat range [1, 30].
 
@@ -215,7 +215,7 @@ All criteria follow GIVEN-WHEN-THEN. Criteria tagged [FUNCTIONAL] are automatabl
 
 **Captain Selection**
 
-1. [FUNCTIONAL] GIVEN a new save with only Artemisa met, WHEN the captain selection screen opens, THEN only Artemisa's portrait is tappable; Hipolita, Atenea, and Nyx are visually greyed and do not respond to tap input.
+1. [FUNCTIONAL] GIVEN a new save with only Artemis met, WHEN the captain selection screen opens, THEN only Artemis's portrait is tappable; Hipolita, Atenea, and Nyx are visually greyed and do not respond to tap input.
 
 2. [FUNCTIONAL] GIVEN no captain is highlighted, WHEN the player views the captain select screen, THEN the Confirm button is disabled and cannot be tapped.
 
@@ -233,7 +233,7 @@ All criteria follow GIVEN-WHEN-THEN. Criteria tagged [FUNCTIONAL] are automatabl
 
 8. [FUNCTIONAL] GIVEN any game state in Story Mode, WHEN the Deck Viewer is opened, THEN it displays exactly 52 distinct card entries (no duplicates, no missing cards).
 
-9. [FUNCTIONAL] GIVEN Artemisa is the active captain, WHEN the Deck Viewer is open, THEN the King of Clubs card entry has Artemisa's portrait overlay and an Earth-element glow; no other card has an overlay.
+9. [FUNCTIONAL] GIVEN Artemis is the active captain, WHEN the Deck Viewer is open, THEN the King of Clubs card entry has Artemis's portrait overlay and an Earth-element glow; no other card has an overlay.
 
 10. [FUNCTIONAL] GIVEN the Deck Viewer is open in Story Mode, WHEN the player looks for edit controls (add card, remove card, enhance card), THEN no such controls are visible or accessible.
 

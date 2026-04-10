@@ -19,9 +19,9 @@ Romance & Social is the system through which players build and deepen relationsh
 
 **"The Bridge Between Worlds"**
 
-You exist between the mortal and the divine. Camp is the quiet space between battles where fallen goddesses let themselves be people — petty, funny, jealous, tender. You are not worshipping them; you are *seeing* them. Artemisa teases you about your terrible aim. Hipolita challenges you to a sparring match she knows you'll lose. Nyx sits in silence beside you and that silence means more than any prayer.
+You exist between the mortal and the divine. Camp is the quiet space between battles where fallen goddesses let themselves be people — petty, funny, jealous, tender. You are not worshipping them; you are *seeing* them. Artemis teases you about your terrible aim. Hipolita challenges you to a sparring match she knows you'll lose. Nyx sits in silence beside you and that silence means more than any prayer.
 
-The fantasy is intimacy with beings who terrify everyone else. Every talk, every gift, every date is a small act of choosing to show up for someone the world forgot. The companion mood system makes each visit feel like reading a real person — sometimes she's warm, sometimes distant, and learning which offerings reach her on a bad day is its own reward. When you discover that Artemisa lights up at wildflowers but rolls her eyes at gold, you know something no other mortal knows.
+The fantasy is intimacy with beings who terrify everyone else. Every talk, every gift, every date is a small act of choosing to show up for someone the world forgot. The companion mood system makes each visit feel like reading a real person — sometimes she's warm, sometimes distant, and learning which offerings reach her on a bad day is its own reward. When you discover that Artemis lights up at wildflowers but rolls her eyes at gold, you know something no other mortal knows.
 
 The combat buffs are not transactional. They are what happens when a goddess actually trusts someone. The first time a social buff turns a losing poker hand into a win, the player should feel the cause-and-effect chain: "I sat with her at camp, I learned what she likes, I showed up every day — and now she's fighting for me." Romance is not a side activity. It is the reason you win.
 
@@ -30,7 +30,7 @@ The combat buffs are not transactional. They are what happens when a goddess act
 ### Core Rules
 
 **Rule 1 — Daily Token Pool.**
-Each calendar day (UTC date at session start, stored as `last_interaction_date`) the player receives **3 interaction tokens**. Tokens reset at midnight UTC. Unused tokens do not carry over. One token is spent per camp interaction (Talk, Gift, or Date). A single companion may receive multiple interactions per day. The token pool is shared across all companions — spending 2 on Artemisa leaves 1 for anyone else.
+Each calendar day (UTC date at session start, stored as `last_interaction_date`) the player receives **3 interaction tokens**. Tokens reset at midnight UTC. Unused tokens do not carry over. One token is spent per camp interaction (Talk, Gift, or Date). A single companion may receive multiple interactions per day. The token pool is shared across all companions — spending 2 on Artemis leaves 1 for anyone else.
 
 **Rule 2 — Camp Interactions.**
 Three interaction types available at Camp:
@@ -234,7 +234,7 @@ captain_RL = 0                    (if defeat or no captain)
 
 No streak multiplier. No mood modifier. Flat +1.
 
-**Worked example:** 50 combat victories with Artemisa as captain = +50 RL total across the playthrough. Roughly equivalent to 17 Talk interactions — meaningful background drip, not dominant.
+**Worked example:** 50 combat victories with Artemis as captain = +50 RL total across the playthrough. Roughly equivalent to 17 Talk interactions — meaningful background drip, not dominant.
 
 ### Non-Formulas (Explicit)
 
@@ -273,7 +273,7 @@ No streak multiplier. No mood modifier. Flat +1.
 
 ### Combat Buff State
 
-- **If CombatBuff was granted by Companion A but captain switches to Companion B**: Buff is global (player-level), not companion-specific. It carries over regardless of captain. A Nyx date buff works with Artemisa as captain. This is intentional — the buff represents the companion's faith in the player, not active participation.
+- **If CombatBuff was granted by Companion A but captain switches to Companion B**: Buff is global (player-level), not companion-specific. It carries over regardless of captain. A Nyx date buff works with Artemis as captain. This is intentional — the buff represents the companion's faith in the player, not active participation.
 - **If `combats_remaining` reaches 0 after combat victory**: Clear the buff slot to null immediately at combat resolution. The next interaction writes into an empty slot without comparison.
 - **If a new buff is generated while no active buff exists**: Write directly to the empty slot. No replacement comparison needed.
 

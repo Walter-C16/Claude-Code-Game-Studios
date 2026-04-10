@@ -240,7 +240,7 @@ func test_game_store_serialization_from_dict_absent_nyx_initializes_with_default
 	# Act — from_dict loads only what's in the save; reconcile adds missing
 	var store2 = _make_store()
 	store2.from_dict(data)
-	store2.reconcile_companion_states(["artemisa", "hipolita", "atenea", "nyx"] as Array[String])
+	store2.reconcile_companion_states(["artemis", "hipolita", "atenea", "nyx"] as Array[String])
 
 	# Assert — "nyx" must exist with factory default values
 	var nyx_state: Dictionary = store2.get_companion_state("nyx")
@@ -259,9 +259,10 @@ func test_game_store_serialization_from_dict_absent_nyx_known_likes_is_empty_arr
 	var data: Dictionary = store.to_dict()
 	(data["companion_states"] as Dictionary).erase("nyx")
 
-	# Act
+	# Act — from_dict loads only what's in save; reconcile adds missing
 	var store2 = _make_store()
 	store2.from_dict(data)
+	store2.reconcile_companion_states(["artemis", "hipolita", "atenea", "nyx"] as Array[String])
 
 	# Assert — array fields default to empty
 	var nyx_state: Dictionary = store2.get_companion_state("nyx")
@@ -269,18 +270,19 @@ func test_game_store_serialization_from_dict_absent_nyx_known_likes_is_empty_arr
 	assert_bool(likes != null).is_true()
 	assert_int(likes.size()).is_equal(0)
 
-func test_game_store_serialization_from_dict_absent_artemisa_initializes_with_defaults() -> void:
+func test_game_store_serialization_from_dict_absent_artemis_initializes_with_defaults() -> void:
 	# Arrange — same guard applies to all 4 known companions
 	var store = _make_store()
 	var data: Dictionary = store.to_dict()
-	(data["companion_states"] as Dictionary).erase("artemisa")
+	(data["companion_states"] as Dictionary).erase("artemis")
 
-	# Act
+	# Act — from_dict loads only what's in save; reconcile adds missing
 	var store2 = _make_store()
 	store2.from_dict(data)
+	store2.reconcile_companion_states(["artemis", "hipolita", "atenea", "nyx"] as Array[String])
 
 	# Assert
-	var state: Dictionary = store2.get_companion_state("artemisa")
+	var state: Dictionary = store2.get_companion_state("artemis")
 	assert_bool(state.is_empty()).is_false()
 	assert_int(state.get("relationship_level", -1)).is_equal(0)
 
@@ -382,7 +384,7 @@ func test_game_store_serialization_round_trip_last_captain_id_matches() -> void:
 func test_game_store_serialization_round_trip_story_flags_match() -> void:
 	# Arrange
 	var store = _make_store()
-	store.set_flag("ch01_met_artemisa")
+	store.set_flag("ch01_met_artemis")
 	store.set_flag("ch02_boss_defeated")
 
 	# Act
@@ -391,7 +393,7 @@ func test_game_store_serialization_round_trip_story_flags_match() -> void:
 	store2.from_dict(data)
 
 	# Assert
-	assert_bool(store2.has_flag("ch01_met_artemisa")).is_true()
+	assert_bool(store2.has_flag("ch01_met_artemis")).is_true()
 	assert_bool(store2.has_flag("ch02_boss_defeated")).is_true()
 	assert_int(store2.get_story_flags().size()).is_equal(2)
 
@@ -497,7 +499,7 @@ func test_game_store_serialization_round_trip_all_four_companions_present() -> v
 	store2.from_dict(data)
 
 	# Assert — all 4 companions survive the round-trip
-	for id: String in ["artemisa", "hipolita", "atenea", "nyx"]:
+	for id: String in ["artemis", "hipolita", "atenea", "nyx"]:
 		var state: Dictionary = store2.get_companion_state(id)
 		assert_bool(state.is_empty()).is_false()
 
@@ -596,11 +598,12 @@ func test_game_store_serialization_from_dict_empty_dict_all_companions_present()
 	# Arrange
 	var store = _make_store()
 
-	# Act
+	# Act — from_dict loads empty save; reconcile adds all companions
 	store.from_dict({})
+	store.reconcile_companion_states(["artemis", "hipolita", "atenea", "nyx"] as Array[String])
 
-	# Assert — all 4 known companions initialized with defaults even with empty input
-	for id: String in ["artemisa", "hipolita", "atenea", "nyx"]:
+	# Assert — all 4 known companions initialized with defaults
+	for id: String in ["artemis", "hipolita", "atenea", "nyx"]:
 		var state: Dictionary = store.get_companion_state(id)
 		assert_bool(state.is_empty()).is_false()
 
@@ -688,16 +691,16 @@ func test_game_store_serialization_to_dict_story_flags_is_a_copy() -> void:
 func test_game_store_serialization_to_dict_companion_known_likes_is_a_copy() -> void:
 	# Arrange
 	var store = _make_store()
-	store._companion_states["artemisa"]["known_likes"] = ["hunting"]
+	store._companion_states["artemis"]["known_likes"] = ["hunting"]
 
 	# Act — mutate the nested array in the returned dict
 	var data: Dictionary = store.to_dict()
 	var companions: Dictionary = data["companion_states"] as Dictionary
-	var artemisa: Dictionary = companions["artemisa"] as Dictionary
-	(artemisa["known_likes"] as Array).append("injected")
+	var artemis: Dictionary = companions["artemis"] as Dictionary
+	(artemis["known_likes"] as Array).append("injected")
 
 	# Assert — internal state is unaffected
-	assert_int(store._companion_states["artemisa"]["known_likes"].size()).is_equal(1)
+	assert_int(store._companion_states["artemis"]["known_likes"].size()).is_equal(1)
 
 func test_game_store_serialization_to_dict_combat_buff_is_a_copy() -> void:
 	# Arrange

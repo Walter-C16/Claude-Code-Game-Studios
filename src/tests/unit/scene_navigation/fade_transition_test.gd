@@ -115,7 +115,7 @@ func test_scene_manager_get_arrival_context_returns_empty_by_default() -> void:
 func test_scene_manager_get_arrival_context_is_read_once() -> void:
 	# Arrange — inject a non-empty context directly into the private field
 	var manager = _make_manager()
-	manager._arrival_context = {"companion_id": "artemisa", "chapter": "ch01"}
+	manager._arrival_context = {"companion_id": "artemis", "chapter": "ch01"}
 
 	# Act — first read returns the stored data
 	var first: Dictionary = manager.get_arrival_context()

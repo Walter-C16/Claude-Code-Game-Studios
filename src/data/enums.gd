@@ -6,9 +6,9 @@ class_name Enums
 const COMPANION_ATENEA := "atenea"
 const COMPANION_NYX := "nyx"
 const COMPANION_HIPOLITA := "hipolita"
-const COMPANION_ARTEMISA := "artemisa"
+const COMPANION_ARTEMISA := "artemis"
 
-const ALL_COMPANION_IDS: Array[String] = ["atenea", "nyx", "hipolita", "artemisa"]
+const ALL_COMPANION_IDS: Array[String] = ["atenea", "nyx", "hipolita", "artemis"]
 
 # ---------------------------------------------------------------------------
 # Moods

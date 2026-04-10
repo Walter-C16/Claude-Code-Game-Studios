@@ -108,7 +108,7 @@ from Greek goddesses you're dating."
 
 ### Flow State Design
 
-- **Onboarding curve**: Prologue tutorial fight (Forest Monster, 40 HP) teaches combat basics, then Artemisa rescue introduces first companion, then opens up hub with progression options
+- **Onboarding curve**: Prologue tutorial fight (Forest Monster, 40 HP) teaches combat basics, then Artemis rescue introduces first companion, then opens up hub with progression options
 - **Difficulty scaling**: Enemy HP thresholds scale per chapter; Abyss mode has 8 antes (300 to 50,000) with 1.6x endless scaling
 - **Feedback clarity**: Score accumulates visually toward target threshold; relationship stage progress bars; blessing unlock notifications
 - **Recovery from failure**: Combat allows 4 hands + 4 discards per fight; failure returns to hub with no permanent loss; Abyss runs are roguelike (expected failure)
@@ -272,7 +272,7 @@ engaging enough to complete Chapter 1 and want to continue to Chapter 2.
 1. Complete poker combat system with scoring, enhancements, and element mapping
 2. Visual novel dialogue system with branching, portraits, mood variants
 3. Chapter 1 story (9 nodes: prologue through tree temple)
-4. 2 playable companions (Artemisa, Hipolita) with relationship tracking
+4. 2 playable companions (Artemis, Hipolita) with relationship tracking
 5. Hub screen with navigation to story, combat, camp
 6. Save/load system
 
@@ -300,7 +300,7 @@ engaging enough to complete Chapter 1 and want to continue to Chapter 2.
 
 | ID | Name | Element | Stats (STR/INT/AGI) | Role | Personality |
 |----|------|---------|---------------------|------|-------------|
-| `artemisa` | Artemisa | Earth | 17/13/20 | Goddess of the Hunt | Clever, helpful, archer with bow |
+| `artemis` | Artemis | Earth | 17/13/20 | Goddess of the Hunt | Clever, helpful, archer with bow |
 | `hipolita` | Hipolita | Fire | 20/9/18 | Queen of the Amazons | Savage, horny, fearless. Red hair, muscled |
 | `atenea` | Atenea | Lightning | 13/19/12 | Goddess of Wisdom | (Chapter 2+) |
 | `nyx` | Nyx | Water | 18/19/8 | Primordial Goddess of Night | (Chapter 2+) |
@@ -325,7 +325,7 @@ Kronos broke free, turned back time, killed the old heroes. The world is broken,
 gods scattered. You wake in a forest -- your ship crashed. Artemis saves you.
 
 ### Chapter 1: Sardis
-10 story nodes: forest monster tutorial, Artemisa rescue (companion unlock),
+10 story nodes: forest monster tutorial, Artemis rescue (companion unlock),
 Artemis's house, tavern (meet village), mountains (Artemis backstory),
 village attack (meet Hipolita), Hipolita's challenge, village report,
 night siege (boss: Gaia Spirit), tree temple (Gaia revelation).

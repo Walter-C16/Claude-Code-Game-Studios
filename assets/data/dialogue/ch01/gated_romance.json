@@ -1,9 +1,9 @@
 {
   "id": "gated_romance",
-  "requires_romance_stage": { "companion": "artemisa", "min": 2 },
+  "requires_romance_stage": { "companion": "artemis", "min": 2 },
   "nodes": {
     "start": {
-      "lines": [{ "speaker": "artemisa", "speaker_type": "companion", "text_key": "CH1_ARTEMISA_01", "mood": "neutral" }],
+      "lines": [{ "speaker": "artemis", "speaker_type": "companion", "text_key": "CH1_ARTEMISA_01", "mood": "neutral" }],
       "next": "END"
     }
   }

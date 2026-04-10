@@ -7,7 +7,7 @@
 
 ## Summary
 
-Companion Data is the central data authority for all four companion characters (Artemisa, Hipolita, Atenea, Nyx) and the priestess NPC. It defines static companion profiles (stats, elements, roles, portraits) and mutable companion state (relationship level, trust, romance stage, met status). Ten downstream systems read from this data layer -- it is the most-depended-on system in the project.
+Companion Data is the central data authority for all four companion characters (Artemis, Hipolita, Atenea, Nyx) and the priestess NPC. It defines static companion profiles (stats, elements, roles, portraits) and mutable companion state (relationship level, trust, romance stage, met status). Ten downstream systems read from this data layer -- it is the most-depended-on system in the project.
 
 > **Quick reference** -- Layer: `Foundation` · Priority: `MVP` · Key deps: `None`
 
@@ -17,7 +17,7 @@ Companion Data defines the schema and access patterns for all companion-related 
 
 ## Player Fantasy
 
-Companion Data has no direct player fantasy -- players never interact with the data layer itself. Its fantasy is inherited: it enables the feeling of each companion being a distinct, memorable individual with her own combat identity (element affinity), personality (mood portraits, dialogue responses), and progression arc (relationship stages that unlock new abilities). When a player says "Artemisa feels different from Hipolita," that distinction originates in the data defined here. The system succeeds when players forget it exists and simply experience companions as living characters.
+Companion Data has no direct player fantasy -- players never interact with the data layer itself. Its fantasy is inherited: it enables the feeling of each companion being a distinct, memorable individual with her own combat identity (element affinity), personality (mood portraits, dialogue responses), and progression arc (relationship stages that unlock new abilities). When a player says "Artemis feels different from Hipolita," that distinction originates in the data defined here. The system succeeds when players forget it exists and simply experience companions as living characters.
 
 ## Detailed Design
 
@@ -29,7 +29,7 @@ The game defines exactly 4 playable companions and 1 NPC. Each has a unique stri
 
 | ID | Display Name | Role | Element | STR | INT | AGI | Card Value | Starting Location |
 |----|-------------|------|---------|-----|-----|-----|-----------|------------------|
-| `artemisa` | Artemisa | Goddess of the Hunt | Earth | 17 | 13 | 20 | 13 | base_camp |
+| `artemis` | Artemis | Goddess of the Hunt | Earth | 17 | 13 | 20 | 13 | base_camp |
 | `hipolita` | Hipolita | Queen of the Amazons | Fire | 20 | 9 | 18 | 14 | amazon_camp |
 | `atenea` | Atenea | Goddess of Wisdom | Lightning | 13 | 19 | 12 | 14 | ruined_temple |
 | `nyx` | Nyx | Primordial Goddess of Night | Water | 18 | 19 | 8 | 14 | shadow_realm |
@@ -141,7 +141,7 @@ No formula -- base stats are fixed per companion and not calculated. However, cu
 
 | Companion | STR + INT + AGI | Total |
 |-----------|----------------|-------|
-| Artemisa | 17 + 13 + 20 | 50 |
+| Artemis | 17 + 13 + 20 | 50 |
 | Hipolita | 20 + 9 + 18 | 47 |
 | Atenea | 13 + 19 + 12 | 44 |
 | Nyx | 18 + 19 + 8 | 45 |
@@ -199,14 +199,14 @@ No formula -- base stats are fixed per companion and not calculated. However, cu
 ## Acceptance Criteria
 
 - [ ] **GIVEN** a new save file, **WHEN** the game initializes, **THEN** all 4 companions have state records with initial values (relationship_level=0, trust=0, motivation=50, romance_stage=0, met=false, empty likes/dislikes).
-- [ ] **GIVEN** companion "artemisa" with relationship_level=55, **WHEN** romance_stage is derived, **THEN** romance_stage=2 (thresholds 0, 21, 51 are met; 71 is not).
+- [ ] **GIVEN** companion "artemis" with relationship_level=55, **WHEN** romance_stage is derived, **THEN** romance_stage=2 (thresholds 0, 21, 51 are met; 71 is not).
 - [ ] **GIVEN** companion at romance_stage=3 with relationship_level=75, **WHEN** relationship_level drops to 65, **THEN** romance_stage remains 3 (never decreases).
 - [ ] **GIVEN** companion with met=false, **WHEN** the Camp screen is displayed, **THEN** that companion is not shown in the companion grid.
 - [ ] **GIVEN** companion "hipolita" with mood "angry", **WHEN** the Dialogue system requests a portrait, **THEN** it receives path `res://assets/images/companions/hipolita/hipolita_angry.png`.
 - [ ] **GIVEN** a portrait file is missing for mood "surprised", **WHEN** the Dialogue system requests it, **THEN** the neutral portrait is returned as fallback.
 - [ ] **GIVEN** a save from an older version missing a companion entry (e.g., new companion added), **WHEN** the save is loaded, **THEN** a fresh default state record is created for the missing companion without corrupting existing data.
 - [ ] **GIVEN** a save from a newer version with an unknown companion ID, **WHEN** the save is loaded by the older version, **THEN** the unknown entry is ignored and all known companions load correctly.
-- [ ] **GIVEN** any companion, **WHEN** queried by ID string (e.g., "artemisa"), **THEN** the full profile (display_name, role, stats, element, card_value, starting_location) is returned.
+- [ ] **GIVEN** any companion, **WHEN** queried by ID string (e.g., "artemis"), **THEN** the full profile (display_name, role, stats, element, card_value, starting_location) is returned.
 - [ ] **GIVEN** relationship_level set to 105 by any system, **WHEN** the value is stored, **THEN** it is clamped to 100.
 - [ ] No companion stat, threshold, or portrait path is hardcoded outside the data definition files. All values are data-driven.
 - [ ] Performance: Companion data lookup completes within 1ms (dictionary access, not a bottleneck).

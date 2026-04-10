@@ -5,13 +5,13 @@
 			"name_key": "CHAPTER_01_NAME",
 			"description_key": "CHAPTER_01_DESC",
 			"unlock_condition": "prologue",
-			"companions_featured": ["artemisa", "hipolita"],
+			"companions_featured": ["artemis", "hipolita"],
 			"nodes": [
 				{
 					"id": "ch01_n01_house",
 					"type": "dialogue",
 					"dialogue_file": "ch01_s02_artemis_house",
-					"companion": "artemisa",
+					"companion": "artemis",
 					"background": "base_camp",
 					"energy_cost": 0
 				},
@@ -19,7 +19,7 @@
 					"id": "ch01_n02_tavern",
 					"type": "dialogue",
 					"dialogue_file": "ch01_s03_tavern",
-					"companion": "artemisa",
+					"companion": "artemis",
 					"background": "base_camp",
 					"energy_cost": 0
 				},
@@ -33,17 +33,17 @@
 					"id": "ch01_n04_mountains",
 					"type": "dialogue",
 					"dialogue_file": "ch01_s04_mountains",
-					"companion": "artemisa",
+					"companion": "artemis",
 					"background": "ruined_temple",
 					"energy_cost": 0
 				},
 				{
 					"id": "ch01_n05_intimacy_artemis",
 					"type": "intimacy",
-					"companion": "artemisa",
+					"companion": "artemis",
 					"effects": [
-						{ "type": "addRelationship", "target": "artemisa", "amount": 8 },
-						{ "type": "addTrust", "target": "artemisa", "amount": 5 }
+						{ "type": "addRelationship", "target": "artemis", "amount": 8 },
+						{ "type": "addTrust", "target": "artemis", "amount": 5 }
 					],
 					"energy_cost": 0
 				},
@@ -133,7 +133,7 @@
 				{
 					"id": "ch01_n16_threesome",
 					"type": "intimacy",
-					"companion": "artemisa",
+					"companion": "artemis",
 					"energy_cost": 0
 				},
 				{
@@ -165,7 +165,7 @@
 			"description_key": "CHAPTER_02_DESC",
 			"nodes": [],
 			"unlock_condition": "ch01_sardis",
-			"companions_featured": ["artemisa", "hipolita"]
+			"companions_featured": ["artemis", "hipolita"]
 		}
 	]
 }

@@ -16,7 +16,7 @@
 - **Acceptance Criteria**:
   - [ ] AC1: GIVEN `blessings.json` is parsed, WHEN `get_blessing_info(captain_id)` is called for each of the 4 companions, THEN exactly 5 blessings per companion are returned (20 total).
   - [ ] AC2: GIVEN a blessing dict from the file, WHEN validated, THEN it contains `slot`, `stage`, `name_key`, `trigger_type`, and at least one value field (`chips_per_card`, `mult_per_card`, `chips_flat`, `mult_flat`).
-  - [ ] AC3: GIVEN per-card variable blessings are loaded, THEN Artemisa slot 1 has `suit: "Clubs"` and `chips_per_card: 8`; Hipolita has `suit: "Hearts"` and `chips_per_card: 10`; Atenea has `suit: "Spades"` and `mult_per_card: 0.8`; Nyx has `suit: "Diamonds"` and `chips_per_card: 7`.
+  - [ ] AC3: GIVEN per-card variable blessings are loaded, THEN Artemis slot 1 has `suit: "Clubs"` and `chips_per_card: 8`; Hipolita has `suit: "Hearts"` and `chips_per_card: 10`; Atenea has `suit: "Spades"` and `mult_per_card: 0.8`; Nyx has `suit: "Diamonds"` and `chips_per_card: 7`.
   - [ ] AC4: GIVEN BlessingSystem code is inspected, THEN no numeric blessing values (chip amounts, multiplier amounts, stage thresholds) appear as literals — all sourced from the JSON file.
   - [ ] AC5: GIVEN a hand_context dict, WHEN validated against the required schema, THEN all 12 required fields are present: `cards_played`, `hand_rank`, `hand_rank_value`, `suit_counts`, `current_score`, `hands_played`, `discards_used`, `discards_remaining`, `discards_allowed`, `signature_card_played`, `raw_hand_chips`, `hands_scoring_above`.
 - **Test Evidence**: `tests/unit/divine_blessings/blessing_data_test.gd`
@@ -35,7 +35,7 @@
   - [ ] AC2: GIVEN `_max_slot_for_stage(2)` is called, THEN it returns 2.
   - [ ] AC3: GIVEN `_max_slot_for_stage(3)` is called, THEN it returns 4 (stage 3 unlocks slot 4, not slot 3).
   - [ ] AC4: GIVEN `_max_slot_for_stage(4)` is called, THEN it returns 5.
-  - [ ] AC5: GIVEN captain_id="artemisa" and romance_stage=2, WHEN `compute()` is called for captain_id="hipolita", THEN only Hipolita's blessings are evaluated (not Artemisa's).
+  - [ ] AC5: GIVEN captain_id="artemis" and romance_stage=2, WHEN `compute()` is called for captain_id="hipolita", THEN only Hipolita's blessings are evaluated (not Artemis's).
   - [ ] AC6: GIVEN romance_stage changes mid-combat, WHEN `compute()` is called with the cached stage value from combat start, THEN the changed stage is ignored and the frozen value is used.
 - **Test Evidence**: `tests/unit/divine_blessings/slot_availability_test.gd`
 - **Status**: Ready
@@ -68,7 +68,7 @@
 - **TR-IDs**: TR-divine-blessings-004, TR-divine-blessings-005, TR-divine-blessings-009, TR-divine-blessings-017
 - **ADR Guidance**: `compute(captain_id, romance_stage, hand_context)` returns `{blessing_chips: int, blessing_mult: float}`. Sequential 1-5 evaluation. `accumulated_chips` accumulates across the loop and is passed to each trigger evaluation. Must complete in <1ms. Recomputed fresh each PLAY — not cached across turns.
 - **Acceptance Criteria**:
-  - [ ] AC1: GIVEN Artemisa at romance_stage=1 and 3 Clubs played, WHEN `compute()` is called, THEN `blessing_chips` = 24 and `blessing_mult` = 0.0.
+  - [ ] AC1: GIVEN Artemis at romance_stage=1 and 3 Clubs played, WHEN `compute()` is called, THEN `blessing_chips` = 24 and `blessing_mult` = 0.0.
   - [ ] AC2: GIVEN romance_stage=0 for any captain, WHEN `compute()` is called, THEN it returns `{blessing_chips: 0, blessing_mult: 0.0}`.
   - [ ] AC3: GIVEN Nyx at romance_stage=4 with all triggers met, WHEN `compute()` is called, THEN `blessing_chips` = 66 and `blessing_mult` = 9.5 (ADR-0012 Validation Criterion 3).
   - [ ] AC4: GIVEN a Hipolita stage 4 worked example from the GDD, WHEN `compute()` is called with the specified hand_context, THEN the final score contribution matches the GDD value of 869.

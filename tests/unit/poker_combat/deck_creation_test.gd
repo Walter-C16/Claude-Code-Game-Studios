@@ -196,12 +196,12 @@ func test_deck_creation_signature_card_tagged_with_companion_id() -> void:
 	var deck: Array[Dictionary] = _build_deck()
 
 	# Act
-	DeckScript.tag_signature_cards(deck, "artemisa", 13, 2)
+	DeckScript.tag_signature_cards(deck, "artemis", 13, 2)
 
-	# Assert — exactly one card has companion_id = "artemisa"
+	# Assert — exactly one card has companion_id = "artemis"
 	var tagged_count: int = 0
 	for card: Dictionary in deck:
-		if card.get("companion_id", "") == "artemisa":
+		if card.get("companion_id", "") == "artemis":
 			tagged_count += 1
 	assert_int(tagged_count).is_equal(1)
 
@@ -211,12 +211,12 @@ func test_deck_creation_signature_card_correct_suit_and_value() -> void:
 	var deck: Array[Dictionary] = _build_deck()
 
 	# Act
-	DeckScript.tag_signature_cards(deck, "artemisa", 13, 2)
+	DeckScript.tag_signature_cards(deck, "artemis", 13, 2)
 
 	# Assert — the tagged card is the King of Clubs
 	var tagged: Dictionary = {}
 	for card: Dictionary in deck:
-		if card.get("companion_id", "") == "artemisa":
+		if card.get("companion_id", "") == "artemis":
 			tagged = card
 			break
 	assert_int(tagged.get("value", 0)).is_equal(13)
@@ -228,7 +228,7 @@ func test_deck_creation_signature_card_chips_identical_to_normal() -> void:
 	# Arrange — two decks, one with a signature card
 	var deck_normal: Array[Dictionary] = _build_deck()
 	var deck_tagged: Array[Dictionary] = _build_deck()
-	DeckScript.tag_signature_cards(deck_tagged, "artemisa", 13, 2)
+	DeckScript.tag_signature_cards(deck_tagged, "artemis", 13, 2)
 
 	# Find King of Clubs in each deck
 	var normal_card: Dictionary = {}
@@ -254,7 +254,7 @@ func test_deck_creation_signature_card_element_identical_to_normal() -> void:
 	# Arrange
 	var deck_normal: Array[Dictionary] = _build_deck()
 	var deck_tagged: Array[Dictionary] = _build_deck()
-	DeckScript.tag_signature_cards(deck_tagged, "artemisa", 13, 2)
+	DeckScript.tag_signature_cards(deck_tagged, "artemis", 13, 2)
 
 	# Act
 	var normal_element: String = ""

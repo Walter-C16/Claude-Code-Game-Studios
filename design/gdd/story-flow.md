@@ -13,13 +13,13 @@ Story Flow is the chapter-node sequencer that orchestrates Dark Olympus's narrat
 
 ## Overview
 
-Story Flow sequences the player through chapter-based story content, one node at a time. Each chapter is a JSON file defining an ordered chain of nodes — dialogue scenes, combat encounters, boss fights, companion introductions, and reward beats. The player navigates via the Chapter Map, selecting the next available node. Nodes unlock linearly: each requires the previous node to be completed and may require specific story flags. Within a node, Story Flow delegates to the Dialogue system for narrative delivery and to Poker Combat for encounters, listening for completion signals before granting rewards, setting flags, and advancing to the next node. Story flags — write-once strings set on node completion — are the atomic units of consequence that drive both node gating and dialogue branching. Combat defeat triggers a retry prompt with no penalty. Chapter 1 contains 10 nodes spanning the prologue tutorial combat through the Gaia revelation, introducing Artemisa and Hipolita along the way.
+Story Flow sequences the player through chapter-based story content, one node at a time. Each chapter is a JSON file defining an ordered chain of nodes — dialogue scenes, combat encounters, boss fights, companion introductions, and reward beats. The player navigates via the Chapter Map, selecting the next available node. Nodes unlock linearly: each requires the previous node to be completed and may require specific story flags. Within a node, Story Flow delegates to the Dialogue system for narrative delivery and to Poker Combat for encounters, listening for completion signals before granting rewards, setting flags, and advancing to the next node. Story flags — write-once strings set on node completion — are the atomic units of consequence that drive both node gating and dialogue branching. Combat defeat triggers a retry prompt with no penalty. Chapter 1 contains 10 nodes spanning the prologue tutorial combat through the Gaia revelation, introducing Artemis and Hipolita along the way.
 
 ## Player Fantasy
 
 **"The Living Myth"**
 
-You are inside a myth that is still being told — not a history, but an ongoing act of creation. Each story node is an episode in an epic poem where the hero shapes the telling. Dialogue choices are not menu selections; they are declarations that reshape the mythological world. Meeting Artemisa in the forest does not feel like a tutorial unlock — it feels like fate intervening. Defeating the Gaia Spirit at the night siege does not feel like clearing a level — it feels like a chapter of legend being sealed.
+You are inside a myth that is still being told — not a history, but an ongoing act of creation. Each story node is an episode in an epic poem where the hero shapes the telling. Dialogue choices are not menu selections; they are declarations that reshape the mythological world. Meeting Artemis in the forest does not feel like a tutorial unlock — it feels like fate intervening. Defeating the Gaia Spirit at the night siege does not feel like clearing a level — it feels like a chapter of legend being sealed.
 
 The emotional arc of each node follows the rhythm of myth: wonder (entering the scene) into gravity (the stakes of this episode) into declaration (the player's choice that defines this chapter) into resonance (feeling the mythological weight of what just happened). The cumulative effect across a chapter is the sensation of a myth being written around you — and your choices are the ink.
 
@@ -101,7 +101,7 @@ When the final node reaches `completed`: set `completion_flag`, write `current_c
 | # | Node ID | Type | Enemy | Unlocks | Gold/XP | Flag |
 |---|---|---|---|---|---|---|
 | 0 | `ch01_n00` | `combat` | `forest_monster` | -- | 10/30 | `forest_monster_defeated` |
-| 1 | `ch01_n01` | `companion_unlock` | -- | `artemisa` | 0/50 | `prologue_complete` |
+| 1 | `ch01_n01` | `companion_unlock` | -- | `artemis` | 0/50 | `prologue_complete` |
 | 2 | `ch01_n02` | `dialogue` | -- | -- | 20/60 | `artemis_house_complete` |
 | 3 | `ch01_n03` | `dialogue` | -- | -- | 30/60 | `tavern_complete` |
 | 4 | `ch01_n04` | `mixed` | `cyclops` | -- | 40/80 | `mountains_complete` |
@@ -274,7 +274,7 @@ Story Flow has no mathematical formulas. All values are data-driven from chapter
 - [ ] **AC-SF-04** — **GIVEN** a `dialogue` node, **WHEN** entered, **THEN** `start_dialogue()` called and Story Flow awaits `dialogue_ended` before granting rewards.
 - [ ] **AC-SF-05** — **GIVEN** a `mixed` node, **WHEN** dialogue ends, **THEN** combat loads. After victory, post-combat sequence plays before rewards.
 - [ ] **AC-SF-06** — **GIVEN** a `boss` node, **WHEN** entered, **THEN** boss music signal emitted and boss HP bar activated.
-- [ ] **AC-SF-07** — **GIVEN** a `companion_unlock` node with `unlocks_companions: ["artemisa"]`, **WHEN** completed, **THEN** `artemisa.met = true` and companion reveal animation plays.
+- [ ] **AC-SF-07** — **GIVEN** a `companion_unlock` node with `unlocks_companions: ["artemis"]`, **WHEN** completed, **THEN** `artemis.met = true` and companion reveal animation plays.
 
 ### Rule 4 — Story Flags
 - [ ] **AC-SF-08** — **GIVEN** node `ch01_n01` completes with `sets_flags: ["prologue_complete"]`, **WHEN** flags checked, **THEN** `"prologue_complete"` is in `GameStore.story_flags`.

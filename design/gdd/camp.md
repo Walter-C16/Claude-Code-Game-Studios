@@ -17,7 +17,7 @@ Camp is the daily ritual hub where the player invests in companion relationships
 
 ## Player Fantasy
 
-Camp is the quiet space between battles. The combat arena is loud and high-stakes; Camp is where fallen goddesses drop the performance and become themselves. The player comes here not to optimize but to show up -- to sit with someone who terrifies the rest of the world and simply be present. The fantasy is earned intimacy: learning that Artemisa hates gold offerings but lights up at wildflowers, seeing Nyx's mood shift from Lonely to Excited over three consecutive visits, feeling the goddess lean in a little more each time you return. Camp does not announce itself as a power system. The buffs are a consequence, not the reason.
+Camp is the quiet space between battles. The combat arena is loud and high-stakes; Camp is where fallen goddesses drop the performance and become themselves. The player comes here not to optimize but to show up -- to sit with someone who terrifies the rest of the world and simply be present. The fantasy is earned intimacy: learning that Artemis hates gold offerings but lights up at wildflowers, seeing Nyx's mood shift from Lonely to Excited over three consecutive visits, feeling the goddess lean in a little more each time you return. Camp does not announce itself as a power system. The buffs are a consequence, not the reason.
 
 ## Detailed Design
 

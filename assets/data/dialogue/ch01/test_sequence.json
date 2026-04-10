@@ -2,13 +2,13 @@
   "id": "test_sequence",
   "nodes": {
     "start": {
-      "speaker": "artemisa",
+      "speaker": "artemis",
       "speaker_type": "companion",
       "text_key": "CH1_ARTEMISA_01",
       "mood": "neutral",
       "lines": [
         {
-          "speaker": "artemisa",
+          "speaker": "artemis",
           "speaker_type": "companion",
           "text_key": "CH1_ARTEMISA_01",
           "mood": "neutral"
@@ -32,7 +32,7 @@
           "id": "kind",
           "text_key": "CH1_CHOICE_KIND",
           "effects": [
-            { "type": "relationship", "companion": "artemisa", "delta": 3 }
+            { "type": "relationship", "companion": "artemis", "delta": 3 }
           ],
           "next": "node_end"
         },
@@ -41,7 +41,7 @@
           "text_key": "CH1_CHOICE_COLD",
           "tier": "cost",
           "effects": [
-            { "type": "trust", "companion": "artemisa", "delta": -2 }
+            { "type": "trust", "companion": "artemis", "delta": -2 }
           ],
           "next": "node_end"
         }

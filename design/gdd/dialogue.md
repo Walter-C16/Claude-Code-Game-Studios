@@ -17,7 +17,7 @@ The Dialogue system is the primary narrative delivery mechanism in Dark Olympus 
 
 ## Player Fantasy
 
-Every conversation in Dark Olympus is an act of perception. These are not ordinary people — they are fallen goddesses, ancient warriors, beings who once held divine authority and lost it. They deflect, they posture, they test. The player fantasy is being the one who sees through the mask — the person perceptive enough to read what Artemisa means when she looks away mid-sentence, what Hipolita hides behind bravado, why the priestess won't answer directly. When a dialogue choice lands, it doesn't feel like picking the "right answer" from a menu; it feels like understanding someone well enough to say what they needed to hear.
+Every conversation in Dark Olympus is an act of perception. These are not ordinary people — they are fallen goddesses, ancient warriors, beings who once held divine authority and lost it. They deflect, they posture, they test. The player fantasy is being the one who sees through the mask — the person perceptive enough to read what Artemis means when she looks away mid-sentence, what Hipolita hides behind bravado, why the priestess won't answer directly. When a dialogue choice lands, it doesn't feel like picking the "right answer" from a menu; it feels like understanding someone well enough to say what they needed to hear.
 
 This is powered by a secondary fantasy of *consequence*: every choice the player makes during dialogue reshapes the world as tangibly as a winning poker hand reshapes combat. A trust gain is not a hidden number ticking up — it's a companion's portrait shifting from guarded to warm. A wrong word isn't punished with a game-over; it's punished with a goddess going quiet, her mood portrait shifting to something the player hasn't seen before. The weight of dialogue comes from knowing that the next line could open a door or close one — and that the player chose it.
 
@@ -47,7 +47,7 @@ The anchor moment is not the grand speech or the dramatic revelation. It's the s
 | `speaker` | String | Yes | Companion ID, `"priestess"`, `"narrator"`, `"environment"` |
 | `speaker_type` | Enum | Yes | `"companion"`, `"npc"`, `"narrator"`, `"environment"` |
 | `text_key` | String | Yes | Localization key passed to `Localization.get_text(key, params)` |
-| `text_params` | Dictionary | No | Parameters for interpolation (e.g., `{"name": "Artemisa"}`) |
+| `text_params` | Dictionary | No | Parameters for interpolation (e.g., `{"name": "Artemis"}`) |
 | `mood` | String | Required for companion/npc | `neutral`, `happy`, `sad`, `angry`, `surprised`, `seductive` |
 | `choices` | Array | No (default `[]`) | If non-empty, `next` is ignored. |
 | `next` | String | Required if `choices` is empty | Node ID or `"END"` |
@@ -396,7 +396,7 @@ The Dialogue system performs one calculation: the time a text node takes to full
 
 - [ ] **AC-DLG-05** — **GIVEN** a valid dialogue sequence, **WHEN** `start_dialogue()` is called, **THEN** the state machine transitions Idle → Loading → Displaying in order; no UI element is visible during Loading.
 
-- [ ] **AC-DLG-06** — **GIVEN** a dialogue sequence with root gate `requires_met: "artemisa"` and Artemisa's `met == false`, **WHEN** `start_dialogue()` is called, **THEN** `dialogue_blocked(sequence_id, reason)` is emitted, no dialogue UI is shown, and the runner returns to Idle.
+- [ ] **AC-DLG-06** — **GIVEN** a dialogue sequence with root gate `requires_met: "artemis"` and Artemis's `met == false`, **WHEN** `start_dialogue()` is called, **THEN** `dialogue_blocked(sequence_id, reason)` is emitted, no dialogue UI is shown, and the runner returns to Idle.
 
 - [ ] **AC-DLG-07** — **GIVEN** a node with no choices and `next: "some_node_id"`, **WHEN** the typewriter completes and the player taps, **THEN** the runner loads the node identified by `"some_node_id"` and re-enters the Displaying state.
 
@@ -420,13 +420,13 @@ The Dialogue system performs one calculation: the time a text node takes to full
 
 - [ ] **AC-DLG-15** — **GIVEN** a choice node where the `insight` choice has its gating flag set to true, **WHEN** the choice panel renders, **THEN** the insight choice appears without any special visual marker distinguishing it from the standard choices.
 
-- [ ] **AC-DLG-16** — **GIVEN** a choice node where a `trust_min` condition references `companion: "artemisa", value: 30` and Artemisa's current trust is 29, **WHEN** the panel renders, **THEN** that choice is not visible; **WHEN** trust is 30 or above, **THEN** that choice is visible — confirming conditions are evaluated at render time against live state.
+- [ ] **AC-DLG-16** — **GIVEN** a choice node where a `trust_min` condition references `companion: "artemis", value: 30` and Artemis's current trust is 29, **WHEN** the panel renders, **THEN** that choice is not visible; **WHEN** trust is 30 or above, **THEN** that choice is visible — confirming conditions are evaluated at render time against live state.
 
 - [ ] **AC-DLG-17** — **GIVEN** a choice node with 5 choices that all pass their conditions, **WHEN** the panel renders, **THEN** only the first 4 (in array order) are displayed, and a content warning is logged identifying the node ID and the fifth choice that was dropped.
 
 ### Rule 5 — Effects
 
-- [ ] **AC-DLG-18** — **GIVEN** a choice whose `effects` array contains `[{type: "relationship", companion: "artemisa", delta: 5}, {type: "flag_set", flag: "artemisa_trust_moment_1"}]`, **WHEN** the player selects that choice, **THEN** the signal `relationship_changed("artemisa", 5)` is emitted, followed by the story flag `"artemisa_trust_moment_1"` being set, in that array order, before the runner advances to the next node.
+- [ ] **AC-DLG-18** — **GIVEN** a choice whose `effects` array contains `[{type: "relationship", companion: "artemis", delta: 5}, {type: "flag_set", flag: "artemis_trust_moment_1"}]`, **WHEN** the player selects that choice, **THEN** the signal `relationship_changed("artemis", 5)` is emitted, followed by the story flag `"artemis_trust_moment_1"` being set, in that array order, before the runner advances to the next node.
 
 - [ ] **AC-DLG-19** — **GIVEN** a choice with a `mood_set` effect targeting a companion, **WHEN** the effect executes, **THEN** the companion portrait crossfades to the new mood immediately within the same beat (before the next node's text begins rendering).
 

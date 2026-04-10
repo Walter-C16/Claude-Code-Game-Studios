@@ -31,7 +31,7 @@ extends GdUnitTestSuite
 # Constants
 # ---------------------------------------------------------------------------
 
-const CANONICAL_IDS: Array[String] = ["artemisa", "hipolita", "atenea", "nyx"]
+const CANONICAL_IDS: Array[String] = ["artemis", "hipolita", "atenea", "nyx"]
 
 # ---------------------------------------------------------------------------
 # Setup / Teardown
@@ -125,18 +125,18 @@ func test_save_migration_full_save_preserves_all_four_companions() -> void:
 		assert_bool(state.is_empty()).is_false()
 
 func test_save_migration_full_save_relationship_level_not_reset() -> void:
-	# Arrange — save artemisa at relationship_level 3
+	# Arrange — save artemis at relationship_level 3
 	var companions: Dictionary = {}
 	for id: String in CANONICAL_IDS:
 		companions[id] = _default_state()
-	companions["artemisa"]["relationship_level"] = 3
+	companions["artemis"]["relationship_level"] = 3
 	_write_save_with_companions(companions)
 
 	# Act
 	SaveManager.load_game()
 
 	# Assert — existing value must survive reconciliation
-	assert_int(GameStore.get_relationship_level("artemisa")).is_equal(3)
+	assert_int(GameStore.get_relationship_level("artemis")).is_equal(3)
 
 func test_save_migration_full_save_no_extra_companions_added() -> void:
 	# Arrange
@@ -160,9 +160,9 @@ func test_save_migration_full_save_no_extra_companions_added() -> void:
 # ---------------------------------------------------------------------------
 
 func test_save_migration_missing_nyx_adds_nyx_after_load() -> void:
-	# Arrange — save with only artemisa, hipolita, atenea (nyx absent)
+	# Arrange — save with only artemis, hipolita, atenea (nyx absent)
 	var companions: Dictionary = {
-		"artemisa": _default_state(),
+		"artemis": _default_state(),
 		"hipolita": _default_state(),
 		"atenea": _default_state(),
 	}
@@ -178,7 +178,7 @@ func test_save_migration_missing_nyx_adds_nyx_after_load() -> void:
 func test_save_migration_missing_nyx_added_with_default_relationship_level() -> void:
 	# Arrange
 	var companions: Dictionary = {
-		"artemisa": _default_state(),
+		"artemis": _default_state(),
 		"hipolita": _default_state(),
 		"atenea": _default_state(),
 	}
@@ -191,21 +191,21 @@ func test_save_migration_missing_nyx_added_with_default_relationship_level() -> 
 	assert_int(GameStore.get_relationship_level("nyx")).is_equal(0)
 
 func test_save_migration_missing_nyx_existing_companions_unaffected() -> void:
-	# Arrange — artemisa has a distinctive trust value
+	# Arrange — artemis has a distinctive trust value
 	var companions: Dictionary = {
-		"artemisa": _default_state(),
+		"artemis": _default_state(),
 		"hipolita": _default_state(),
 		"atenea": _default_state(),
 	}
-	companions["artemisa"]["trust"] = 42
+	companions["artemis"]["trust"] = 42
 	_write_save_with_companions(companions)
 
 	# Act
 	SaveManager.load_game()
 
-	# Assert — artemisa's trust value is preserved
-	var artemisa: Dictionary = GameStore.get_companion_state("artemisa")
-	assert_int(artemisa.get("trust", -1)).is_equal(42)
+	# Assert — artemis's trust value is preserved
+	var artemis: Dictionary = GameStore.get_companion_state("artemis")
+	assert_int(artemis.get("trust", -1)).is_equal(42)
 
 # ---------------------------------------------------------------------------
 # AC3 — Save with unknown ID "old_companion" → removed after load
@@ -248,7 +248,7 @@ func test_save_migration_unknown_id_canonical_companions_still_present() -> void
 func test_save_migration_reconcile_does_not_set_dirty_flag() -> void:
 	# Arrange — save with nyx absent so reconciliation must add it
 	var companions: Dictionary = {
-		"artemisa": _default_state(),
+		"artemis": _default_state(),
 		"hipolita": _default_state(),
 		"atenea": _default_state(),
 	}
@@ -277,7 +277,7 @@ func test_save_migration_reconcile_does_not_set_save_pending_flag() -> void:
 func test_save_migration_reconcile_no_write_to_disk_after_load() -> await:
 	# Arrange — delete save file after writing so we can detect any re-write
 	var companions: Dictionary = {
-		"artemisa": _default_state(),
+		"artemis": _default_state(),
 		"hipolita": _default_state(),
 		"atenea": _default_state(),
 	}
@@ -299,7 +299,7 @@ func test_save_migration_post_reconcile_save_has_exactly_four_companions() -> vo
 	# Arrange — load a save that had a stale entry and a missing companion;
 	# reconciliation fixes both, then we save again.
 	var companions: Dictionary = {
-		"artemisa": _default_state(),
+		"artemis": _default_state(),
 		"hipolita": _default_state(),
 		"atenea": _default_state(),
 		"old_companion": _default_state(),  # stale — should be removed
@@ -327,7 +327,7 @@ func test_save_migration_post_reconcile_save_has_exactly_four_companions() -> vo
 func test_save_migration_post_reconcile_save_contains_nyx() -> void:
 	# Arrange — nyx was absent in the original save
 	var companions: Dictionary = {
-		"artemisa": _default_state(),
+		"artemis": _default_state(),
 		"hipolita": _default_state(),
 		"atenea": _default_state(),
 	}

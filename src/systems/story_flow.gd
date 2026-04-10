@@ -21,11 +21,11 @@ static func advance_step() -> void:
 		Step.PROLOGUE:
 			# Backstory done → forest crash combat (meet Artemis)
 			current_step = Step.SCENE1_FOREST
-			GameStore.set_met("artemisa", true)
+			GameStore.set_met("artemis", true)
 			# Init tutorial combat
 			var enemy := CombatSystem.create_enemy("ENEMY_FOREST_MONSTER", 40)
 			var deck := CombatSystem.create_standard_deck()
-			CombatStore.init_combat(enemy, "artemisa", deck)
+			CombatStore.init_combat(enemy, "artemis", deck)
 			SceneManager.change_scene(SceneManager.SceneId.COMBAT)
 
 		Step.SCENE1_FOREST:

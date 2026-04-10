@@ -34,9 +34,9 @@ const DATA: Dictionary = {
 		"card_value": 14,
 		"starting_location": "amazon_camp",
 	},
-	"artemisa": {
-		"id": "artemisa",
-		"display_name": "Artemisa",
+	"artemis": {
+		"id": "artemis",
+		"display_name": "Artemis",
 		"role": "Goddess of the Hunt",
 		"base_strength": 17,
 		"base_intelligence": 13,
@@ -47,7 +47,7 @@ const DATA: Dictionary = {
 	},
 }
 
-const ALL_IDS: Array[String] = ["atenea", "nyx", "hipolita", "artemisa"]
+const ALL_IDS: Array[String] = ["atenea", "nyx", "hipolita", "artemis"]
 
 const DEFAULT_STATE: Dictionary = {
 	"relationship_level": 0,

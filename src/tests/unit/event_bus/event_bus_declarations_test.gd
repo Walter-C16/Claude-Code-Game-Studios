@@ -204,7 +204,7 @@ func test_event_bus_declarations_combat_completed_emits_expected_dict_keys() -> 
 		"victory": true,
 		"score": 1500,
 		"hands_used": 4,
-		"captain_id": "artemisa",
+		"captain_id": "artemis",
 	}
 
 	# Act
@@ -262,7 +262,7 @@ func test_event_bus_declarations_combat_completed_listener_receives_full_payload
 		"victory": true,
 		"score": 3000,
 		"hands_used": 2,
-		"captain_id": "artemisa",
+		"captain_id": "artemis",
 	}
 
 	# Act

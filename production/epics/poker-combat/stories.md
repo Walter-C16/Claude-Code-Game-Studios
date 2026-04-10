@@ -17,7 +17,7 @@
   - [ ] AC1: GIVEN a fresh combat encounter, WHEN `CombatSystem._build_deck()` is called, THEN a deck of exactly 52 Card dictionaries is produced with no duplicates.
   - [ ] AC2: GIVEN the 52-card deck, WHEN inspected, THEN each of the 4 suits has exactly 13 cards with values 2 through 14 (Ace=14).
   - [ ] AC3: GIVEN a built deck, WHEN `shuffle()` is called, THEN the deck order changes from the ordered baseline (Fisher-Yates or equivalent; verify multiple shuffles differ).
-  - [ ] AC4: GIVEN companion `"artemisa"` is the active captain, WHEN the deck is built, THEN the card matching Artemisa's suit (Clubs/Earth) and card_value (13/King) has `companion_id = "artemisa"` on its dictionary.
+  - [ ] AC4: GIVEN companion `"artemis"` is the active captain, WHEN the deck is built, THEN the card matching Artemis's suit (Clubs/Earth) and card_value (13/King) has `companion_id = "artemis"` on its dictionary.
   - [ ] AC5: GIVEN a tagged signature card, WHEN played in a hand, THEN it contributes chips and element interactions identically to any other King of Clubs.
   - [ ] AC6: GIVEN no active captain, WHEN the deck is built, THEN no cards carry a `companion_id` tag.
   - [ ] AC7: GIVEN deck config is loaded from `res://assets/data/hand_ranks.json` (or equivalent config file), WHEN CombatSystem initializes, THEN no card values or suit names are hardcoded in `combat_system.gd`.
@@ -133,7 +133,7 @@
 - **TR-IDs**: TR-poker-combat-005
 - **ADR Guidance**: ADR-0007 — captain_chip_bonus = floor(STR * 0.5) added to chips phase. captain_mult_modifier = (1.0 + INT * 0.025) applied as multiplicative factor after Polychrome. Captain is locked at combat SETUP from CompanionRegistry/GameStore. No captain = bonuses are 0 and 1.0 respectively. Reads Companion Data (ADR-0009) — Core-to-Core dependency allowed.
 - **Acceptance Criteria**:
-  - [ ] AC1: GIVEN captain Artemisa (STR=17, INT=13) set at SETUP, WHEN a hand is scored, THEN captain_chip_bonus=8 (floor(17*0.5)) and captain_mult_modifier=1.325 (1.0+13*0.025).
+  - [ ] AC1: GIVEN captain Artemis (STR=17, INT=13) set at SETUP, WHEN a hand is scored, THEN captain_chip_bonus=8 (floor(17*0.5)) and captain_mult_modifier=1.325 (1.0+13*0.025).
   - [ ] AC2: GIVEN captain Hipolita (STR=20, INT=9), WHEN scored, THEN captain_chip_bonus=10 and captain_mult_modifier=1.225.
   - [ ] AC3: GIVEN captain Nyx (STR=18, INT=19), WHEN scored, THEN captain_chip_bonus=9 and captain_mult_modifier=1.475.
   - [ ] AC4: GIVEN no captain selected (captain_id = null or ""), WHEN scored, THEN captain_chip_bonus=0 and captain_mult_modifier=1.0.

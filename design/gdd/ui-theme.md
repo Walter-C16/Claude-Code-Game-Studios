@@ -71,7 +71,7 @@ The palette has semantic meaning. Every color communicates something about the w
 |---------|-----------|------------|----------|
 | Fire (Hipolita) | `#F24D26` | `#3D1208` | Strength, passion, conquest |
 | Water (Nyx) | `#338CF2` | `#0A1F3D` | Depth, mystery, ancient patience |
-| Earth (Artemisa) | `#73BF40` | `#182A0A` | Vitality, nature, loyalty |
+| Earth (Artemis) | `#73BF40` | `#182A0A` | Vitality, nature, loyalty |
 | Lightning (Atenea) | `#CCAA33` | `#2D2408` | Intellect, revelation, precision |
 
 - 1f. Element foreground colors: icons, health bars, suit symbols, companion name badges. Never as body text.
@@ -175,7 +175,7 @@ The UI Theme is a static resource -- it has no runtime states. It is loaded once
 | **Localization** | Theme supports Localization | `locale_changed` signal triggers text re-resolve | Theme defines text colors/fonts; Localization provides text content. Auto-wrap required for variable-length translations. |
 | **Dialogue** | Dialogue uses theme | Dialogue box uses `BG_PRIMARY`, `TEXT_PRIMARY`, `FONT_BODY_LG` | Speaker labels use `TEXT_ACCENT` (gold) for character names. |
 | **Poker Combat** | Combat uses theme + element colors | Score display uses `TEXT_ACCENT`, element colors for suit indicators | Scoring moment uses `ACCENT_GOLD_BRIGHT` and thick gold border. |
-| **Companion Data** | Element colors mapped to companions | Fire=Hipolita, Water=Nyx, Earth=Artemisa, Lightning=Atenea | Portrait frames use element background colors. |
+| **Companion Data** | Element colors mapped to companions | Fire=Hipolita, Water=Nyx, Earth=Artemis, Lightning=Atenea | Portrait frames use element background colors. |
 | **Settings Screen** | Settings overrides nothing | Standard panel + button styles | Language selector, volume sliders, toggle switches. |
 
 ## Formulas

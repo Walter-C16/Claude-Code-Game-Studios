@@ -17,8 +17,8 @@
   - [ ] AC1: GIVEN a valid JSON file at the expected path, WHEN `DialogueRunner.start_dialogue(chapter_id, sequence_id)` is called, THEN the script is loaded, parsed, and `current_node_id = "start"` is set. State transitions to Displaying.
   - [ ] AC2: GIVEN a missing JSON file, WHEN `start_dialogue()` is called, THEN a descriptive error is logged, `EventBus.dialogue_blocked.emit(sequence_id, "file_not_found")` is emitted, and state returns to Idle.
   - [ ] AC3: GIVEN a JSON file with no `"start"` node, WHEN loaded, THEN `dialogue_blocked` is emitted with reason `"missing_start_node"`.
-  - [ ] AC4: GIVEN `requires_met: "artemisa"` in script root and `companion.met == false`, WHEN gates are evaluated, THEN `EventBus.dialogue_blocked.emit(sequence_id, "requires_met")` is emitted with no UI shown.
-  - [ ] AC5: GIVEN `requires_romance_stage: {companion: "artemisa", min: 2}` and current stage is 1, WHEN gates evaluated, THEN `dialogue_blocked` emitted with reason `"requires_romance_stage"`.
+  - [ ] AC4: GIVEN `requires_met: "artemis"` in script root and `companion.met == false`, WHEN gates are evaluated, THEN `EventBus.dialogue_blocked.emit(sequence_id, "requires_met")` is emitted with no UI shown.
+  - [ ] AC5: GIVEN `requires_romance_stage: {companion: "artemis", min: 2}` and current stage is 1, WHEN gates evaluated, THEN `dialogue_blocked` emitted with reason `"requires_romance_stage"`.
   - [ ] AC6: GIVEN `requires_flag: "gaia_defeated"` and that flag is not set in GameStore, WHEN gates evaluated, THEN `dialogue_blocked` emitted with reason `"requires_flag"`.
   - [ ] AC7: GIVEN all root gates pass, WHEN `start_dialogue()` is called, THEN no `dialogue_blocked` signal is emitted.
   - [ ] AC8: GIVEN DialogueRunner is in Displaying state with an active sequence, WHEN `start_dialogue()` is called with a different sequence ID, THEN the call is rejected (logged warning), the active sequence continues, and state remains unchanged.
@@ -56,7 +56,7 @@
 - **TR-IDs**: TR-dialogue-006, TR-dialogue-016, TR-dialogue-025
 - **ADR Guidance**: ADR-0008 — 4 speaker types: companion (portrait 200x400px left, mood variant, companion state lookup), npc (portrait same dimensions, no state lookup, name via get_text()), narrator (centered italic, no portrait, no name), environment (distinct panel, icon). Portrait crossfade 0.15s between mood changes. Priestess at `res://assets/images/npcs/priestess/priestess_{mood}.png`.
 - **Acceptance Criteria**:
-  - [ ] AC1: GIVEN a companion node for `"artemisa"` with `mood="happy"`, WHEN displayed, THEN portrait at `res://assets/images/companions/artemisa/artemisa_happy.png` appears in the left portrait slot at 200x400 logical pixels.
+  - [ ] AC1: GIVEN a companion node for `"artemis"` with `mood="happy"`, WHEN displayed, THEN portrait at `res://assets/images/companions/artemis/artemis_happy.png` appears in the left portrait slot at 200x400 logical pixels.
   - [ ] AC2: GIVEN an NPC node for `"priestess"` with `mood="neutral"`, WHEN displayed, THEN portrait at `res://assets/images/npcs/priestess/priestess_neutral.png` is shown. Speaker name resolves to `Localization.get_text("COMP_PRIESTESS")`.
   - [ ] AC3: GIVEN a narrator node, WHEN displayed, THEN no portrait is shown, no speaker name label is visible, and text renders centered in italic style.
   - [ ] AC4: GIVEN an environment node, WHEN displayed, THEN no portrait is shown, no speaker name is shown, and text renders in a visually distinct panel with an environmental icon.
@@ -96,8 +96,8 @@
 - **TR-IDs**: TR-dialogue-018
 - **ADR Guidance**: ADR-0008 — Conditions evaluated at render time (not at load). Supported types: romance_stage (companion + min), met (companion), flag_set (flag), flag_not_set (flag), trust_min (companion + value). Conditions read from CompanionState (via GameStore) and Story flags. Failing condition hides choice entirely.
 - **Acceptance Criteria**:
-  - [ ] AC1: GIVEN condition `{type: "romance_stage", companion: "artemisa", min: 2}` and Artemisa at stage 2, WHEN evaluated, THEN condition PASSES and choice is visible.
-  - [ ] AC2: GIVEN same condition but Artemisa at stage 1, WHEN evaluated, THEN condition FAILS and choice is hidden.
+  - [ ] AC1: GIVEN condition `{type: "romance_stage", companion: "artemis", min: 2}` and Artemis at stage 2, WHEN evaluated, THEN condition PASSES and choice is visible.
+  - [ ] AC2: GIVEN same condition but Artemis at stage 1, WHEN evaluated, THEN condition FAILS and choice is hidden.
   - [ ] AC3: GIVEN condition `{type: "met", companion: "nyx"}` and Nyx `met=true`, WHEN evaluated, THEN condition PASSES.
   - [ ] AC4: GIVEN condition `{type: "flag_set", flag: "gaia_defeated"}` and flag is set in GameStore, WHEN evaluated, THEN condition PASSES.
   - [ ] AC5: GIVEN condition `{type: "flag_not_set", flag: "gaia_defeated"}` and flag IS set, WHEN evaluated, THEN condition FAILS.
@@ -117,12 +117,12 @@
 - **TR-IDs**: TR-dialogue-008, TR-dialogue-019
 - **ADR Guidance**: ADR-0008 — Effects execute in array order after choice selection. Supported types: relationship (emit EventBus.relationship_changed), trust (emit EventBus.trust_changed), flag_set/flag_clear (write to GameStore directly — Foundation layer allowed), item_grant (emit EventBus.item_granted), mood_set (update portrait immediately). DialogueRunner does NOT apply state changes directly for relationship/trust. Unknown effect types: skip + log warning.
 - **Acceptance Criteria**:
-  - [ ] AC1: GIVEN choice with effect `{type: "relationship", companion: "artemisa", delta: 3}`, WHEN the choice is selected, THEN `EventBus.relationship_changed.emit("artemisa", 3)` is called.
+  - [ ] AC1: GIVEN choice with effect `{type: "relationship", companion: "artemis", delta: 3}`, WHEN the choice is selected, THEN `EventBus.relationship_changed.emit("artemis", 3)` is called.
   - [ ] AC2: GIVEN choice with effect `{type: "trust", companion: "hipolita", delta: -2}`, WHEN selected, THEN `EventBus.trust_changed.emit("hipolita", -2)` is called (not applied directly to GameStore by DialogueRunner).
   - [ ] AC3: GIVEN choice with effect `{type: "flag_set", flag: "gaia_defeated"}`, WHEN selected, THEN GameStore story flags now contains `"gaia_defeated": true`.
   - [ ] AC4: GIVEN choice with effect `{type: "flag_clear", flag: "gaia_defeated"}`, WHEN selected, THEN GameStore story flag `"gaia_defeated"` is cleared (removed or set false).
   - [ ] AC5: GIVEN choice with effect `{type: "item_grant", item_id: "ambrosia", quantity: 2}`, WHEN selected, THEN `EventBus.item_granted.emit("ambrosia", 2)` is called.
-  - [ ] AC6: GIVEN choice with effect `{type: "mood_set", companion: "artemisa", mood: "happy"}`, WHEN selected, THEN the portrait updates immediately to `artemisa_happy.png` within the same dialogue beat (before advancing to next node).
+  - [ ] AC6: GIVEN choice with effect `{type: "mood_set", companion: "artemis", mood: "happy"}`, WHEN selected, THEN the portrait updates immediately to `artemis_happy.png` within the same dialogue beat (before advancing to next node).
   - [ ] AC7: GIVEN a choice with 3 effects in array, WHEN selected, THEN all 3 effects execute in order (0, 1, 2) before DialogueRunner advances to the next node.
   - [ ] AC8: GIVEN effect array containing an unknown type `{type: "teleport"}`, WHEN processing, THEN that effect is skipped, a warning is logged, and the remaining effects still execute.
   - [ ] AC9: GIVEN Romance & Social is NOT connected to EventBus signals, WHEN relationship signal is emitted, THEN DialogueRunner does not throw an error (fire-and-forget, no listener required).
@@ -160,7 +160,7 @@
   - [ ] AC1: GIVEN a node with `text_key: "CH1_ARTEMISA_01"` and a valid entry in `en.json`, WHEN the node displays, THEN the resolved English text is shown (not the raw key).
   - [ ] AC2: GIVEN a node with `text_key: "CH1_MISSING_KEY"` and no entry in any locale, WHEN displayed, THEN the raw key `"CH1_MISSING_KEY"` is shown as fallback and a localization error is logged.
   - [ ] AC3: GIVEN `text_key` resolves to empty string `""`, WHEN displayed, THEN an empty text box appears, typewriter completes instantly, and advance indicator is shown. A localization warning is logged.
-  - [ ] AC4: GIVEN a node with `text_params: {name: "Artemisa"}` and `text_key` using an interpolation placeholder, WHEN `get_text(key, params)` is called, THEN the returned string has the parameter substituted.
+  - [ ] AC4: GIVEN a node with `text_params: {name: "Artemis"}` and `text_key` using an interpolation placeholder, WHEN `get_text(key, params)` is called, THEN the returned string has the parameter substituted.
   - [ ] AC5: GIVEN DialogueRunner source code, WHEN inspected, THEN no calls to `tr()` or direct `i18n/*.json` reads exist — only `Localization.get_text()` is used.
   - [ ] AC6: GIVEN Localization autoload is initialized (boot order #4) before DialogueRunner is used (boot order #9), WHEN text resolution occurs in `_ready()` or on first display, THEN Localization is always ready (no null-ref on Localization).
   - [ ] AC7: GIVEN a choice with `text_key: "CH1_CHOICE_KIND"` and valid locale entry, WHEN the choice renders, THEN the localized string is shown as the tap target label.
@@ -179,7 +179,7 @@
   - [ ] AC1: GIVEN a screen reader is active on the test device, WHEN a dialogue node displays, THEN the typewriter text is accessible (RichTextLabel exposes text to AccessKit).
   - [ ] AC2: GIVEN a choice panel is visible, WHEN a screen reader is active, THEN each choice tap target is announced with its localized label text.
   - [ ] AC3: GIVEN the speaker name label is visible, WHEN a screen reader is active, THEN the speaker name is announced before the dialogue text.
-  - [ ] AC4: GIVEN portrait images displayed, WHEN a screen reader is active, THEN portraits have a descriptive `alt_text` (or equivalent AccessKit property) set to speaker name + mood (e.g., "Artemisa, happy expression").
+  - [ ] AC4: GIVEN portrait images displayed, WHEN a screen reader is active, THEN portraits have a descriptive `alt_text` (or equivalent AccessKit property) set to speaker name + mood (e.g., "Artemis, happy expression").
   - [ ] AC5: GIVEN narrator or environment nodes (no portrait, no name label), WHEN a screen reader is active, THEN the text content is still announced correctly without crashing on a missing speaker label node.
 - **Test Evidence**: `production/qa/evidence/dialogue-accessibility.md`
 - **Status**: Ready

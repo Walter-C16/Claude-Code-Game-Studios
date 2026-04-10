@@ -99,7 +99,7 @@ func _ready() -> void:
 ## Resets all state to factory defaults.
 ## Called on fresh game start (no save file). Also used by tests.
 func _initialize_defaults() -> void:
-	for id: String in ["artemisa", "hipolita", "atenea", "nyx"]:
+	for id: String in ["artemis", "hipolita", "atenea", "nyx"]:
 		_companion_states[id] = {
 			"relationship_level": 0, "trust": 0, "motivation": 50,
 			"dates_completed": 0, "met": false,

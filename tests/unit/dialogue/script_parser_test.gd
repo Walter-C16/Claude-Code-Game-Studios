@@ -182,14 +182,14 @@ func test_script_parser_no_start_node_emits_missing_start_node() -> void:
 # ---------------------------------------------------------------------------
 
 func test_script_parser_requires_met_gate_fail_emits_requires_met() -> void:
-	# Arrange — gated_met.json requires artemisa met=true; store has met=false
+	# Arrange — gated_met.json requires artemis met=true; store has met=false
 	var runner = _make_runner()
 	_reset_signal_captures()
 	runner.dialogue_blocked.connect(_on_dialogue_blocked)
 
-	# Ensure artemisa is not met in GameStore (fresh store default)
+	# Ensure artemis is not met in GameStore (fresh store default)
 	# GameStore is a real autoload; we check against its current state.
-	# In test isolation, GameStore.get_companion_state("artemisa").met is false by default.
+	# In test isolation, GameStore.get_companion_state("artemis").met is false by default.
 
 	# Act
 	var result: bool = runner.start_dialogue("ch01", "gated_met")
@@ -205,7 +205,7 @@ func test_script_parser_requires_met_gate_fail_emits_requires_met() -> void:
 # ---------------------------------------------------------------------------
 
 func test_script_parser_requires_romance_stage_fail_emits_requires_romance_stage() -> void:
-	# Arrange — gated_romance.json requires artemisa romance_stage >= 2
+	# Arrange — gated_romance.json requires artemis romance_stage >= 2
 	# Fresh GameStore has relationship_level=0 → stage=0 < 2
 	var runner = _make_runner()
 	_reset_signal_captures()

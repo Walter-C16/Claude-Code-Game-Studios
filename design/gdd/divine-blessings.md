@@ -13,7 +13,7 @@ Divine Blessings is the 20 unique passive buffs (5 per companion goddess) that i
 
 ## Overview
 
-Divine Blessings converts romantic investment into combat power. Each of the four companion goddesses has 5 unique blessings that modify the poker scoring pipeline when she serves as combat captain. Blessings unlock progressively as romance stage advances (1 at stage 1, 1 at stage 2, 2 at stage 3, 1 at stage 4) and inject `blessing_chips` (additive) and `blessing_mult` (additive) into the scoring formula alongside existing base hand values, captain bonuses, and social buffs. Each blessing is either always-on or triggered by a hand-specific condition (suit composition, hand rank, card count, combat state). The four companions offer distinct strategic kits: Artemisa rewards patient, full-hand Earth builds; Hipolita favors aggressive, chip-heavy opening strikes; Atenea delivers precision mult through calculated plays; and Nyx compounds across all vectors as the deepest romantic investment. No companion dominates both chips and mult -- strategic diversity is enforced by asymmetric kit design.
+Divine Blessings converts romantic investment into combat power. Each of the four companion goddesses has 5 unique blessings that modify the poker scoring pipeline when she serves as combat captain. Blessings unlock progressively as romance stage advances (1 at stage 1, 1 at stage 2, 2 at stage 3, 1 at stage 4) and inject `blessing_chips` (additive) and `blessing_mult` (additive) into the scoring formula alongside existing base hand values, captain bonuses, and social buffs. Each blessing is either always-on or triggered by a hand-specific condition (suit composition, hand rank, card count, combat state). The four companions offer distinct strategic kits: Artemis rewards patient, full-hand Earth builds; Hipolita favors aggressive, chip-heavy opening strikes; Atenea delivers precision mult through calculated plays; and Nyx compounds across all vectors as the deepest romantic investment. No companion dominates both chips and mult -- strategic diversity is enforced by asymmetric kit design.
 
 ## Player Fantasy
 
@@ -21,7 +21,7 @@ Divine Blessings converts romantic investment into combat power. Each of the fou
 
 In most games, romance exists in a separate lane from combat -- you talk, you feel, you go back to fighting alone. In Dark Olympus, love literally reshapes the rules of combat. When a blessing unlocks, the player should feel: "What we have together changes the world itself." When blessings turn a losing hand into a winner, the player doesn't think "my stats are better" -- they think "this relationship matters, and the game proves it."
 
-The unlock moment is a revelation, not a reward screen. Artemisa's patience becomes your endurance. Hipolita's fury becomes your opening strike. Atenea's precision becomes your calculated play. Nyx's depth becomes your inevitability. Each blessing is not a buff icon -- it is proof that the relationship is real and has weight in the world.
+The unlock moment is a revelation, not a reward screen. Artemis's patience becomes your endurance. Hipolita's fury becomes your opening strike. Atenea's precision becomes your calculated play. Nyx's depth becomes your inevitability. Each blessing is not a buff icon -- it is proof that the relationship is real and has weight in the world.
 
 The fantasy moves from "I'm alone against impossible odds" to "I carry the power of someone who chose me." Romance isn't decorative. It is load-bearing. Together, you rewrite fate.
 
@@ -57,7 +57,7 @@ Both computed fresh each PLAY. Neither persists across turns. They inject at the
 
 ### Companion Kit Design
 
-**Artemisa (Earth/Clubs) -- The Patient Strategist**
+**Artemis (Earth/Clubs) -- The Patient Strategist**
 STR 17/INT 13. Rewards patience and hand-building discipline. Favors consistent, full-hand plays over gambling. Blessings compound across the fight. Strategic identity: "The longer the fight goes, the stronger she gets."
 
 **Hipolita (Fire/Hearts) -- The Aggressor**
@@ -71,7 +71,7 @@ STR 18/INT 19. Highest combined stats but hardest to unlock. Earlier slots moder
 
 ### The 20 Blessings
 
-#### Artemisa (Earth / Clubs)
+#### Artemis (Earth / Clubs)
 
 | Slot | Stage | Name | Effect | blessing_chips | blessing_mult | Trigger |
 |---|---|---|---|---|---|---|
@@ -115,7 +115,7 @@ STR 18/INT 19. Highest combined stats but hardest to unlock. Earlier slots moder
 
 | Captain | Max blessing_chips | Max blessing_mult | Profile |
 |---|---|---|---|
-| Artemisa | +121 | +4.5 | High chips, moderate mult |
+| Artemis | +121 | +4.5 | High chips, moderate mult |
 | Hipolita | +155 | +6.0 | Highest chips, moderate mult |
 | Atenea | +33 | +14.5 | Low chips, highest mult |
 | Nyx | +80 | +9.5 | Moderate both, strongest combined at full investment |
@@ -169,7 +169,7 @@ blessing_value = value_per_card x count_matching_cards
 
 | Blessing | Per-Card Value | Max Cards | Max Output |
 |---|---|---|---|
-| Artemisa Slot 1 (Rooted Ground) | +8 chips | 5 | +40 chips |
+| Artemis Slot 1 (Rooted Ground) | +8 chips | 5 | +40 chips |
 | Hipolita Slot 1 (Ember Strike) | +10 chips | 5 | +50 chips |
 | Atenea Slot 1 (Static Charge) | +0.8 mult | 5 | +4.0 mult |
 | Nyx Slot 1 (Moonlit Current) | +7 chips | 5 | +35 chips |
@@ -208,7 +208,7 @@ Without blessings: `floor(62 x 3.0 x 1.225) = 227`. Blessings deliver a **3.8x u
 - **If romance_stage changes mid-combat**: Ignored. Blessing set frozen at combat start per Rule 6.
 - **If captain is switched between combats**: New captain's blessings activate. Previous captain's blessings immediately inactive.
 - **If Nyx Slot 4 evaluates before Slot 1**: Incorrect result. Implementation MUST evaluate slots 1, 2, 3, 4, 5 sequentially.
-- **If Artemisa Slot 3 (Earth Memory) on hand 1**: 0 stacks (no prior hands). Always +0 chips on first hand.
+- **If Artemis Slot 3 (Earth Memory) on hand 1**: 0 stacks (no prior hands). Always +0 chips on first hand.
 - **If all 5 cards match captain's element**: All per-card blessings fire at maximum. Optimal case, not an error.
 - **If Poker Combat does not track `discards_used` or `hands_played`**: Implementation must add these as combat state fields. New requirement on Poker Combat internals.
 - **If Hipolita Slot 5 fires with Foil/Holo cards in Abyss**: Blessing values are flat, do not scale with enhancements. Independent additive sources. Balance review for Abyss recommended.
@@ -242,7 +242,7 @@ Without blessings: `floor(62 x 3.0 x 1.225) = 227`. Blessings deliver a **3.8x u
 | Conditional flat chips | 15-40 | [5, 60] | Larger spikes on trigger; more volatile scoring | Smoother scoring; triggers feel less impactful |
 | Conditional flat mult | 1.5-5.0 | [0.5, 8.0] | Multiplicative scaling amplifies dramatically | Blessings feel like minor stat bumps |
 | Nyx Slot 5 flat values | +30 chips, +3.5 mult | chips [15, 50], mult [2.0, 5.0] | Nyx becomes strictly best captain at stage 4 | Late-game payoff underwhelming for investment |
-| Earth Memory stack cap | 3 stacks | [2, 5] | Longer fights favor Artemisa more | Artemisa late-fight identity weakens |
+| Earth Memory stack cap | 3 stacks | [2, 5] | Longer fights favor Artemis more | Artemis late-fight identity weakens |
 | Thunderclap threshold | raw_chips <= 40 | [25, 60] | Fires more often; low-card plays always strong | Fires rarely; must be very precise |
 
 **Cross-knob interactions:**
@@ -284,12 +284,12 @@ Without blessings: `floor(62 x 3.0 x 1.225) = 227`. Blessings deliver a **3.8x u
 ## Acceptance Criteria
 
 ### Rule 1-2 -- Captain Lock and Slot Availability
-- [ ] **AC-DB-01** -- **GIVEN** Artemisa captain, romance_stage 2, **WHEN** combat starts, **THEN** slots 1-2 ACTIVE, slots 3-5 LOCKED.
+- [ ] **AC-DB-01** -- **GIVEN** Artemis captain, romance_stage 2, **WHEN** combat starts, **THEN** slots 1-2 ACTIVE, slots 3-5 LOCKED.
 - [ ] **AC-DB-02** -- **GIVEN** Hipolita captain, romance_stage 0, **WHEN** combat starts, **THEN** no blessings active, `blessing_chips = 0`, `blessing_mult = 0.0`.
 - [ ] **AC-DB-03** -- **GIVEN** Nyx captain, romance_stage 3, **WHEN** combat starts, **THEN** slots 1-4 ACTIVE (stage 3 unlocks both 3 and 4).
 
 ### Rule 3-4 -- Trigger and Pipeline
-- [ ] **AC-DB-04** -- **GIVEN** Artemisa captain stage 1, 3 Clubs played, **WHEN** PLAY resolves, **THEN** `blessing_chips = 24` (3 x 8), `blessing_mult = 0.0`.
+- [ ] **AC-DB-04** -- **GIVEN** Artemis captain stage 1, 3 Clubs played, **WHEN** PLAY resolves, **THEN** `blessing_chips = 24` (3 x 8), `blessing_mult = 0.0`.
 - [ ] **AC-DB-05** -- **GIVEN** Atenea captain stage 2, exactly 3 cards played, **WHEN** PLAY resolves, **THEN** Calculated Strike triggers: `blessing_mult` includes +2.5.
 - [ ] **AC-DB-06** -- **GIVEN** Atenea captain stage 2, 4 cards played, **WHEN** PLAY resolves, **THEN** Calculated Strike does NOT trigger.
 
@@ -302,12 +302,12 @@ Without blessings: `floor(62 x 3.0 x 1.225) = 227`. Blessings deliver a **3.8x u
 ### Per-Companion Verification
 - [ ] **AC-DB-09** -- **GIVEN** Hipolita captain stage 4, first hand, 5 Hearts, Three of a Kind, **WHEN** PLAY resolves, **THEN** Ember Strike (+50), Warchief's Will (+30), Fury Surge (+2.0 mult) trigger. Blood Price and Inferno Crown do not.
 - [ ] **AC-DB-10** -- **GIVEN** Nyx captain stage 4, 3 Diamonds, no discards used, **WHEN** PLAY resolves, **THEN** all 5 blessings fire: chips = 21+15+30 = 66, mult = 1.5+2.0+2.5+3.5 = 9.5.
-- [ ] **AC-DB-11** -- **GIVEN** Artemisa captain stage 3, King of Clubs played, **WHEN** PLAY resolves, **THEN** Forest Bond triggers: +3.0 mult.
+- [ ] **AC-DB-11** -- **GIVEN** Artemis captain stage 3, King of Clubs played, **WHEN** PLAY resolves, **THEN** Forest Bond triggers: +3.0 mult.
 - [ ] **AC-DB-12** -- **GIVEN** Atenea captain stage 4, raw_hand_chips = 35, **WHEN** PLAY resolves, **THEN** Thunderclap triggers: +5.0 mult.
 
 ### Edge Cases
 - [ ] **AC-DB-13** -- **GIVEN** Nyx Slot 4 (Tidal Surge), **WHEN** evaluated, **THEN** slots 1-3 evaluated BEFORE slot 4.
-- [ ] **AC-DB-14** -- **GIVEN** Artemisa Slot 3 (Earth Memory) on hand 1, **WHEN** evaluated, **THEN** 0 stacks, +0 chips.
+- [ ] **AC-DB-14** -- **GIVEN** Artemis Slot 3 (Earth Memory) on hand 1, **WHEN** evaluated, **THEN** 0 stacks, +0 chips.
 - [ ] **AC-DB-15** -- **GIVEN** companion with 0 unlocked blessings as captain, **WHEN** combat runs, **THEN** no errors. Captain stat bonus applies. Blessings = 0.
 
 ### Performance and Data

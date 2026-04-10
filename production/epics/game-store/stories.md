@@ -13,7 +13,7 @@
 - **TR-IDs**: N/A (ADR-driven infrastructure — no GDD TR-IDs)
 - **ADR Guidance**: ADR-0001 — GameStore holds all companion, story, economy, romance, combat buff, and captain state as typed private properties; `_initialize_defaults()` populates defaults for all 4 companions and all scalar fields
 - **Acceptance Criteria**:
-  - [ ] AC1: GIVEN a fresh GameStore (no save loaded), WHEN `_initialize_defaults()` is called, THEN all 4 companion IDs ("artemisa", "hipolita", "atenea", "nyx") exist in the companion states dictionary with `relationship_level: 0`, `trust: 0`, `motivation: 50`, `met: false`
+  - [ ] AC1: GIVEN a fresh GameStore (no save loaded), WHEN `_initialize_defaults()` is called, THEN all 4 companion IDs ("artemis", "hipolita", "atenea", "nyx") exist in the companion states dictionary with `relationship_level: 0`, `trust: 0`, `motivation: 50`, `met: false`
   - [ ] AC2: GIVEN a fresh GameStore, WHEN `_initialize_defaults()` is called, THEN scalar fields are initialized: `player_gold = 0`, `player_xp = 0`, `daily_tokens_remaining = 3`, `current_streak = 0`, `current_chapter = "ch01"`, `active_combat_buff = {}`
   - [ ] AC3: GIVEN the GameStore autoload, WHEN inspected, THEN all state properties are private (underscore-prefixed) with no public direct field access
   - [ ] AC4: GIVEN GameStore initialized with defaults, WHEN `get_combat_buff()` is called, THEN it returns an empty Dictionary
@@ -31,8 +31,8 @@
 - **Acceptance Criteria**:
   - [ ] AC1: GIVEN `player_gold = 50`, WHEN `spend_gold(30)` is called, THEN returns `true` and gold is 20
   - [ ] AC2: GIVEN `player_gold = 10`, WHEN `spend_gold(30)` is called, THEN returns `false` and gold remains 10
-  - [ ] AC3: GIVEN an empty story_flags array, WHEN `set_flag("ch01_met_artemisa")` is called twice, THEN `story_flags` contains exactly one entry and `has_flag("ch01_met_artemisa")` returns true
-  - [ ] AC4: GIVEN a companion with trust = 5, WHEN `set_trust("artemisa", 10)` is called, THEN `get_companion_state("artemisa")["trust"]` equals 10
+  - [ ] AC3: GIVEN an empty story_flags array, WHEN `set_flag("ch01_met_artemis")` is called twice, THEN `story_flags` contains exactly one entry and `has_flag("ch01_met_artemis")` returns true
+  - [ ] AC4: GIVEN a companion with trust = 5, WHEN `set_trust("artemis", 10)` is called, THEN `get_companion_state("artemis")["trust"]` equals 10
   - [ ] AC5: GIVEN any setter call, WHEN the setter executes, THEN `_dirty` is set to `true`
   - [ ] AC6: GIVEN `get_node_state("node_42")` called on a fresh store, WHEN the key does not exist, THEN it returns an empty String (not null or error)
 - **Test Evidence**: `tests/unit/game_store/game_store_setters_test.gd`

@@ -1,6 +1,6 @@
 extends Node
 
-const CompanionState = preload("res://systems/companion_state.gd")
+const _CompanionStateScript = preload("res://systems/companion_state.gd")
 
 ## DialogueRunner — Dialogue Script Engine (ADR-0008)
 ##
@@ -388,7 +388,7 @@ func _check_conditions(conditions: Array) -> bool:
 			"romance_stage":
 				var companion_id: String = c.get("companion", "")
 				var min_stage: int = c.get("min", 0)
-				if CompanionState.get_romance_stage(companion_id) < min_stage:
+				if _CompanionStateScript.get_romance_stage(companion_id) < min_stage:
 					return false
 			"met":
 				var companion_id: String = c.get("companion", "")
@@ -435,7 +435,7 @@ func _check_gates(data: Dictionary) -> String:
 	if req_stage != null and req_stage is Dictionary:
 		var companion_id: String = (req_stage as Dictionary).get("companion", "")
 		var min_stage: int = (req_stage as Dictionary).get("min", 0)
-		if CompanionState.get_romance_stage(companion_id) < min_stage:
+		if _CompanionStateScript.get_romance_stage(companion_id) < min_stage:
 			return "requires_romance_stage"
 
 	# requires_flag: story flag must be set in GameStore.

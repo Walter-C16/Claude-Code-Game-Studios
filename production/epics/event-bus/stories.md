@@ -30,8 +30,8 @@
 - **TR-IDs**: N/A (ADR-driven infrastructure)
 - **ADR Guidance**: ADR-0004 — Typed signal declarations enforce parameter counts at emit() call site; signal parameter mismatch causes crash or silent ignore; integration tests verify end-to-end signal chains
 - **Acceptance Criteria**:
-  - [ ] AC1: GIVEN a test emitter calling `EventBus.relationship_changed.emit("artemisa", 5)`, WHEN a connected listener runs, THEN it receives `companion_id = "artemisa"` and `delta = 5` with correct types
-  - [ ] AC2: GIVEN a test listener connected to `EventBus.combat_completed`, WHEN `EventBus.combat_completed.emit({victory: true, score: 1200, hands_used: 3, captain_id: "artemisa"})` fires, THEN the listener receives the full Dictionary unchanged
+  - [ ] AC1: GIVEN a test emitter calling `EventBus.relationship_changed.emit("artemis", 5)`, WHEN a connected listener runs, THEN it receives `companion_id = "artemis"` and `delta = 5` with correct types
+  - [ ] AC2: GIVEN a test listener connected to `EventBus.combat_completed`, WHEN `EventBus.combat_completed.emit({victory: true, score: 1200, hands_used: 3, captain_id: "artemis"})` fires, THEN the listener receives the full Dictionary unchanged
   - [ ] AC3: GIVEN a listener connected to `EventBus.romance_stage_changed`, WHEN it receives emission, THEN `old_stage` and `new_stage` are both typed int (not String or float)
   - [ ] AC4: GIVEN `EventBus.tokens_reset`, WHEN emitted with no arguments, THEN connected listeners are called with no arguments and no error occurs
   - [ ] AC5: GIVEN `EventBus` is instantiated in a test scene, WHEN all signals are accessed, THEN no errors appear and all signals are callable

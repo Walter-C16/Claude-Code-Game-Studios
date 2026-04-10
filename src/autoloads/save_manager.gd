@@ -111,7 +111,7 @@ func _migrate_v0_to_v1(data: Dictionary) -> Dictionary:
 ## Passes only the 4 playable companion IDs — the priestess NPC entry in
 ## CompanionRegistry has no mutable state in GameStore and is excluded.
 func _reconcile_companions() -> void:
-	var companion_ids: Array[String] = ["artemisa", "hipolita", "atenea", "nyx"]
+	var companion_ids: Array[String] = ["artemis", "hipolita", "atenea", "nyx"]
 	GameStore.reconcile_companion_states(companion_ids)
 
 ## Deletes the save file and resets stores to defaults.

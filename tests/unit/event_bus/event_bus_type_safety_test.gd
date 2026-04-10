@@ -41,10 +41,10 @@ func test_event_bus_type_safety_relationship_changed_delivers_string_companion_i
 	bus.relationship_changed.connect(_on_relationship_changed)
 
 	# Act
-	bus.relationship_changed.emit("artemisa", 5)
+	bus.relationship_changed.emit("artemis", 5)
 
 	# Assert — companion_id is the exact String emitted
-	assert_str(_received_companion_id).is_equal("artemisa")
+	assert_str(_received_companion_id).is_equal("artemis")
 
 func test_event_bus_type_safety_relationship_changed_delivers_int_delta() -> void:
 	# Arrange
@@ -54,7 +54,7 @@ func test_event_bus_type_safety_relationship_changed_delivers_int_delta() -> voi
 	bus.relationship_changed.connect(_on_relationship_changed)
 
 	# Act
-	bus.relationship_changed.emit("artemisa", 5)
+	bus.relationship_changed.emit("artemis", 5)
 
 	# Assert — delta is the exact int emitted
 	assert_int(_received_delta).is_equal(5)
@@ -67,7 +67,7 @@ func test_event_bus_type_safety_relationship_changed_companion_id_type_is_string
 	bus.relationship_changed.connect(_on_relationship_changed)
 
 	# Act
-	bus.relationship_changed.emit("artemisa", 5)
+	bus.relationship_changed.emit("artemis", 5)
 
 	# Assert — typeof() must be TYPE_STRING
 	assert_int(typeof(_received_companion_id)).is_equal(TYPE_STRING)
@@ -80,7 +80,7 @@ func test_event_bus_type_safety_relationship_changed_delta_type_is_int() -> void
 	bus.relationship_changed.connect(_on_relationship_changed)
 
 	# Act
-	bus.relationship_changed.emit("artemisa", 5)
+	bus.relationship_changed.emit("artemis", 5)
 
 	# Assert — typeof() must be TYPE_INT
 	assert_int(typeof(_received_delta)).is_equal(TYPE_INT)
@@ -117,7 +117,7 @@ func test_event_bus_type_safety_combat_completed_delivers_full_dict_unchanged() 
 		"victory": true,
 		"score": 1200,
 		"hands_used": 3,
-		"captain_id": "artemisa",
+		"captain_id": "artemis",
 	}
 
 	# Act
@@ -133,7 +133,7 @@ func test_event_bus_type_safety_combat_completed_victory_value_preserved() -> vo
 	bus.combat_completed.connect(_on_combat_completed)
 
 	# Act
-	bus.combat_completed.emit({"victory": true, "score": 1200, "hands_used": 3, "captain_id": "artemisa"})
+	bus.combat_completed.emit({"victory": true, "score": 1200, "hands_used": 3, "captain_id": "artemis"})
 
 	# Assert
 	assert_bool(_received_combat_result.get("victory", false)).is_true()
@@ -145,7 +145,7 @@ func test_event_bus_type_safety_combat_completed_score_value_preserved() -> void
 	bus.combat_completed.connect(_on_combat_completed)
 
 	# Act
-	bus.combat_completed.emit({"victory": true, "score": 1200, "hands_used": 3, "captain_id": "artemisa"})
+	bus.combat_completed.emit({"victory": true, "score": 1200, "hands_used": 3, "captain_id": "artemis"})
 
 	# Assert
 	assert_int(_received_combat_result.get("score", -1)).is_equal(1200)
@@ -157,7 +157,7 @@ func test_event_bus_type_safety_combat_completed_hands_used_value_preserved() ->
 	bus.combat_completed.connect(_on_combat_completed)
 
 	# Act
-	bus.combat_completed.emit({"victory": true, "score": 1200, "hands_used": 3, "captain_id": "artemisa"})
+	bus.combat_completed.emit({"victory": true, "score": 1200, "hands_used": 3, "captain_id": "artemis"})
 
 	# Assert
 	assert_int(_received_combat_result.get("hands_used", -1)).is_equal(3)
@@ -169,10 +169,10 @@ func test_event_bus_type_safety_combat_completed_captain_id_value_preserved() ->
 	bus.combat_completed.connect(_on_combat_completed)
 
 	# Act
-	bus.combat_completed.emit({"victory": true, "score": 1200, "hands_used": 3, "captain_id": "artemisa"})
+	bus.combat_completed.emit({"victory": true, "score": 1200, "hands_used": 3, "captain_id": "artemis"})
 
 	# Assert
-	assert_str(_received_combat_result.get("captain_id", "")).is_equal("artemisa")
+	assert_str(_received_combat_result.get("captain_id", "")).is_equal("artemis")
 
 # ---------------------------------------------------------------------------
 # AC3 — romance_stage_changed: old_stage and new_stage arrive as int
@@ -196,7 +196,7 @@ func test_event_bus_type_safety_romance_stage_changed_old_stage_type_is_int() ->
 	bus.romance_stage_changed.connect(_on_romance_stage_changed)
 
 	# Act
-	bus.romance_stage_changed.emit("artemisa", 0, 1)
+	bus.romance_stage_changed.emit("artemis", 0, 1)
 
 	# Assert — typeof() must be TYPE_INT, not TYPE_STRING or TYPE_FLOAT
 	assert_int(typeof(_received_old_stage)).is_equal(TYPE_INT)
@@ -210,7 +210,7 @@ func test_event_bus_type_safety_romance_stage_changed_new_stage_type_is_int() ->
 	bus.romance_stage_changed.connect(_on_romance_stage_changed)
 
 	# Act
-	bus.romance_stage_changed.emit("artemisa", 0, 1)
+	bus.romance_stage_changed.emit("artemis", 0, 1)
 
 	# Assert — typeof() must be TYPE_INT, not TYPE_STRING or TYPE_FLOAT
 	assert_int(typeof(_received_new_stage)).is_equal(TYPE_INT)
@@ -224,7 +224,7 @@ func test_event_bus_type_safety_romance_stage_changed_old_stage_value_correct() 
 	bus.romance_stage_changed.connect(_on_romance_stage_changed)
 
 	# Act
-	bus.romance_stage_changed.emit("artemisa", 0, 1)
+	bus.romance_stage_changed.emit("artemis", 0, 1)
 
 	# Assert
 	assert_int(_received_old_stage).is_equal(0)
@@ -238,7 +238,7 @@ func test_event_bus_type_safety_romance_stage_changed_new_stage_value_correct() 
 	bus.romance_stage_changed.connect(_on_romance_stage_changed)
 
 	# Act
-	bus.romance_stage_changed.emit("artemisa", 0, 1)
+	bus.romance_stage_changed.emit("artemis", 0, 1)
 
 	# Assert
 	assert_int(_received_new_stage).is_equal(1)

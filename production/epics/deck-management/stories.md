@@ -16,7 +16,7 @@
 - **Acceptance Criteria**:
   - [ ] AC1: GIVEN `build_deck()` is called, WHEN the result is inspected, THEN exactly 52 dicts are returned covering 4 suits x 13 values (2-14).
   - [ ] AC2: GIVEN a built deck, WHEN each card dict is inspected, THEN all 6 schema fields are present: `suit`, `value`, `element`, `enhancement`, `is_signature`, `companion_id`.
-  - [ ] AC3: GIVEN each companion has a signature card, WHEN the deck is built with captain="artemisa", THEN exactly one card has `is_signature=true` and `companion_id="artemisa"`.
+  - [ ] AC3: GIVEN each companion has a signature card, WHEN the deck is built with captain="artemis", THEN exactly one card has `is_signature=true` and `companion_id="artemis"`.
   - [ ] AC4: GIVEN `build_deck()` returns an unshuffled deck (sorted by suit-then-value), WHEN `handoff()` is called, THEN `Array.shuffle()` is called exactly once on the deck before emitting the signal.
   - [ ] AC5: GIVEN the Deck Viewer is opened after handoff, THEN `Array.shuffle()` is not called again — viewer displays the deck in its current (post-shuffle) state.
 - **Test Evidence**: `tests/unit/deck_management/deck_builder_test.gd`

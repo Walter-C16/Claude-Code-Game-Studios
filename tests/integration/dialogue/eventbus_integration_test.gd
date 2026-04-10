@@ -67,7 +67,7 @@ func test_eventbus_integration_relationship_effect_reaches_eventbus() -> void:
 			rel_events.append({"companion": companion, "delta": delta})
 	)
 
-	# Navigate to choices and select choice A (relationship +5 on artemisa)
+	# Navigate to choices and select choice A (relationship +5 on artemis)
 	runner.start_dialogue(FIXTURE_CHAPTER, FIXTURE_SEQ)
 	runner.complete_typewriter()
 	runner.advance()
@@ -79,7 +79,7 @@ func test_eventbus_integration_relationship_effect_reaches_eventbus() -> void:
 
 	# Assert — EventBus received the relationship_changed signal
 	assert_int(rel_events.size()).is_equal(1)
-	assert_str(rel_events[0]["companion"]).is_equal("artemisa")
+	assert_str(rel_events[0]["companion"]).is_equal("artemis")
 	assert_int(rel_events[0]["delta"]).is_equal(5)
 
 	EventBus.relationship_changed.disconnect_all()

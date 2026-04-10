@@ -58,13 +58,13 @@
 **Estimated test count**: 7
 
 **Test functions to write**:
-- `test_ready_loads_all_five_profiles()` — After `_ready()`, assert `_profiles` dictionary contains exactly 5 keys: "artemisa", "hipolita", "atenea", "nyx", and the priestess NPC ID. Assert no extra keys.
-- `test_get_profile_returns_all_required_keys()` — Call `get_profile("artemisa")`. Assert returned Dictionary contains all 10 required keys: `id`, `display_name`, `role`, `element`, `STR`, `INT`, `AGI`, `card_value`, `starting_location`, `portrait_path_base`.
+- `test_ready_loads_all_five_profiles()` — After `_ready()`, assert `_profiles` dictionary contains exactly 5 keys: "artemis", "hipolita", "atenea", "nyx", and the priestess NPC ID. Assert no extra keys.
+- `test_get_profile_returns_all_required_keys()` — Call `get_profile("artemis")`. Assert returned Dictionary contains all 10 required keys: `id`, `display_name`, `role`, `element`, `STR`, `INT`, `AGI`, `card_value`, `starting_location`, `portrait_path_base`.
 - `test_get_profile_unknown_id_returns_empty_dict()` — Call `get_profile("zeus")`. Assert result is an empty Dictionary `{}`. Assert no error is pushed to the Godot error log.
 - `test_get_all_ids_returns_array_of_five_strings()` — Call `get_all_ids()`. Assert return type is `Array[String]`, length is exactly 5, and each element is a non-empty String.
-- `test_get_portrait_path_returns_correct_pattern()` — Call `get_portrait_path("artemisa", "happy")`. Assert result is `"res://assets/images/companions/artemisa/artemisa_happy.png"`.
-- `test_get_profile_returns_defensive_copy()` — Call `get_profile("artemisa")`, modify the returned dict (e.g., set `["STR"] = 999`), then call `get_profile("artemisa")` again. Assert the second call still returns the original value for `STR` (internal `_profiles` not mutated).
-- `test_get_profile_lookup_is_fast()` — Call `get_profile("artemisa")` and assert the operation completes within 1ms (Time.get_ticks_usec() measurement — no iteration over all profiles).
+- `test_get_portrait_path_returns_correct_pattern()` — Call `get_portrait_path("artemis", "happy")`. Assert result is `"res://assets/images/companions/artemis/artemis_happy.png"`.
+- `test_get_profile_returns_defensive_copy()` — Call `get_profile("artemis")`, modify the returned dict (e.g., set `["STR"] = 999`), then call `get_profile("artemis")` again. Assert the second call still returns the original value for `STR` (internal `_profiles` not mutated).
+- `test_get_profile_lookup_is_fast()` — Call `get_profile("artemis")` and assert the operation completes within 1ms (Time.get_ticks_usec() measurement — no iteration over all profiles).
 
 **Edge cases**:
 - `get_all_ids()` must return a new Array each call (not a live reference to the internal list).
@@ -95,17 +95,17 @@
 **Estimated test count**: 8
 
 **Test functions to write**:
-- `test_get_state_returns_all_mutable_fields()` — Seed GameStore with companion state for "artemisa" (`relationship_level=55`). Call `CompanionState.get_state("artemisa")`. Assert returned Dictionary contains all 8 keys: `relationship_level`, `trust`, `motivation`, `romance_stage`, `dates_completed`, `met`, `known_likes`, `known_dislikes`.
-- `test_get_romance_stage_mid_range()` — Seed GameStore with `relationship_level=55`. Call `CompanionState.get_romance_stage("artemisa")`. Assert result is `2` (threshold array [0, 21, 51, 71, 91]).
+- `test_get_state_returns_all_mutable_fields()` — Seed GameStore with companion state for "artemis" (`relationship_level=55`). Call `CompanionState.get_state("artemis")`. Assert returned Dictionary contains all 8 keys: `relationship_level`, `trust`, `motivation`, `romance_stage`, `dates_completed`, `met`, `known_likes`, `known_dislikes`.
+- `test_get_romance_stage_mid_range()` — Seed GameStore with `relationship_level=55`. Call `CompanionState.get_romance_stage("artemis")`. Assert result is `2` (threshold array [0, 21, 51, 71, 91]).
 - `test_get_romance_stage_at_zero()` — Seed with `relationship_level=0`. Assert `get_romance_stage()` returns `0`.
 - `test_get_romance_stage_at_max()` — Seed with `relationship_level=91`. Assert `get_romance_stage()` returns `4`.
 - `test_romance_stage_never_decreases()` — Seed companion at romance_stage=3, `relationship_level=75`. Write `relationship_level=65` (below stage-3 threshold of 71). Assert `get_romance_stage()` still returns `3`.
-- `test_set_relationship_level_clamps_to_100()` — Call `CompanionState.set_relationship_level("artemisa", 105)`. Assert GameStore stores `100`.
-- `test_stage_transition_emits_romance_stage_changed()` — Seed companion at stage=1 (`relationship_level=25`). Connect a listener to `EventBus.romance_stage_changed`. Call `set_relationship_level("artemisa", 55)` (crosses into stage 2). Assert listener received `("artemisa", 1, 2)`.
-- `test_no_spurious_signal_at_max_stage()` — Seed companion already at stage=4 (`relationship_level=91`). Connect listener to `EventBus.romance_stage_changed`. Call `set_relationship_level("artemisa", 100)`. Assert listener was NOT called.
+- `test_set_relationship_level_clamps_to_100()` — Call `CompanionState.set_relationship_level("artemis", 105)`. Assert GameStore stores `100`.
+- `test_stage_transition_emits_romance_stage_changed()` — Seed companion at stage=1 (`relationship_level=25`). Connect a listener to `EventBus.romance_stage_changed`. Call `set_relationship_level("artemis", 55)` (crosses into stage 2). Assert listener received `("artemis", 1, 2)`.
+- `test_no_spurious_signal_at_max_stage()` — Seed companion already at stage=4 (`relationship_level=91`). Connect listener to `EventBus.romance_stage_changed`. Call `set_relationship_level("artemis", 100)`. Assert listener was NOT called.
 
 **Edge cases**:
-- `set_relationship_level("artemisa", -5)` must clamp to `0`, not go negative.
+- `set_relationship_level("artemis", -5)` must clamp to `0`, not go negative.
 - `get_state()` on an unknown companion ID must return a default dictionary without crashing.
 
 ---
@@ -174,7 +174,7 @@
 - `test_build_deck_produces_52_unique_cards()` — Call `CombatSystem._build_deck()`. Assert deck length is 52 and no two entries share the same (suit, value) combination.
 - `test_deck_has_13_cards_per_suit()` — Assert each of the 4 suits has exactly 13 cards with values 2–14.
 - `test_shuffle_changes_order()` — Build deck, record order, shuffle, assert new order differs from original. Repeat 3 times to reduce flakiness (probability of random identity is negligible).
-- `test_signature_card_tagged_for_active_captain()` — Set captain "artemisa" (Clubs/Earth, card_value=13) at SETUP. Build deck. Assert the King of Clubs has `companion_id == "artemisa"`. Assert no other card has a `companion_id`.
+- `test_signature_card_tagged_for_active_captain()` — Set captain "artemis" (Clubs/Earth, card_value=13) at SETUP. Build deck. Assert the King of Clubs has `companion_id == "artemis"`. Assert no other card has a `companion_id`.
 - `test_signature_card_behaves_identically_in_hand()` — Include the tagged signature card in an evaluated hand. Assert hand rank and chip contribution are identical to a non-tagged King of Clubs.
 - `test_no_signature_card_without_captain()` — Build deck with `captain_id = null`. Assert no card in the deck has a `companion_id` field set.
 - `test_deck_config_loaded_from_file_not_hardcoded()` — Inspect `combat_system.gd` source. Assert no hardcoded suit names or card value literals appear in the deck-building function (suits/values must come from the config file).
@@ -290,7 +290,7 @@
 **Estimated test count**: 7
 
 **Test functions to write**:
-- `test_artemisa_captain_bonuses()` — Set captain "artemisa" (STR=17, INT=13). Assert `captain_chip_bonus == 8` (floor(17*0.5)) and `captain_mult_modifier == 1.325` (1.0+13*0.025).
+- `test_artemis_captain_bonuses()` — Set captain "artemis" (STR=17, INT=13). Assert `captain_chip_bonus == 8` (floor(17*0.5)) and `captain_mult_modifier == 1.325` (1.0+13*0.025).
 - `test_hipolita_captain_bonuses()` — Set captain "hipolita" (STR=20, INT=9). Assert `captain_chip_bonus == 10` and `captain_mult_modifier == 1.225`.
 - `test_nyx_captain_bonuses()` — Set captain "nyx" (STR=18, INT=19). Assert `captain_chip_bonus == 9` and `captain_mult_modifier == 1.475`.
 - `test_no_captain_yields_zero_bonus_and_unity_modifier()` — Set `captain_id = null`. Assert `captain_chip_bonus == 0` and `captain_mult_modifier == 1.0`.
@@ -355,8 +355,8 @@
 - `test_start_dialogue_loads_valid_script()` — Given a valid JSON at expected path, call `start_dialogue(chapter_id, sequence_id)`. Assert `current_node_id == "start"` and state is Displaying.
 - `test_start_dialogue_missing_file_emits_dialogue_blocked()` — Call `start_dialogue()` with a non-existent path. Assert `EventBus.dialogue_blocked.emit(sequence_id, "file_not_found")` called and state is Idle.
 - `test_missing_start_node_emits_dialogue_blocked()` — Load a JSON with no `"start"` key. Assert `dialogue_blocked` emitted with reason `"missing_start_node"`.
-- `test_gate_requires_met_fails_emits_blocked()` — Script root has `requires_met: "artemisa"`. Artemisa `met=false`. Assert `dialogue_blocked(sequence_id, "requires_met")` emitted and no UI shown.
-- `test_gate_requires_romance_stage_fails_emits_blocked()` — Root gate `{companion: "artemisa", min: 2}`, current stage=1. Assert `dialogue_blocked(sequence_id, "requires_romance_stage")` emitted.
+- `test_gate_requires_met_fails_emits_blocked()` — Script root has `requires_met: "artemis"`. Artemis `met=false`. Assert `dialogue_blocked(sequence_id, "requires_met")` emitted and no UI shown.
+- `test_gate_requires_romance_stage_fails_emits_blocked()` — Root gate `{companion: "artemis", min: 2}`, current stage=1. Assert `dialogue_blocked(sequence_id, "requires_romance_stage")` emitted.
 - `test_gate_requires_flag_fails_emits_blocked()` — Root gate `requires_flag: "gaia_defeated"`, flag not set. Assert `dialogue_blocked(sequence_id, "requires_flag")` emitted.
 - `test_all_gates_pass_no_blocked_signal()` — All root gates pass. Assert no `dialogue_blocked` signal emitted and state is Displaying.
 - `test_concurrent_start_rejected_during_active_sequence()` — DialogueRunner in Displaying state. Call `start_dialogue()` with a different sequence ID. Assert call rejected, warning logged, active sequence continues.
@@ -394,8 +394,8 @@
 **Estimated test count**: 9
 
 **Test functions to write**:
-- `test_romance_stage_condition_passes_at_exact_minimum()` — Condition `{type: "romance_stage", companion: "artemisa", min: 2}`, Artemisa at stage 2. Assert PASS.
-- `test_romance_stage_condition_fails_below_minimum()` — Same condition, Artemisa at stage 1. Assert FAIL.
+- `test_romance_stage_condition_passes_at_exact_minimum()` — Condition `{type: "romance_stage", companion: "artemis", min: 2}`, Artemis at stage 2. Assert PASS.
+- `test_romance_stage_condition_fails_below_minimum()` — Same condition, Artemis at stage 1. Assert FAIL.
 - `test_met_condition_passes_when_companion_met()` — Condition `{type: "met", companion: "nyx"}`, Nyx `met=true`. Assert PASS.
 - `test_flag_set_condition_passes_when_flag_exists()` — Condition `{type: "flag_set", flag: "gaia_defeated"}`, flag set in GameStore. Assert PASS.
 - `test_flag_not_set_condition_fails_when_flag_exists()` — Condition `{type: "flag_not_set", flag: "gaia_defeated"}`, flag IS set. Assert FAIL.
@@ -415,12 +415,12 @@
 **Estimated test count**: 9
 
 **Test functions to write**:
-- `test_relationship_effect_emits_event_bus_signal()` — Effect `{type: "relationship", companion: "artemisa", delta: 3}`. Assert `EventBus.relationship_changed.emit("artemisa", 3)` called.
+- `test_relationship_effect_emits_event_bus_signal()` — Effect `{type: "relationship", companion: "artemis", delta: 3}`. Assert `EventBus.relationship_changed.emit("artemis", 3)` called.
 - `test_trust_effect_emits_event_bus_signal()` — Effect `{type: "trust", companion: "hipolita", delta: -2}`. Assert `EventBus.trust_changed.emit("hipolita", -2)` called. Assert GameStore trust is NOT modified directly by DialogueRunner.
 - `test_flag_set_effect_writes_to_game_store()` — Effect `{type: "flag_set", flag: "gaia_defeated"}`. Assert `GameStore.story_flags` contains `"gaia_defeated": true`.
 - `test_flag_clear_effect_removes_from_game_store()` — Effect `{type: "flag_clear", flag: "gaia_defeated"}` (flag previously set). Assert flag is cleared from GameStore.
 - `test_item_grant_effect_emits_event_bus_signal()` — Effect `{type: "item_grant", item_id: "ambrosia", quantity: 2}`. Assert `EventBus.item_granted.emit("ambrosia", 2)` called.
-- `test_mood_set_effect_updates_portrait_immediately()` — Effect `{type: "mood_set", companion: "artemisa", mood: "happy"}`. Assert portrait updates to `artemisa_happy.png` within the same dialogue beat, before advancing to next node.
+- `test_mood_set_effect_updates_portrait_immediately()` — Effect `{type: "mood_set", companion: "artemis", mood: "happy"}`. Assert portrait updates to `artemis_happy.png` within the same dialogue beat, before advancing to next node.
 - `test_multiple_effects_execute_in_order()` — Choice with 3 effects (relationship, flag_set, trust). Assert all 3 execute in array order (0, 1, 2) before DialogueRunner advances.
 - `test_unknown_effect_type_skipped_with_warning()` — Effect array includes `{type: "teleport"}` (unknown). Assert that effect is skipped, a warning is logged, and remaining effects in the array still execute.
 - `test_no_listener_on_event_bus_does_not_crash_dialogue_runner()` — Emit `EventBus.relationship_changed` with no listeners connected. Assert DialogueRunner does not throw an error (fire-and-forget contract).
@@ -438,7 +438,7 @@
 **Estimated test count**: 5
 
 **What to test**:
-- Load a save file containing only "artemisa" and "hipolita". Assert that after loading, GameStore also contains valid default-value state for "atenea" and "nyx" (`relationship_level=0`, `trust=0`, `motivation=50`, `met=false`).
+- Load a save file containing only "artemis" and "hipolita". Assert that after loading, GameStore also contains valid default-value state for "atenea" and "nyx" (`relationship_level=0`, `trust=0`, `motivation=50`, `met=false`).
 - Load a save file containing an unknown companion ID `"future_companion"`. Assert `"future_companion"` data is silently discarded and all known companions load correctly.
 - Load a save with all 4 known companions + 1 unknown. Assert exactly 4 companion state records exist in GameStore after load.
 - Fresh game (no save file). Assert all 4 companions have exactly the GDD-defined initial values: `relationship_level=0`, `trust=0`, `motivation=50`, `romance_stage=0`, `dates_completed=0`, `met=false`, `known_likes=[]`, `known_dislikes=[]`.
@@ -520,7 +520,7 @@
 - Node with `text_key: "CH1_ARTEMISA_01"` and valid `en.json` entry. Assert resolved English text shown, not the raw key.
 - Node with `text_key: "CH1_MISSING_KEY"` (no locale entry). Assert raw key shown as fallback and a localization error is logged.
 - `text_key` resolves to `""` (empty). Assert empty text box, typewriter completes instantly, advance indicator shown, localization warning logged.
-- Node with `text_params: {name: "Artemisa"}` and interpolation placeholder in `text_key`. Assert resolved string has parameter substituted.
+- Node with `text_params: {name: "Artemis"}` and interpolation placeholder in `text_key`. Assert resolved string has parameter substituted.
 - Inspect `dialogue_runner.gd` source. Assert zero calls to `tr()` or direct `i18n/*.json` reads — only `Localization.get_text()` used.
 - Localization (boot #4) initialized before DialogueRunner use (boot #9). Assert no null-ref on Localization during text resolution.
 - Choice with `text_key: "CH1_CHOICE_KIND"` and valid locale entry. Assert localized string appears as the tap target label.
@@ -552,7 +552,7 @@
 **Evidence file**: `production/qa/evidence/dialogue-speaker-types.md`
 **Gate level**: ADVISORY
 
-- [ ] Trigger a companion node for "artemisa" with mood "happy". Confirm portrait appears in left slot at 200x400 logical pixels. Capture screenshot.
+- [ ] Trigger a companion node for "artemis" with mood "happy". Confirm portrait appears in left slot at 200x400 logical pixels. Capture screenshot.
 - [ ] Trigger an NPC node for "priestess" (mood "neutral"). Confirm portrait path is `priestess_neutral.png` and speaker name resolves to the localized string for "COMP_PRIESTESS".
 - [ ] Trigger a narrator node. Confirm no portrait, no speaker name label, and text renders centered in italic style. Capture screenshot.
 - [ ] Trigger an environment node. Confirm no portrait, no speaker name, and text renders in a visually distinct panel with an environmental icon.
@@ -587,7 +587,7 @@
 - [ ] Enable screen reader (TalkBack/VoiceOver) on test device. Trigger a dialogue node. Confirm typewriter text is announced by the screen reader (RichTextLabel text exposed to AccessKit).
 - [ ] With screen reader active, display a choice panel. Confirm each choice tap target is announced with its localized label text.
 - [ ] With screen reader active, trigger a companion node. Confirm speaker name is announced before the dialogue text.
-- [ ] Inspect portrait nodes in the Godot scene. Confirm each portrait `TextureRect` has an `alt_text` property (or AccessKit equivalent) set to speaker name + mood (e.g., "Artemisa, happy expression").
+- [ ] Inspect portrait nodes in the Godot scene. Confirm each portrait `TextureRect` has an `alt_text` property (or AccessKit equivalent) set to speaker name + mood (e.g., "Artemis, happy expression").
 - [ ] Trigger narrator and environment nodes with screen reader active. Confirm text is announced without crashing on absent speaker label nodes.
 - [ ] Record device + OS version + screen reader version used for evidence.
 - [ ] Lead programmer or accessibility lead reviews and signs off in evidence file.

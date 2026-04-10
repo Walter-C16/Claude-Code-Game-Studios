@@ -36,7 +36,7 @@ signal combat_completed(result: Dictionary)
 signal dialogue_ended(sequence_id: String)
 
 ## Fired when a dialogue sequence cannot start because prerequisites are not met.
-## reason is a human-readable string for debug logging (e.g. "flag_missing:met_artemisa").
+## reason is a human-readable string for debug logging (e.g. "flag_missing:met_artemis").
 signal dialogue_blocked(sequence_id: String, reason: String)
 
 ## Fired when a dialogue effect applies a relationship delta to a companion.

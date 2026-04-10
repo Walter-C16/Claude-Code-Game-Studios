@@ -79,8 +79,8 @@ Gift items defined in `res://assets/data/gift_items.json`:
 ## Acceptance Criteria
 
 - [ ] **GIVEN** player has 25 gold, **WHEN** gift picker opens, **THEN** items costing <= 25 are tappable, items costing > 25 are greyed.
-- [ ] **GIVEN** player buys `wildflowers` (10 gold) for Artemisa, **WHEN** confirmed, **THEN** gold decreases by 10, token decreases by 1, R&S `do_gift("artemisa", "wildflowers")` is called.
-- [ ] **GIVEN** `wildflowers` category is "romantic" and Artemisa likes "romantic", **WHEN** gifted, **THEN** RL +2, mood -> Happy.
+- [ ] **GIVEN** player buys `wildflowers` (10 gold) for Artemis, **WHEN** confirmed, **THEN** gold decreases by 10, token decreases by 1, R&S `do_gift("artemis", "wildflowers")` is called.
+- [ ] **GIVEN** `wildflowers` category is "romantic" and Artemis likes "romantic", **WHEN** gifted, **THEN** RL +2, mood -> Happy.
 - [ ] **GIVEN** player has 0 gold, **WHEN** gift picker opens, **THEN** all items greyed, "Not enough gold" label shown.
 - [ ] **GIVEN** player at romance_stage >= 2 with `known_likes: ["romantic"]`, **WHEN** gift picker shows `wildflowers` (romantic), **THEN** preference hint icon is displayed.
 - [ ] All item IDs, costs, and categories are data-driven from `gift_items.json`.

@@ -46,7 +46,7 @@ func test_effect_system_relationship_effect_emits_relationship_changed() -> void
 
 	# Assert
 	assert_int(rel_signals.size()).is_equal(1)
-	assert_str(rel_signals[0]["companion"]).is_equal("artemisa")
+	assert_str(rel_signals[0]["companion"]).is_equal("artemis")
 	assert_int(rel_signals[0]["delta"]).is_equal(5)
 
 	EventBus.relationship_changed.disconnect_all()
@@ -109,7 +109,7 @@ func test_effect_system_unknown_effect_type_does_not_crash() -> void:
 	# Act — inject an unknown effect type directly
 	runner._nodes = {
 		"start": {
-			"lines": [{"speaker": "artemisa", "speaker_type": "companion", "text_key": "X", "mood": "neutral"}],
+			"lines": [{"speaker": "artemis", "speaker_type": "companion", "text_key": "X", "mood": "neutral"}],
 			"choices": [
 				{
 					"text_key": "CHOICE_X",

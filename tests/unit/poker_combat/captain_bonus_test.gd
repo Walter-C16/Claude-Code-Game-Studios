@@ -40,7 +40,7 @@ func _card(value: int, element: String = "Fire") -> Dictionary:
 
 # ── AC1 — Artemisa (STR=17, INT=13) ──────────────────────────────────────────
 
-func test_captain_bonus_artemisa_str17_chip_bonus_is_8() -> void:
+func test_captain_bonus_artemis_str17_chip_bonus_is_8() -> void:
 	# Arrange
 	var chip_bonus: int = _captain_chip_bonus(17)
 
@@ -48,7 +48,7 @@ func test_captain_bonus_artemisa_str17_chip_bonus_is_8() -> void:
 	assert_int(chip_bonus).is_equal(8)
 
 
-func test_captain_bonus_artemisa_int13_mult_modifier_is_1_325() -> void:
+func test_captain_bonus_artemis_int13_mult_modifier_is_1_325() -> void:
 	# Arrange
 	var mult_mod: float = _captain_mult_modifier(13)
 
@@ -56,7 +56,7 @@ func test_captain_bonus_artemisa_int13_mult_modifier_is_1_325() -> void:
 	assert_float(mult_mod).is_equal_approx(1.325, 0.0001)
 
 
-func test_captain_bonus_artemisa_chips_applied_to_pipeline() -> void:
+func test_captain_bonus_artemis_chips_applied_to_pipeline() -> void:
 	# Arrange — High Card base=5, one card value=7 (chips=7), captain_chip_bonus=8
 	# Expected: 5 + 7 + 8 = 20
 	var cards: Array[Dictionary] = [_card(7)]
@@ -70,7 +70,7 @@ func test_captain_bonus_artemisa_chips_applied_to_pipeline() -> void:
 	assert_int(chips).is_equal(20)
 
 
-func test_captain_bonus_artemisa_mult_applied_to_pipeline() -> void:
+func test_captain_bonus_artemis_mult_applied_to_pipeline() -> void:
 	# Arrange — base_mult=2.0, captain_mult_modifier=1.325
 	# Expected: 2.0 * 1.325 = 2.65
 	var cards: Array[Dictionary] = [_card(7)]

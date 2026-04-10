@@ -128,7 +128,7 @@ func test_delete_save_resets_game_store_streak_to_zero() -> void:
 
 func test_delete_save_resets_game_store_story_flags_to_empty() -> void:
 	# Arrange
-	GameStore.set_flag("ch01_met_artemisa")
+	GameStore.set_flag("ch01_met_artemis")
 	GameStore.set_flag("ch02_boss_defeated")
 	SaveManager.save_game()
 

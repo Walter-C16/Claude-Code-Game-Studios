@@ -134,7 +134,7 @@ func test_element_suit_mapping_empty_string_suit_returns_empty_string() -> void:
 func test_element_suit_mapping_companion_elements_are_all_unique() -> void:
 	# Arrange
 	var registry = _make_registry()
-	var companion_ids: Array[String] = ["artemisa", "hipolita", "atenea", "nyx"]
+	var companion_ids: Array[String] = ["artemis", "hipolita", "atenea", "nyx"]
 	var elements: Dictionary = {}
 
 	# Act — collect each companion's element field

@@ -94,7 +94,7 @@ Every companion's silhouette must be distinguishable at 120x160px as a flat blac
 
 | Companion | Silhouette Anchor | Shape Character |
 |-----------|-------------------|-----------------|
-| **Artemisa** (Earth) | Bow extending beyond body outline | Vertical, lean, asymmetric. Most elongated. |
+| **Artemis** (Earth) | Bow extending beyond body outline | Vertical, lean, asymmetric. Most elongated. |
 | **Hipolita** (Fire) | Broad muscular shoulders, wild hair volume | Widest, heaviest. Mass over elegance. |
 | **Atenea** (Lightning) | Helmet/staff with geometric edges | Structured, angular. Architecturally complex. |
 | **Nyx** (Water) | Flowing cape/veil extending below figure | Longest fabric lines. Fluid, dissolving edges. |
@@ -143,14 +143,14 @@ Card states: Unselected (1px gold 60%), Selected (2px gold 100%, +8px up), Disca
 |---------|-----|-----------|-----------|
 | Fire | #F24D26 | Orange-red combustion — aggressive, consuming | Hipolita |
 | Water | #338CF2 | Royal blue depth — ocean at night, not daylit river | Nyx |
-| Earth | #73BF40 | Yellow-green vitality — healthy leaf at noon | Artemisa |
+| Earth | #73BF40 | Yellow-green vitality — healthy leaf at noon | Artemis |
 | Lightning | #CCAA33 | Electric gold — wisdom as divine revelation | Atenea |
 
 ### Companion Accent Tints
 
 | Companion | Element | Accent | Shift Meaning |
 |-----------|---------|--------|---------------|
-| Artemisa | Earth #73BF40 | #2A6A5A (teal) | Earth's intelligence, cooler than raw nature |
+| Artemis | Earth #73BF40 | #2A6A5A (teal) | Earth's intelligence, cooler than raw nature |
 | Hipolita | Fire #F24D26 | #5A6A2A (olive) | Fire tempered by martial discipline |
 | Atenea | Lightning #CCAA33 | #3A5A7A (slate blue) | Lightning refined into wisdom |
 | Nyx | Water #338CF2 | #4A2A6A (deep violet) | Water at its coldest and deepest |
@@ -188,12 +188,12 @@ WCAG 2.1 AA: TEXT_PRIMARY on BG_PRIMARY tests at ~7.8:1 (above 4.5:1 minimum).
 
 | Companion | Skin Temp | Hair Base | Hair Highlight | Costume Temp |
 |-----------|-----------|-----------|----------------|-------------|
-| Artemisa | Cool-neutral 3200K | Dark brown #3A2A1A | Green-tint #7A9A50 | Cool earth — greens, teal, olive |
+| Artemis | Cool-neutral 3200K | Dark brown #3A2A1A | Green-tint #7A9A50 | Cool earth — greens, teal, olive |
 | Hipolita | Warm 2800K | Deep red #6A1A0A | Amber-orange #E87A30 | Warm earth — rust, raw leather |
 | Atenea | Neutral-cool 4000K | Platinum #D8D8E8 | Blue-silver #8A9AB8 | Grey-slate with geometric gold |
 | Nyx | Cool 2200K | Near-black #1A1520 | Violet-white #C0A8E0 | Near-black with luminous edges |
 
-Detail density: Artemisa medium (clean, functional), Hipolita low-medium (broad strokes, battle-scarred), Atenea high (geometric patterns, intricate helmet), Nyx high-but-diffuse (detail dissolves into fabric, micro-star patterns).
+Detail density: Artemis medium (clean, functional), Hipolita low-medium (broad strokes, battle-scarred), Atenea high (geometric patterns, intricate helmet), Nyx high-but-diffuse (detail dissolves into fabric, micro-star patterns).
 
 ### NPC: The Priestess
 - Same canvas (512x768), same framing rules.

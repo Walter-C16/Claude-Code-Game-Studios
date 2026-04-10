@@ -87,8 +87,8 @@ func test_game_store_set_flag_duplicate_call_no_extra_entry() -> void:
 	var store := _make_store()
 
 	# Act
-	store.set_flag("ch01_met_artemisa")
-	store.set_flag("ch01_met_artemisa")
+	store.set_flag("ch01_met_artemis")
+	store.set_flag("ch01_met_artemis")
 
 	# Assert — exactly one entry
 	assert_int(store.get_story_flags().size()).is_equal(1)
@@ -98,17 +98,17 @@ func test_game_store_set_flag_has_flag_returns_true() -> void:
 	var store := _make_store()
 
 	# Act
-	store.set_flag("ch01_met_artemisa")
+	store.set_flag("ch01_met_artemis")
 
 	# Assert
-	assert_bool(store.has_flag("ch01_met_artemisa")).is_true()
+	assert_bool(store.has_flag("ch01_met_artemis")).is_true()
 
 func test_game_store_has_flag_absent_flag_returns_false() -> void:
 	# Arrange
 	var store := _make_store()
 
 	# Act / Assert — nothing set yet
-	assert_bool(store.has_flag("ch01_met_artemisa")).is_false()
+	assert_bool(store.has_flag("ch01_met_artemis")).is_false()
 
 # ---------------------------------------------------------------------------
 # AC4 — set_trust: companion trust updates, readable via get_companion_state
@@ -119,22 +119,22 @@ func test_game_store_set_trust_updates_companion_state() -> void:
 	var store := _make_store()
 
 	# Act
-	store.set_trust("artemisa", 10)
+	store.set_trust("artemis", 10)
 
 	# Assert
-	var state := store.get_companion_state("artemisa")
+	var state := store.get_companion_state("artemis")
 	assert_int(state.get("trust", -1)).is_equal(10)
 
 func test_game_store_set_trust_from_nonzero_baseline() -> void:
 	# Arrange — trust starts at 5 via internal dict (tests internal default override)
 	var store := _make_store()
-	store.set_trust("artemisa", 5)
+	store.set_trust("artemis", 5)
 
 	# Act
-	store.set_trust("artemisa", 10)
+	store.set_trust("artemis", 10)
 
 	# Assert
-	var state := store.get_companion_state("artemisa")
+	var state := store.get_companion_state("artemis")
 	assert_int(state.get("trust", -1)).is_equal(10)
 
 func test_game_store_set_trust_unknown_companion_is_noop() -> void:
@@ -185,7 +185,7 @@ func test_game_store_set_flag_idempotent_does_not_set_dirty() -> void:
 
 func test_game_store_set_trust_sets_dirty() -> void:
 	var store := _make_store()
-	store.set_trust("artemisa", 5)
+	store.set_trust("artemis", 5)
 	assert_bool(store._dirty).is_true()
 
 func test_game_store_set_met_sets_dirty() -> void:
@@ -293,7 +293,7 @@ func test_game_store_add_gold_accumulates() -> void:
 func test_game_store_get_story_flags_returns_copy_not_reference() -> void:
 	# Arrange — mutating the returned array must not affect internal state.
 	var store := _make_store()
-	store.set_flag("ch01_met_artemisa")
+	store.set_flag("ch01_met_artemis")
 
 	# Act
 	var flags: Array[String] = store.get_story_flags()
@@ -308,7 +308,7 @@ func test_game_store_get_story_flags_returns_copy_not_reference() -> void:
 
 func test_game_store_get_relationship_level_default_is_zero() -> void:
 	var store := _make_store()
-	assert_int(store.get_relationship_level("artemisa")).is_equal(0)
+	assert_int(store.get_relationship_level("artemis")).is_equal(0)
 
 func test_game_store_get_relationship_level_unknown_id_returns_zero() -> void:
 	var store := _make_store()
@@ -319,14 +319,14 @@ func test_game_store_set_relationship_level_internal_updates_value() -> void:
 	var store := _make_store()
 
 	# Act — _set_relationship_level is internal but callable from tests
-	store._set_relationship_level("artemisa", 5)
+	store._set_relationship_level("artemis", 5)
 
 	# Assert
-	assert_int(store.get_relationship_level("artemisa")).is_equal(5)
+	assert_int(store.get_relationship_level("artemis")).is_equal(5)
 
 func test_game_store_set_relationship_level_internal_sets_dirty() -> void:
 	var store := _make_store()
-	store._set_relationship_level("artemisa", 3)
+	store._set_relationship_level("artemis", 3)
 	assert_bool(store._dirty).is_true()
 
 func test_game_store_set_met_updates_companion_state() -> void:
@@ -481,7 +481,7 @@ func test_game_store_from_dict_does_not_set_dirty() -> void:
 func test_game_store_from_dict_story_flags_restored() -> void:
 	# Arrange
 	var store := _make_store()
-	store.set_flag("ch01_met_artemisa")
+	store.set_flag("ch01_met_artemis")
 	store.set_flag("ch01_first_combat")
 	var data: Dictionary = store.to_dict()
 
@@ -490,14 +490,14 @@ func test_game_store_from_dict_story_flags_restored() -> void:
 	store2.from_dict(data)
 
 	# Assert
-	assert_bool(store2.has_flag("ch01_met_artemisa")).is_true()
+	assert_bool(store2.has_flag("ch01_met_artemis")).is_true()
 	assert_bool(store2.has_flag("ch01_first_combat")).is_true()
 	assert_int(store2.get_story_flags().size()).is_equal(2)
 
 func test_game_store_from_dict_companion_trust_restored() -> void:
 	# Arrange
 	var store := _make_store()
-	store.set_trust("artemisa", 7)
+	store.set_trust("artemis", 7)
 	var data: Dictionary = store.to_dict()
 
 	# Act
@@ -505,7 +505,7 @@ func test_game_store_from_dict_companion_trust_restored() -> void:
 	store2.from_dict(data)
 
 	# Assert
-	var state := store2.get_companion_state("artemisa")
+	var state := store2.get_companion_state("artemis")
 	assert_int(state.get("trust", -1)).is_equal(7)
 
 func test_game_store_from_dict_missing_companion_gets_default_state() -> void:

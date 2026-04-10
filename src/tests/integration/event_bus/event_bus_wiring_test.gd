@@ -323,10 +323,10 @@ func test_event_bus_wiring_dialogue_runner_signal_reaches_romance_social() -> vo
 	social.connect_to_bus(bus)
 
 	# Act — DialogueRunner emits; RomanceSocial must receive
-	runner.apply_relationship_effect("artemisa", 5)
+	runner.apply_relationship_effect("artemis", 5)
 
 	# Assert
-	assert_str(social.received_companion_id).is_equal("artemisa")
+	assert_str(social.received_companion_id).is_equal("artemis")
 	assert_int(social.received_delta).is_equal(5)
 	assert_int(social.call_count).is_equal(1)
 	bus.free()
@@ -354,7 +354,7 @@ func test_event_bus_wiring_multiple_emissions_each_delivered() -> void:
 	social.connect_to_bus(bus)
 
 	# Act — two separate emissions
-	runner.apply_relationship_effect("artemisa", 5)
+	runner.apply_relationship_effect("artemis", 5)
 	runner.apply_relationship_effect("hipolita", 2)
 
 	# Assert — call_count is 2; last values are from the second emission
@@ -370,7 +370,7 @@ func test_event_bus_wiring_relay_no_listener_no_error() -> void:
 
 	# Act — no listener; emission must complete silently
 	var did_emit: bool = true
-	runner.apply_relationship_effect("artemisa", 1)
+	runner.apply_relationship_effect("artemis", 1)
 
 	# Assert — we reached here without error
 	assert_bool(did_emit).is_true()
@@ -384,7 +384,7 @@ func test_event_bus_wiring_runner_and_social_share_no_direct_reference() -> void
 	social.connect_to_bus(bus)
 
 	# Act
-	runner.apply_relationship_effect("artemisa", 10)
+	runner.apply_relationship_effect("artemis", 10)
 
 	# Assert — social received data it only could have gotten via the bus
 	assert_int(social.received_delta).is_equal(10)

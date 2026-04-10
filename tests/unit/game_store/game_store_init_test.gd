@@ -31,7 +31,7 @@ func _make_store() -> Node:
 func test_game_store_init_all_companion_ids_present() -> void:
 	# Arrange / Act
 	var store := _make_store()
-	var expected_ids: Array[String] = ["artemisa", "hipolita", "atenea", "nyx"]
+	var expected_ids: Array[String] = ["artemis", "hipolita", "atenea", "nyx"]
 
 	# Assert
 	for id: String in expected_ids:
@@ -43,7 +43,7 @@ func test_game_store_init_companion_relationship_level_is_zero() -> void:
 	var store := _make_store()
 
 	# Assert
-	for id: String in ["artemisa", "hipolita", "atenea", "nyx"]:
+	for id: String in ["artemis", "hipolita", "atenea", "nyx"]:
 		var state := store.get_companion_state(id)
 		assert_int(state.get("relationship_level", -1)).is_equal(0)
 
@@ -52,7 +52,7 @@ func test_game_store_init_companion_trust_is_zero() -> void:
 	var store := _make_store()
 
 	# Assert
-	for id: String in ["artemisa", "hipolita", "atenea", "nyx"]:
+	for id: String in ["artemis", "hipolita", "atenea", "nyx"]:
 		var state := store.get_companion_state(id)
 		assert_int(state.get("trust", -1)).is_equal(0)
 
@@ -61,7 +61,7 @@ func test_game_store_init_companion_motivation_is_fifty() -> void:
 	var store := _make_store()
 
 	# Assert
-	for id: String in ["artemisa", "hipolita", "atenea", "nyx"]:
+	for id: String in ["artemis", "hipolita", "atenea", "nyx"]:
 		var state := store.get_companion_state(id)
 		assert_int(state.get("motivation", -1)).is_equal(50)
 
@@ -70,7 +70,7 @@ func test_game_store_init_companion_met_is_false() -> void:
 	var store := _make_store()
 
 	# Assert
-	for id: String in ["artemisa", "hipolita", "atenea", "nyx"]:
+	for id: String in ["artemis", "hipolita", "atenea", "nyx"]:
 		var state := store.get_companion_state(id)
 		assert_bool(state.get("met", true)).is_false()
 
@@ -215,11 +215,11 @@ func test_game_store_init_get_companion_state_returns_copy_not_reference() -> vo
 	var store := _make_store()
 
 	# Act
-	var state := store.get_companion_state("artemisa")
+	var state := store.get_companion_state("artemis")
 	state["trust"] = 999
 
 	# Assert — internal state is unchanged
-	var fresh_state := store.get_companion_state("artemisa")
+	var fresh_state := store.get_companion_state("artemis")
 	assert_int(fresh_state.get("trust", -1)).is_equal(0)
 
 func test_game_store_init_exactly_four_companions_initialized() -> void:

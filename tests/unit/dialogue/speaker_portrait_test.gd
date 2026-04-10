@@ -43,7 +43,7 @@ func test_speaker_portrait_companion_line_has_speaker_type_companion() -> void:
 		"start": {
 			"lines": [
 				{
-					"speaker": "artemisa",
+					"speaker": "artemis",
 					"speaker_type": "companion",
 					"text_key": "CH1_ART_01",
 					"mood": "happy",
@@ -60,7 +60,7 @@ func test_speaker_portrait_companion_line_has_speaker_type_companion() -> void:
 
 	# Assert
 	assert_str(received_line.get("speaker_type", "")).is_equal("companion")
-	assert_str(received_line.get("speaker", "")).is_equal("artemisa")
+	assert_str(received_line.get("speaker", "")).is_equal("artemis")
 	assert_str(received_line.get("mood", "")).is_equal("happy")
 
 	runner.queue_free()
@@ -75,7 +75,7 @@ func test_speaker_portrait_companion_line_has_text_key() -> void:
 		"start": {
 			"lines": [
 				{
-					"speaker": "artemisa",
+					"speaker": "artemis",
 					"speaker_type": "companion",
 					"text_key": "CH1_ART_01",
 					"mood": "happy",
@@ -209,8 +209,8 @@ func test_speaker_portrait_registry_returns_placeholder_when_file_missing() -> v
 	# We check only the fallback contract, not filesystem state.
 	var registry = _make_registry()
 
-	# Act — even if "artemisa" is registered, the mood path won't exist in tests
-	var path: String = registry.get_portrait_path("artemisa", "extremely_rare_mood_xyz")
+	# Act — even if "artemis" is registered, the mood path won't exist in tests
+	var path: String = registry.get_portrait_path("artemis", "extremely_rare_mood_xyz")
 
 	# Assert — must return a non-empty string (placeholder or neutral or requested)
 	assert_str(path).is_not_empty()

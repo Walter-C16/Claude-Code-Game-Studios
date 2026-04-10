@@ -51,7 +51,7 @@ func test_choice_condition_unconditional_choice_always_present() -> void:
 # ── AC2 — flag_set condition filters choice when flag not set ─────────────────
 
 func test_choice_condition_flag_set_choice_absent_when_flag_missing() -> void:
-	# Arrange — fixture choice B requires flag "ch01_met_artemisa" which is not set
+	# Arrange — fixture choice B requires flag "ch01_met_artemis" which is not set
 	var runner = _make_runner()
 
 	# Act

@@ -41,7 +41,7 @@ Scene Navigation has no direct player fantasy -- its success is invisibility. Th
 6. **Context payload.** `change_scene()` accepts an optional `context: Dictionary`. SceneManager stores it and exposes it via `get_arrival_context() -> Dictionary`. The incoming scene reads this in `_ready()` to configure itself. Examples:
    - Combat: `{ "source": SceneId.HUB, "mode": "arena" }` vs. `{ "source": SceneId.DIALOGUE, "story_node_id": "ch01_n04", "mode": "story" }`
    - Hub: `{ "restore_tab": 3 }` (Camp tab index)
-   - Companion Room: `{ "companion_id": "artemisa" }`
+   - Companion Room: `{ "companion_id": "artemis" }`
 
    Context is read-once -- cleared after `get_arrival_context()` is called.
 
@@ -201,7 +201,7 @@ The transition_duration formula is defined as:
 | This Document References | Target GDD | Specific Element Referenced | Nature |
 |--------------------------|-----------|----------------------------|--------|
 | Settings overlay uses SettingsStore for reads/writes | `design/gdd/save-system.md` | `to_dict()` / `from_dict()` serialization contract | Data dependency |
-| Arrival context carries `companion_id` for Companion Room | `design/gdd/companion-data.md` | Companion ID enum values (`artemisa`, `hipolita`, etc.) | Data dependency |
+| Arrival context carries `companion_id` for Companion Room | `design/gdd/companion-data.md` | Companion ID enum values (`artemis`, `hipolita`, etc.) | Data dependency |
 | Story Flow sequences dialogue -> combat -> reward via `change_scene()` | `design/gdd/story-flow.md` (not yet designed) | Story node type resolution and sequencing | Rule dependency |
 | Camp calls `change_scene(COMPANION_ROOM)` with context | `design/gdd/camp.md` (not yet designed) | Camp-to-companion drill-down flow | State trigger |
 | Hub tab restore uses `restore_tab` in context payload | `design/gdd/ui-theme.md` | Tab bar layout and indexing | Rule dependency |

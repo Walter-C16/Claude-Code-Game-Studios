@@ -17,7 +17,7 @@ Poker Combat is the primary action the player takes in Dark Olympus. Each combat
 
 ## Player Fantasy
 
-You play not as a lone gambler but as someone whose strength grows from connection. The cards you hold are power, but the blessings your companions unlock transform that power into something personal -- Artemisa sharpens your Earth-suit hands, Hipolita turns Fire into fury. As relationships deepen, the scoring pipeline feels increasingly tailored to how you play, as though the goddesses are reading your strategy and amplifying it. This makes each combat encounter a living record of the relationships you've invested in: your deck reflects your alliances. The "juice" of a big scoring moment in Dark Olympus carries extra resonance because you can trace it -- this score happened because you talked to Artemisa three days in a row, earned her trust, and she gave you something real.
+You play not as a lone gambler but as someone whose strength grows from connection. The cards you hold are power, but the blessings your companions unlock transform that power into something personal -- Artemis sharpens your Earth-suit hands, Hipolita turns Fire into fury. As relationships deepen, the scoring pipeline feels increasingly tailored to how you play, as though the goddesses are reading your strategy and amplifying it. This makes each combat encounter a living record of the relationships you've invested in: your deck reflects your alliances. The "juice" of a big scoring moment in Dark Olympus carries extra resonance because you can trace it -- this score happened because you talked to Artemis three days in a row, earned her trust, and she gave you something real.
 
 *Pillar 1: "Combat is poker hand evaluation with chips x mult scoring. Every card play is a strategic decision."*
 *Pillar 3: "Romance is not a cosmetic layer -- it directly enhances combat via divine blessings."*
@@ -26,7 +26,7 @@ You play not as a lone gambler but as someone whose strength grows from connecti
 
 ### Core Rules
 
-1. **Deck Composition.** Standard 52 cards: 4 suits x 13 values (2-14, Ace=14). No jokers, no wildcards. Each companion has a "signature card" -- the card matching their suit and card_value (e.g., Artemisa = King of Clubs). Signature cards are tagged with the companion's ID when the deck is built but play identically to any other card. In story combat, the deck is always a clean 52 cards. Deck modifications (card removal, additions) are Abyss Mode territory, not core combat.
+1. **Deck Composition.** Standard 52 cards: 4 suits x 13 values (2-14, Ace=14). No jokers, no wildcards. Each companion has a "signature card" -- the card matching their suit and card_value (e.g., Artemis = King of Clubs). Signature cards are tagged with the companion's ID when the deck is built but play identically to any other card. In story combat, the deck is always a clean 52 cards. Deck modifications (card removal, additions) are Abyss Mode territory, not core combat.
 
 2. **Combat Encounter Setup.** Each encounter is configured by an enemy profile dictionary:
    - `name_key` (String) -- i18n key for display name
@@ -125,7 +125,7 @@ You play not as a lone gambler but as someone whose strength grows from connecti
 
    | Captain | STR | Chip Bonus | INT | Mult Modifier |
    |---------|-----|-----------|-----|--------------|
-   | Artemisa | 17 | +8 | 13 | x1.325 |
+   | Artemis | 17 | +8 | 13 | x1.325 |
    | Hipolita | 20 | +10 | 9 | x1.225 |
    | Atenea | 13 | +6 | 19 | x1.475 |
    | Nyx | 18 | +9 | 19 | x1.475 |
@@ -243,7 +243,7 @@ Applied once per hand, passively, regardless of cards played.
 
 | Captain | STR | Chip Bonus | INT | Mult Modifier |
 |---------|-----|-----------|-----|--------------|
-| Artemisa | 17 | +8 | 13 | x1.325 |
+| Artemis | 17 | +8 | 13 | x1.325 |
 | Hipolita | 20 | +10 | 9 | x1.225 |
 | Atenea | 13 | +6 | 19 | x1.475 |
 | Nyx | 18 | +9 | 19 | x1.475 |
@@ -731,7 +731,7 @@ No screen shake, no red flash. Emotional tone: "you were close, try again."
 
 ### Captain Stat Bonus — Formula F3
 
-- **AC-22**: **GIVEN** Captain Artemisa (STR=17), **WHEN** any hand is played, **THEN** captain_chip_bonus = floor(17 × 0.5) = 8, added once to total_chips.
+- **AC-22**: **GIVEN** Captain Artemis (STR=17), **WHEN** any hand is played, **THEN** captain_chip_bonus = floor(17 × 0.5) = 8, added once to total_chips.
 - **AC-23**: **GIVEN** Captain Atenea (INT=19) and 1 Polychrome card, **WHEN** scored, **THEN** final_mult = additive_mult × 1.5 (Polychrome) × 1.475 (captain). Captain applied after Polychrome.
 - **AC-24**: **GIVEN** no captain assigned, **WHEN** any hand is played, **THEN** captain_chip_bonus = 0 and captain_mult_modifier = 1.0.
 

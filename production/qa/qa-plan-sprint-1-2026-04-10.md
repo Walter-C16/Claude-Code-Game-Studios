@@ -61,7 +61,7 @@
 **Estimated test count**: 6
 
 **Test functions to write**:
-- `test_initialize_defaults_all_four_companions_present()` — Assert that after `_initialize_defaults()`, the companion_states Dictionary contains keys "artemisa", "hipolita", "atenea", "nyx". Assert each has `relationship_level: 0`, `trust: 0`, `motivation: 50`, `met: false`.
+- `test_initialize_defaults_all_four_companions_present()` — Assert that after `_initialize_defaults()`, the companion_states Dictionary contains keys "artemis", "hipolita", "atenea", "nyx". Assert each has `relationship_level: 0`, `trust: 0`, `motivation: 50`, `met: false`.
 - `test_initialize_defaults_scalar_fields()` — Assert `player_gold == 0`, `player_xp == 0`, `daily_tokens_remaining == 3`, `current_streak == 0`, `current_chapter == "ch01"`, `active_combat_buff == {}`.
 - `test_all_state_properties_are_private()` — Grep or inspect the GDScript source at runtime for underscore-prefixed property names; assert that no unscoped public field names (gold, xp, etc.) are accessible directly via `GameStore.gold` etc.
 - `test_get_combat_buff_returns_empty_dict_on_fresh_store()` — Call `GameStore.get_combat_buff()` immediately after default init; assert returned value is an empty Dictionary (`{}`), not null.
@@ -81,12 +81,12 @@
 **Test functions to write**:
 - `test_spend_gold_sufficient_funds_returns_true_and_deducts()` — Set gold to 50 via `add_gold(50)`, call `spend_gold(30)`, assert return is `true` and `get_gold() == 20`.
 - `test_spend_gold_insufficient_funds_returns_false_no_deduct()` — Set gold to 10, call `spend_gold(30)`, assert return is `false` and `get_gold() == 10`.
-- `test_set_flag_idempotent_no_duplicate()` — Call `set_flag("ch01_met_artemisa")` twice; assert `story_flags` count for that key is exactly 1 and `has_flag("ch01_met_artemisa") == true`.
+- `test_set_flag_idempotent_no_duplicate()` — Call `set_flag("ch01_met_artemis")` twice; assert `story_flags` count for that key is exactly 1 and `has_flag("ch01_met_artemis") == true`.
 - `test_set_flag_has_flag_roundtrip()` — Call `set_flag("ch01_met_hipolita")` once; assert `has_flag("ch01_met_hipolita") == true` and `has_flag("nonexistent") == false`.
-- `test_set_trust_updates_companion_state()` — Initialize with defaults; call `set_trust("artemisa", 10)`; assert `get_companion_state("artemisa")["trust"] == 10`.
+- `test_set_trust_updates_companion_state()` — Initialize with defaults; call `set_trust("artemis", 10)`; assert `get_companion_state("artemis")["trust"] == 10`.
 - `test_any_setter_marks_dirty()` — Call `add_gold(1)`, assert `_dirty == true`. Reset `_dirty`; call `set_flag("x")`, assert `_dirty == true`.
 - `test_get_node_state_missing_key_returns_empty_string()` — On a fresh store, call `get_node_state("node_42")`; assert result is `""` (empty String), not null, not 0, and no error is pushed.
-- `test_setters_do_not_accept_wrong_type()` — Attempt to call `set_trust("artemisa", "not_an_int")` and assert the value remains unchanged or a type error is caught gracefully (no crash).
+- `test_setters_do_not_accept_wrong_type()` — Attempt to call `set_trust("artemis", "not_an_int")` and assert the value remains unchanged or a type error is caught gracefully (no crash).
 
 **Edge cases**:
 - `spend_gold(0)` must return `true` and leave gold unchanged.
@@ -120,9 +120,9 @@
 - `test_to_dict_contains_all_required_keys()` — After `_initialize_defaults()`, call `to_dict()`. Assert the returned Dictionary contains all of: "companion_states", "story_flags", "node_states", "current_chapter", "player_gold", "player_xp", "daily_tokens_remaining", "current_streak", "last_interaction_date", "active_combat_buff", "last_captain_id".
 - `test_from_dict_missing_player_xp_defaults_to_zero()` — Build a dict without "player_xp", call `from_dict()`, assert `get_xp() == 0` and no error is pushed.
 - `test_from_dict_missing_companion_nyx_gets_defaults()` — Build a dict with companion_states lacking "nyx", call `from_dict()`, assert `get_companion_state("nyx")` is populated with default values (`relationship_level: 0`, `trust: 0`, `motivation: 50`, `met: false`).
-- `test_serialization_roundtrip_preserves_all_values()` — Set varied state (gold=100, xp=500, flag="ch01_met_artemisa", nyx trust=7). Call `to_dict()`. Create a second GameStore instance and call `from_dict()` on the result. Assert all getters on the second instance match the original.
+- `test_serialization_roundtrip_preserves_all_values()` — Set varied state (gold=100, xp=500, flag="ch01_met_artemis", nyx trust=7). Call `to_dict()`. Create a second GameStore instance and call `from_dict()` on the result. Assert all getters on the second instance match the original.
 - `test_from_dict_leaves_dirty_false()` — Call `from_dict({...})`. Immediately assert `_dirty == false`.
-- `test_to_dict_companion_states_are_all_four_companions()` — Call `to_dict()["companion_states"]` and assert it has exactly the keys "artemisa", "hipolita", "atenea", "nyx".
+- `test_to_dict_companion_states_are_all_four_companions()` — Call `to_dict()["companion_states"]` and assert it has exactly the keys "artemis", "hipolita", "atenea", "nyx".
 - `test_from_dict_with_unknown_extra_key_does_not_crash()` — Pass a dict with an unexpected extra key "future_field": 99 to `from_dict()`. Assert no crash and existing fields are loaded correctly.
 
 **Edge cases**:
@@ -175,8 +175,8 @@
 **Estimated test count**: 6
 
 **Test functions to write**:
-- `test_relationship_changed_emits_correct_values_to_listener()` — Connect a lambda to `EventBus.relationship_changed`. Emit `EventBus.relationship_changed.emit("artemisa", 5)`. Assert listener received `companion_id == "artemisa"` and `delta == 5`.
-- `test_combat_completed_dictionary_arrives_intact()` — Connect a listener to `EventBus.combat_completed`. Emit with `{victory: true, score: 1200, hands_used: 3, captain_id: "artemisa"}`. Assert listener receives the full Dictionary unchanged.
+- `test_relationship_changed_emits_correct_values_to_listener()` — Connect a lambda to `EventBus.relationship_changed`. Emit `EventBus.relationship_changed.emit("artemis", 5)`. Assert listener received `companion_id == "artemis"` and `delta == 5`.
+- `test_combat_completed_dictionary_arrives_intact()` — Connect a listener to `EventBus.combat_completed`. Emit with `{victory: true, score: 1200, hands_used: 3, captain_id: "artemis"}`. Assert listener receives the full Dictionary unchanged.
 - `test_romance_stage_changed_delivers_typed_ints()` — Emit `romance_stage_changed("nyx", 0, 1)`. Assert `old_stage` and `new_stage` are both of type int in the listener.
 - `test_tokens_reset_fires_listener_with_no_args()` — Connect a listener that asserts it is called with no arguments. Emit `EventBus.tokens_reset.emit()`. Assert listener was called once.
 - `test_all_signals_accessible_without_error()` — In a test scene with EventBus instantiated, access each of the 10 signals; assert no errors and each is of type `Signal`.
@@ -368,7 +368,7 @@
 
 **Test functions to write**:
 - `test_single_param_interpolated()` — Register `"POKER_SCORE": "Score: {{score}}"`. Call `get_text("POKER_SCORE", {"score": "150"})`. Assert result is `"Score: 150"`.
-- `test_multiple_params_interpolated()` — Use template `"{{name}} attacks {{target}}"`. Call with `{"name": "Artemisa", "target": "Beast"}`. Assert `"Artemisa attacks Beast"`.
+- `test_multiple_params_interpolated()` — Use template `"{{name}} attacks {{target}}"`. Call with `{"name": "Artemis", "target": "Beast"}`. Assert `"Artemis attacks Beast"`.
 - `test_missing_param_key_leaves_placeholder()` — Use template `"Hello {{name}}"`. Call with `{}` (empty params). Assert result is `"Hello {{name}}"` (placeholder preserved, no crash).
 - `test_string_with_no_placeholders_is_unchanged()` — Call `get_text("UI_CONTINUE", {"irrelevant": "value"})` where the string is `"Continue"` (no placeholders). Assert `"Continue"` returned unchanged.
 - `test_empty_params_dict_returns_text_unchanged()` — Call `_interpolate("Score: {{score}}", {})`. Assert the string `"Score: {{score}}"` is returned (no modification, no crash from empty iteration).
@@ -453,7 +453,7 @@
 
 **Test functions to write**:
 - `test_add_gold_triggers_save_to_disk_by_next_frame()` — With both GameStore and SaveManager running, call `GameStore.add_gold(50)`. Await one frame. Assert `FileAccess.file_exists("user://save.json")` and parse the file to confirm `game["player_gold"] == 50`.
-- `test_three_setters_same_frame_produce_exactly_one_disk_write()` — Spy on `SaveManager.save_game()`. In one frame, call `add_gold(1)`, `set_flag("x")`, `set_trust("artemisa", 2)`. Await frame. Assert `save_game()` call count is exactly 1.
+- `test_three_setters_same_frame_produce_exactly_one_disk_write()` — Spy on `SaveManager.save_game()`. In one frame, call `add_gold(1)`, `set_flag("x")`, `set_trust("artemis", 2)`. Await frame. Assert `save_game()` call count is exactly 1.
 - `test_save_during_active_combat_does_not_persist_combat_state()` — Create a test CombatSystem scene with hand state set. Call `SaveManager.save_game()`. Parse the saved JSON. Assert the "game" section contains no keys: "hand", "deck_order", or "score".
 - `test_from_dict_load_does_not_trigger_additional_save()` — Spy on `SaveManager.save_game()`. Call `GameStore.from_dict({...valid state...})`. Await one frame. Assert call count is 0 (load path does not produce a write).
 
