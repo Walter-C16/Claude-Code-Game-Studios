@@ -1,0 +1,5 @@
+[gd_resource type="FontFile" format=3 uid="uid://nunito_sans_regular"]
+
+[resource]
+font_name = "Nunito Sans"
+style_name = "Regular"

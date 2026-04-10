@@ -1,0 +1,65 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
+[application]
+
+config/name="Dark Olympus"
+run/main_scene="res://scenes/splash/splash.tscn"
+config/features=PackedStringArray("4.6", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+GameStore="*res://autoloads/game_store.gd"
+SettingsStore="*res://autoloads/settings_store.gd"
+EventBus="*res://autoloads/event_bus.gd"
+Localization="*res://autoloads/localization.gd"
+SaveManager="*res://autoloads/save_manager.gd"
+SceneManager="*res://autoloads/scene_manager.gd"
+DialogueStore="*res://autoloads/dialogue_store.gd"
+CombatStore="*res://autoloads/combat_store.gd"
+
+[display]
+
+window/size/viewport_width=430
+window/size/viewport_height=932
+window/size/mode=2
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep_width"
+window/handheld/orientation=1
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+
+[gdunit4]
+
+settings/test/test_lookup_folder="tests"
+settings/test/test_discovery=true
+
+[input]
+
+touch={
+"deadzone": 0.5,
+"events": []
+}
+
+[internationalization]
+
+locale/translation_remaps={}
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

@@ -1,0 +1,5 @@
+[gd_resource type="FontFile" format=3 uid="uid://cinzel_regular"]
+
+[resource]
+font_name = "Cinzel"
+style_name = "Regular"

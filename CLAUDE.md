@@ -1,18 +1,23 @@
-# Claude Code Game Studios -- Game Studio Agent Architecture
+# Dark Olympus — Claude Code Game Studios
 
-Indie game development managed through 48 coordinated Claude Code subagents.
-Each agent owns a specific domain, enforcing separation of concerns and quality.
+Narrative RPG / dating sim / poker combat game. Greek mythology setting with fallen gods.
+Migrated from React Native to Godot 4.6 — see `docs/GAME_DESIGN_DOCUMENT.md` for full spec.
 
 ## Technology Stack
 
-- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5]
-- **Language**: [CHOOSE: GDScript / C# / C++ / Blueprint]
-- **Version Control**: Git with trunk-based development
-- **Build System**: [SPECIFY after choosing engine]
-- **Asset Pipeline**: [SPECIFY after choosing engine]
+- **Engine**: Godot 4.6
+- **Language**: GDScript
+- **Build System**: SCons (engine), Godot Export Templates
+- **Asset Pipeline**: Godot Import System + custom resource pipeline
+- **Version Control**: Git
+- **Viewport**: 430×932 (portrait mobile)
+- **Renderer**: Mobile
+- **Platforms**: Android, iOS, Web (HTML5)
 
-> **Note**: Engine-specialist agents exist for Godot, Unity, and Unreal with
-> dedicated sub-specialists. Use the set matching your engine.
+> **IMPORTANT**: Read `docs/GAME_DESIGN_DOCUMENT.md` before implementing anything.
+> It contains the complete game design, all systems, story, migration status, and TODO list.
+> The RN source at `C:\Users\walte\Documents\dark-olympus-rn` has the original TypeScript
+> implementations to reference when porting systems.
 
 ## Project Structure
 

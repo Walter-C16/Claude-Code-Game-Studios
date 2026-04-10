@@ -37,7 +37,7 @@
 #   Each entry: name, status, source, referenced_by[], attributes{}, added, revised
 
 version: 1
-last_updated: ""
+last_updated: "2026-04-09"
 
 # ─── ENTITIES ────────────────────────────────────────────────────────────────
 # Named game-world objects: enemies, NPCs, characters, factions, bosses.
@@ -106,7 +106,114 @@ items: []
 #   output_range[min, max], added
 # Optional: expression (the actual formula), notes
 
-formulas: []
+formulas:
+  - name: combat_score_pipeline
+    status: active
+    source: design/gdd/poker-combat.md
+    referenced_by:
+      - design/gdd/poker-combat.md
+      - design/gdd/romance-social.md
+      - design/gdd/divine-blessings.md
+    variables:
+      - total_chips
+      - additive_mult
+      - final_mult
+      - blessing_chips
+      - blessing_mult
+      - social_buff_chips
+      - social_buff_mult
+    output_range: [1, unbounded]
+    expression: "floor(max(1, total_chips) x max(1.0, additive_mult) x poly_product x captain_mult_modifier)"
+    notes: "Core scoring formula. Divine Blessings injects blessing_chips/blessing_mult.
+      Romance & Social injects social_buff_chips/social_buff_mult. Abyss Mode generates
+      score_threshold targets against this pipeline. Both clamps (chips min 1, mult min 1.0)
+      guarantee score >= 1 always."
+    added: 2026-04-08
+    revised: ""
+
+  - name: captain_stat_bonus
+    status: active
+    source: design/gdd/poker-combat.md
+    referenced_by:
+      - design/gdd/poker-combat.md
+      - design/gdd/companion-data.md
+    variables:
+      - STR
+      - INT
+    output_range: [0, 15]
+    expression: "chips = floor(STR x 0.5), mult = 1.0 + (INT x 0.025)"
+    notes: "Reads STR and INT from Companion Data. Applied once per hand passively.
+      No captain = identity values (0 chips, 1.0x mult)."
+    added: 2026-04-08
+    revised: ""
+
+  - name: element_interaction
+    status: active
+    source: design/gdd/poker-combat.md
+    referenced_by:
+      - design/gdd/poker-combat.md
+      - design/gdd/enemy-data.md
+      - design/gdd/companion-data.md
+    variables:
+      - suit_element
+      - enemy_element
+      - enemy_weak_element
+    output_range: [-75, 125]
+    expression: "per card: weak = +25 chips / +0.5 mult, resist = -15 chips, neutral = 0"
+    notes: "Element cycle: Fire > Earth > Lightning > Water > Fire. Enemy element=None
+      disables all interactions. Per-card, summed across played hand."
+    added: 2026-04-08
+    revised: ""
+
+  - name: relationship_gain
+    status: active
+    source: design/gdd/romance-social.md
+    referenced_by:
+      - design/gdd/romance-social.md
+    variables:
+      - base_RL
+      - streak_multiplier
+    output_range: [0, 15]
+    expression: "floor(base_RL x streak_multiplier)"
+    notes: "Camp interaction RL gain. base_RL varies by interaction type and mood.
+      Streak multiplier from stepped lookup table (1.0-1.5x, cap day 7).
+      Does NOT apply to dialogue deltas or captain gains."
+    added: 2026-04-09
+    revised: ""
+
+  - name: date_score
+    status: active
+    source: design/gdd/romance-social.md
+    referenced_by:
+      - design/gdd/romance-social.md
+    variables:
+      - round_RL
+      - mood_excited_bonus
+    output_range: [12, 40]
+    expression: "sum(round_RL[i] for i in 1..4) + mood_excited_bonus"
+    notes: "Date sub-system RL. 4 rounds, each awards 3/5/8 RL (disliked/neutral/liked).
+      Mood_Excited adds +2 per round (8 total). Streak multiplier applied to total."
+    added: 2026-04-09
+    revised: ""
+
+  - name: blessing_computation
+    status: active
+    source: design/gdd/divine-blessings.md
+    referenced_by:
+      - design/gdd/divine-blessings.md
+      - design/gdd/poker-combat.md
+    variables:
+      - blessing_chips
+      - blessing_mult
+      - hand_context
+    output_range: [0, 155]
+    expression: "sum(triggered_blessing.chips) and sum(triggered_blessing.mult) across captain's unlocked slots"
+    notes: "Per-hand evaluation. 20 unique blessings (5 per companion), each with
+      trigger conditions. Evaluated sequentially slots 1-5 (order matters for Nyx
+      Slot 4 synergy). Injects into combat_score_pipeline at blessing_chips/blessing_mult
+      positions. Max chips: 155 (Hipolita). Max mult: 14.5 (Atenea)."
+    added: 2026-04-09
+    revised: ""
 
 # Example:
 #
@@ -139,7 +246,97 @@ formulas: []
 #
 # Required fields: name, status, source, referenced_by, value, unit, added
 
-constants: []
+constants:
+  - name: ELEMENT_WEAKNESS_CHIPS
+    status: active
+    source: design/gdd/poker-combat.md
+    referenced_by:
+      - design/gdd/poker-combat.md
+    value: 25
+    unit: chips_per_card
+    added: 2026-04-08
+    revised: ""
+
+  - name: ELEMENT_WEAKNESS_MULT
+    status: active
+    source: design/gdd/poker-combat.md
+    referenced_by:
+      - design/gdd/poker-combat.md
+    value: 0.5
+    unit: additive_mult_per_card
+    added: 2026-04-08
+    revised: ""
+
+  - name: ELEMENT_RESIST_CHIPS
+    status: active
+    source: design/gdd/poker-combat.md
+    referenced_by:
+      - design/gdd/poker-combat.md
+    value: -15
+    unit: chips_per_card
+    added: 2026-04-08
+    revised: ""
+
+  - name: DEFAULT_HANDS_ALLOWED
+    status: active
+    source: design/gdd/poker-combat.md
+    referenced_by:
+      - design/gdd/poker-combat.md
+    value: 4
+    unit: hands
+    added: 2026-04-08
+    revised: ""
+
+  - name: DEFAULT_DISCARDS_ALLOWED
+    status: active
+    source: design/gdd/poker-combat.md
+    referenced_by:
+      - design/gdd/poker-combat.md
+    value: 4
+    unit: discards
+    added: 2026-04-08
+    revised: ""
+
+  - name: DAILY_TOKENS
+    status: active
+    source: design/gdd/romance-social.md
+    referenced_by:
+      - design/gdd/romance-social.md
+    value: 3
+    unit: tokens_per_day
+    added: 2026-04-09
+    revised: ""
+
+  - name: CAPTAIN_GAIN_BASE
+    status: active
+    source: design/gdd/romance-social.md
+    referenced_by:
+      - design/gdd/romance-social.md
+      - design/gdd/poker-combat.md
+    value: 1
+    unit: relationship_points
+    added: 2026-04-09
+    revised: ""
+
+  - name: STREAK_CAP_MULTIPLIER
+    status: active
+    source: design/gdd/romance-social.md
+    referenced_by:
+      - design/gdd/romance-social.md
+    value: 1.50
+    unit: multiplier
+    added: 2026-04-09
+    revised: ""
+
+  - name: INTIMACY_RL_BONUS
+    status: active
+    source: design/gdd/romance-social.md
+    referenced_by:
+      - design/gdd/romance-social.md
+    value: 10
+    unit: relationship_points
+    added: 2026-04-09
+    revised: ""
 
 # Example:
 #

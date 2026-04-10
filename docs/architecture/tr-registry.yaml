@@ -24,33 +24,2003 @@
 #
 # STATUS VALUES: active | deprecated | superseded-by: TR-[system]-NNN
 
-version: 1
-last_updated: ""
+version: 3
+last_updated: "2026-04-09"
 
-requirements: []
+requirements:
 
-# --- EXAMPLE ENTRIES (remove when first real entries are added) ---
-#
-# - id: TR-combat-001
-#   system: combat
-#   gdd: design/gdd/combat-system.md
-#   requirement: "Player takes damage from enemies based on attack power minus defence"
-#   created: 2026-03-10
-#   revised: ""
-#   status: active
-#
-# - id: TR-combat-002
-#   system: combat
-#   gdd: design/gdd/combat-system.md
-#   requirement: "Combo window timing is 0.4 seconds between hits"
-#   created: 2026-03-10
-#   revised: "2026-04-01"
-#   status: active
-#
-# - id: TR-combat-003
-#   system: combat
-#   gdd: design/gdd/combat-system.md
-#   requirement: "Old damage formula using raw stats"
-#   created: 2026-03-10
-#   revised: ""
-#   status: superseded-by: TR-combat-001
+  # ── Companion Data (Foundation) ──────────────────────────
+
+  - id: TR-companion-data-001
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Companion registry as immutable static dictionary keyed by string ID"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-002
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Mutable companion state record per companion persisted via Save System"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-003
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Romance stage derived from relationship_level via threshold array; stage never decreases"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-004
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Portrait path convention with 6 mood variants per companion; fallback to neutral then placeholder"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-005
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Element-to-suit mapping (Fire=Hearts, Water=Diamonds, Earth=Clubs, Lightning=Spades) as shared enum"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-006
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Stage transition emits romance_stage_changed signal for downstream systems"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-007
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Save migration: create default state for missing companions on load; ignore unknown IDs"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-008
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "All companion values data-driven; no hardcoded stats, thresholds, or portrait paths"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-009
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Companion data lookup within 1ms (dictionary access)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-010
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Clamp relationship_level to [0, 100] on any write"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Enemy Data (Foundation) ──────────────────────────────
+
+  - id: TR-enemy-data-001
+    system: enemy-data
+    gdd: design/gdd/enemy-data.md
+    requirement: "Enemy registry as static dictionary with schema: id, name_key, hp, score_threshold, element, chapter, context, type, attack, portrait_key"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-data-002
+    system: enemy-data
+    gdd: design/gdd/enemy-data.md
+    requirement: "Enemy display names via Localization translation keys (ENEMY_* prefix); raw key as fallback"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-data-003
+    system: enemy-data
+    gdd: design/gdd/enemy-data.md
+    requirement: "Enemy type enum: Normal, Boss, Duel, Abyss"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-data-004
+    system: enemy-data
+    gdd: design/gdd/enemy-data.md
+    requirement: "Attack derivation formula: floor(hp * ATTACK_RATIO) where ATTACK_RATIO is configurable"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-data-005
+    system: enemy-data
+    gdd: design/gdd/enemy-data.md
+    requirement: "Data validation: clamp score_threshold to hp if threshold > hp; treat hp <= 0 as instant victory"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-data-006
+    system: enemy-data
+    gdd: design/gdd/enemy-data.md
+    requirement: "All enemy HP, thresholds, and elements data-driven from config; no hardcoded values"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-data-007
+    system: enemy-data
+    gdd: design/gdd/enemy-data.md
+    requirement: "Enemy lookup within 1ms"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Save System (Foundation) ─────────────────────────────
+
+  - id: TR-save-system-001
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Single save slot at user://save.json with version-stamped JSON"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-002
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Serialization contract: each autoload implements to_dict() / from_dict()"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-003
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Dirty-flag per-frame autosave: set dirty flag, flush next _process()"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-004
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Atomic writes via temp file + rename to prevent corruption"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-005
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Version migration chain: v1->v2->...->current, adding default fields"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-006
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Combat state is ephemeral (NOT persisted mid-fight)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-007
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Corrupted save (invalid JSON) returns false from load_game(); does not delete file"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-008
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Save/load within 100ms for typical save file (< 1MB)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-009
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "All save paths and version numbers as configurable constants"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-010
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "New Game with existing save requires confirmation dialog before overwriting"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Localization (Foundation) ────────────────────────────
+
+  - id: TR-localization-001
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "Flat JSON string tables at res://i18n/{locale_code}.json; O(1) dictionary lookup"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-002
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "Single get_text(key, params) API as sole public entry point on singleton autoload"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-003
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "Parameter interpolation with {{name}} double-curly-brace syntax"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-004
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "Fallback chain: active locale -> English -> raw key; English always in memory"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-005
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "locale_changed signal on switch; all persistent UI nodes re-resolve strings"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-006
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "Synchronous locale switching within 16.6ms frame budget for ~120KB file"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-007
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "Memory footprint: two locale dictionaries under 1.2MB at 3000 keys"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-008
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "DialogueRunner must migrate from internal _translations cache to Localization autoload"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-009
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "No hardcoded player-facing strings in any consuming system"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-010
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "SUPPORTED_LOCALES array; switch_locale() validates code, loads table, emits signal"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── UI Theme (Foundation) ────────────────────────────────
+
+  - id: TR-ui-theme-001
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Single Godot Theme .tres resource inherited by all Control nodes"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-002
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Semantic color palette with 20+ named tokens"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-003
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Typography: Cinzel (display) + Nunito Sans (body) bundled as .tres FontFile resources"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-004
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Touch targets minimum 44x44px for all interactive elements; primary buttons 52px"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-005
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Thumb zone layout for 430x932 portrait: primary actions in bottom 560px"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-006
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Safe area handling via DisplayServer.get_display_safe_area()"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-007
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Screen transitions: fade through black 200ms out + 200ms in"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-008
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Button press feedback within 1 frame (16ms): scale 0.97 + color shift"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-009
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Haptic feedback: light 15ms, medium 30ms, heavy 50ms; graceful degradation"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-010
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Theme .tres load within 16.6ms (one frame) at startup"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-011
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "WCAG AA minimum contrast 4.5:1 for TEXT_PRIMARY on BG_PRIMARY"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-012
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "No ripple effect on buttons; scale-compression + color-shift is the feedback pattern"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-013
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Element colors with pre-baked foreground/background variants"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Scene Navigation (Foundation) ────────────────────────
+
+  - id: TR-scene-nav-001
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "SceneManager autoload with SceneId enum registry mapping all scenes to res:// paths"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-002
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Hub tab bar uses keep-alive hide/show for tabs 1-4; no SceneManager call"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-003
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Settings as CanvasLayer overlay at layer 50; underlying scene not freed"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-004
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Transition guard: silently drop change_scene() calls during active transition"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-005
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Input blocking during transitions via MOUSE_FILTER_STOP on overlay"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-006
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Context payload dictionary on change_scene(); read-once via get_arrival_context()"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-007
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Signal contract: scene_changed(scene_id) after fade-in; transition_started before fade-out"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-008
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Android back button per-scene handling; SceneManager intercepts during OVERLAY_OPEN"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-009
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Scene state destroyed on full change; persistent state in autoload stores only"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-010
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Fade transition overlay on CanvasLayer 100 parented to SceneManager autoload"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-011
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Error recovery: if .tscn load fails, fade back to previous scene, emit navigation_error"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-012
+    system: scene-nav
+    gdd: design/gdd/scene-navigation.md
+    requirement: "Transition duration under 1.5s; no frame drops below 30fps during fades"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Poker Combat (Core) ──────────────────────────────────
+
+  - id: TR-poker-combat-001
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Standard 52-card deck (4 suits x 13 values, Ace=14); suit-element mapping locked"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-002
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "10 poker hand ranks with defined base chips and base mult values"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-003
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Scoring pipeline: additive chips -> additive mult -> multiplicative mult -> floor"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-004
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Element weakness/resistance cycle with +25 chips/+0.5 mult (weakness), -15 chips (resistance)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-005
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Captain stat bonus: floor(STR*0.5) additive chips + (1.0 + INT*0.025) multiplicative mult"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-006
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Card enhancements: Foil (+50 chips), Holographic (+10 mult), Polychrome (x1.5 mult); one per card"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-007
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Combat state machine: SETUP->DRAW->SELECT->RESOLVE/DISCARD_DRAW->VICTORY/DEFEAT"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-008
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Victory check before defeat check in RESOLVE (victory short-circuits)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-009
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "combat_completed signal emitted with victory, score, hands_used"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-010
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Score unbounded (64-bit integers or sufficient float precision)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-011
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Deck exhaustion at DRAW (0 cards) = auto-defeat; < 5 cards = reduced hand"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-012
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Social buff integration: social_buff_chips + social_buff_mult read at combat start"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-013
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "blessing_chips and blessing_mult pipeline slots computed by Divine Blessings at RESOLVE"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-014
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Max 4 active GPU particle emitters; max 2 animated shaders; no bloom/glow (Mobile renderer)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-015
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Scoring cascade animation <2 seconds total; per-card 100ms resolution"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-016
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Card sorting toggle: by Value or by Suit; display-only"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-017
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Enemy config validation: hands_allowed >= 1, score_threshold >= 1 at data load"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-018
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Combat state NOT persisted; outcomes only persisted via autoload stores"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Dialogue (Core) ──────────────────────────────────────
+
+  - id: TR-dialogue-001
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Dialogue scripts as JSON files at res://assets/data/dialogue/{chapter_id}/{sequence_id}.json"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-002
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Node schema: speaker, speaker_type, text_key, mood, choices, next"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-003
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Choice schema: tier (standard/insight/cost), condition gating, effects array, next"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-004
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "All text resolution via Localization.get_text(); no internal translation cache"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-005
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Typewriter text animation at configurable CPS (default 40); tap-to-complete"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-006
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Portrait system: 200x400 on left; crossfade 0.15s between moods"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-007
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Choice panel: vertically stacked, 44px min height, max 4 visible choices"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-008
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Effect system: relationship, trust, flag_set, etc. emit signals, not direct state writes"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-009
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "State machine: Idle->Loading->Displaying->Waiting/Choosing->Resolving->Ended"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-010
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Root-level gates: requires_met, requires_romance_stage, requires_flag"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-011
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Text length limit 280 characters per node; truncate at word boundary"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-012
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Pacing constraints: 6-line cap between interactions; 12-line max between choices"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-013
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Rapid tap handling: first tap completes typewriter; subsequent same-frame taps ignored"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-014
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Screen reader support via AccessKit (Godot 4.5+)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-015
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Dialogue is stateless between sequences; persistent state via Story Flow or R&S signals"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Deck Management (Core) ───────────────────────────────
+
+  - id: TR-deck-mgmt-001
+    system: deck-mgmt
+    gdd: design/gdd/deck-management.md
+    requirement: "Captain selection flow: highlight -> confirm -> lock; only met companions selectable"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-002
+    system: deck-mgmt
+    gdd: design/gdd/deck-management.md
+    requirement: "combat_configured signal: captain_id, captain_chip_bonus, captain_mult_bonus, deck"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-003
+    system: deck-mgmt
+    gdd: design/gdd/deck-management.md
+    requirement: "Deck Viewer: 52 cards sorted by suit-then-value; signature cards distinguished; read-only in Story Mode"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-004
+    system: deck-mgmt
+    gdd: design/gdd/deck-management.md
+    requirement: "Deck shuffled once at handoff (randomize() + shuffle()); not re-shuffled on viewer"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-005
+    system: deck-mgmt
+    gdd: design/gdd/deck-management.md
+    requirement: "Abyss Mode extension contract: mutable deck API (get_deck, remove_card, add_card, enhance_card)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-006
+    system: deck-mgmt
+    gdd: design/gdd/deck-management.md
+    requirement: "last_captain_id persisted to SaveData; pre-selected on reopen"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-007
+    system: deck-mgmt
+    gdd: design/gdd/deck-management.md
+    requirement: "Story Mode / Abyss Mode flag read on init to determine edit controls visibility"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-008
+    system: deck-mgmt
+    gdd: design/gdd/deck-management.md
+    requirement: "CardData schema: suit, value, element, enhancement, is_signature, companion_id"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Romance & Social (Feature) ───────────────────────────
+
+  - id: TR-romance-social-001
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Daily token pool (3 tokens, UTC midnight reset); tokens do not carry over"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-002
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Streak multiplier: 5-tier lookup table [1.0, 1.1, 1.25, 1.4, 1.5]; camp gains only"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-003
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Companion mood state machine: Content/Happy/Lonely/Annoyed/Excited"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-004
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Date sub-system: 4 rounds, 3 activity options, static hidden preference weights"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-005
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "CombatBuff: per-stage lookup for social_buff_chips + social_buff_mult + combats_remaining"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-006
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Mood persistence: current_mood + mood_expiry_date stored; decay to Content on expiry"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-007
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Midnight UTC crossing detection while app is open: reset tokens, evaluate streak"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-008
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Device clock backward protection: negative date gaps treated as 0"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-009
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "romance_stage_changed(companion_id, old, new) signal; autosave triggered"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-010
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Dialogue relationship/trust deltas applied verbatim (no streak, no mood modifier)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-011
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Captain relationship gain: flat +1 RL on combat victory"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-012
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "CombatBuff persists across sessions (written to save data)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-013
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "companion_met(companion_id) signal for reactive UI updates"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-014
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "All RL writes clamp to [0, 100]; stage re-evaluated after every write"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-015
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Date romance_stage snapshotted at entry; live changes during date ignored"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-016
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Visual/audio feedback: portrait crossfades, particle effects, stage advance ceremony"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Story Flow (Feature) ─────────────────────────────────
+
+  - id: TR-story-flow-001
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Chapter data as JSON files at res://assets/data/story/ch{NN}.json"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-002
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Node types: dialogue, combat, mixed, boss, reward, companion_unlock"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-003
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Story flags as write-once strings in GameStore.story_flags"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-004
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Node state machine: not_started -> in_progress -> completed; no backward transitions"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-005
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Linear node gating: requires_flags + previous node completed"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-006
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Combat defeat: retry mode (return to Chapter Map, unlimited retries, no penalty)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-007
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Reward distribution: atomic on node completion; gold + XP via GameStore; autosave"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-008
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Companion unlock: sets met=true on node completion + companion reveal animation"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-009
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Chapter completion: set flag, write current_chapter, emit chapter_completed signal"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-010
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Force-quit resilience: mixed/combat nodes resume from beginning"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-011
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Chapter JSON parsing within 50ms for 12-node chapter"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-012
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "No reward values, flag names, or node sequences hardcoded outside chapter JSON"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-013
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Missing chapter JSON shows 'To be continued' state; no crash"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Divine Blessings (Feature) ───────────────────────────
+
+  - id: TR-divine-blessings-001
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "20 blessings (5 per companion) with per-blessing trigger conditions"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-002
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Slot availability gated by romance stage: 0/1/2/4/5 slots per stage"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-003
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Captain lock: only active captain's blessings contribute; frozen at combat start"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-004
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "compute(hand_context) returns {blessing_chips, blessing_mult} called at RESOLVE"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-005
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Sequential slot evaluation order (1-5); Nyx Slot 4 depends on prior accumulated chips"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-006
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "hand_context dict from Poker Combat: cards_played, hand_rank, suit_counts, etc."
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-007
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Poker Combat must track discards_used and hands_played as combat state fields"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-008
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "All 20 blessings data-driven from config resource; no hardcoded values"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-009
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Blessing computation within 1ms per PLAY action"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-010
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Blessing VFX: subtle 0.2s icon pulse per hand; no full-screen interruption"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Camp (Feature) ───────────────────────────────────────
+
+  - id: TR-camp-001
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Camp as Hub sub-tab using keep-alive hide/show; tab switch < 1 frame"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-002
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Pure presentation layer: reads from Romance & Social API; owns no game logic"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-003
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Companion grid: 2-column scrollable, met companions only; reactive on companion_met"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-004
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Gift picker as in-Camp modal overlay (60% screen height bottom sheet)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-005
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Date launches full scene transition; return restores Camp tab via context payload"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-006
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Token pips: 3 gold pips, immediate update on spend; midnight reset via signal"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-007
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Gift picker 60fps open/close on 430x932 device"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-008
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Interaction buttons individually gated (greyed, non-tappable, not hidden)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Companion Data — New (2026-04-09 review) ─────────────
+
+  - id: TR-companion-data-011
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Companion state fields: motivation (int [0,100], initial 50) and known_likes/known_dislikes (Array[String]) stored per companion"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-012
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Base stats (STR, INT, AGI) are read-only integers in [1,30]; equipment modifiers tracked separately as additive"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-013
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "card_value field per companion for deck system face-card representation"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-companion-data-014
+    system: companion-data
+    gdd: design/gdd/companion-data.md
+    requirement: "Priestess NPC: separate from companion registry, no state record, portraits at res://assets/images/npcs/priestess/"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Enemy Data — New (2026-04-09 review) ─────────────────
+
+  - id: TR-enemy-data-008
+    system: enemy-data
+    gdd: design/gdd/enemy-data.md
+    requirement: "Abyss mode uses separate procedural scaling, not enemy registry directly"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-data-009
+    system: enemy-data
+    gdd: design/gdd/enemy-data.md
+    requirement: "Enemy element field is optional (nullable); None disables all element interactions"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Save System — New (2026-04-09 review) ────────────────
+
+  - id: TR-save-system-011
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "GameStore and SettingsStore as the two autoloads with to_dict()/from_dict() contracts"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-012
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Save file structure: {version, timestamp, game, settings} top-level keys"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-013
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Forward-compatibility: skip unrecognized keys when save version is newer than code"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-014
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "from_dict() handles missing keys with defaults; never crashes on partial data"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-015
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Splash screen checks has_save() to show Continue vs New Game"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-save-system-016
+    system: save-system
+    gdd: design/gdd/save-system.md
+    requirement: "Delete save: remove file, reset all autoload state to defaults, require confirmation"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Localization — New (2026-04-09 review) ───────────────
+
+  - id: TR-localization-011
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "Key naming convention: UPPER_SNAKE_CASE with system-specific prefixes (UI_, ENEMY_, COMP_, etc.)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-012
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "State machine: Uninitialized -> Loading -> Active; Fallback Active on non-English load failure"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-013
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "Unmatched placeholders remain literally in output (no recursive substitution)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-014
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "Settings Screen writes to SettingsStore.locale only after switch_locale() returns true"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-localization-015
+    system: localization
+    gdd: design/gdd/localization.md
+    requirement: "get_text() before autoload _ready() returns raw key without crash"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── UI Theme — New (2026-04-09 review) ───────────────────
+
+  - id: TR-ui-theme-014
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Cinzel never used below 18px; nothing below 11px anywhere"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-015
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Panel styles: standard (1px border, 8px radius), elevated (2px border, 12px radius, drop shadow)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-016
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Bottom sheet modals: slide up 250ms ease-out, swipe-down-to-dismiss at 40% drag threshold"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-017
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "No hardcoded color values in any scene file; all colors reference theme tokens"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-018
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "No font assignments outside the theme; all text uses theme-defined font tokens"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-019
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Screen transitions never clone or modify shared Theme resource at runtime"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-ui-theme-020
+    system: ui-theme
+    gdd: design/gdd/ui-theme.md
+    requirement: "Dialogue text always 18px Nunito Sans; never reduced for space"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Scene Navigation — New (2026-04-09 review) ───────────
+
+  - id: TR-scene-nav-013
+    system: scene-nav
+    gdd: design/gdd/scene-nav.md
+    requirement: "17 registered SceneId values (SPLASH through SETTINGS); Hub sub-tabs are not registered scenes"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-014
+    system: scene-nav
+    gdd: design/gdd/scene-nav.md
+    requirement: "Three transition types: FADE (0.3s each way), INSTANT (no animation), NONE (debug only)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-015
+    system: scene-nav
+    gdd: design/gdd/scene-nav.md
+    requirement: "State machine: IDLE -> FADING_OUT -> LOADING -> FADING_IN -> IDLE; OVERLAY_OPEN for settings"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-016
+    system: scene-nav
+    gdd: design/gdd/scene-nav.md
+    requirement: "Context cleared at start of every change_scene() call, not only on read"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-scene-nav-017
+    system: scene-nav
+    gdd: design/gdd/scene-nav.md
+    requirement: "_previous_scene_id tracks one-level back; no deep back-stack"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Poker Combat — New (2026-04-09 review) ───────────────
+
+  - id: TR-poker-combat-019
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Per-card chips formula: 2-10=face value, J/Q/K=10, Ace=11"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-020
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Element cycle: Fire > Earth > Lightning > Water > Fire"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-021
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "total_chips clamped to min 1; additive_mult clamped to min 1.0"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-022
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Flush and Straight require exactly 5 cards; fewer-card plays max at Four of a Kind"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-023
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "A-2-3-4-5 wheel recognized as valid Straight"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-024
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Discard 1-5 cards (0 invalid); replacements drawn immediately; decrement discards_remaining"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-025
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Social buff consumed on victory (combats_remaining - 1), retained on defeat"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-026
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Enemy config includes hands_allowed (default 4) and discards_allowed (default 4)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-027
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Signature cards tagged with companion_id but play identically to normal cards"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-028
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Combat screen layout: Enemy Info (0-120px), Scoring Tray (120-420px), Hand Area (420-800px), Action Bar (800-932px)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-029
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Card size 64x90px minimum tap target in hand area; PLAY/DISCARD buttons 190x56px"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-030
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "HP bar: full-width, 8px height, red fill + gold score overlay with 600ms ease-out animation"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-031
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Score numbers use tabular/monospace figures (no layout shift during counting)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-032
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Element icons pair color with shape (flame, drop, leaf, bolt) -- color never sole indicator"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-poker-combat-033
+    system: poker-combat
+    gdd: design/gdd/poker-combat.md
+    requirement: "Two-layer dynamic BGM: base drone always, tension drum scales with hands_remaining"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Dialogue — New (2026-04-09 review) ───────────────────
+
+  - id: TR-dialogue-016
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Four speaker types: companion (portrait+mood), npc (portrait, no state), narrator (centered italic, no portrait), environment (distinct panel, icon)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-017
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "dialogue_ended(sequence_id) and dialogue_blocked(sequence_id, reason) signals for Story Flow"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-018
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Choice conditions: romance_stage, met, flag_set, flag_not_set, trust_min; evaluated at render time"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-019
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Effect types: relationship, trust, flag_set, flag_clear, item_grant, mood_set"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-020
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Pause markers {pause:N} in text (N=0.1-3.0); stripped from visible output"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-021
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Choice panel slide-in 0.25s ease-out; tap during animation buffered until complete"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-022
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Failed choice conditions hide choice entirely (not greyed); all-fail ends sequence"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-023
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "start_dialogue() rejected while not in Idle; active sequence continues"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-024
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Dialogue load to first character rendered within 100ms on target mobile"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-dialogue-025
+    system: dialogue
+    gdd: design/gdd/dialogue.md
+    requirement: "Priestess NPC: portrait at res://assets/images/npcs/priestess/priestess_{mood}.png; name via get_text('COMP_PRIESTESS')"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Deck Management — New (2026-04-09 review) ────────────
+
+  - id: TR-deck-mgmt-009
+    system: deck-mgmt
+    gdd: design/gdd/deck-mgmt.md
+    requirement: "State machine: CAPTAIN_SELECT -> COMPANION_HIGHLIGHTED -> CAPTAIN_CONFIRMED -> DECK_VIEWER -> HANDOFF_EMITTED"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-010
+    system: deck-mgmt
+    gdd: design/gdd/deck-mgmt.md
+    requirement: "No captain confirmed = Confirm button disabled; player cannot proceed to combat without captain"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-011
+    system: deck-mgmt
+    gdd: design/gdd/deck-mgmt.md
+    requirement: "Unmet companions visually greyed and non-tappable; all 4 shown"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-012
+    system: deck-mgmt
+    gdd: design/gdd/deck-mgmt.md
+    requirement: "Cancel returns to previous screen without emitting combat_configured"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-013
+    system: deck-mgmt
+    gdd: design/gdd/deck-mgmt.md
+    requirement: "Captain stat bonus computed by Deck Management using Poker Combat formulas and passed in signal"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-deck-mgmt-014
+    system: deck-mgmt
+    gdd: design/gdd/deck-mgmt.md
+    requirement: "Signature card cosmetic overlay: companion portrait + element glow on matching suit+value card"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Romance & Social — New (2026-04-09 review) ───────────
+
+  - id: TR-romance-social-017
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Talk base RL=3 (Happy +4); Gift RL=2 liked/1 neutral/0 disliked; mood modifies Gift outcomes"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-018
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Relationship gain formula: floor(base_RL x streak_multiplier); min 1 except base-0 stays 0"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-019
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Mood priority: Excited > Happy > Annoyed > Lonely > Content; highest wins on simultaneous triggers"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-020
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "CombatBuff replacement rule: replace if (new_chips + new_mult) > (old_chips + old_mult)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-021
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Gift preference discovery only through dates, not gifts"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-022
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Date activity categories drawn with replacement; 6 categories (romantic, active, intellectual, domestic, adventure, artistic)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-023
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Streak increments on gap=1 day; resets on gap >= 2 days; first session ever = streak 1"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-024
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "romance_stage_changed queued during active dialogue; applied after dialogue_ended"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-025
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Camp interaction processing within 16ms (one frame at 60fps)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-026
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "All relationship values, streak thresholds, buff values, mood durations data-driven from config"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-027
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Stage re-evaluation on save load to catch data desync (RL >= threshold but stage lower)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-romance-social-028
+    system: romance-social
+    gdd: design/gdd/romance-social.md
+    requirement: "Additional companion state fields persisted: current_mood, mood_expiry_date, current_streak, last_interaction_date, daily_tokens_remaining, active_combat_buff"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Story Flow — New (2026-04-09 review) ─────────────────
+
+  - id: TR-story-flow-014
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Chapter node schema: id, type, title_key, sequence_id, enemy_id, defeat_mode, post_combat_sequence_id, requires_flags, sets_flags, unlocks_companions, reward, next"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-015
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Dialogue set_flag effects may only set flags declared in the active node's sets_flags; undeclared flags dropped with warning"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-016
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Node states persisted: node_states dict + current_node_id + story_flags + player_gold + player_xp in GameStore"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-017
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Chapter 1 defines 10 nodes (ch01_n00 through ch01_n09) with 11 canonical flags"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-018
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Boss nodes signal boss music + boss HP bar activation"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-019
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Completed nodes greyed and non-tappable on Chapter Map; no re-entry"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-020
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Reward panel: slide-up, gold + XP display; 3s auto-dismiss or tap"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-story-flow-021
+    system: story-flow
+    gdd: design/gdd/story-flow.md
+    requirement: "Continue defeat mode (reserved): story continues on defeat with defeat-variant flag; not used in Chapter 1"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Divine Blessings — New (2026-04-09 review) ───────────
+
+  - id: TR-divine-blessings-011
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Per-card variable blessings: Artemisa +8/Club, Hipolita +10/Heart, Atenea +0.8 mult/Spade, Nyx +7/Diamond"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-012
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "hand_context must include: cards_played, hand_rank, suit_counts, current_score, hands_played, discards_used, discards_remaining, discards_allowed"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-013
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Blessing states: LOCKED, UNLOCKED, ACTIVE, INACTIVE_TRIGGER; transitions on romance_stage_changed and captain selection"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-014
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Unlock state derived from romance_stage (already persisted); no additional save data needed"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-015
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Combat HUD: 1-5 icons (32x32px) stacked vertically on left edge; opacity 100% triggered / 40% not"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-016
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "Long-press on blessing icon pauses game and shows tooltip"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-divine-blessings-017
+    system: divine-blessings
+    gdd: design/gdd/divine-blessings.md
+    requirement: "blessing_chips and blessing_mult computed fresh each PLAY; do not persist across turns"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  # ── Camp — New (2026-04-09 review) ───────────────────────
+
+  - id: TR-camp-009
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "R&S API calls: get_token_count(), get_streak(), get_companion_state(id), do_talk(id), do_gift(id, item), start_date(id)"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-010
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "No companions met state: show story-flavored prompt, no grid, no buttons"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-011
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Tokens exhausted: buttons disabled, 'Come back tomorrow' label replaces interaction area"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-012
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Grid cards >= 88x88px; gift picker items >= 44x44px touch targets"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-013
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Known likes/dislikes preference hint icons only rendered when romance_stage >= 2"
+    created: "2026-04-09"
+    revised: ""
+    status: active
+
+  - id: TR-camp-014
+    system: camp
+    gdd: design/gdd/camp.md
+    requirement: "Camp depends on Gift Items data (gift_items.json); Gift button disabled if no giftable items"
+    created: "2026-04-09"
+    revised: ""
+    status: active
