@@ -142,7 +142,8 @@ func test_load_game_restores_game_store_combat_buff_after_save() -> void:
 	# Assert
 	var restored: Dictionary = GameStore.get_combat_buff()
 	assert_bool(restored.is_empty()).is_false()
-	assert_int(restored.get("chips", 0)).is_equal(200)
+	# JSON round-trip converts int to float — cast back for assertion
+	assert_int(int(restored.get("chips", 0))).is_equal(200)
 
 func test_load_game_restores_settings_store_locale_after_save() -> void:
 	# Arrange

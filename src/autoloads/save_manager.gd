@@ -60,7 +60,7 @@ func load_game() -> bool:
 	if error != OK:
 		push_error("SaveManager: JSON parse error: " + json.get_error_message())
 		return false
-	var data: Dictionary = json.data
+	var data = json.data
 	if not data is Dictionary:
 		push_error("SaveManager: save data is not a Dictionary")
 		return false

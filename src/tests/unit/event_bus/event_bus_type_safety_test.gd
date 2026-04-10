@@ -262,9 +262,15 @@ func test_event_bus_type_safety_romance_stage_changed_companion_id_delivered() -
 # ---------------------------------------------------------------------------
 
 var _tokens_reset_called: bool = false
+## Second listener flag for multi-listener test. Class-level to avoid GdUnit4
+## closure capture issue where local vars in signal lambdas are not updated.
+var _tokens_reset_second_called: bool = false
 
 func _on_tokens_reset() -> void:
 	_tokens_reset_called = true
+
+func _on_tokens_reset_second() -> void:
+	_tokens_reset_second_called = true
 
 func test_event_bus_type_safety_tokens_reset_listener_is_called() -> void:
 	# Arrange
@@ -290,20 +296,20 @@ func test_event_bus_type_safety_tokens_reset_listener_not_called_before_emit() -
 	assert_bool(_tokens_reset_called).is_false()
 
 func test_event_bus_type_safety_tokens_reset_multiple_listeners_all_called() -> void:
-	# Arrange — second independent flag
+	# Arrange — second independent flag (class-level to avoid closure capture issue)
 	var bus = _make_bus()
 	_tokens_reset_called = false
-	var second_called: bool = false
+	_tokens_reset_second_called = false
 
 	bus.tokens_reset.connect(_on_tokens_reset)
-	bus.tokens_reset.connect(func() -> void: second_called = true)
+	bus.tokens_reset.connect(_on_tokens_reset_second)
 
 	# Act
 	bus.tokens_reset.emit()
 
 	# Assert — both listeners were invoked
 	assert_bool(_tokens_reset_called).is_true()
-	assert_bool(second_called).is_true()
+	assert_bool(_tokens_reset_second_called).is_true()
 
 # ---------------------------------------------------------------------------
 # AC5 — all signals accessible and callable on a fresh EventBus instance

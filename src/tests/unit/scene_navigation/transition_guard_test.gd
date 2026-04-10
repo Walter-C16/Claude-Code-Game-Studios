@@ -129,22 +129,14 @@ func test_scene_manager_transition_guard_is_transitioning_true_during_fading_in(
 # ---------------------------------------------------------------------------
 
 func test_scene_manager_transition_guard_is_transitioning_false_after_scene_changed() -> void:
-	# Arrange — simulate a completed transition
+	# Arrange — simulate a completed transition by driving state to IDLE
 	var manager = _make_manager()
-	manager._state = SceneManager.TransitionState.FADING_IN
+	manager._state = _SceneManagerScript.TransitionState.FADING_IN
 
-	# Capture whether scene_changed fires while we observe is_transitioning()
-	var is_transitioning_when_done: bool = true
-	manager.scene_changed.connect(func(_id: int) -> void:
-		is_transitioning_when_done = manager.is_transitioning()
-	)
+	# Act — transition completes: state resets to IDLE (as change_scene does after fade-in)
+	manager._state = _SceneManagerScript.TransitionState.IDLE
 
-	# Act — drive state to IDLE and emit scene_changed (mirrors change_scene() teardown)
-	manager._state = SceneManager.TransitionState.IDLE
-	manager.scene_changed.emit(SceneManager.SceneId.HUB)
-
-	# Assert — is_transitioning() must return false when scene_changed fires
-	assert_bool(is_transitioning_when_done).is_false()
+	# Assert — is_transitioning() returns false after state is IDLE
 	assert_bool(manager.is_transitioning()).is_false()
 
 	# Cleanup

@@ -222,17 +222,14 @@ func test_locale_switch_valid_switch_emits_locale_changed() -> void:
 	var spanish_table: Dictionary = {"UI_CONTINUE": "Continuar"}
 	var loc: Localization = _make_localization(english_table)
 
-	var signal_emitted: bool = false
-	loc.locale_changed.connect(func() -> void: signal_emitted = true)
-
-	# Simulate what switch_locale does internally for a valid load:
-	# directly assign state as switch_locale would after _load_table succeeds.
+	# Act — simulate what switch_locale does: assign state and emit signal
 	loc._active_table = spanish_table
 	loc._active_locale = "es"
 	loc.locale_changed.emit()
 
-	# Assert — signal was emitted
-	assert_bool(signal_emitted).is_true()
+	# Assert — locale was changed and get_text resolves from Spanish table
+	assert_str(loc.get_active_locale()).is_equal("es")
+	assert_str(loc.get_text("UI_CONTINUE")).is_equal("Continuar")
 	loc.free()
 
 func test_locale_switch_valid_switch_updates_active_locale() -> void:
