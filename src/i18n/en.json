@@ -1104,10 +1104,6 @@
   "S06_HIPO_12B": "Surprised? Get used to it. I take what I want, and right now... I want you.",
   "S06_NAR_05": "Hippolyta takes your hand â€” her grip iron-strong and warm â€” and leads you toward the stairs. Artemis watches from the corner, her silver eyes unreadable, a faint smile on her lips.",
   "S06_HIPO_13": "Close the door behind you. And forget the word 'gentle.'",
-  "ENEMY_FOREST_MONSTER": "Forest Beasts",
-  "ENEMY_TEMPLE_BEAST": "Temple Guardian",
-  "ENEMY_CYCLOPS": "Cyclops",
-  "ENEMY_GAIA_SPIRIT": "Gaia's Wrath",
   "S07_NAR_01": "The village square is crowded. Torches flicker against weathered stone as the council gathers beneath the ancient oak.",
   "S07_NAR_02": "Artemis and Hippolyta stand at your side. The village leader steps forward, his face carved deep with worry.",
   "S07_VL_01": "Thank you all for coming. I wish I bore better tidings.",
@@ -1200,5 +1196,9 @@
   "S09_SED_8": "Time loses meaning beneath the ancient branches. The priestess gives herself completely â€” every touch carrying the weight of centuries of loneliness finally broken.",
   "S09_SED_9": "Thank you... truly. You've given me something no fragment of Gaia could ever provide.",
   "S09_SED_10": "As dawn breaks through the temple canopy, the priestess rests against you, her golden glow dimming to a peaceful warmth. The journey to Thebes awaits, but for now, this moment belongs only to you both.",
-  "UI_SETTINGS": "Settings"
+  "UI_SETTINGS": "Settings",
+  "ENEMY_FOREST_MONSTER": "Forest Monster",
+  "ENEMY_MOUNTAIN_BEAST": "Mountain Beast",
+  "ENEMY_AMAZON_CHALLENGER": "Amazon Challenger",
+  "ENEMY_GAIA_SPIRIT": "Gaia Spirit"
 }

@@ -1,0 +1,51 @@
+{
+  "config": {
+    "ATTACK_RATIO": 0.1
+  },
+  "enemies": [
+    {
+      "id": "forest_monster",
+      "name_key": "ENEMY_FOREST_MONSTER",
+      "hp": 40,
+      "score_threshold": 40,
+      "element": null,
+      "type": "Normal",
+      "chapter": "chapter_1",
+      "context": "Prologue tutorial",
+      "portrait_key": "forest_monster"
+    },
+    {
+      "id": "mountain_beast",
+      "name_key": "ENEMY_MOUNTAIN_BEAST",
+      "hp": 80,
+      "score_threshold": 50,
+      "element": null,
+      "type": "Normal",
+      "chapter": "chapter_1",
+      "context": "Act 1 encounter",
+      "portrait_key": "mountain_beast"
+    },
+    {
+      "id": "amazon_challenger",
+      "name_key": "ENEMY_AMAZON_CHALLENGER",
+      "hp": 100,
+      "score_threshold": 80,
+      "element": "Fire",
+      "type": "Duel",
+      "chapter": "chapter_1",
+      "context": "Amazon camp duel",
+      "portrait_key": "amazon_challenger"
+    },
+    {
+      "id": "gaia_spirit",
+      "name_key": "ENEMY_GAIA_SPIRIT",
+      "hp": 250,
+      "score_threshold": 130,
+      "element": "Earth",
+      "type": "Boss",
+      "chapter": "chapter_1",
+      "context": "Chapter 1 boss",
+      "portrait_key": "gaia_spirit"
+    }
+  ]
+}

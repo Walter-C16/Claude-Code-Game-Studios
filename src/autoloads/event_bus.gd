@@ -50,6 +50,10 @@ signal trust_changed(companion_id: String, delta: int)
 ## Fired when a companion is encountered for the first time via a dialogue effect.
 signal companion_met(companion_id: String)
 
+## Fired when a dialogue effect grants an item to the player.
+## quantity is the number of items granted (always >= 1).
+signal item_granted(item_id: String, quantity: int)
+
 # ── Story Signals ────────────────────────────────────────────────────────────
 # Emitted by: StoryFlow
 # Listeners:  UI layer, SaveManager (deferred flush trigger)

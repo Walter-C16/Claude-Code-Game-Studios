@@ -1,0 +1,978 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites id="2026-04-10" name="report_5" tests="464" failures="10" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="event_bus_wiring_test" package="tests/integration/event_bus" timestamp="2026-04-10T18:52:19" hostname="localhost" tests="16" failures="0" errors="0" skipped="0" flaky="0" time="3.514">
+		<testcase name="test_event_bus_wiring_eventbus_appears_after_gamestore" classname="event_bus_wiring_test" time="0.092">
+		</testcase>
+		<testcase name="test_event_bus_wiring_eventbus_appears_after_settingsstore" classname="event_bus_wiring_test" time="0.092">
+		</testcase>
+		<testcase name="test_event_bus_wiring_eventbus_appears_before_scenemanager" classname="event_bus_wiring_test" time="0.093">
+		</testcase>
+		<testcase name="test_event_bus_wiring_eventbus_present_in_autoload_section" classname="event_bus_wiring_test" time="0.095">
+		</testcase>
+		<testcase name="test_event_bus_wiring_gamestore_is_first_autoload" classname="event_bus_wiring_test" time="0.092">
+		</testcase>
+		<testcase name="test_event_bus_wiring_settingsstore_is_second_autoload" classname="event_bus_wiring_test" time="0.093">
+		</testcase>
+		<testcase name="test_event_bus_wiring_eventbus_is_third_autoload" classname="event_bus_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_event_bus_wiring_eventbus_has_no_ready_method" classname="event_bus_wiring_test" time="0.093">
+		</testcase>
+		<testcase name="test_event_bus_wiring_eventbus_source_contains_no_autoload_references" classname="event_bus_wiring_test" time="0.093">
+		</testcase>
+		<testcase name="test_event_bus_wiring_no_change_scene_to_file_outside_scene_manager" classname="event_bus_wiring_test" time="0.099">
+		</testcase>
+		<testcase name="test_event_bus_wiring_no_core_layer_imports_feature_layer" classname="event_bus_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_event_bus_wiring_dialogue_runner_signal_reaches_romance_social" classname="event_bus_wiring_test" time="0.093">
+		</testcase>
+		<testcase name="test_event_bus_wiring_relay_delivers_negative_delta_correctly" classname="event_bus_wiring_test" time="0.095">
+		</testcase>
+		<testcase name="test_event_bus_wiring_multiple_emissions_each_delivered" classname="event_bus_wiring_test" time="0.093">
+		</testcase>
+		<testcase name="test_event_bus_wiring_relay_no_listener_no_error" classname="event_bus_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_event_bus_wiring_runner_and_social_share_no_direct_reference" classname="event_bus_wiring_test" time="0.093">
+		</testcase>
+	</testsuite>
+	<testsuite id="1" name="boot_order_test" package="tests/integration/game_store" timestamp="2026-04-10T18:52:23" hostname="localhost" tests="16" failures="0" errors="0" skipped="0" flaky="0" time="3.521">
+		<testcase name="test_boot_order_game_store_appears_before_settings_store" classname="boot_order_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_order_settings_store_appears_before_event_bus" classname="boot_order_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_order_game_store_appears_before_event_bus" classname="boot_order_test" time="0.093">
+		</testcase>
+		<testcase name="test_boot_order_game_store_ready_does_not_reference_settings_store" classname="boot_order_test" time="0.095">
+		</testcase>
+		<testcase name="test_boot_order_game_store_ready_does_not_reference_event_bus" classname="boot_order_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_order_game_store_ready_does_not_reference_save_manager" classname="boot_order_test" time="0.093">
+		</testcase>
+		<testcase name="test_boot_order_game_store_ready_does_not_reference_scene_manager" classname="boot_order_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_order_game_store_ready_does_not_reference_localization" classname="boot_order_test" time="0.093">
+		</testcase>
+		<testcase name="test_boot_order_settings_store_ready_does_not_reference_game_store" classname="boot_order_test" time="0.093">
+		</testcase>
+		<testcase name="test_boot_order_settings_store_ready_does_not_reference_event_bus" classname="boot_order_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_order_settings_store_ready_does_not_reference_save_manager" classname="boot_order_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_order_settings_store_ready_does_not_reference_scene_manager" classname="boot_order_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_order_settings_store_ready_does_not_reference_localization" classname="boot_order_test" time="0.093">
+		</testcase>
+		<testcase name="test_boot_order_game_store_state_changed_signal_exists" classname="boot_order_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_order_game_store_state_changed_is_connectable" classname="boot_order_test" time="0.096">
+		</testcase>
+		<testcase name="test_boot_order_game_store_state_changed_signal_has_key_parameter" classname="boot_order_test" time="0.093">
+		</testcase>
+	</testsuite>
+	<testsuite id="2" name="boot_wiring_test" package="tests/integration/localization" timestamp="2026-04-10T18:52:27" hostname="localhost" tests="12" failures="0" errors="0" skipped="0" flaky="0" time="2.637">
+		<testcase name="test_boot_wiring_localization_appears_after_event_bus" classname="boot_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_wiring_localization_appears_before_save_manager" classname="boot_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_wiring_localization_is_registered_as_autoload" classname="boot_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_wiring_ready_body_references_settings_store" classname="boot_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_wiring_ready_body_calls_get_locale" classname="boot_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_wiring_ready_body_calls_switch_locale" classname="boot_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_wiring_dialogue_runner_has_no_translations_dict" classname="boot_wiring_test" time="0.096">
+		</testcase>
+		<testcase name="test_boot_wiring_dialogue_runner_does_not_read_i18n_directly" classname="boot_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_wiring_dialogue_runner_has_no_ensure_translations" classname="boot_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_wiring_dialogue_runner_calls_localization_get_text" classname="boot_wiring_test" time="0.093">
+		</testcase>
+		<testcase name="test_boot_wiring_localization_get_text_resolves_ui_new_game" classname="boot_wiring_test" time="0.094">
+		</testcase>
+		<testcase name="test_boot_wiring_localization_get_text_returns_string_type" classname="boot_wiring_test" time="0.094">
+		</testcase>
+	</testsuite>
+	<testsuite id="3" name="continuous_persistence_test" package="tests/integration/save_system" timestamp="2026-04-10T18:52:29" hostname="localhost" tests="20" failures="0" errors="0" skipped="0" flaky="0" time="4.388">
+		<testcase name="test_continuous_persistence_add_gold_creates_save_file_by_next_frame" classname="continuous_persistence_test" time="0.095">
+		</testcase>
+		<testcase name="test_continuous_persistence_add_gold_save_reflects_new_gold_value" classname="continuous_persistence_test" time="0.099">
+		</testcase>
+		<testcase name="test_continuous_persistence_add_gold_flags_cleared_after_flush" classname="continuous_persistence_test" time="0.096">
+		</testcase>
+		<testcase name="test_continuous_persistence_add_gold_save_contains_version_key" classname="continuous_persistence_test" time="0.095">
+		</testcase>
+		<testcase name="test_continuous_persistence_add_gold_save_version_equals_constant" classname="continuous_persistence_test" time="0.095">
+		</testcase>
+		<testcase name="test_continuous_persistence_three_setters_guard_raised_after_first" classname="continuous_persistence_test" time="0.096">
+		</testcase>
+		<testcase name="test_continuous_persistence_three_setters_guard_not_re_raised_on_second" classname="continuous_persistence_test" time="0.095">
+		</testcase>
+		<testcase name="test_continuous_persistence_three_setters_guard_not_re_raised_on_third" classname="continuous_persistence_test" time="0.094">
+		</testcase>
+		<testcase name="test_continuous_persistence_three_setters_single_flush_clears_flags" classname="continuous_persistence_test" time="0.095">
+		</testcase>
+		<testcase name="test_continuous_persistence_three_setters_all_values_in_single_save" classname="continuous_persistence_test" time="0.097">
+		</testcase>
+		<testcase name="test_continuous_persistence_three_setters_save_file_exists_after_flush" classname="continuous_persistence_test" time="0.095">
+		</testcase>
+		<testcase name="test_continuous_persistence_saved_game_dict_has_no_hand_key" classname="continuous_persistence_test" time="0.101">
+		</testcase>
+		<testcase name="test_continuous_persistence_saved_game_dict_has_no_deck_order_key" classname="continuous_persistence_test" time="0.095">
+		</testcase>
+		<testcase name="test_continuous_persistence_saved_game_dict_has_no_score_key" classname="continuous_persistence_test" time="0.094">
+		</testcase>
+		<testcase name="test_continuous_persistence_saved_game_dict_has_expected_persistent_keys" classname="continuous_persistence_test" time="0.094">
+		</testcase>
+		<testcase name="test_continuous_persistence_from_dict_leaves_dirty_false" classname="continuous_persistence_test" time="0.092">
+		</testcase>
+		<testcase name="test_continuous_persistence_from_dict_leaves_save_pending_false" classname="continuous_persistence_test" time="0.092">
+		</testcase>
+		<testcase name="test_continuous_persistence_from_dict_does_not_write_save_file" classname="continuous_persistence_test" time="0.094">
+		</testcase>
+		<testcase name="test_continuous_persistence_from_dict_still_loads_correct_gold_value" classname="continuous_persistence_test" time="0.092">
+		</testcase>
+		<testcase name="test_continuous_persistence_from_dict_clears_preexisting_dirty_flag" classname="continuous_persistence_test" time="0.094">
+		</testcase>
+	</testsuite>
+	<testsuite id="4" name="hub_tab_test" package="tests/integration/scene_navigation" timestamp="2026-04-10T18:52:34" hostname="localhost" tests="10" failures="3" errors="0" skipped="0" flaky="0" time="2.355">
+		<testcase name="test_hub_tab_switch_does_not_call_scene_manager_change_scene" classname="hub_tab_test" time="0.094">
+		</testcase>
+		<testcase name="test_hub_tab_switch_hides_old_tab_and_shows_new_tab" classname="hub_tab_test" time="0.094">
+		</testcase>
+		<testcase name="test_hub_tab_switch_only_one_tab_visible_at_a_time" classname="hub_tab_test" time="0.093">
+		</testcase>
+		<testcase name="test_hub_settings_tab_opens_settings_overlay" classname="hub_tab_test" time="0.140">
+		</testcase>
+		<testcase name="test_back_button_during_overlay_open_closes_overlay_and_returns_idle" classname="hub_tab_test" time="0.093">
+		</testcase>
+		<testcase name="test_back_button_during_idle_does_not_change_state" classname="hub_tab_test" time="0.094">
+		</testcase>
+		<testcase name="test_back_button_during_fading_out_does_not_close_overlay" classname="hub_tab_test" time="0.094">
+		</testcase>
+		<testcase name="test_navigation_error_signal_exists_on_scene_manager" classname="hub_tab_test" time="0.094">
+		</testcase>
+		<testcase name="test_navigation_error_emitted_and_state_returns_idle_after_error_path" classname="hub_tab_test" time="0.095">
+			<failure message="FAILED: res://tests/integration/scene_navigation/hub_tab_test.gd:252" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+			<failure message="FAILED: res://tests/integration/scene_navigation/hub_tab_test.gd:253" type="FAILURE">
+<![CDATA[
+Expecting:
+ '2'
+ but was
+ '-1'
+]]>
+			</failure>
+			<failure message="FAILED: res://tests/integration/scene_navigation/hub_tab_test.gd:254" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="5" name="settings_overlay_test" package="tests/integration/scene_navigation" timestamp="2026-04-10T18:52:36" hostname="localhost" tests="9" failures="0" errors="0" skipped="0" flaky="0" time="2.144">
+		<testcase name="test_settings_overlay_open_sets_state_to_overlay_open" classname="settings_overlay_test" time="0.124">
+		</testcase>
+		<testcase name="test_settings_overlay_open_adds_canvas_layer_at_layer_50" classname="settings_overlay_test" time="0.125">
+		</testcase>
+		<testcase name="test_settings_overlay_does_not_free_underlying_scene_node" classname="settings_overlay_test" time="0.140">
+		</testcase>
+		<testcase name="test_settings_overlay_change_scene_dropped_during_overlay_open" classname="settings_overlay_test" time="0.093">
+		</testcase>
+		<testcase name="test_settings_overlay_second_open_call_dropped_during_overlay_open" classname="settings_overlay_test" time="0.077">
+		</testcase>
+		<testcase name="test_settings_overlay_close_removes_settings_layer" classname="settings_overlay_test" time="0.095">
+		</testcase>
+		<testcase name="test_settings_overlay_close_returns_state_to_idle" classname="settings_overlay_test" time="0.097">
+		</testcase>
+		<testcase name="test_settings_overlay_open_does_not_emit_scene_changed" classname="settings_overlay_test" time="0.141">
+		</testcase>
+		<testcase name="test_settings_overlay_close_does_not_emit_scene_changed" classname="settings_overlay_test" time="0.094">
+		</testcase>
+	</testsuite>
+	<testsuite id="6" name="ui_theme_integration_test" package="tests/integration/ui_theme" timestamp="2026-04-10T18:52:39" hostname="localhost" tests="9" failures="1" errors="0" skipped="0" flaky="0" time="0.786">
+		<testcase name="test_no_theme_new_calls_in_src_scripts" classname="ui_theme_integration_test" time="0.094">
+		</testcase>
+		<testcase name="test_no_inline_theme_property_assignments_in_src_scripts" classname="ui_theme_integration_test" time="0.092">
+		</testcase>
+		<testcase name="test_dark_olympus_theme_tres_exists_at_canonical_path" classname="ui_theme_integration_test" time="0.094">
+			<failure message="FAILED: res://tests/integration/ui_theme/ui_theme_integration_test.gd:67" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="7" name="event_bus_declarations_test" package="tests/unit/event_bus" timestamp="2026-04-10T18:52:40" hostname="localhost" tests="21" failures="0" errors="0" skipped="0" flaky="0" time="7.386">
+		<testcase name="test_event_bus_declarations_has_romance_stage_changed_signal" classname="event_bus_declarations_test" time="0.096">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_tokens_reset_signal" classname="event_bus_declarations_test" time="0.096">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_combat_completed_signal" classname="event_bus_declarations_test" time="0.099">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_dialogue_ended_signal" classname="event_bus_declarations_test" time="0.098">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_dialogue_blocked_signal" classname="event_bus_declarations_test" time="0.101">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_relationship_changed_signal" classname="event_bus_declarations_test" time="0.103">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_trust_changed_signal" classname="event_bus_declarations_test" time="0.105">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_companion_met_signal" classname="event_bus_declarations_test" time="0.103">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_chapter_completed_signal" classname="event_bus_declarations_test" time="0.106">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_node_completed_signal" classname="event_bus_declarations_test" time="0.106">
+		</testcase>
+		<testcase name="test_event_bus_declarations_exactly_ten_signals_declared" classname="event_bus_declarations_test" time="0.109">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_no_process_method" classname="event_bus_declarations_test" time="0.109">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_no_physics_process_method" classname="event_bus_declarations_test" time="0.113">
+		</testcase>
+		<testcase name="test_event_bus_declarations_has_no_instance_variables" classname="event_bus_declarations_test" time="0.112">
+		</testcase>
+		<testcase name="test_event_bus_declarations_extends_node" classname="event_bus_declarations_test" time="0.113">
+		</testcase>
+		<testcase name="test_event_bus_declarations_is_not_a_reference_type" classname="event_bus_declarations_test" time="0.115">
+		</testcase>
+		<testcase name="test_event_bus_declarations_combat_completed_emits_expected_dict_keys" classname="event_bus_declarations_test" time="0.117">
+		</testcase>
+		<testcase name="test_event_bus_declarations_combat_completed_emits_correct_victory_value" classname="event_bus_declarations_test" time="0.117">
+		</testcase>
+		<testcase name="test_event_bus_declarations_combat_completed_emits_correct_score_value" classname="event_bus_declarations_test" time="0.119">
+		</testcase>
+		<testcase name="test_event_bus_declarations_combat_completed_emits_correct_captain_id" classname="event_bus_declarations_test" time="0.120">
+		</testcase>
+		<testcase name="test_event_bus_declarations_combat_completed_listener_receives_full_payload" classname="event_bus_declarations_test" time="0.123">
+		</testcase>
+	</testsuite>
+	<testsuite id="8" name="event_bus_type_safety_test" package="tests/unit/event_bus" timestamp="2026-04-10T18:52:47" hostname="localhost" tests="23" failures="1" errors="0" skipped="0" flaky="0" time="6.923">
+		<testcase name="test_event_bus_type_safety_relationship_changed_delivers_string_companion_id" classname="event_bus_type_safety_test" time="0.124">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_relationship_changed_delivers_int_delta" classname="event_bus_type_safety_test" time="0.125">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_relationship_changed_companion_id_type_is_string" classname="event_bus_type_safety_test" time="0.127">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_relationship_changed_delta_type_is_int" classname="event_bus_type_safety_test" time="0.128">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_relationship_changed_negative_delta_preserved" classname="event_bus_type_safety_test" time="0.131">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_combat_completed_delivers_full_dict_unchanged" classname="event_bus_type_safety_test" time="0.131">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_combat_completed_victory_value_preserved" classname="event_bus_type_safety_test" time="0.133">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_combat_completed_score_value_preserved" classname="event_bus_type_safety_test" time="0.136">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_combat_completed_hands_used_value_preserved" classname="event_bus_type_safety_test" time="0.136">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_combat_completed_captain_id_value_preserved" classname="event_bus_type_safety_test" time="0.135">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_romance_stage_changed_old_stage_type_is_int" classname="event_bus_type_safety_test" time="0.137">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_romance_stage_changed_new_stage_type_is_int" classname="event_bus_type_safety_test" time="0.139">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_romance_stage_changed_old_stage_value_correct" classname="event_bus_type_safety_test" time="0.139">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_romance_stage_changed_new_stage_value_correct" classname="event_bus_type_safety_test" time="0.140">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_romance_stage_changed_companion_id_delivered" classname="event_bus_type_safety_test" time="0.129">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_tokens_reset_listener_is_called" classname="event_bus_type_safety_test" time="0.147">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_tokens_reset_listener_not_called_before_emit" classname="event_bus_type_safety_test" time="0.147">
+		</testcase>
+		<testcase name="test_event_bus_type_safety_tokens_reset_multiple_listeners_all_called" classname="event_bus_type_safety_test" time="0.150">
+			<failure message="FAILED: res://tests/unit/event_bus/event_bus_type_safety_test.gd:306" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="9" name="game_store_dirty_flag_test" package="tests/unit/game_store" timestamp="2026-04-10T18:52:54" hostname="localhost" tests="26" failures="0" errors="0" skipped="0" flaky="0" time="10.836">
+		<testcase name="test_game_store_dirty_flag_multiple_setters_set_dirty_true" classname="game_store_dirty_flag_test" time="0.156">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_multiple_setters_set_save_pending_true" classname="game_store_dirty_flag_test" time="0.155">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_flush_save_resets_dirty_to_false" classname="game_store_dirty_flag_test" time="0.154">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_add_gold_sets_save_pending" classname="game_store_dirty_flag_test" time="0.156">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_set_flag_sets_save_pending" classname="game_store_dirty_flag_test" time="0.158">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_set_trust_sets_save_pending" classname="game_store_dirty_flag_test" time="0.165">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_set_met_sets_save_pending" classname="game_store_dirty_flag_test" time="0.160">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_set_mood_sets_save_pending" classname="game_store_dirty_flag_test" time="0.161">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_set_node_state_sets_save_pending" classname="game_store_dirty_flag_test" time="0.165">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_spend_gold_success_sets_save_pending" classname="game_store_dirty_flag_test" time="0.166">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_set_combat_buff_sets_save_pending" classname="game_store_dirty_flag_test" time="0.165">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_clear_combat_buff_sets_save_pending" classname="game_store_dirty_flag_test" time="0.166">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_spend_token_sets_save_pending" classname="game_store_dirty_flag_test" time="0.170">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_reset_tokens_sets_save_pending" classname="game_store_dirty_flag_test" time="0.170">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_set_streak_sets_save_pending" classname="game_store_dirty_flag_test" time="0.171">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_set_last_captain_id_sets_save_pending" classname="game_store_dirty_flag_test" time="0.175">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_set_relationship_level_internal_sets_save_pending" classname="game_store_dirty_flag_test" time="0.176">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_flush_save_clears_dirty" classname="game_store_dirty_flag_test" time="0.174">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_flush_save_clears_save_pending" classname="game_store_dirty_flag_test" time="0.176">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_flush_save_guard_when_not_dirty" classname="game_store_dirty_flag_test" time="0.179">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_mark_dirty_skips_deferred_when_pending" classname="game_store_dirty_flag_test" time="0.180">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_mark_dirty_does_not_flip_pending_on_second_call" classname="game_store_dirty_flag_test" time="0.183">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_from_dict_leaves_dirty_false" classname="game_store_dirty_flag_test" time="0.184">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_from_dict_leaves_save_pending_false" classname="game_store_dirty_flag_test" time="0.187">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_from_dict_clears_preexisting_dirty" classname="game_store_dirty_flag_test" time="0.190">
+		</testcase>
+		<testcase name="test_game_store_dirty_flag_from_dict_state_still_loaded_correctly" classname="game_store_dirty_flag_test" time="0.193">
+		</testcase>
+	</testsuite>
+	<testsuite id="10" name="game_store_init_test" package="tests/unit/game_store" timestamp="2026-04-10T18:53:05" hostname="localhost" tests="17" failures="0" errors="0" skipped="0" flaky="0" time="7.552">
+		<testcase name="test_game_store_init_all_companion_ids_present" classname="game_store_init_test" time="0.182">
+		</testcase>
+		<testcase name="test_game_store_init_companion_relationship_level_is_zero" classname="game_store_init_test" time="0.184">
+		</testcase>
+		<testcase name="test_game_store_init_companion_trust_is_zero" classname="game_store_init_test" time="0.186">
+		</testcase>
+		<testcase name="test_game_store_init_companion_motivation_is_fifty" classname="game_store_init_test" time="0.187">
+		</testcase>
+		<testcase name="test_game_store_init_companion_met_is_false" classname="game_store_init_test" time="0.192">
+		</testcase>
+		<testcase name="test_game_store_init_player_gold_is_zero" classname="game_store_init_test" time="0.190">
+		</testcase>
+		<testcase name="test_game_store_init_player_xp_is_zero" classname="game_store_init_test" time="0.191">
+		</testcase>
+		<testcase name="test_game_store_init_daily_tokens_remaining_is_three" classname="game_store_init_test" time="0.191">
+		</testcase>
+		<testcase name="test_game_store_init_current_streak_is_zero" classname="game_store_init_test" time="0.195">
+		</testcase>
+		<testcase name="test_game_store_init_current_chapter_is_ch01" classname="game_store_init_test" time="0.195">
+		</testcase>
+		<testcase name="test_game_store_init_active_combat_buff_is_empty_dict" classname="game_store_init_test" time="0.197">
+		</testcase>
+		<testcase name="test_game_store_init_no_public_state_properties_exposed" classname="game_store_init_test" time="0.199">
+		</testcase>
+		<testcase name="test_game_store_init_get_combat_buff_returns_empty_dict" classname="game_store_init_test" time="0.201">
+		</testcase>
+		<testcase name="test_game_store_init_get_combat_buff_returns_copy_not_reference" classname="game_store_init_test" time="0.199">
+		</testcase>
+		<testcase name="test_game_store_init_get_companion_state_unknown_id_returns_empty" classname="game_store_init_test" time="0.201">
+		</testcase>
+		<testcase name="test_game_store_init_get_companion_state_returns_copy_not_reference" classname="game_store_init_test" time="0.204">
+		</testcase>
+		<testcase name="test_game_store_init_exactly_four_companions_initialized" classname="game_store_init_test" time="0.208">
+		</testcase>
+	</testsuite>
+	<testsuite id="11" name="game_store_serialization_test" package="tests/unit/game_store" timestamp="2026-04-10T18:53:13" hostname="localhost" tests="50" failures="0" errors="0" skipped="0" flaky="0" time="28.686">
+		<testcase name="test_game_store_serialization_to_dict_contains_companion_states_key" classname="game_store_serialization_test" time="0.254">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_contains_story_flags_key" classname="game_store_serialization_test" time="0.257">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_contains_node_states_key" classname="game_store_serialization_test" time="0.256">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_contains_current_chapter_key" classname="game_store_serialization_test" time="0.259">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_contains_player_gold_key" classname="game_store_serialization_test" time="0.263">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_contains_player_xp_key" classname="game_store_serialization_test" time="0.265">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_contains_daily_tokens_remaining_key" classname="game_store_serialization_test" time="0.254">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_contains_current_streak_key" classname="game_store_serialization_test" time="0.265">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_contains_last_interaction_date_key" classname="game_store_serialization_test" time="0.283">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_contains_active_combat_buff_key" classname="game_store_serialization_test" time="0.301">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_contains_last_captain_id_key" classname="game_store_serialization_test" time="0.273">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_has_exactly_eleven_top_level_keys" classname="game_store_serialization_test" time="0.273">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_missing_player_xp_returns_zero" classname="game_store_serialization_test" time="0.281">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_missing_player_gold_returns_zero" classname="game_store_serialization_test" time="0.290">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_missing_current_chapter_returns_default" classname="game_store_serialization_test" time="0.287">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_missing_daily_tokens_returns_three" classname="game_store_serialization_test" time="0.289">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_missing_last_captain_id_returns_empty" classname="game_store_serialization_test" time="0.293">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_absent_nyx_initializes_with_defaults" classname="game_store_serialization_test" time="0.297">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_absent_nyx_known_likes_is_empty_array" classname="game_store_serialization_test" time="0.299">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_absent_artemisa_initializes_with_defaults" classname="game_store_serialization_test" time="0.304">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_player_gold_matches" classname="game_store_serialization_test" time="0.313">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_player_xp_matches" classname="game_store_serialization_test" time="0.322">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_current_chapter_matches" classname="game_store_serialization_test" time="0.319">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_daily_tokens_matches" classname="game_store_serialization_test" time="0.328">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_current_streak_matches" classname="game_store_serialization_test" time="0.363">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_last_interaction_date_matches" classname="game_store_serialization_test" time="0.337">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_last_captain_id_matches" classname="game_store_serialization_test" time="0.347">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_story_flags_match" classname="game_store_serialization_test" time="0.335">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_node_states_match" classname="game_store_serialization_test" time="0.342">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_combat_buff_matches" classname="game_store_serialization_test" time="0.338">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_companion_all_fields_match" classname="game_store_serialization_test" time="0.347">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_companion_known_likes_match" classname="game_store_serialization_test" time="0.352">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_companion_known_dislikes_match" classname="game_store_serialization_test" time="0.338">
+		</testcase>
+		<testcase name="test_game_store_serialization_round_trip_all_four_companions_present" classname="game_store_serialization_test" time="0.355">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_leaves_dirty_false" classname="game_store_serialization_test" time="0.366">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_leaves_save_pending_false" classname="game_store_serialization_test" time="0.364">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_clears_preexisting_dirty" classname="game_store_serialization_test" time="0.384">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_empty_dict_gold_is_zero" classname="game_store_serialization_test" time="0.370">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_empty_dict_xp_is_zero" classname="game_store_serialization_test" time="0.368">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_empty_dict_chapter_is_ch01" classname="game_store_serialization_test" time="0.375">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_empty_dict_tokens_is_three" classname="game_store_serialization_test" time="0.395">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_empty_dict_all_companions_present" classname="game_store_serialization_test" time="0.384">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_empty_dict_story_flags_empty" classname="game_store_serialization_test" time="0.379">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_empty_dict_combat_buff_empty" classname="game_store_serialization_test" time="0.380">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_empty_dict_leaves_dirty_false" classname="game_store_serialization_test" time="0.382">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_extra_keys_ignored_gold_intact" classname="game_store_serialization_test" time="0.385">
+		</testcase>
+		<testcase name="test_game_store_serialization_from_dict_extra_keys_ignored_flags_intact" classname="game_store_serialization_test" time="0.395">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_story_flags_is_a_copy" classname="game_store_serialization_test" time="0.394">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_companion_known_likes_is_a_copy" classname="game_store_serialization_test" time="0.393">
+		</testcase>
+		<testcase name="test_game_store_serialization_to_dict_combat_buff_is_a_copy" classname="game_store_serialization_test" time="0.412">
+		</testcase>
+	</testsuite>
+	<testsuite id="12" name="game_store_setters_test" package="tests/unit/game_store" timestamp="2026-04-10T18:53:42" hostname="localhost" tests="54" failures="0" errors="0" skipped="0" flaky="0" time="38.528">
+		<testcase name="test_game_store_spend_gold_sufficient_returns_true" classname="game_store_setters_test" time="0.409">
+		</testcase>
+		<testcase name="test_game_store_spend_gold_sufficient_deducts_correct_amount" classname="game_store_setters_test" time="0.416">
+		</testcase>
+		<testcase name="test_game_store_spend_gold_insufficient_returns_false" classname="game_store_setters_test" time="0.413">
+		</testcase>
+		<testcase name="test_game_store_spend_gold_insufficient_gold_unchanged" classname="game_store_setters_test" time="0.411">
+		</testcase>
+		<testcase name="test_game_store_set_flag_duplicate_call_no_extra_entry" classname="game_store_setters_test" time="0.417">
+		</testcase>
+		<testcase name="test_game_store_set_flag_has_flag_returns_true" classname="game_store_setters_test" time="0.419">
+		</testcase>
+		<testcase name="test_game_store_has_flag_absent_flag_returns_false" classname="game_store_setters_test" time="0.428">
+		</testcase>
+		<testcase name="test_game_store_set_trust_updates_companion_state" classname="game_store_setters_test" time="0.427">
+		</testcase>
+		<testcase name="test_game_store_set_trust_from_nonzero_baseline" classname="game_store_setters_test" time="0.425">
+		</testcase>
+		<testcase name="test_game_store_set_trust_unknown_companion_is_noop" classname="game_store_setters_test" time="0.427">
+		</testcase>
+		<testcase name="test_game_store_add_gold_sets_dirty" classname="game_store_setters_test" time="0.433">
+		</testcase>
+		<testcase name="test_game_store_spend_gold_success_sets_dirty" classname="game_store_setters_test" time="0.429">
+		</testcase>
+		<testcase name="test_game_store_spend_gold_failure_does_not_set_dirty" classname="game_store_setters_test" time="0.437">
+		</testcase>
+		<testcase name="test_game_store_set_flag_sets_dirty" classname="game_store_setters_test" time="0.445">
+		</testcase>
+		<testcase name="test_game_store_set_flag_idempotent_does_not_set_dirty" classname="game_store_setters_test" time="0.434">
+		</testcase>
+		<testcase name="test_game_store_set_trust_sets_dirty" classname="game_store_setters_test" time="0.437">
+		</testcase>
+		<testcase name="test_game_store_set_met_sets_dirty" classname="game_store_setters_test" time="0.445">
+		</testcase>
+		<testcase name="test_game_store_set_node_state_sets_dirty" classname="game_store_setters_test" time="0.422">
+		</testcase>
+		<testcase name="test_game_store_set_combat_buff_sets_dirty" classname="game_store_setters_test" time="0.437">
+		</testcase>
+		<testcase name="test_game_store_clear_combat_buff_sets_dirty" classname="game_store_setters_test" time="0.448">
+		</testcase>
+		<testcase name="test_game_store_spend_token_sets_dirty" classname="game_store_setters_test" time="0.449">
+		</testcase>
+		<testcase name="test_game_store_reset_tokens_sets_dirty" classname="game_store_setters_test" time="0.449">
+		</testcase>
+		<testcase name="test_game_store_set_streak_sets_dirty" classname="game_store_setters_test" time="0.469">
+		</testcase>
+		<testcase name="test_game_store_set_last_captain_id_sets_dirty" classname="game_store_setters_test" time="0.451">
+		</testcase>
+		<testcase name="test_game_store_set_mood_sets_dirty" classname="game_store_setters_test" time="0.452">
+		</testcase>
+		<testcase name="test_game_store_get_node_state_unknown_key_returns_empty_string" classname="game_store_setters_test" time="0.460">
+		</testcase>
+		<testcase name="test_game_store_get_node_state_after_set_returns_correct_value" classname="game_store_setters_test" time="0.455">
+		</testcase>
+		<testcase name="test_game_store_spend_gold_zero_returns_true" classname="game_store_setters_test" time="0.466">
+		</testcase>
+		<testcase name="test_game_store_spend_gold_zero_gold_unchanged" classname="game_store_setters_test" time="0.477">
+		</testcase>
+		<testcase name="test_game_store_add_gold_accumulates" classname="game_store_setters_test" time="0.465">
+		</testcase>
+		<testcase name="test_game_store_get_story_flags_returns_copy_not_reference" classname="game_store_setters_test" time="0.466">
+		</testcase>
+		<testcase name="test_game_store_get_relationship_level_default_is_zero" classname="game_store_setters_test" time="0.471">
+		</testcase>
+		<testcase name="test_game_store_get_relationship_level_unknown_id_returns_zero" classname="game_store_setters_test" time="0.470">
+		</testcase>
+		<testcase name="test_game_store_set_relationship_level_internal_updates_value" classname="game_store_setters_test" time="0.475">
+		</testcase>
+		<testcase name="test_game_store_set_relationship_level_internal_sets_dirty" classname="game_store_setters_test" time="0.493">
+		</testcase>
+		<testcase name="test_game_store_set_met_updates_companion_state" classname="game_store_setters_test" time="0.488">
+		</testcase>
+		<testcase name="test_game_store_get_mood_default_is_zero" classname="game_store_setters_test" time="0.506">
+		</testcase>
+		<testcase name="test_game_store_set_mood_updates_mood_and_expiry" classname="game_store_setters_test" time="0.487">
+		</testcase>
+		<testcase name="test_game_store_get_daily_tokens_default_is_three" classname="game_store_setters_test" time="0.487">
+		</testcase>
+		<testcase name="test_game_store_spend_token_decrements_by_one" classname="game_store_setters_test" time="0.488">
+		</testcase>
+		<testcase name="test_game_store_spend_token_clamps_at_zero" classname="game_store_setters_test" time="0.494">
+		</testcase>
+		<testcase name="test_game_store_reset_tokens_restores_to_three" classname="game_store_setters_test" time="0.485">
+		</testcase>
+		<testcase name="test_game_store_get_streak_default_is_zero" classname="game_store_setters_test" time="0.474">
+		</testcase>
+		<testcase name="test_game_store_set_streak_updates_value" classname="game_store_setters_test" time="0.491">
+		</testcase>
+		<testcase name="test_game_store_get_last_captain_id_default_is_empty" classname="game_store_setters_test" time="0.492">
+		</testcase>
+		<testcase name="test_game_store_set_last_captain_id_updates_value" classname="game_store_setters_test" time="0.509">
+		</testcase>
+		<testcase name="test_game_store_set_combat_buff_readable_via_get" classname="game_store_setters_test" time="0.494">
+		</testcase>
+		<testcase name="test_game_store_clear_combat_buff_returns_empty_dict" classname="game_store_setters_test" time="0.504">
+		</testcase>
+		<testcase name="test_game_store_to_dict_from_dict_round_trip_gold" classname="game_store_setters_test" time="0.511">
+		</testcase>
+		<testcase name="test_game_store_from_dict_does_not_set_dirty" classname="game_store_setters_test" time="0.525">
+		</testcase>
+		<testcase name="test_game_store_from_dict_story_flags_restored" classname="game_store_setters_test" time="0.519">
+		</testcase>
+		<testcase name="test_game_store_from_dict_companion_trust_restored" classname="game_store_setters_test" time="0.511">
+		</testcase>
+		<testcase name="test_game_store_from_dict_missing_companion_gets_default_state" classname="game_store_setters_test" time="0.518">
+		</testcase>
+		<testcase name="test_game_store_from_dict_missing_gold_field_defaults_to_zero" classname="game_store_setters_test" time="0.522">
+		</testcase>
+	</testsuite>
+	<testsuite id="13" name="settings_store_test" package="tests/unit/game_store" timestamp="2026-04-10T18:54:20" hostname="localhost" tests="15" failures="0" errors="0" skipped="0" flaky="0" time="9.783">
+		<testcase name="test_settings_store_default_locale_is_en" classname="settings_store_test" time="0.379">
+		</testcase>
+		<testcase name="test_settings_store_default_master_volume_is_one" classname="settings_store_test" time="0.386">
+		</testcase>
+		<testcase name="test_settings_store_default_sfx_volume_is_one" classname="settings_store_test" time="0.383">
+		</testcase>
+		<testcase name="test_settings_store_default_music_volume_is_one" classname="settings_store_test" time="0.385">
+		</testcase>
+		<testcase name="test_settings_store_default_text_speed_is_one" classname="settings_store_test" time="0.389">
+		</testcase>
+		<testcase name="test_settings_store_set_locale_updates_value" classname="settings_store_test" time="0.384">
+		</testcase>
+		<testcase name="test_settings_store_set_locale_sets_dirty" classname="settings_store_test" time="0.389">
+		</testcase>
+		<testcase name="test_settings_store_to_dict_contains_locale" classname="settings_store_test" time="0.384">
+		</testcase>
+		<testcase name="test_settings_store_to_dict_contains_all_keys" classname="settings_store_test" time="0.384">
+		</testcase>
+		<testcase name="test_settings_store_from_dict_restores_locale" classname="settings_store_test" time="0.402">
+		</testcase>
+		<testcase name="test_settings_store_set_locale_sets_save_pending" classname="settings_store_test" time="0.390">
+		</testcase>
+		<testcase name="test_settings_store_from_dict_does_not_set_dirty" classname="settings_store_test" time="0.389">
+		</testcase>
+		<testcase name="test_settings_store_from_dict_missing_keys_use_defaults" classname="settings_store_test" time="0.389">
+		</testcase>
+		<testcase name="test_settings_store_volume_clamped_to_max" classname="settings_store_test" time="0.391">
+		</testcase>
+		<testcase name="test_settings_store_volume_clamped_to_min" classname="settings_store_test" time="0.397">
+		</testcase>
+	</testsuite>
+	<testsuite id="14" name="get_text_fallback_test" package="tests/unit/localization" timestamp="2026-04-10T18:54:30" hostname="localhost" tests="13" failures="1" errors="0" skipped="0" flaky="0" time="7.415">
+		<testcase name="test_get_text_fallback_english_active_locale_returns_correct_string" classname="get_text_fallback_test" time="0.387">
+		</testcase>
+		<testcase name="test_get_text_fallback_english_active_locale_resolves_second_key" classname="get_text_fallback_test" time="0.387">
+		</testcase>
+		<testcase name="test_get_text_fallback_active_table_checked_before_english_table" classname="get_text_fallback_test" time="0.393">
+		</testcase>
+		<testcase name="test_get_text_fallback_returns_string_type" classname="get_text_fallback_test" time="0.392">
+		</testcase>
+		<testcase name="test_get_text_fallback_missing_active_locale_returns_english_value" classname="get_text_fallback_test" time="0.434">
+		</testcase>
+		<testcase name="test_get_text_fallback_missing_active_locale_does_not_return_empty_string" classname="get_text_fallback_test" time="0.431">
+		</testcase>
+		<testcase name="test_get_text_fallback_key_in_english_only_still_resolves" classname="get_text_fallback_test" time="0.435">
+		</testcase>
+		<testcase name="test_get_text_fallback_missing_key_returns_raw_key_string" classname="get_text_fallback_test" time="0.419">
+		</testcase>
+		<testcase name="test_get_text_fallback_missing_key_does_not_return_empty_string" classname="get_text_fallback_test" time="0.419">
+		</testcase>
+		<testcase name="test_get_text_fallback_missing_key_returns_exact_key_passed_in" classname="get_text_fallback_test" time="0.428">
+		</testcase>
+		<testcase name="test_get_text_fallback_missing_key_with_empty_tables_returns_key" classname="get_text_fallback_test" time="0.423">
+		</testcase>
+		<testcase name="test_get_text_fallback_no_direct_i18n_file_access_outside_localization" classname="get_text_fallback_test" time="0.389">
+		</testcase>
+		<testcase name="test_get_text_fallback_no_hardcoded_strings_in_scenes" classname="get_text_fallback_test" time="0.391">
+			<failure message="FAILED: res://tests/unit/localization/get_text_fallback_test.gd:274" type="FAILURE">
+<![CDATA[
+Expecting:
+ '0'
+ but was
+ '9'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="15" name="interpolation_test" package="tests/unit/localization" timestamp="2026-04-10T18:54:38" hostname="localhost" tests="10" failures="0" errors="0" skipped="0" flaky="0" time="5.293">
+		<testcase name="test_interpolation_poker_score_single_param_returns_interpolated_string" classname="interpolation_test" time="0.381">
+		</testcase>
+		<testcase name="test_interpolation_poker_score_placeholder_fully_replaced" classname="interpolation_test" time="0.391">
+		</testcase>
+		<testcase name="test_interpolation_two_params_both_replaced" classname="interpolation_test" time="0.375">
+		</testcase>
+		<testcase name="test_interpolation_two_params_no_leftover_placeholders" classname="interpolation_test" time="0.377">
+		</testcase>
+		<testcase name="test_interpolation_missing_param_key_leaves_placeholder_intact" classname="interpolation_test" time="0.385">
+		</testcase>
+		<testcase name="test_interpolation_missing_param_key_does_not_return_empty_string" classname="interpolation_test" time="0.377">
+		</testcase>
+		<testcase name="test_interpolation_no_placeholders_with_params_returns_original_text" classname="interpolation_test" time="0.380">
+		</testcase>
+		<testcase name="test_interpolation_no_placeholders_result_is_exact_table_value" classname="interpolation_test" time="0.370">
+		</testcase>
+		<testcase name="test_interpolation_empty_params_returns_text_unchanged" classname="interpolation_test" time="0.376">
+		</testcase>
+		<testcase name="test_interpolation_empty_params_on_plain_text_returns_same_string" classname="interpolation_test" time="0.380">
+		</testcase>
+	</testsuite>
+	<testsuite id="16" name="locale_switch_test" package="tests/unit/localization" timestamp="2026-04-10T18:54:43" hostname="localhost" tests="18" failures="1" errors="0" skipped="0" flaky="0" time="7.031">
+		<testcase name="test_locale_switch_same_locale_returns_true" classname="locale_switch_test" time="0.413">
+		</testcase>
+		<testcase name="test_locale_switch_same_locale_does_not_emit_locale_changed" classname="locale_switch_test" time="0.408">
+		</testcase>
+		<testcase name="test_locale_switch_same_locale_leaves_active_locale_unchanged" classname="locale_switch_test" time="0.409">
+		</testcase>
+		<testcase name="test_locale_switch_same_locale_leaves_active_table_unchanged" classname="locale_switch_test" time="0.405">
+		</testcase>
+		<testcase name="test_locale_switch_unsupported_locale_returns_false" classname="locale_switch_test" time="0.448">
+		</testcase>
+		<testcase name="test_locale_switch_unsupported_locale_leaves_active_locale_as_english" classname="locale_switch_test" time="0.447">
+		</testcase>
+		<testcase name="test_locale_switch_unsupported_locale_does_not_emit_locale_changed" classname="locale_switch_test" time="0.450">
+		</testcase>
+		<testcase name="test_locale_switch_unsupported_locale_preserves_text_resolution" classname="locale_switch_test" time="0.442">
+		</testcase>
+		<testcase name="test_locale_switch_missing_json_returns_false" classname="locale_switch_test" time="0.460">
+		</testcase>
+		<testcase name="test_locale_switch_missing_json_active_locale_unchanged" classname="locale_switch_test" time="0.440">
+		</testcase>
+		<testcase name="test_locale_switch_load_failure_does_not_emit_locale_changed" classname="locale_switch_test" time="0.433">
+		</testcase>
+		<testcase name="test_locale_switch_valid_switch_emits_locale_changed" classname="locale_switch_test" time="0.402">
+			<failure message="FAILED: res://tests/unit/localization/locale_switch_test.gd:235" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="17" name="localization_load_test" package="tests/unit/localization" timestamp="2026-04-10T18:54:50" hostname="localhost" tests="16" failures="0" errors="0" skipped="0" flaky="0" time="8.646">
+		<testcase name="test_localization_constants_supported_locales_contains_en" classname="localization_load_test" time="0.395">
+		</testcase>
+		<testcase name="test_localization_constants_supported_locales_is_typed_string_array" classname="localization_load_test" time="0.420">
+		</testcase>
+		<testcase name="test_localization_constants_default_locale_is_en" classname="localization_load_test" time="0.395">
+		</testcase>
+		<testcase name="test_localization_constants_default_locale_is_in_supported_locales" classname="localization_load_test" time="0.400">
+		</testcase>
+		<testcase name="test_localization_load_english_table_is_not_empty_after_load" classname="localization_load_test" time="0.395">
+		</testcase>
+		<testcase name="test_localization_load_english_table_ui_new_game_key_present" classname="localization_load_test" time="0.394">
+		</testcase>
+		<testcase name="test_localization_load_english_table_ui_continue_key_present" classname="localization_load_test" time="0.396">
+		</testcase>
+		<testcase name="test_localization_load_english_table_ui_settings_key_present" classname="localization_load_test" time="0.396">
+		</testcase>
+		<testcase name="test_localization_load_english_table_ui_quit_key_present" classname="localization_load_test" time="0.394">
+		</testcase>
+		<testcase name="test_localization_load_fixture_returns_exact_key_count" classname="localization_load_test" time="0.400">
+		</testcase>
+		<testcase name="test_localization_load_real_en_json_has_expected_key_count" classname="localization_load_test" time="0.394">
+		</testcase>
+		<testcase name="test_localization_load_missing_path_returns_empty_dict" classname="localization_load_test" time="0.426">
+		</testcase>
+		<testcase name="test_localization_load_missing_path_result_is_dictionary_type" classname="localization_load_test" time="0.439">
+		</testcase>
+		<testcase name="test_localization_load_malformed_json_returns_empty_dict" classname="localization_load_test" time="0.393">
+		</testcase>
+		<testcase name="test_localization_load_non_dict_root_returns_empty_dict" classname="localization_load_test" time="0.399">
+		</testcase>
+		<testcase name="test_localization_get_active_locale_returns_default_before_ready" classname="localization_load_test" time="0.397">
+		</testcase>
+	</testsuite>
+	<testsuite id="18" name="delete_save_test" package="tests/unit/save_system" timestamp="2026-04-10T18:54:59" hostname="localhost" tests="18" failures="0" errors="0" skipped="0" flaky="0" time="9.838">
+		<testcase name="test_delete_save_has_save_returns_false_after_delete" classname="delete_save_test" time="0.413">
+		</testcase>
+		<testcase name="test_delete_save_save_json_file_does_not_exist_after_delete" classname="delete_save_test" time="0.405">
+		</testcase>
+		<testcase name="test_delete_save_also_removes_tmp_file_if_present" classname="delete_save_test" time="0.403">
+		</testcase>
+		<testcase name="test_delete_save_resets_game_store_gold_to_zero" classname="delete_save_test" time="0.402">
+		</testcase>
+		<testcase name="test_delete_save_resets_game_store_xp_to_zero" classname="delete_save_test" time="0.404">
+		</testcase>
+		<testcase name="test_delete_save_resets_game_store_daily_tokens_to_three" classname="delete_save_test" time="0.405">
+		</testcase>
+		<testcase name="test_delete_save_resets_game_store_streak_to_zero" classname="delete_save_test" time="0.409">
+		</testcase>
+		<testcase name="test_delete_save_resets_game_store_story_flags_to_empty" classname="delete_save_test" time="0.402">
+		</testcase>
+		<testcase name="test_delete_save_resets_game_store_last_captain_id_to_empty" classname="delete_save_test" time="0.413">
+		</testcase>
+		<testcase name="test_delete_save_resets_game_store_combat_buff_to_empty" classname="delete_save_test" time="0.404">
+		</testcase>
+		<testcase name="test_delete_save_resets_settings_store_locale_to_en" classname="delete_save_test" time="0.408">
+		</testcase>
+		<testcase name="test_delete_save_resets_settings_store_master_volume_to_one" classname="delete_save_test" time="0.403">
+		</testcase>
+		<testcase name="test_delete_save_resets_settings_store_sfx_volume_to_one" classname="delete_save_test" time="0.423">
+		</testcase>
+		<testcase name="test_delete_save_resets_settings_store_music_volume_to_one" classname="delete_save_test" time="0.409">
+		</testcase>
+		<testcase name="test_delete_save_resets_settings_store_text_speed_to_one" classname="delete_save_test" time="0.413">
+		</testcase>
+		<testcase name="test_delete_save_idempotent_no_file_does_not_crash" classname="delete_save_test" time="0.403">
+		</testcase>
+		<testcase name="test_delete_save_idempotent_called_twice_does_not_crash" classname="delete_save_test" time="0.407">
+		</testcase>
+		<testcase name="test_delete_save_idempotent_game_store_still_at_defaults_when_no_file" classname="delete_save_test" time="0.409">
+		</testcase>
+	</testsuite>
+	<testsuite id="19" name="load_game_test" package="tests/unit/save_system" timestamp="2026-04-10T18:55:09" hostname="localhost" tests="23" failures="2" errors="0" skipped="0" flaky="0" time="5.017">
+		<testcase name="test_load_game_returns_true_when_valid_save_exists" classname="load_game_test" time="0.430">
+		</testcase>
+		<testcase name="test_load_game_restores_game_store_gold_after_save" classname="load_game_test" time="0.429">
+		</testcase>
+		<testcase name="test_load_game_restores_game_store_xp_after_save" classname="load_game_test" time="0.435">
+		</testcase>
+		<testcase name="test_load_game_restores_game_store_streak_after_save" classname="load_game_test" time="0.434">
+		</testcase>
+		<testcase name="test_load_game_restores_game_store_daily_tokens_after_save" classname="load_game_test" time="0.433">
+		</testcase>
+		<testcase name="test_load_game_restores_game_store_last_captain_id_after_save" classname="load_game_test" time="0.427">
+		</testcase>
+		<testcase name="test_load_game_restores_game_store_story_flags_after_save" classname="load_game_test" time="0.442">
+		</testcase>
+		<testcase name="test_load_game_restores_game_store_combat_buff_after_save" classname="load_game_test" time="0.431">
+			<failure message="FAILED: res://tests/unit/save_system/load_game_test.gd:145" type="FAILURE">
+<![CDATA[
+GdUnitIntAssert inital error, unexpected type <float>
+]]>
+			</failure>
+			<failure message="FAILED: res://tests/unit/save_system/load_game_test.gd:145" type="FAILURE">
+<![CDATA[
+Expecting:
+ '200'
+ but was
+ '200.000000'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="20" name="save_game_atomic_test" package="tests/unit/save_system" timestamp="2026-04-10T18:55:14" hostname="localhost" tests="19" failures="0" errors="0" skipped="0" flaky="0" time="10.494">
+		<testcase name="test_save_game_atomic_success_creates_save_file" classname="save_game_atomic_test" time="0.410">
+		</testcase>
+		<testcase name="test_save_game_atomic_success_does_not_leave_tmp_file" classname="save_game_atomic_test" time="0.407">
+		</testcase>
+		<testcase name="test_save_game_atomic_returns_true_on_success" classname="save_game_atomic_test" time="0.408">
+		</testcase>
+		<testcase name="test_save_game_atomic_saved_file_is_parseable_json" classname="save_game_atomic_test" time="0.420">
+		</testcase>
+		<testcase name="test_save_game_atomic_saved_json_has_version_key" classname="save_game_atomic_test" time="0.410">
+		</testcase>
+		<testcase name="test_save_game_atomic_saved_json_has_timestamp_key" classname="save_game_atomic_test" time="0.413">
+		</testcase>
+		<testcase name="test_save_game_atomic_saved_json_has_game_key" classname="save_game_atomic_test" time="0.419">
+		</testcase>
+		<testcase name="test_save_game_atomic_saved_json_has_settings_key" classname="save_game_atomic_test" time="0.412">
+		</testcase>
+		<testcase name="test_save_game_atomic_saved_json_has_exactly_four_top_level_keys" classname="save_game_atomic_test" time="0.413">
+		</testcase>
+		<testcase name="test_save_game_atomic_success_result_is_not_false" classname="save_game_atomic_test" time="0.412">
+		</testcase>
+		<testcase name="test_save_game_atomic_no_tmp_file_after_success_confirms_rename_ran" classname="save_game_atomic_test" time="0.411">
+		</testcase>
+		<testcase name="test_save_game_atomic_version_equals_save_version_constant" classname="save_game_atomic_test" time="0.410">
+		</testcase>
+		<testcase name="test_save_game_atomic_timestamp_is_greater_than_zero" classname="save_game_atomic_test" time="0.421">
+		</testcase>
+		<testcase name="test_save_game_atomic_timestamp_is_plausible_unix_time" classname="save_game_atomic_test" time="0.420">
+		</testcase>
+		<testcase name="test_save_game_atomic_game_value_is_a_dictionary" classname="save_game_atomic_test" time="0.413">
+		</testcase>
+		<testcase name="test_save_game_atomic_settings_value_is_a_dictionary" classname="save_game_atomic_test" time="0.415">
+		</testcase>
+		<testcase name="test_save_game_atomic_has_save_returns_true_after_save" classname="save_game_atomic_test" time="0.433">
+		</testcase>
+		<testcase name="test_save_game_atomic_game_dict_contains_player_gold_key" classname="save_game_atomic_test" time="0.410">
+		</testcase>
+		<testcase name="test_save_game_atomic_settings_dict_contains_locale_key" classname="save_game_atomic_test" time="0.415">
+		</testcase>
+	</testsuite>
+	<testsuite id="21" name="save_migration_test" package="tests/unit/save_system" timestamp="2026-04-10T18:55:25" hostname="localhost" tests="21" failures="0" errors="0" skipped="0" flaky="0" time="11.758">
+		<testcase name="test_migration_load_game_returns_true_for_version_0_save" classname="save_migration_test" time="0.421">
+		</testcase>
+		<testcase name="test_migration_version_0_save_loads_player_gold_correctly" classname="save_migration_test" time="0.414">
+		</testcase>
+		<testcase name="test_migration_version_0_save_sets_player_xp_to_zero_default" classname="save_migration_test" time="0.419">
+		</testcase>
+		<testcase name="test_migration_version_0_save_sets_daily_tokens_to_three" classname="save_migration_test" time="0.425">
+		</testcase>
+		<testcase name="test_migration_version_0_save_sets_current_streak_to_zero" classname="save_migration_test" time="0.418">
+		</testcase>
+		<testcase name="test_migration_version_0_save_sets_last_captain_id_to_empty" classname="save_migration_test" time="0.426">
+		</testcase>
+		<testcase name="test_migration_version_0_save_sets_combat_buff_to_empty" classname="save_migration_test" time="0.416">
+		</testcase>
+		<testcase name="test_migration_current_version_save_returns_true" classname="save_migration_test" time="0.428">
+		</testcase>
+		<testcase name="test_migration_current_version_save_preserves_gold" classname="save_migration_test" time="0.429">
+		</testcase>
+		<testcase name="test_migration_current_version_save_preserves_xp" classname="save_migration_test" time="0.428">
+		</testcase>
+		<testcase name="test_migration_current_version_save_preserves_locale" classname="save_migration_test" time="0.422">
+		</testcase>
+		<testcase name="test_migration_current_version_save_preserves_story_flags" classname="save_migration_test" time="0.429">
+		</testcase>
+		<testcase name="test_migration_v0_to_v1_adds_player_xp_key_to_game_dict" classname="save_migration_test" time="0.427">
+		</testcase>
+		<testcase name="test_migration_v0_to_v1_does_not_overwrite_existing_player_xp" classname="save_migration_test" time="0.418">
+		</testcase>
+		<testcase name="test_migration_v0_to_v1_adds_daily_tokens_remaining_key" classname="save_migration_test" time="0.419">
+		</testcase>
+		<testcase name="test_migration_v0_to_v1_adds_current_streak_key" classname="save_migration_test" time="0.416">
+		</testcase>
+		<testcase name="test_migration_v0_to_v1_adds_last_interaction_date_key" classname="save_migration_test" time="0.426">
+		</testcase>
+		<testcase name="test_migration_v0_to_v1_adds_active_combat_buff_key" classname="save_migration_test" time="0.435">
+		</testcase>
+		<testcase name="test_migration_v0_to_v1_adds_last_captain_id_key" classname="save_migration_test" time="0.428">
+		</testcase>
+		<testcase name="test_migration_chain_v0_load_results_in_all_v1_defaults_present" classname="save_migration_test" time="0.422">
+		</testcase>
+		<testcase name="test_migration_chain_v0_load_preserves_gold_through_all_steps" classname="save_migration_test" time="0.436">
+		</testcase>
+	</testsuite>
+	<testsuite id="22" name="arrival_context_test" package="tests/unit/scene_navigation" timestamp="2026-04-10T18:55:37" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="2.165">
+		<testcase name="test_arrival_context_stored_context_is_returned" classname="arrival_context_test" time="0.347">
+		</testcase>
+		<testcase name="test_arrival_context_second_call_returns_empty" classname="arrival_context_test" time="0.351">
+		</testcase>
+		<testcase name="test_arrival_context_new_context_replaces_old_unread_context" classname="arrival_context_test" time="0.348">
+		</testcase>
+		<testcase name="test_arrival_context_no_context_argument_returns_empty" classname="arrival_context_test" time="0.346">
+		</testcase>
+	</testsuite>
+	<testsuite id="23" name="fade_transition_test" package="tests/unit/scene_navigation" timestamp="2026-04-10T18:55:39" hostname="localhost" tests="8" failures="0" errors="0" skipped="0" flaky="0" time="4.240">
+		<testcase name="test_scene_manager_ready_creates_canvas_layer_at_100" classname="fade_transition_test" time="0.371">
+		</testcase>
+		<testcase name="test_scene_manager_ready_overlay_alpha_is_zero" classname="fade_transition_test" time="0.363">
+		</testcase>
+		<testcase name="test_scene_manager_ready_overlay_mouse_filter_is_ignore" classname="fade_transition_test" time="0.367">
+		</testcase>
+		<testcase name="test_scene_manager_is_transitioning_starts_false" classname="fade_transition_test" time="0.367">
+		</testcase>
+		<testcase name="test_scene_manager_get_arrival_context_returns_empty_by_default" classname="fade_transition_test" time="0.365">
+		</testcase>
+		<testcase name="test_scene_manager_get_arrival_context_is_read_once" classname="fade_transition_test" time="0.362">
+		</testcase>
+		<testcase name="test_scene_manager_change_scene_with_settings_id_does_nothing" classname="fade_transition_test" time="0.409">
+		</testcase>
+		<testcase name="test_scene_manager_change_scene_while_transitioning_is_no_op" classname="fade_transition_test" time="0.365">
+		</testcase>
+	</testsuite>
+	<testsuite id="24" name="input_blocking_test" package="tests/unit/scene_navigation" timestamp="2026-04-10T18:55:43" hostname="localhost" tests="4" failures="0" errors="0" skipped="0" flaky="0" time="2.135">
+		<testcase name="test_input_blocking_overlay_mouse_filter_stop_during_fading_out" classname="input_blocking_test" time="0.353">
+		</testcase>
+		<testcase name="test_input_blocking_overlay_mouse_filter_ignore_after_transition" classname="input_blocking_test" time="0.331">
+		</testcase>
+		<testcase name="test_input_blocking_structural_conditions_block_underlying_scene" classname="input_blocking_test" time="0.355">
+		</testcase>
+		<testcase name="test_input_blocking_instant_transition_restores_mouse_filter_same_frame" classname="input_blocking_test" time="0.351">
+		</testcase>
+	</testsuite>
+	<testsuite id="25" name="transition_guard_test" package="tests/unit/scene_navigation" timestamp="2026-04-10T18:55:46" hostname="localhost" tests="5" failures="1" errors="0" skipped="0" flaky="0" time="2.758">
+		<testcase name="test_scene_manager_transition_guard_idle_to_fading_out_on_change_scene" classname="transition_guard_test" time="0.350">
+		</testcase>
+		<testcase name="test_scene_manager_transition_guard_second_call_dropped_while_fading_out" classname="transition_guard_test" time="0.363">
+		</testcase>
+		<testcase name="test_scene_manager_transition_guard_only_first_call_executes_in_same_frame" classname="transition_guard_test" time="0.358">
+		</testcase>
+		<testcase name="test_scene_manager_transition_guard_is_transitioning_true_during_fading_in" classname="transition_guard_test" time="0.349">
+		</testcase>
+		<testcase name="test_scene_manager_transition_guard_is_transitioning_false_after_scene_changed" classname="transition_guard_test" time="0.351">
+			<failure message="FAILED: res://tests/unit/scene_navigation/transition_guard_test.gd:147" type="FAILURE">
+<![CDATA[
+Expecting: 'false' but is 'true'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="26" name="haptic_manager_test" package="tests/unit/ui_theme" timestamp="2026-04-10T18:55:49" hostname="localhost" tests="7" failures="0" errors="0" skipped="0" flaky="0" time="3.678">
+		<testcase name="test_haptic_manager_light_ms_constant_is_15" classname="haptic_manager_test" time="0.359">
+		</testcase>
+		<testcase name="test_haptic_manager_medium_ms_constant_is_30" classname="haptic_manager_test" time="0.361">
+		</testcase>
+		<testcase name="test_haptic_manager_heavy_ms_constant_is_50" classname="haptic_manager_test" time="0.367">
+		</testcase>
+		<testcase name="test_haptic_manager_light_callable_without_error" classname="haptic_manager_test" time="0.357">
+		</testcase>
+		<testcase name="test_haptic_manager_medium_callable_without_error" classname="haptic_manager_test" time="0.361">
+		</testcase>
+		<testcase name="test_haptic_manager_heavy_callable_without_error" classname="haptic_manager_test" time="0.361">
+		</testcase>
+		<testcase name="test_haptic_manager_constants_ordered_light_lt_medium_lt_heavy" classname="haptic_manager_test" time="0.356">
+		</testcase>
+	</testsuite>
+</testsuites>

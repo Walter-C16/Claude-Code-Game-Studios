@@ -1,0 +1,10 @@
+{
+  "id": "gated_flag",
+  "requires_flag": "gaia_defeated",
+  "nodes": {
+    "start": {
+      "lines": [{ "speaker": "narrator", "speaker_type": "narrator", "text_key": "CH1_NARRATOR_01" }],
+      "next": "END"
+    }
+  }
+}

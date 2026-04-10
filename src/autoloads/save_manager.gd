@@ -69,6 +69,7 @@ func load_game() -> bool:
 		data = _migrate(data, save_version)
 	GameStore.from_dict(data.get("game", {}))
 	SettingsStore.from_dict(data.get("settings", {}))
+	_reconcile_companions()
 	return true
 
 ## Returns true if a save file exists on disk.
@@ -102,6 +103,16 @@ func _migrate_v0_to_v1(data: Dictionary) -> Dictionary:
 		game["last_captain_id"] = ""
 	data["game"] = game
 	return data
+
+## Reconciles GameStore companion states against the authoritative companion
+## IDs provided by CompanionRegistry. Called at the end of load_game() so
+## that saves written before a companion was added (or after one was removed)
+## are healed without corrupting fresh-game state.
+## Passes only the 4 playable companion IDs — the priestess NPC entry in
+## CompanionRegistry has no mutable state in GameStore and is excluded.
+func _reconcile_companions() -> void:
+	var companion_ids: Array[String] = ["artemisa", "hipolita", "atenea", "nyx"]
+	GameStore.reconcile_companion_states(companion_ids)
 
 ## Deletes the save file and resets stores to defaults.
 ## Idempotent — safe to call when no save file exists.

@@ -27,6 +27,8 @@ EventBus="*res://autoloads/event_bus.gd"
 Localization="*res://autoloads/localization.gd"
 SaveManager="*res://autoloads/save_manager.gd"
 SceneManager="*res://autoloads/scene_manager.gd"
+CompanionRegistry="*res://autoloads/companion_registry.gd"
+EnemyRegistry="*res://autoloads/enemy_registry.gd"
 DialogueStore="*res://autoloads/dialogue_store.gd"
 CombatStore="*res://autoloads/combat_store.gd"
 

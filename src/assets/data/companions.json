@@ -1,0 +1,62 @@
+{
+  "artemisa": {
+    "id": "artemisa",
+    "display_name": "Artemisa",
+    "role": "Goddess of the Hunt",
+    "element": "Earth",
+    "STR": 17,
+    "INT": 13,
+    "AGI": 20,
+    "card_value": 13,
+    "starting_location": "forest",
+    "portrait_path_base": "res://assets/images/companions/artemisa/artemisa"
+  },
+  "hipolita": {
+    "id": "hipolita",
+    "display_name": "Hipolita",
+    "role": "Queen of the Amazons",
+    "element": "Fire",
+    "STR": 20,
+    "INT": 9,
+    "AGI": 18,
+    "card_value": 12,
+    "starting_location": "amazon_camp",
+    "portrait_path_base": "res://assets/images/companions/hipolita/hipolita"
+  },
+  "atenea": {
+    "id": "atenea",
+    "display_name": "Atenea",
+    "role": "Goddess of Wisdom",
+    "element": "Lightning",
+    "STR": 13,
+    "INT": 19,
+    "AGI": 12,
+    "card_value": 14,
+    "starting_location": "thebes",
+    "portrait_path_base": "res://assets/images/companions/atenea/atenea"
+  },
+  "nyx": {
+    "id": "nyx",
+    "display_name": "Nyx",
+    "role": "Primordial Goddess of Night",
+    "element": "Water",
+    "STR": 18,
+    "INT": 19,
+    "AGI": 8,
+    "card_value": 11,
+    "starting_location": "underworld",
+    "portrait_path_base": "res://assets/images/companions/nyx/nyx"
+  },
+  "priestess": {
+    "id": "priestess",
+    "display_name": "Priestess",
+    "role": "Gaia Fragment",
+    "element": null,
+    "STR": 0,
+    "INT": 0,
+    "AGI": 0,
+    "card_value": 0,
+    "starting_location": "temple",
+    "portrait_path_base": "res://assets/images/companions/priestess/priestess"
+  }
+}

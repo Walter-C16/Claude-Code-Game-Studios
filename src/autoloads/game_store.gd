@@ -205,6 +205,16 @@ func set_flag(flag: String) -> void:
 	_mark_dirty()
 	state_changed.emit("flag")
 
+## Removes a flag string from story_flags if present. No-op if absent.
+## Used by dialogue effect type "flag_clear" (ADR-0008).
+func clear_flag(flag: String) -> void:
+	var idx: int = _story_flags.find(flag)
+	if idx == -1:
+		return
+	_story_flags.remove_at(idx)
+	_mark_dirty()
+	state_changed.emit("flag")
+
 ## Returns the state string for a dialogue node. Returns an empty String
 ## (not null) if the node_id has never been written.
 func get_node_state(node_id: String) -> String:
@@ -350,33 +360,26 @@ func to_dict() -> Dictionary:
 ## Does NOT set _dirty — loading a save is not a mutation.
 ## Uses .get(key, default) throughout for forward compatibility with
 ## older saves that may not have newer fields.
-## Missing companion IDs receive default companion state.
+## Companion reconciliation (add missing / remove unknown IDs) is
+## intentionally NOT done here — call SaveManager._reconcile_companions()
+## after from_dict() to keep that policy out of the data layer.
 func from_dict(data: Dictionary) -> void:
-	var known_ids: Array[String] = ["artemisa", "hipolita", "atenea", "nyx"]
 	var saved_companions: Dictionary = data.get("companion_states", {})
+	_companion_states.clear()
 
-	for id: String in known_ids:
-		if saved_companions.has(id):
-			var sc: Dictionary = saved_companions[id]
-			_companion_states[id] = {
-				"relationship_level": sc.get("relationship_level", 0),
-				"trust": sc.get("trust", 0),
-				"motivation": sc.get("motivation", 50),
-				"dates_completed": sc.get("dates_completed", 0),
-				"met": sc.get("met", false),
-				"known_likes": (sc.get("known_likes", []) as Array).duplicate(),
-				"known_dislikes": (sc.get("known_dislikes", []) as Array).duplicate(),
-				"current_mood": sc.get("current_mood", 0),
-				"mood_expiry_date": sc.get("mood_expiry_date", ""),
-			}
-		else:
-			# Companion absent in old save — create default state.
-			_companion_states[id] = {
-				"relationship_level": 0, "trust": 0, "motivation": 50,
-				"dates_completed": 0, "met": false,
-				"known_likes": [], "known_dislikes": [],
-				"current_mood": 0, "mood_expiry_date": ""
-			}
+	for id: Variant in saved_companions:
+		var sc: Dictionary = saved_companions[id] as Dictionary
+		_companion_states[str(id)] = {
+			"relationship_level": sc.get("relationship_level", 0),
+			"trust": sc.get("trust", 0),
+			"motivation": sc.get("motivation", 50),
+			"dates_completed": sc.get("dates_completed", 0),
+			"met": sc.get("met", false),
+			"known_likes": (sc.get("known_likes", []) as Array).duplicate(),
+			"known_dislikes": (sc.get("known_dislikes", []) as Array).duplicate(),
+			"current_mood": sc.get("current_mood", 0),
+			"mood_expiry_date": sc.get("mood_expiry_date", ""),
+		}
 
 	var raw_flags: Array = data.get("story_flags", [])
 	_story_flags.clear()
@@ -396,6 +399,30 @@ func from_dict(data: Dictionary) -> void:
 	# trigger a save flush even if the store had prior dirty state (AC5).
 	_dirty = false
 	_save_pending = false
+
+## Reconciles _companion_states against the authoritative list of companion IDs.
+## For each id in [param known_ids] absent from _companion_states, a default
+## state entry is added. For each id in _companion_states absent from
+## [param known_ids], that entry is removed.
+## Does NOT set _dirty — called on the load path only.
+func reconcile_companion_states(known_ids: Array[String]) -> void:
+	# Add missing companions.
+	for id: String in known_ids:
+		if not _companion_states.has(id):
+			_companion_states[id] = {
+				"relationship_level": 0, "trust": 0, "motivation": 50,
+				"dates_completed": 0, "met": false,
+				"known_likes": [], "known_dislikes": [],
+				"current_mood": 0, "mood_expiry_date": ""
+			}
+
+	# Remove companions no longer in the authoritative list.
+	var ids_to_remove: Array[String] = []
+	for id: String in _companion_states:
+		if not known_ids.has(id):
+			ids_to_remove.append(id)
+	for id: String in ids_to_remove:
+		_companion_states.erase(id)
 
 # ---------------------------------------------------------------------------
 # Internal — Persistence (GS-003)
