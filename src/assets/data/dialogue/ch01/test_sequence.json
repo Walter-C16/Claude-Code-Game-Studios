@@ -1,0 +1,55 @@
+{
+  "id": "test_sequence",
+  "nodes": {
+    "start": {
+      "speaker": "artemis",
+      "speaker_type": "companion",
+      "text_key": "CH1_ARTEMISA_01",
+      "mood": "neutral",
+      "lines": [
+        {
+          "speaker": "artemis",
+          "speaker_type": "companion",
+          "text_key": "CH1_ARTEMISA_01",
+          "mood": "neutral"
+        }
+      ],
+      "next": "node_choice"
+    },
+    "node_choice": {
+      "speaker": "narrator",
+      "speaker_type": "narrator",
+      "text_key": "CH1_NARRATOR_01",
+      "lines": [
+        {
+          "speaker": "narrator",
+          "speaker_type": "narrator",
+          "text_key": "CH1_NARRATOR_01"
+        }
+      ],
+      "choices": [
+        {
+          "id": "kind",
+          "text_key": "CH1_CHOICE_KIND",
+          "effects": [
+            { "type": "relationship", "companion": "artemis", "delta": 3 }
+          ],
+          "next": "node_end"
+        },
+        {
+          "id": "cold",
+          "text_key": "CH1_CHOICE_COLD",
+          "tier": "cost",
+          "effects": [
+            { "type": "trust", "companion": "artemis", "delta": -2 }
+          ],
+          "next": "node_end"
+        }
+      ]
+    },
+    "node_end": {
+      "lines": [],
+      "next": "END"
+    }
+  }
+}

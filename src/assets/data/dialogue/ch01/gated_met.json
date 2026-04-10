@@ -1,0 +1,10 @@
+{
+  "id": "gated_met",
+  "requires_met": "artemis",
+  "nodes": {
+    "start": {
+      "lines": [{ "speaker": "artemis", "speaker_type": "companion", "text_key": "CH1_ARTEMISA_01", "mood": "neutral" }],
+      "next": "END"
+    }
+  }
+}
