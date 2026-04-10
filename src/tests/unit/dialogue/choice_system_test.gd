@@ -26,7 +26,7 @@ const STATE_RESOLVING: int = 6
 
 func _make_runner() -> Node:
 	var runner = RunnerScript.new()
-	add_child_autofree(runner)
+	add_child(runner)
 	return runner
 
 ## Advances the runner past the two start-node lines to reach the choice_node.

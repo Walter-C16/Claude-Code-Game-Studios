@@ -25,10 +25,10 @@ const STATE_ENDED: int = 7
 
 func _make_runner() -> Node:
 	var runner = RunnerScript.new()
-	add_child_autofree(runner)
+	add_child(runner)
 	return runner
 
-func before_each() -> void:
+func before_test() -> void:
 	GameStore._initialize_defaults()
 
 ## Runs the fixture sequence to completion by selecting choice A then advancing

@@ -1,6 +1,8 @@
 class_name ChoiceConditionTest
 extends GdUnitTestSuite
 
+const CompanionState = preload("res://systems/companion_state.gd")
+
 ## Unit tests for STORY-DIALOGUE-005: Choice Condition Evaluation
 ##
 ## Covers all Acceptance Criteria:
@@ -28,10 +30,10 @@ const FIXTURE_SEQ: String = "test_dialogue"
 
 func _make_runner() -> Node:
 	var runner = RunnerScript.new()
-	add_child_autofree(runner)
+	add_child(runner)
 	return runner
 
-func before_each() -> void:
+func before_test() -> void:
 	GameStore._initialize_defaults()
 	CompanionState._max_stages.clear()
 

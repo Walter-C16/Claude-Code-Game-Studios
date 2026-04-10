@@ -28,10 +28,10 @@ const FIXTURE_SEQ: String = "test_dialogue"
 
 func _make_runner() -> Node:
 	var runner = RunnerScript.new()
-	add_child_autofree(runner)
+	add_child(runner)
 	return runner
 
-func before_each() -> void:
+func before_test() -> void:
 	GameStore._initialize_defaults()
 
 ## Advances to the choice_node and returns. Runner is in CHOOSING state.

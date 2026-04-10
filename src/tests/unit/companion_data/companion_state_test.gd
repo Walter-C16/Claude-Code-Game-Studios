@@ -1,6 +1,8 @@
 class_name CompanionStateTest
 extends GdUnitTestSuite
 
+const CompanionState = preload("res://systems/companion_state.gd")
+
 ## Unit tests for STORY-COMPANION-003: CompanionState — Romance Stage Derivation
 ##
 ## Covers all Acceptance Criteria:
@@ -17,7 +19,7 @@ extends GdUnitTestSuite
 
 # ── Setup / Teardown ──────────────────────────────────────────────────────────
 
-func before_each() -> void:
+func before_test() -> void:
 	# Reset all GameStore state to factory defaults before every test.
 	GameStore._initialize_defaults()
 	# Clear the static max-stage cache so tests are fully independent.

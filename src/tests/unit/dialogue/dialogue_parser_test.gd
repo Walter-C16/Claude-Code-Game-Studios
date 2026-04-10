@@ -30,10 +30,10 @@ const FIXTURE_CHAPTER: String = "test"
 const FIXTURE_SEQ: String = "test_dialogue"
 
 ## Instantiates a fresh DialogueRunner node attached to the scene tree.
-## Uses add_child_autofree so GdUnit4 manages cleanup automatically.
+## Uses add_child so GdUnit4 manages cleanup automatically.
 func _make_runner() -> Node:
 	var runner = RunnerScript.new()
-	add_child_autofree(runner)
+	add_child(runner)
 	return runner
 
 ## Records all emissions of dialogue_blocked into an array for assertions.

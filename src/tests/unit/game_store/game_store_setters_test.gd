@@ -516,9 +516,10 @@ func test_game_store_from_dict_missing_companion_gets_default_state() -> void:
 	# Remove nyx from the saved data to simulate old save format.
 	(data["companion_states"] as Dictionary).erase("nyx")
 
-	# Act
+	# Act — from_dict loads only what's in save; reconcile adds missing
 	var store2 = _make_store()
 	store2.from_dict(data)
+	store2.reconcile_companion_states(["artemisa", "hipolita", "atenea", "nyx"] as Array[String])
 
 	# Assert — nyx exists with defaults
 	var state = store2.get_companion_state("nyx")

@@ -1,5 +1,7 @@
 extends Node
 
+const CompanionState = preload("res://systems/companion_state.gd")
+
 ## DialogueRunner — Dialogue Script Engine (ADR-0008)
 ##
 ## Autoload #9. Loads JSON dialogue sequences from

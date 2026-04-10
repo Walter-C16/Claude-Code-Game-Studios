@@ -24,7 +24,7 @@ const FIXTURE_SEQ: String = "test_dialogue"
 
 func _make_runner() -> Node:
 	var runner = RunnerScript.new()
-	add_child_autofree(runner)
+	add_child(runner)
 	return runner
 
 # ── _typewriter_complete starts false when line_ready fires ───────────────────

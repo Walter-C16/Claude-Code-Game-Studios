@@ -237,9 +237,10 @@ func test_game_store_serialization_from_dict_absent_nyx_initializes_with_default
 	var companions: Dictionary = data["companion_states"] as Dictionary
 	companions.erase("nyx")
 
-	# Act
+	# Act — from_dict loads only what's in the save; reconcile adds missing
 	var store2 = _make_store()
 	store2.from_dict(data)
+	store2.reconcile_companion_states(["artemisa", "hipolita", "atenea", "nyx"] as Array[String])
 
 	# Assert — "nyx" must exist with factory default values
 	var nyx_state: Dictionary = store2.get_companion_state("nyx")
