@@ -37,7 +37,12 @@ func _on_new_game_pressed() -> void:
 	new_game_btn.disabled = true
 	continue_btn.disabled = true
 	GameStore._initialize_defaults()
-	SceneManager.change_scene(SceneManager.SceneId.HUB)
+	# Start with prologue dialogue, then tutorial combat follows via StoryFlow
+	SceneManager.change_scene(
+		SceneManager.SceneId.DIALOGUE,
+		SceneManager.TransitionType.FADE,
+		{"chapter_id": "ch01", "sequence_id": "prologue"}
+	)
 
 func _on_continue_pressed() -> void:
 	new_game_btn.disabled = true

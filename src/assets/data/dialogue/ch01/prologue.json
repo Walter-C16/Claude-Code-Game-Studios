@@ -1,0 +1,19 @@
+{
+  "prerequisites": [],
+  "nodes": {
+    "start": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_01"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_02"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_03"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_04"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_05"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_06"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_07"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_08"}
+      ],
+      "choices": [],
+      "next": ""
+    }
+  }
+}

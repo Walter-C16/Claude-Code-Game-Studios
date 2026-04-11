@@ -52,8 +52,12 @@ func _ready() -> void:
 	DialogueRunner.dialogue_ended.connect(_on_dialogue_ended)
 	DialogueRunner.typewriter_complete.connect(_on_typewriter_complete)
 
-	# If the runner is already mid-sequence (scene loaded mid-dialogue), nothing
-	# extra is needed here — the next line_ready signal will update the display.
+	# Read arrival context to start the correct dialogue sequence.
+	var ctx: Dictionary = SceneManager.get_arrival_context()
+	var chapter_id: String = ctx.get("chapter_id", "")
+	var sequence_id: String = ctx.get("sequence_id", "")
+	if not chapter_id.is_empty() and not sequence_id.is_empty():
+		DialogueRunner.start_dialogue(chapter_id, sequence_id)
 
 ## Drives the visual typewriter animation each frame.
 ## When complete, calls DialogueRunner.complete_typewriter() to sync runner state.
@@ -99,8 +103,18 @@ func _on_choices_ready(choices: Array) -> void:
 ## StoryFlow is the orchestrator and handles its own sequencing via EventBus.
 ## This scene only acts when StoryFlow is NOT active (standalone/dev dialogue).
 func _on_dialogue_ended(_sequence_id: String) -> void:
-	if not StoryFlow.is_active():
-		SceneManager.change_scene(SceneManager.SceneId.HUB)
+	# After prologue, go to tutorial combat
+	if _sequence_id == "prologue":
+		# Set the flag and go to first combat
+		GameStore.set_flag("prologue_done")
+		SceneManager.change_scene(
+			SceneManager.SceneId.COMBAT,
+			SceneManager.TransitionType.FADE,
+			{"enemy_id": "forest_monster", "captain_id": "", "story_node": "ch01_n00"}
+		)
+		return
+	# For all other dialogues, go back to chapter map
+	SceneManager.change_scene(SceneManager.SceneId.CHAPTER_MAP)
 
 ## Called when the visual typewriter animation signals completion from the runner.
 ## Used here only to show the continue indicator (choices are shown via choices_ready).

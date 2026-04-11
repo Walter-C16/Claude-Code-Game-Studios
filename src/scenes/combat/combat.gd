@@ -87,10 +87,26 @@ func _ready() -> void:
 	victory_overlay.visible = false
 	defeat_overlay.visible = false
 
+	retreat_confirm.visible = false
+
 	# Read arrival context (consumed once — SceneManager clears it after this call)
 	var ctx: Dictionary = SceneManager.get_arrival_context()
-	_enemy_config = ctx.get("enemy_config", _default_enemy_config()) as Dictionary
 	var captain_id: String = ctx.get("captain_id", "") as String
+
+	# Build enemy config — support both "enemy_config" dict and "enemy_id" string
+	if ctx.has("enemy_config"):
+		_enemy_config = ctx.get("enemy_config") as Dictionary
+	elif ctx.has("enemy_id"):
+		var eid: String = ctx.get("enemy_id", "") as String
+		_enemy_config = EnemyRegistry.get_enemy(eid)
+		if _enemy_config.is_empty():
+			_enemy_config = _default_enemy_config()
+	else:
+		_enemy_config = _default_enemy_config()
+
+	# Pass story_node through so victory handler can apply story rewards
+	if ctx.has("story_node"):
+		_enemy_config["story_node"] = ctx.get("story_node", "")
 
 	# Build captain scoring context from CompanionRegistry + GameStore
 	var captain_ctx: Dictionary = _build_captain_context(captain_id)
@@ -290,10 +306,48 @@ func _on_card_toggled(index: int, pressed: bool) -> void:
 
 ## Called when the Victory overlay's "Continue" button is pressed.
 func _on_victory_continue_pressed() -> void:
-	# Award economy rewards (values from constants — TODO: data-driven Balance)
 	GameStore.add_gold(VICTORY_GOLD_REWARD)
 	GameStore.add_xp(VICTORY_XP_REWARD)
-	SceneManager.change_scene(SceneManager.SceneId.HUB)
+
+	# Check if this was a story combat — apply story node flags
+	var story_node: String = _enemy_config.get("story_node", "") as String
+	if story_node == "ch01_n00":
+		# Tutorial combat done — set flags and go to chapter map
+		GameStore.set_flag("ch01_tutorial_done")
+		GameStore.set_met("artemis", true)
+		# After first combat, go to Hub (player unlocks chapter map)
+		SceneManager.change_scene(SceneManager.SceneId.HUB)
+	elif not story_node.is_empty():
+		# Story combat — apply rewards and return to chapter map
+		_apply_story_rewards(story_node)
+		SceneManager.change_scene(SceneManager.SceneId.CHAPTER_MAP)
+	else:
+		# Arena/free combat — go to Hub
+		SceneManager.change_scene(SceneManager.SceneId.HUB)
+
+
+## Look up story node rewards from ch01.json and apply them.
+func _apply_story_rewards(node_id: String) -> void:
+	var path: String = "res://assets/data/chapters/ch01.json"
+	if not FileAccess.file_exists(path):
+		return
+	var file = FileAccess.open(path, FileAccess.READ)
+	if not file:
+		return
+	var json = JSON.new()
+	if json.parse(file.get_as_text()) != OK:
+		return
+	var nodes: Array = json.data.get("nodes", [])
+	for node in nodes:
+		if node.get("id", "") == node_id:
+			var rewards: Dictionary = node.get("rewards", {})
+			for flag in rewards.get("flags", []):
+				GameStore.set_flag(str(flag))
+			# Meet effects
+			for fx in node.get("effects", []):
+				if fx.get("type", "") == "meet":
+					GameStore.set_met(fx.get("companion", ""), true)
+			break
 
 
 ## Called when the Defeat overlay's "Retry" button is pressed.
