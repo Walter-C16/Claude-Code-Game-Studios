@@ -4,22 +4,32 @@ extends Control
 @onready var subtitle_label: Label = %SubtitleLabel
 @onready var new_game_btn: Button = %NewGameBtn
 @onready var continue_btn: Button = %ContinueBtn
+@onready var version_label: Label = %VersionLabel
 @onready var bg: TextureRect = %Background
 
 func _ready() -> void:
-	# Check for existing save
-	continue_btn.visible = SaveManager.has_save()
+	# Show continue only when a save actually exists.
+	# Guard against a missing or uninitialised SaveManager on fresh installs.
+	continue_btn.visible = _has_existing_save()
 
-	# Animate entrance
+	# Animate entrance fade-in.
 	modulate.a = 0.0
-	var tween := create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(self, "modulate:a", 1.0, 0.8)
 
-	# Title glow pulse
 	_start_title_pulse()
 
+## Returns true when a playable save file exists.
+## Fails silently instead of crashing when SaveManager is not ready.
+func _has_existing_save() -> bool:
+	if not is_instance_valid(SaveManager):
+		return false
+	if not SaveManager.has_method("has_save"):
+		return false
+	return SaveManager.has_save()
+
 func _start_title_pulse() -> void:
-	var tween := create_tween().set_loops()
+	var tween: Tween = create_tween().set_loops()
 	tween.tween_property(title_label, "modulate:a", 0.7, 2.0).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(title_label, "modulate:a", 1.0, 2.0).set_ease(Tween.EASE_IN_OUT)
 

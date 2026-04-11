@@ -100,6 +100,18 @@ theme_override_font_sizes/font_size = 12
 text = "Goddess of the Hunt"
 horizontal_alignment = 1
 
+[node name="TabSeparator" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -133.0
+offset_bottom = -132.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.831, 0.659, 0.263, 0.4)
+
 [node name="BottomTabs" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 12
@@ -115,24 +127,32 @@ theme_override_constants/separation = 0
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 56)
+theme_override_colors/font_color = Color(0.831, 0.659, 0.263, 1)
+theme_override_font_sizes/font_size = 13
 text = "STORY"
 
 [node name="ArenaBtn" type="Button" parent="BottomTabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 56)
+theme_override_colors/font_color = Color(0.831, 0.659, 0.263, 1)
+theme_override_font_sizes/font_size = 13
 text = "ARENA"
 
 [node name="CampBtn" type="Button" parent="BottomTabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 56)
+theme_override_colors/font_color = Color(0.831, 0.659, 0.263, 1)
+theme_override_font_sizes/font_size = 13
 text = "CAMP"
 
 [node name="SettingsBtn" type="Button" parent="BottomTabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 56)
+theme_override_colors/font_color = Color(0.831, 0.659, 0.263, 1)
+theme_override_font_sizes/font_size = 18
 text = "⚙"
 
 [node name="MoreTabs" type="HBoxContainer" parent="."]
@@ -145,30 +165,38 @@ offset_top = -132.0
 offset_bottom = -76.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_constants/separation = 4
+theme_override_constants/separation = 0
 
 [node name="DeckBtn" type="Button" parent="MoreTabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 52)
+theme_override_colors/font_color = Color(0.667, 0.533, 0.333, 1)
+theme_override_font_sizes/font_size = 12
 text = "DECK"
 
 [node name="ExploreBtn" type="Button" parent="MoreTabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 52)
+theme_override_colors/font_color = Color(0.667, 0.533, 0.333, 1)
+theme_override_font_sizes/font_size = 12
 text = "EXPLORE"
 
 [node name="AbyssBtn" type="Button" parent="MoreTabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 52)
+theme_override_colors/font_color = Color(0.667, 0.533, 0.333, 1)
+theme_override_font_sizes/font_size = 12
 text = "ABYSS"
 
 [node name="EquipBtn" type="Button" parent="MoreTabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 52)
+theme_override_colors/font_color = Color(0.667, 0.533, 0.333, 1)
+theme_override_font_sizes/font_size = 12
 text = "EQUIP"
 
 [connection signal="pressed" from="BottomTabs/StoryBtn" to="." method="_on_story_pressed"]
