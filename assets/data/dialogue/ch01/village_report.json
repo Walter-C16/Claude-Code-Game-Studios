@@ -1,0 +1,19 @@
+{
+  "prerequisites": [],
+  "requires_flag": "ch01_met_hipolita",
+  "nodes": {
+    "start": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N07_LINE_01"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N07_LINE_02"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N07_LINE_03"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "bold", "text_key": "CH01_N07_LINE_04"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "sad", "text_key": "CH01_N07_LINE_05"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N07_LINE_06"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "bold", "text_key": "CH01_N07_LINE_07"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N07_LINE_08"}
+      ],
+      "next": ""
+    }
+  }
+}

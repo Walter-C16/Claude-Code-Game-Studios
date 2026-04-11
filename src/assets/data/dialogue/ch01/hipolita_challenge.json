@@ -1,0 +1,61 @@
+{
+  "prerequisites": [],
+  "requires_flag": "ch01_met_hipolita",
+  "nodes": {
+    "start": {
+      "lines": [
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "bold", "text_key": "CH01_N06_LINE_01"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "appraising", "text_key": "CH01_N06_LINE_02"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "amused", "text_key": "CH01_N06_LINE_03"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "bold", "text_key": "CH01_N06_LINE_04"}
+      ],
+      "next": "choice_accept"
+    },
+    "choice_accept": {
+      "lines": [],
+      "choices": [
+        {
+          "text_key": "CH01_N06_CHOICE_A",
+          "next": "response_accept",
+          "effects": [
+            {"type": "relationship", "companion": "hipolita", "delta": 3}
+          ]
+        },
+        {
+          "text_key": "CH01_N06_CHOICE_B",
+          "next": "response_conditions",
+          "effects": [
+            {"type": "trust", "companion": "hipolita", "delta": 2}
+          ]
+        }
+      ]
+    },
+    "response_accept": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N06_RESPONSE_A"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "excited", "text_key": "CH01_N06_LINE_05"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N06_LINE_06"}
+      ],
+      "next": "post_duel"
+    },
+    "response_conditions": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N06_RESPONSE_B"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "amused", "text_key": "CH01_N06_LINE_07"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N06_LINE_06"}
+      ],
+      "next": "post_duel"
+    },
+    "post_duel": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N06_LINE_08"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N06_LINE_09"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N06_LINE_10"}
+      ],
+      "effects": [
+        {"type": "relationship", "companion": "hipolita", "delta": 5}
+      ],
+      "next": ""
+    }
+  }
+}

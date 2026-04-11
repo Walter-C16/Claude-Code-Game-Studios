@@ -1,0 +1,64 @@
+{
+  "prerequisites": [],
+  "requires_flag": "ch01_met_hipolita",
+  "nodes": {
+    "start": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N09_LINE_01"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "alert", "text_key": "CH01_N09_LINE_02"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "calm", "text_key": "CH01_N09_LINE_03"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "solemn", "text_key": "CH01_N09_LINE_04"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "alert", "text_key": "CH01_N09_LINE_05"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "calm", "text_key": "CH01_N09_LINE_06"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "shocked", "text_key": "CH01_N09_LINE_07"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "solemn", "text_key": "CH01_N09_LINE_08"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N09_LINE_09"}
+      ],
+      "next": "choice_revelation"
+    },
+    "choice_revelation": {
+      "lines": [
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "calm", "text_key": "CH01_N09_PROMPT"}
+      ],
+      "choices": [
+        {
+          "text_key": "CH01_N09_CHOICE_A",
+          "next": "response_protect",
+          "effects": [
+            {"type": "relationship", "companion": "artemis", "delta": 3},
+            {"type": "relationship", "companion": "hipolita", "delta": 3},
+            {"type": "flag_set", "flag": "ch01_gaia_revelation"}
+          ]
+        },
+        {
+          "text_key": "CH01_N09_CHOICE_B",
+          "next": "response_skeptical",
+          "effects": [
+            {"type": "trust", "companion": "artemis", "delta": 2},
+            {"type": "flag_set", "flag": "ch01_gaia_revelation"}
+          ]
+        }
+      ]
+    },
+    "response_protect": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N09_RESPONSE_A"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "warm", "text_key": "CH01_N09_LINE_10"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N09_LINE_11"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "bold", "text_key": "CH01_N09_LINE_12"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N09_LINE_13"}
+      ],
+      "next": ""
+    },
+    "response_skeptical": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N09_RESPONSE_B"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "calm", "text_key": "CH01_N09_LINE_14"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N09_LINE_11"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "bold", "text_key": "CH01_N09_LINE_12"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N09_LINE_13"}
+      ],
+      "next": ""
+    }
+  }
+}

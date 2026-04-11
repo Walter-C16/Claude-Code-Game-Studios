@@ -1,0 +1,61 @@
+{
+  "prerequisites": [],
+  "nodes": {
+    "start": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N01_LINE_01"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "alert", "text_key": "CH01_N01_LINE_02"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N01_LINE_03"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N01_LINE_04"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "curious", "text_key": "CH01_N01_LINE_05"}
+      ],
+      "next": "choice_origin"
+    },
+    "choice_origin": {
+      "lines": [],
+      "choices": [
+        {
+          "text_key": "CH01_N01_CHOICE_A",
+          "next": "response_honest",
+          "effects": [
+            {"type": "trust", "companion": "artemis", "delta": 2},
+            {"type": "flag_set", "flag": "ch01_met_artemis"}
+          ]
+        },
+        {
+          "text_key": "CH01_N01_CHOICE_B",
+          "next": "response_vague",
+          "effects": [
+            {"type": "flag_set", "flag": "ch01_met_artemis"}
+          ]
+        }
+      ]
+    },
+    "response_honest": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N01_RESPONSE_A"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "surprised", "text_key": "CH01_N01_LINE_06"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N01_LINE_07"}
+      ],
+      "next": "unlock_artemis"
+    },
+    "response_vague": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N01_RESPONSE_B"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "amused", "text_key": "CH01_N01_LINE_08"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N01_LINE_07"}
+      ],
+      "next": "unlock_artemis"
+    },
+    "unlock_artemis": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N01_LINE_09"}
+      ],
+      "effects": [
+        {"type": "meet", "companion": "artemis"},
+        {"type": "relationship", "companion": "artemis", "delta": 3}
+      ],
+      "next": ""
+    }
+  }
+}

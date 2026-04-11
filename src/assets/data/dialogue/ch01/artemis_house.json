@@ -1,0 +1,85 @@
+{
+  "prerequisites": [],
+  "requires_flag": "ch01_met_artemis",
+  "nodes": {
+    "start": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N02_LINE_01"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N02_LINE_02"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N02_LINE_03"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "sad", "text_key": "CH01_N02_LINE_04"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N02_LINE_05"}
+      ],
+      "next": "choice_gaia"
+    },
+    "choice_gaia": {
+      "lines": [
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "curious", "text_key": "CH01_N02_PROMPT_A"}
+      ],
+      "choices": [
+        {
+          "text_key": "CH01_N02_CHOICE_A1",
+          "next": "response_help",
+          "effects": [
+            {"type": "relationship", "companion": "artemis", "delta": 3}
+          ]
+        },
+        {
+          "text_key": "CH01_N02_CHOICE_A2",
+          "next": "response_fragments"
+        }
+      ]
+    },
+    "response_help": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N02_RESPONSE_A1"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N02_LINE_06"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N02_LINE_07"}
+      ],
+      "next": "choice_kronos"
+    },
+    "response_fragments": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N02_RESPONSE_A2"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N02_LINE_07"}
+      ],
+      "next": "choice_kronos"
+    },
+    "choice_kronos": {
+      "lines": [
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "sad", "text_key": "CH01_N02_LINE_08"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N02_PROMPT_B"}
+      ],
+      "choices": [
+        {
+          "text_key": "CH01_N02_CHOICE_B1",
+          "next": "response_brave",
+          "effects": [
+            {"type": "relationship", "companion": "artemis", "delta": 3},
+            {"type": "trust", "companion": "artemis", "delta": 2}
+          ]
+        },
+        {
+          "text_key": "CH01_N02_CHOICE_B2",
+          "next": "response_cautious"
+        }
+      ]
+    },
+    "response_brave": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N02_RESPONSE_B1"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "surprised", "text_key": "CH01_N02_LINE_09"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N02_LINE_10"}
+      ],
+      "next": ""
+    },
+    "response_cautious": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N02_RESPONSE_B2"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "amused", "text_key": "CH01_N02_LINE_11"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N02_LINE_10"}
+      ],
+      "next": ""
+    }
+  }
+}

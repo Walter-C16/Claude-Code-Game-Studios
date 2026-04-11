@@ -1,0 +1,29 @@
+{
+  "prerequisites": [],
+  "requires_flag": "ch01_met_artemis",
+  "nodes": {
+    "start": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N05_LINE_01"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "alert", "text_key": "CH01_N05_LINE_02"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N05_LINE_03"}
+      ],
+      "next": "post_combat"
+    },
+    "post_combat": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N05_LINE_04"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "bold", "text_key": "CH01_N05_LINE_05"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "appraising", "text_key": "CH01_N05_LINE_06"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N05_LINE_07"},
+        {"speaker": "hipolita", "speaker_type": "companion", "mood": "bold", "text_key": "CH01_N05_LINE_08"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N05_LINE_09"}
+      ],
+      "effects": [
+        {"type": "meet", "companion": "hipolita"},
+        {"type": "flag_set", "flag": "ch01_met_hipolita"}
+      ],
+      "next": ""
+    }
+  }
+}

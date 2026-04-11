@@ -1,0 +1,54 @@
+{
+  "prerequisites": [],
+  "requires_flag": "ch01_met_artemis",
+  "nodes": {
+    "start": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N03_LINE_01"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N03_LINE_02"},
+        {"speaker": "innkeeper", "speaker_type": "npc", "mood": "neutral", "text_key": "CH01_N03_LINE_03"},
+        {"speaker": "innkeeper", "speaker_type": "npc", "mood": "nervous", "text_key": "CH01_N03_LINE_04"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N03_LINE_05"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N03_LINE_06"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "sad", "text_key": "CH01_N03_LINE_07"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "neutral", "text_key": "CH01_N03_LINE_08"}
+      ],
+      "next": "choice_mission"
+    },
+    "choice_mission": {
+      "lines": [
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "curious", "text_key": "CH01_N03_PROMPT"}
+      ],
+      "choices": [
+        {
+          "text_key": "CH01_N03_CHOICE_A",
+          "next": "response_yes",
+          "effects": [
+            {"type": "relationship", "companion": "artemis", "delta": 3},
+            {"type": "trust", "companion": "artemis", "delta": 2}
+          ]
+        },
+        {
+          "text_key": "CH01_N03_CHOICE_B",
+          "next": "response_careful"
+        }
+      ]
+    },
+    "response_yes": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N03_RESPONSE_A"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_N03_LINE_09"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N03_LINE_10"}
+      ],
+      "next": ""
+    },
+    "response_careful": {
+      "lines": [
+        {"speaker": "player", "speaker_type": "player", "mood": "neutral", "text_key": "CH01_N03_RESPONSE_B"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "amused", "text_key": "CH01_N03_LINE_09"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_N03_LINE_10"}
+      ],
+      "next": ""
+    }
+  }
+}
