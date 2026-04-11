@@ -123,12 +123,59 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 56)
 text = "ARENA"
 
+[node name="CampBtn" type="Button" parent="BottomTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 56)
+text = "CAMP"
+
 [node name="SettingsBtn" type="Button" parent="BottomTabs"]
 layout_mode = 2
 size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 56)
-text = "SETTINGS"
+text = "⚙"
+
+[node name="MoreTabs" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -132.0
+offset_bottom = -76.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 4
+
+[node name="DeckBtn" type="Button" parent="MoreTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 52)
+text = "DECK"
+
+[node name="ExploreBtn" type="Button" parent="MoreTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 52)
+text = "EXPLORE"
+
+[node name="AbyssBtn" type="Button" parent="MoreTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 52)
+text = "ABYSS"
+
+[node name="EquipBtn" type="Button" parent="MoreTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 52)
+text = "EQUIP"
 
 [connection signal="pressed" from="BottomTabs/StoryBtn" to="." method="_on_story_pressed"]
 [connection signal="pressed" from="BottomTabs/ArenaBtn" to="." method="_on_arena_pressed"]
+[connection signal="pressed" from="BottomTabs/CampBtn" to="." method="_on_camp_pressed"]
 [connection signal="pressed" from="BottomTabs/SettingsBtn" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="MoreTabs/DeckBtn" to="." method="_on_deck_pressed"]
+[connection signal="pressed" from="MoreTabs/ExploreBtn" to="." method="_on_explore_pressed"]
+[connection signal="pressed" from="MoreTabs/AbyssBtn" to="." method="_on_abyss_pressed"]
+[connection signal="pressed" from="MoreTabs/EquipBtn" to="." method="_on_equipment_pressed"]

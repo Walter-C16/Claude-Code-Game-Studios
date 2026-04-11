@@ -52,8 +52,28 @@ func _start_breathing_animation() -> void:
 # ── Tab Buttons ────────────────────────────────────────────────────────────────
 
 func _on_story_pressed() -> void:
-	# TODO: navigate to chapter map
-	pass
+	SceneManager.change_scene(SceneManager.SceneId.CHAPTER_MAP)
+
+func _on_camp_pressed() -> void:
+	SceneManager.change_scene(SceneManager.SceneId.COMPANION_ROOM)
+
+func _on_deck_pressed() -> void:
+	SceneManager.change_scene(SceneManager.SceneId.DECK)
+
+func _on_explore_pressed() -> void:
+	SceneManager.change_scene(SceneManager.SceneId.EXPLORATION)
+
+func _on_abyss_pressed() -> void:
+	SceneManager.change_scene(SceneManager.SceneId.ABYSS)
+
+func _on_equipment_pressed() -> void:
+	SceneManager.change_scene(SceneManager.SceneId.EQUIPMENT)
+
+func _on_gallery_pressed() -> void:
+	SceneManager.change_scene(SceneManager.SceneId.GALLERY)
+
+func _on_achievements_pressed() -> void:
+	SceneManager.change_scene(SceneManager.SceneId.ACHIEVEMENTS)
 
 func _on_arena_pressed() -> void:
 	# Pass enemy config to combat.gd via arrival context.
@@ -72,5 +92,4 @@ func _on_arena_pressed() -> void:
 	)
 
 func _on_settings_pressed() -> void:
-	# TODO: navigate to settings
-	pass
+	SceneManager.open_settings_overlay()
