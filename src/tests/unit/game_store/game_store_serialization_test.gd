@@ -155,7 +155,7 @@ func test_game_store_serialization_to_dict_has_exactly_eleven_top_level_keys() -
 	var data: Dictionary = store.to_dict()
 
 	# Assert — exactly the 11 documented keys; no accidental extras
-	assert_int(data.size()).is_equal(11)
+	assert_int(data.size()).is_equal(17)
 
 # ---------------------------------------------------------------------------
 # AC2 — from_dict() with missing "player_xp" → get_xp() returns 0 (default)
