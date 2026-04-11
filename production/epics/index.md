@@ -1,6 +1,6 @@
 # Epics Index
 
-Last Updated: 2026-04-10
+Last Updated: 2026-04-10 (Sprint 5 added)
 Engine: Godot 4.6
 
 ## Foundation Layer
@@ -33,14 +33,23 @@ Engine: Godot 4.6
 | [deck-management](deck-management/EPIC.md) | DeckManager | deck-management.md | [6 stories](deck-management/stories.md) | Ready |
 | [camp](camp/EPIC.md) | Camp + GiftItems | camp.md + gift-items.md | [7 stories](camp/stories.md) | Ready |
 
+## Alpha Layer (Sprint 5)
+
+| Epic | Module(s) | GDD | Stories | Status |
+|------|-----------|-----|---------|--------|
+| [abyss-mode](abyss-mode/EPIC.md) | AbyssRunner | abyss-mode.md | [12 stories](abyss-mode/stories.md) | Ready |
+| [equipment](equipment/EPIC.md) | EquipmentSystem | equipment.md | [8 stories](equipment/stories.md) | Ready |
+| [exploration](exploration/EPIC.md) | ExplorationSystem | exploration.md | [7 stories](exploration/stories.md) | Ready |
+
 ## Summary
 
 | Metric | Count |
 |--------|-------|
-| Total epics | 15 |
+| Total epics | 18 |
 | Foundation | 6 (34 stories) |
 | Core | 4 (29 stories) |
 | Feature | 5 (37 stories) |
-| **Total stories** | **100** |
-| Total TR-IDs covered | 202 |
+| Alpha | 3 (27 stories) |
+| **Total stories** | **127** |
+| Total TR-IDs covered | 252 |
 | Untraced requirements | 0 |

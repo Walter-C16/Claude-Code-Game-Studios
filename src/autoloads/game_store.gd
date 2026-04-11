@@ -73,6 +73,34 @@ var _active_combat_buff: Dictionary = {}
 var _last_captain_id: String = ""
 
 # ---------------------------------------------------------------------------
+# Private State — Equipment (STORY-EQUIP-002, STORY-EQUIP-003)
+# ---------------------------------------------------------------------------
+
+## Item ID of the currently equipped weapon. Empty string = slot empty.
+var _equipped_weapon: String = ""
+
+## Item ID of the currently equipped amulet. Empty string = slot empty.
+var _equipped_amulet: String = ""
+
+## Ordered list of item IDs awaiting player review. Max 5 items (cap enforced
+## by EquipmentSystem). Using Array (not typed Array[String]) for JSON
+## round-trip compatibility — values are always Strings at runtime.
+var _pending_equipment: Array[String] = []
+
+# ---------------------------------------------------------------------------
+# Private State — Exploration (STORY-EXPLORE-001..005)
+# ---------------------------------------------------------------------------
+
+## Active exploration mission state. Empty dict = no mission in progress.
+## Expected keys: companion_id (String), mission_id (String),
+##   start_utc (int), duration_seconds (float).
+var _exploration_state: Dictionary = {}
+
+## Per-companion XP pool keyed by companion ID.
+## Accumulated via exploration dispatch and combat captain duty.
+var _companion_xp: Dictionary = {}
+
+# ---------------------------------------------------------------------------
 # Private State — Persistence (GS-003 will add deferred flush)
 # ---------------------------------------------------------------------------
 
@@ -116,6 +144,11 @@ func _initialize_defaults() -> void:
 	_last_interaction_date = ""
 	_active_combat_buff = {}
 	_last_captain_id = ""
+	_equipped_weapon = ""
+	_equipped_amulet = ""
+	_pending_equipment = []
+	_exploration_state = {}
+	_companion_xp = {}
 
 # ---------------------------------------------------------------------------
 # Public Getters — Companion State
@@ -339,6 +372,95 @@ func set_last_captain_id(id: String) -> void:
 	state_changed.emit("captain")
 
 # ---------------------------------------------------------------------------
+# Public Getters — Equipment (STORY-EQUIP-002, STORY-EQUIP-003)
+# ---------------------------------------------------------------------------
+
+## Returns the item ID of the currently equipped weapon. Empty string if none.
+func get_equipped_weapon() -> String:
+	return _equipped_weapon
+
+## Sets the equipped weapon by item ID. Pass "" to clear the slot.
+func set_equipped_weapon(item_id: String) -> void:
+	_equipped_weapon = item_id
+	_mark_dirty()
+	state_changed.emit("equipment")
+
+## Returns the item ID of the currently equipped amulet. Empty string if none.
+func get_equipped_amulet() -> String:
+	return _equipped_amulet
+
+## Sets the equipped amulet by item ID. Pass "" to clear the slot.
+func set_equipped_amulet(item_id: String) -> void:
+	_equipped_amulet = item_id
+	_mark_dirty()
+	state_changed.emit("equipment")
+
+## Returns a copy of the pending equipment item ID list.
+## Values are always Strings. Maximum 5 items (cap enforced by EquipmentSystem).
+func get_pending_equipment() -> Array[String]:
+	var result: Array[String] = []
+	for entry: Variant in _pending_equipment:
+		result.append(str(entry))
+	return result
+
+## Appends [param item_id] to the pending_equipment list.
+## The caller (EquipmentSystem) is responsible for enforcing the cap.
+func add_pending_equipment(item_id: String) -> void:
+	_pending_equipment.append(item_id)
+	_mark_dirty()
+	state_changed.emit("equipment")
+
+## Removes the entry at [param index] from pending_equipment.
+## No-op if index is out of range.
+func remove_pending_equipment(index: int) -> void:
+	if index < 0 or index >= _pending_equipment.size():
+		return
+	_pending_equipment.remove_at(index)
+	_mark_dirty()
+	state_changed.emit("equipment")
+
+# ---------------------------------------------------------------------------
+# Public Getters — Exploration State (STORY-EXPLORE-001..005)
+# ---------------------------------------------------------------------------
+
+## Returns a shallow copy of the active exploration mission state.
+## Returns an empty Dictionary when no mission is in progress.
+## Keys: companion_id (String), mission_id (String),
+##   start_utc (int), duration_seconds (float).
+func get_exploration_state() -> Dictionary:
+	return _exploration_state.duplicate()
+
+## Writes the active exploration mission state and marks state dirty.
+## Pass a dict with keys: companion_id, mission_id, start_utc, duration_seconds.
+func set_exploration_state(state: Dictionary) -> void:
+	_exploration_state = state.duplicate()
+	_mark_dirty()
+	state_changed.emit("exploration")
+
+## Clears the active exploration mission state and marks state dirty.
+## Called on collect() or cancel().
+func clear_exploration_state() -> void:
+	_exploration_state = {}
+	_mark_dirty()
+	state_changed.emit("exploration")
+
+# ---------------------------------------------------------------------------
+# Public Getters — Companion XP (STORY-EXPLORE-005)
+# ---------------------------------------------------------------------------
+
+## Returns the accumulated XP for [param companion_id]. Returns 0 if unknown.
+func get_companion_xp(companion_id: String) -> int:
+	return int(_companion_xp.get(companion_id, 0))
+
+## Adds [param amount] XP to [param companion_id]'s pool and marks state dirty.
+## No-op for unknown companion IDs (pool is created lazily).
+func add_companion_xp(companion_id: String, amount: int) -> void:
+	var current: int = int(_companion_xp.get(companion_id, 0))
+	_companion_xp[companion_id] = current + amount
+	_mark_dirty()
+	state_changed.emit("companion_xp")
+
+# ---------------------------------------------------------------------------
 # Serialization
 # ---------------------------------------------------------------------------
 
@@ -365,6 +487,11 @@ func to_dict() -> Dictionary:
 		"last_interaction_date": _last_interaction_date,
 		"active_combat_buff": _active_combat_buff.duplicate(),
 		"last_captain_id": _last_captain_id,
+		"equipped_weapon": _equipped_weapon,
+		"equipped_amulet": _equipped_amulet,
+		"pending_equipment": _pending_equipment.duplicate(),
+		"exploration_state": _exploration_state.duplicate(),
+		"companion_xp": _companion_xp.duplicate(),
 	}
 
 ## Restores mutable game state from a previously serialized Dictionary.
@@ -406,6 +533,12 @@ func from_dict(data: Dictionary) -> void:
 	_last_interaction_date = data.get("last_interaction_date", "")
 	_active_combat_buff = data.get("active_combat_buff", {}).duplicate()
 	_last_captain_id = data.get("last_captain_id", "")
+	_equipped_weapon = data.get("equipped_weapon", "")
+	_equipped_amulet = data.get("equipped_amulet", "")
+	var raw_pending: Array = data.get("pending_equipment", []) as Array
+	_pending_equipment.clear()
+	for entry: Variant in raw_pending:
+		_pending_equipment.append(str(entry))
 	# Explicitly clear both flags — loading is not a mutation and must not
 	# trigger a save flush even if the store had prior dirty state (AC5).
 	_dirty = false

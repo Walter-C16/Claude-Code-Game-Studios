@@ -10,7 +10,8 @@ extends RefCounted
 ##   4. blessing_chips           (from BlessingSystem, passed via context)
 ##   5. element_chips            (+25 weak, -15 resist, 0 neutral / None)
 ##   6. captain_chip_bonus       (floor(STR * 0.5), passed via context)
-##   7. social_buff_chips        (from GameStore combat buff, passed via context)
+##   7. equipment_chips          (from equipped Weapon, 0 if slot empty) [STORY-EQUIP-004]
+##   8. social_buff_chips        (from GameStore combat buff, passed via context)
 ##
 ## Clamp: total_chips = max(1, total_chips)
 ##
@@ -21,10 +22,17 @@ extends RefCounted
 ##     3. blessing_mult          (from BlessingSystem, passed via context)
 ##     4. element_mult           (+0.5 per weak-element card)
 ##     5. social_buff_mult       (from GameStore combat buff, passed via context)
+##     6. captain_mult_modifier  (additive contribution: captain_mult_modifier - 1.0)
+##     7. equipment_mult         (from equipped Amulet, 0.0 if slot empty) [STORY-EQUIP-004]
 ##   Clamp: additive_mult = max(1.0, additive_mult)
 ##   Multiplicative phase:
-##     6. poly_product           (x1.5 per Polychrome card, chained)
-##     7. captain_mult_modifier  (1.0 + INT * 0.025, passed via context)
+##     8. poly_product           (x1.5 per Polychrome card, chained)
+##     9. captain_mult_modifier  (1.0 + INT * 0.025, passed via context)
+##
+## NOTE on pipeline ordering: The GDD (equipment.md) specifies that equipment
+## is applied after captain and before blessings. The chips pipeline above
+## reflects the implementation order. The mult pipeline places equipment_mult
+## after the captain contribution in the additive phase, before Polychrome.
 ##
 ## SCORE: floor(total_chips * final_mult)  — stored as int (64-bit safe)
 ##
@@ -34,12 +42,14 @@ extends RefCounted
 ## context keys expected (chips):
 ##   enemy_element:          String  — "Fire"|"Water"|"Earth"|"Lightning"|""|"None"
 ##   captain_chip_bonus:     int     — floor(STR * 0.5), 0 if no captain
+##   equipment_chips:        int     — from equipped Weapon, 0 if slot empty
 ##   social_buff_chips:      int     — from GameStore combat buff, 0 if none
 ##   blessing_chips:         int     — from BlessingSystem.compute(), 0 if none
 ##
 ## context keys expected (mult):
 ##   blessing_mult:          float   — from BlessingSystem.compute(), 0.0 if none
 ##   social_buff_mult:       float   — from GameStore combat buff, 0.0 if none
+##   equipment_mult:         float   — from equipped Amulet, 0.0 if slot empty
 ##   captain_mult_modifier:  float   — 1.0 + (INT * 0.025), 1.0 if no captain
 ##
 ## See: docs/architecture/adr-0007-poker-combat.md
@@ -109,7 +119,10 @@ static func calculate_chips(
 	# 6. Captain chip bonus
 	total += context.get("captain_chip_bonus", 0) as int
 
-	# 7. Social buff chips
+	# 7. Equipment chip bonus (Weapon slot — Step 4 per equipment.md GDD)
+	total += context.get("equipment_chips", 0) as int
+
+	# 8. Social buff chips
 	total += context.get("social_buff_chips", 0) as int
 
 	# Clamp: chips must be >= 1
@@ -155,6 +168,9 @@ static func calculate_mult(
 
 	# Social buff mult
 	additive += context.get("social_buff_mult", 0.0) as float
+
+	# Equipment mult bonus (Amulet slot — Step D per equipment.md GDD)
+	additive += context.get("equipment_mult", 0.0) as float
 
 	# Clamp: additive mult must be >= 1.0
 	additive = maxf(1.0, additive)

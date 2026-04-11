@@ -1,0 +1,10 @@
+{
+  "missions": [
+    {"id": "forest_patrol", "name_key": "MISSION_FOREST_PATROL", "duration_hours": 1, "base_gold": 20, "base_xp": 10, "item_chance": 0.2},
+    {"id": "mountain_trek", "name_key": "MISSION_MOUNTAIN_TREK", "duration_hours": 2, "base_gold": 40, "base_xp": 25, "item_chance": 0.35},
+    {"id": "temple_search", "name_key": "MISSION_TEMPLE_SEARCH", "duration_hours": 3, "base_gold": 60, "base_xp": 40, "item_chance": 0.5},
+    {"id": "abyss_edge", "name_key": "MISSION_ABYSS_EDGE", "duration_hours": 4, "base_gold": 100, "base_xp": 60, "item_chance": 0.7}
+  ],
+  "agi_speed_factor": 0.05,
+  "int_rarity_factor": 0.03
+}
