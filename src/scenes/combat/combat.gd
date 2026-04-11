@@ -65,6 +65,7 @@ const SORT_SUIT: StringName = &"suit"
 @onready var sort_btn: Button = %SortBtn
 @onready var victory_overlay: Control = %VictoryOverlay
 @onready var defeat_overlay: Control = %DefeatOverlay
+@onready var retreat_confirm: Control = %RetreatConfirm
 
 # ── Private state ─────────────────────────────────────────────────────────────
 
@@ -265,9 +266,17 @@ func _on_sort_pressed() -> void:
 	_refresh_hand()
 
 
-## Retreat from combat — return to Hub without rewards.
-func _on_retreat_pressed() -> void:
+## Show retreat confirmation popup.
+func _on_back_pressed() -> void:
+	retreat_confirm.visible = true
+
+## Confirmed retreat — return to Hub without rewards.
+func _on_retreat_confirm_yes() -> void:
 	SceneManager.change_scene(SceneManager.SceneId.HUB)
+
+## Cancel retreat — close popup and continue fighting.
+func _on_retreat_confirm_no() -> void:
+	retreat_confirm.visible = false
 
 
 func _on_card_toggled(index: int, pressed: bool) -> void:

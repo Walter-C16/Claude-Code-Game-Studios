@@ -95,11 +95,11 @@ func test_portrait_fallback_missing_mood_file_does_not_crash() -> void:
 	assert_bool(path.is_empty()).is_false()
 
 func test_portrait_fallback_missing_mood_file_returns_placeholder_when_neutral_also_absent() -> void:
-	# Arrange — in headless env, NO portrait files exist on disk
+	# Arrange — use a fake companion ID that has no files on disk
 	var registry = _make_registry()
 
-	# Act — both "surprised" and "neutral" files are absent → PLACEHOLDER_PORTRAIT
-	var path: String = registry.get_portrait_path("hipolita", "surprised")
+	# Act — nonexistent companion → PLACEHOLDER_PORTRAIT
+	var path: String = registry.get_portrait_path("nonexistent_companion", "surprised")
 
 	# Assert
 	assert_str(path).is_equal(PLACEHOLDER)
@@ -107,11 +107,11 @@ func test_portrait_fallback_missing_mood_file_returns_placeholder_when_neutral_a
 # ── AC3 — Both mood and neutral missing → PLACEHOLDER_PORTRAIT ───────────────
 
 func test_portrait_fallback_both_files_missing_returns_placeholder() -> void:
-	# Arrange — headless env: no image files on disk
+	# Arrange — use a fake companion that has no portrait files
 	var registry = _make_registry()
 
 	# Act
-	var path: String = registry.get_portrait_path("atenea", "sad")
+	var path: String = registry.get_portrait_path("fake_companion_xyz", "sad")
 
 	# Assert
 	assert_str(path).is_equal(PLACEHOLDER)
@@ -180,11 +180,11 @@ func test_portrait_fallback_invalid_mood_bored_does_not_crash() -> void:
 	assert_bool(path.is_empty()).is_false()
 
 func test_portrait_fallback_invalid_mood_returns_placeholder_when_files_absent() -> void:
-	# Arrange — headless env: "bored" file and "neutral" file both absent
+	# Arrange — use a fake companion with no files at all
 	var registry = _make_registry()
 
 	# Act
-	var path: String = registry.get_portrait_path("hipolita", "bored")
+	var path: String = registry.get_portrait_path("no_such_companion", "bored")
 
 	# Assert — ends up at PLACEHOLDER_PORTRAIT
 	assert_str(path).is_equal(PLACEHOLDER)

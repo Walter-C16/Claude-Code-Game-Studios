@@ -140,12 +140,77 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "DISCARD"
 
-[node name="RetreatBtn" type="Button" parent="MainLayout/ActionRow"]
+[node name="BackBtn" type="Button" parent="."]
 unique_name_in_owner = true
+layout_mode = 1
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 52.0
+offset_bottom = 52.0
+text = "←"
+theme_override_font_sizes/font_size = 24
+
+[node name="RetreatConfirm" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="RetreatConfirm"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Panel" type="PanelContainer" parent="RetreatConfirm"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = -80.0
+offset_right = 140.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="RetreatConfirm/Panel"]
 layout_mode = 2
-size_flags_horizontal = 3
-text = "FLEE"
+alignment = 1
+
+[node name="Label" type="Label" parent="RetreatConfirm/Panel/VBox"]
+layout_mode = 2
+text = "Retreat from battle?"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="RetreatConfirm/Panel/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 16)
+
+[node name="Buttons" type="HBoxContainer" parent="RetreatConfirm/Panel/VBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="YesBtn" type="Button" parent="RetreatConfirm/Panel/VBox/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 44)
+text = "Yes"
 theme_override_colors/font_color = Color(0.85, 0.4, 0.4, 1)
+
+[node name="NoBtn" type="Button" parent="RetreatConfirm/Panel/VBox/Buttons"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 44)
+text = "No"
 
 [node name="VictoryOverlay" type="Control" parent="."]
 unique_name_in_owner = true
@@ -252,6 +317,8 @@ text = "RETREAT"
 [connection signal="pressed" from="MainLayout/ActionRow/SortBtn" to="." method="_on_sort_pressed"]
 [connection signal="pressed" from="MainLayout/ActionRow/PlayBtn" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MainLayout/ActionRow/DiscardBtn" to="." method="_on_discard_pressed"]
-[connection signal="pressed" from="MainLayout/ActionRow/RetreatBtn" to="." method="_on_retreat_pressed"]
+[connection signal="pressed" from="BackBtn" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="RetreatConfirm/Panel/VBox/Buttons/YesBtn" to="." method="_on_retreat_confirm_yes"]
+[connection signal="pressed" from="RetreatConfirm/Panel/VBox/Buttons/NoBtn" to="." method="_on_retreat_confirm_no"]
 [connection signal="pressed" from="VictoryOverlay/VictoryPanel/VictoryContinueBtn" to="." method="_on_victory_continue_pressed"]
 [connection signal="pressed" from="DefeatOverlay/DefeatPanel/DefeatRetreatBtn" to="." method="_on_defeat_retreat_pressed"]
