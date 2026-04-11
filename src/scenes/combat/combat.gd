@@ -43,6 +43,9 @@ const HP_TWEEN_DURATION: float = 0.6
 ## Duration in seconds for each per-card score cascade step (AC4, COMBAT-011).
 const SCORE_CASCADE_STEP: float = 0.1
 
+## Vertical rise in px applied to selected card buttons.
+const CARD_SELECTED_RISE_PX: float = 12.0
+
 ## Sort mode token used for sorting by card value.
 const SORT_VALUE: StringName = &"value"
 
@@ -80,6 +83,9 @@ var _sort_mode: StringName = SORT_VALUE
 
 ## Enemy config dict read from SceneManager arrival context.
 var _enemy_config: Dictionary = {}
+
+## Tracks the displayed score so the count-up animation knows its starting value.
+var _displayed_score: int = 0
 
 # ── Built-in virtual methods ──────────────────────────────────────────────────
 
@@ -177,9 +183,23 @@ func _create_card_button(card: Dictionary, index: int) -> Button:
 	# Color tint by element (never sole differentiator — icon carries shape too)
 	btn.modulate = _element_color(element).lerp(Color.WHITE, 0.5)
 
+	# Store real index as metadata so card-rise animation can find this button.
+	btn.set_meta("card_index", index)
+
 	btn.toggled.connect(func(pressed: bool) -> void:
 		_on_card_toggled(index, pressed)
 	)
+
+	# Button press feedback: scale to 0.95 on press, spring back on release.
+	btn.button_down.connect(func() -> void:
+		var t: Tween = btn.create_tween()
+		t.tween_property(btn, "scale", Vector2(0.95, 0.95), 0.08) \
+			.set_ease(Tween.EASE_OUT)
+	)
+	btn.button_up.connect(func() -> void:
+		Fx.pop_scale(btn, 1.05, 0.25)
+	)
+
 	return btn
 
 
@@ -235,8 +255,15 @@ func _update_action_buttons() -> void:
 ## Plays a short score cascade animation then refreshes stats.
 ## Total cascade must not exceed 2s (AC4, COMBAT-011).
 func _animate_score_cascade(result: Dictionary, played_count: int) -> void:
+	# Flash the hand container white as cards "fly" to center.
+	Fx.flash(hand_container, Color(1.0, 1.0, 1.0, 0.6), 0.12)
+
 	chips_label.text = str(result.get("chips", 0) as int)
 	mult_label.text  = "%.1f" % (result.get("mult", 1.0) as float)
+
+	# Pulse chips and mult labels to draw attention.
+	Fx.pop_scale(chips_label, 1.25, 0.3)
+	Fx.pop_scale(mult_label,  1.25, 0.3)
 
 	# Per-card step: SCORE_CASCADE_STEP seconds each, capped so total ≤ 2s
 	var step_duration: float = minf(SCORE_CASCADE_STEP, 2.0 / maxf(1.0, float(played_count)))
@@ -246,7 +273,18 @@ func _animate_score_cascade(result: Dictionary, played_count: int) -> void:
 		tween.tween_interval(step_duration)
 
 	await tween.finished
+
+	# Snapshot old score before _refresh_stats overwrites the label.
+	var old_score: int = _displayed_score
 	_refresh_stats()
+
+	# Count-up the score label to the new value and pulse it on landing.
+	var cs: Dictionary = _combat_manager.get_state()
+	var new_score: int = cs.get("current_score", 0) as int
+	_displayed_score = new_score
+	Fx.count_to(score_label, old_score, new_score, 0.4)
+	await get_tree().create_timer(0.4).timeout
+	Fx.pulse(score_label, 1.2, 0.35)
 
 
 # ── Player Actions ────────────────────────────────────────────────────────────
@@ -302,6 +340,17 @@ func _on_card_toggled(index: int, pressed: bool) -> void:
 	else:
 		_selected_indices.erase(index)
 	_update_action_buttons()
+
+	# Animate card rise/drop with a bounce tween on the matching button.
+	# Buttons are laid out in display order; find the one whose real index matches.
+	for btn: Node in hand_container.get_children():
+		var meta_index: int = btn.get_meta("card_index", -1) as int
+		if meta_index == index:
+			var target_y: float = btn.position.y + (CARD_SELECTED_RISE_PX * (-1.0 if pressed else 1.0))
+			var t: Tween = btn.create_tween()
+			t.tween_property(btn, "position:y", target_y, 0.18) \
+				.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+			break
 
 
 ## Called when the Victory overlay's "Continue" button is pressed.
@@ -383,12 +432,56 @@ func _on_state_changed(new_state: int) -> void:
 			_refresh_all()
 		CombatManagerScript.State.VICTORY:
 			_refresh_stats()
-			victory_overlay.visible = true
+			_play_victory_animation()
 		CombatManagerScript.State.DEFEAT:
 			_refresh_stats()
-			defeat_overlay.visible = true
+			_play_defeat_animation()
 		_:
 			pass
+
+
+## White flash → overlay appears → gold title springs up → gentle pulse loop.
+func _play_victory_animation() -> void:
+	# Brief full-screen white flash on this Control root.
+	Fx.flash(self, Color(1.0, 1.0, 1.0, 0.85), 0.12)
+	await get_tree().create_timer(0.12).timeout
+
+	victory_overlay.visible = true
+	victory_overlay.modulate.a = 0.0
+
+	var show_tween: Tween = create_tween()
+	show_tween.tween_property(victory_overlay, "modulate:a", 1.0, 0.25)
+	await show_tween.finished
+
+	# Find and animate the first Label inside the victory overlay.
+	for child: Node in victory_overlay.get_children():
+		if child is Label:
+			var lbl: Label = child as Label
+			lbl.scale = Vector2(0.3, 0.3)
+			Fx.pop_scale(lbl, 1.15, 0.5)
+			await get_tree().create_timer(0.55).timeout
+			# Gentle endless pulse so the overlay feels alive.
+			var pulse_loop: Tween = lbl.create_tween().set_loops()
+			pulse_loop.tween_property(lbl, "scale", Vector2(1.04, 1.04), 0.9) \
+				.set_ease(Tween.EASE_IN_OUT)
+			pulse_loop.tween_property(lbl, "scale", Vector2.ONE, 0.9) \
+				.set_ease(Tween.EASE_IN_OUT)
+			break
+
+
+## Dim scene to 60 % → overlay fades in softly.
+func _play_defeat_animation() -> void:
+	# Dim the combat area (everything except the overlay itself).
+	Fx.dim(self, 0.6, 0.7)
+	await get_tree().create_timer(0.5).timeout
+
+	defeat_overlay.visible = true
+	defeat_overlay.modulate.a = 0.0
+	var show_tween: Tween = create_tween()
+	show_tween.tween_property(defeat_overlay, "modulate:a", 1.0, 0.6) \
+		.set_ease(Tween.EASE_IN)
+	# Restore root modulate so the overlay itself isn't dimmed.
+	show_tween.parallel().tween_property(self, "modulate:a", 1.0, 0.1)
 
 
 # ── Private Helpers ───────────────────────────────────────────────────────────

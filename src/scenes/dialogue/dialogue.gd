@@ -37,6 +37,9 @@ var _typewriter_active: bool = false
 ## Sourced from DialogueRunner.cps so both share the same config value.
 var _chars_per_second: float = 40.0
 
+## Speaker from the previous line — used to detect speaker changes.
+var _last_speaker: String = ""
+
 # ── Built-in Virtual Methods ───────────────────────────────────────────────────
 
 func _ready() -> void:
@@ -59,6 +62,7 @@ func _ready() -> void:
 	if not chapter_id.is_empty() and not sequence_id.is_empty():
 		DialogueRunner.start_dialogue(chapter_id, sequence_id)
 
+
 ## Drives the visual typewriter animation each frame.
 ## When complete, calls DialogueRunner.complete_typewriter() to sync runner state.
 func _process(delta: float) -> void:
@@ -73,6 +77,7 @@ func _process(delta: float) -> void:
 		DialogueRunner.complete_typewriter()
 		return
 	text_label.visible_characters = _visible_chars
+
 
 func _input(event: InputEvent) -> void:
 	if not DialogueRunner.is_active():
@@ -95,9 +100,11 @@ func _handle_tap() -> void:
 func _on_line_ready(line_data: Dictionary) -> void:
 	_display_line(line_data)
 
+
 ## Called when the runner has entered a choice node and choices are ready.
 func _on_choices_ready(choices: Array) -> void:
 	_show_choices(choices)
+
 
 ## Called when the active dialogue sequence ends.
 ## StoryFlow is the orchestrator and handles its own sequencing via EventBus.
@@ -116,16 +123,20 @@ func _on_dialogue_ended(_sequence_id: String) -> void:
 	# For all other dialogues, go back to chapter map
 	SceneManager.change_scene(SceneManager.SceneId.CHAPTER_MAP)
 
+
 ## Called when the visual typewriter animation signals completion from the runner.
 ## Used here only to show the continue indicator (choices are shown via choices_ready).
 func _on_typewriter_complete() -> void:
 	continue_indicator.visible = true
+
 
 # ── Display ────────────────────────────────────────────────────────────────────
 
 ## Renders a single dialogue line: speaker label, portrait, and typewriter text.
 func _display_line(line_data: Dictionary) -> void:
 	var speaker: String = line_data.get("speaker", "narrator")
+	var speaker_changed: bool = (speaker != _last_speaker)
+	_last_speaker = speaker
 
 	# Speaker label — blank for narrator.
 	if speaker == "narrator":
@@ -140,10 +151,21 @@ func _display_line(line_data: Dictionary) -> void:
 		if ResourceLoader.exists(path):
 			portrait.texture = load(path)
 			portrait.visible = true
+			# Slide portrait in from left whenever the speaker changes.
+			if speaker_changed:
+				Fx.slide_in(portrait, Vector2(-60.0, 0.0), 0.35)
 		else:
 			portrait.visible = false
 	else:
 		portrait.visible = false
+
+	# Subtle panel slide-up for each new line.
+	Fx.slide_in(dialogue_panel, Vector2(0.0, 18.0), 0.25)
+
+	# Shake on dramatic lines: text_key must contain "SHAKE" in all-caps.
+	var text_key: String = line_data.get("text_key", "")
+	if "SHAKE" in text_key:
+		Fx.shake(self, 5.0, 0.25)
 
 	# Text — start typewriter animation.
 	var raw_text: String = line_data.get("text", line_data.get("text_key", ""))
@@ -157,7 +179,8 @@ func _display_line(line_data: Dictionary) -> void:
 	choices_container.visible = false
 	continue_indicator.visible = false
 
-## Populates and shows the choice buttons for a branching node.
+
+## Populates and shows the choice buttons for a branching node, staggered.
 func _show_choices(choices: Array) -> void:
 	# Remove previous choice buttons.
 	for child: Node in choices_container.get_children():
@@ -168,11 +191,17 @@ func _show_choices(choices: Array) -> void:
 		var btn := Button.new()
 		btn.text = choice.get("text", choice.get("text_key", ""))
 		btn.custom_minimum_size = Vector2(0, 44)
+		btn.modulate.a = 0.0  # start invisible; stagger_children will fade them in
 		btn.pressed.connect(_on_choice_selected.bind(i))
 		choices_container.add_child(btn)
 
 	choices_container.visible = true
 	continue_indicator.visible = false
+
+	# Stagger choices fading in from the bottom (100 ms between each).
+	await get_tree().process_frame
+	Fx.stagger_children(choices_container, 0.1, 16.0)
+
 
 func _on_choice_selected(index: int) -> void:
 	choices_container.visible = false
