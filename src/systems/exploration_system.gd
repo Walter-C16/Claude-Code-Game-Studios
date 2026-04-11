@@ -192,6 +192,15 @@ static func collect() -> Dictionary:
 	}
 
 
+## Returns all mission definitions as an Array[Dictionary].
+static func get_all_missions() -> Array[Dictionary]:
+	_ensure_mission_data()
+	var result: Array[Dictionary] = []
+	for m: Variant in _missions.values():
+		result.append(m as Dictionary)
+	return result
+
+
 ## Cancels the active mission immediately. Companion returns with no rewards.
 ## No-op if no mission is active.
 static func cancel() -> void:

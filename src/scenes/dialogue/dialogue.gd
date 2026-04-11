@@ -27,8 +27,8 @@ extends Control
 ## Full text for the current line, used by the local typewriter animation.
 var _full_text: String = ""
 
-## Current visible character count driven by _process.
-var _visible_chars: int = 0
+## Current visible character progress (float accumulator for sub-frame precision).
+var _visible_chars_float: float = 0.0
 
 ## True while the local typewriter animation is running.
 var _typewriter_active: bool = false
@@ -68,15 +68,16 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not _typewriter_active:
 		return
-	_visible_chars += int(_chars_per_second * delta)
-	if _visible_chars >= _full_text.length():
-		_visible_chars = _full_text.length()
+	_visible_chars_float += _chars_per_second * delta
+	var chars_to_show: int = int(_visible_chars_float)
+	if chars_to_show >= _full_text.length():
+		chars_to_show = _full_text.length()
 		_typewriter_active = false
-		text_label.visible_characters = _visible_chars
+		text_label.visible_characters = chars_to_show
 		# Notify the runner that the visual animation is done.
 		DialogueRunner.complete_typewriter()
 		return
-	text_label.visible_characters = _visible_chars
+	text_label.visible_characters = chars_to_show
 
 
 func _input(event: InputEvent) -> void:
@@ -172,7 +173,7 @@ func _display_line(line_data: Dictionary) -> void:
 	_full_text = raw_text
 	text_label.text = _full_text
 	text_label.visible_characters = 0
-	_visible_chars = 0
+	_visible_chars_float = 0.0
 	_typewriter_active = true
 
 	# Reset UI state for new line.

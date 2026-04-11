@@ -39,6 +39,7 @@ dist/
 .godot/
 *.translation
 export_presets.cfg
+src/reports/
 # Uncomment if using Godot:
 # *.import
 

@@ -249,6 +249,12 @@ func _enter_node(node_id: String) -> void:
 	_current_lines = node.get("lines", [])
 	# Filter choices through condition evaluation at render time (STORY-DIALOGUE-005).
 	_current_choices = _filter_choices(node.get("choices", []))
+	# Resolve text_key → localized text on each choice.
+	for choice: Variant in _current_choices:
+		var cd: Dictionary = choice as Dictionary
+		var ck: String = cd.get("text_key", "")
+		if not ck.is_empty() and not cd.has("text"):
+			cd["text"] = Localization.get_text(ck)
 	_current_line_index = 0
 
 	# Warn if both choices and next are populated (AC9 STORY-001).
@@ -295,6 +301,11 @@ func _advance_line() -> void:
 func _emit_line(line_data: Dictionary) -> void:
 	_state = State.DISPLAYING
 	_typewriter_complete = false
+	# Resolve text_key → localized text so consumers get readable strings.
+	var text_key: String = line_data.get("text_key", "")
+	if not text_key.is_empty() and not line_data.has("text"):
+		var resolved: String = Localization.get_text(text_key)
+		line_data["text"] = resolved
 	line_ready.emit(line_data)
 
 # ── Private — Effect Application ──────────────────────────────────────────────

@@ -87,11 +87,15 @@ var _enemy_config: Dictionary = {}
 ## Tracks the displayed score so the count-up animation knows its starting value.
 var _displayed_score: int = 0
 
+## Dynamically built HBoxContainer showing active blessing icons above the hand.
+var _blessing_strip: HBoxContainer
+
 # ── Built-in virtual methods ──────────────────────────────────────────────────
 
 func _ready() -> void:
 	victory_overlay.visible = false
 	defeat_overlay.visible = false
+	_build_blessing_strip()
 
 	retreat_confirm.visible = false
 
@@ -482,6 +486,89 @@ func _play_defeat_animation() -> void:
 		.set_ease(Tween.EASE_IN)
 	# Restore root modulate so the overlay itself isn't dimmed.
 	show_tween.parallel().tween_property(self, "modulate:a", 1.0, 0.1)
+
+
+# ── Blessing HUD ─────────────────────────────────────────────────────────────
+
+## Builds the blessing icon strip above the hand container (DB-005).
+## Shows one small label per active blessing slot for the current captain.
+func _build_blessing_strip() -> void:
+	_blessing_strip = HBoxContainer.new()
+	_blessing_strip.add_theme_constant_override("separation", 4)
+	_blessing_strip.alignment = BoxContainer.ALIGNMENT_CENTER
+
+	# Insert just before the hand container so it sits above the cards.
+	var parent: Node = hand_container.get_parent()
+	if parent != null:
+		var hand_idx: int = hand_container.get_index()
+		parent.add_child(_blessing_strip)
+		parent.move_child(_blessing_strip, hand_idx)
+
+	_populate_blessing_icons()
+
+
+## Fills the blessing strip with icons for the current captain's active blessings.
+func _populate_blessing_icons() -> void:
+	for child: Node in _blessing_strip.get_children():
+		child.queue_free()
+
+	var captain_id: String = _enemy_config.get("captain_id", "") as String
+	if captain_id.is_empty():
+		# Try from the captain context
+		if _combat_manager != null:
+			captain_id = _combat_manager._captain_context.get("captain_id", "") as String
+	if captain_id.is_empty():
+		return
+
+	var stage: int = CompanionState.get_romance_stage(captain_id)
+	var blessings: Array[Dictionary] = BlessingSystem.get_blessing_info(captain_id)
+
+	for blessing: Dictionary in blessings:
+		var slot: int = blessing.get("slot", 0) as int
+		var active: bool = slot <= _max_blessing_slot(stage)
+		var trigger: String = blessing.get("trigger_type", "always") as String
+
+		var icon: Label = Label.new()
+		icon.custom_minimum_size = Vector2(28.0, 28.0)
+		icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		icon.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		icon.add_theme_font_size_override("font_size", 12)
+
+		if active:
+			icon.text = _blessing_icon(trigger)
+			icon.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+			icon.tooltip_text = blessing.get("name", "Blessing %d" % slot)
+		else:
+			icon.text = "?"
+			icon.add_theme_color_override("font_color", UIConstants.TEXT_DISABLED)
+			icon.tooltip_text = "Locked (Stage %d)" % slot
+
+		_blessing_strip.add_child(icon)
+
+
+## Returns the max active slot for a given romance stage (mirrors BlessingSystem).
+func _max_blessing_slot(stage: int) -> int:
+	match stage:
+		0: return 0
+		1: return 1
+		2: return 2
+		3: return 4
+		4: return 5
+		_: return 0
+
+
+## Returns a short icon glyph for a blessing trigger type.
+func _blessing_icon(trigger: String) -> String:
+	match trigger:
+		"always": return "★"
+		"per_card": return "♦"
+		"suit_count": return "♣"
+		"hand_rank_min": return "♠"
+		"signature_card": return "♥"
+		"accumulated_chips_min": return "▲"
+		"current_score_gate": return "◆"
+		"heart_flush": return "❤"
+		_: return "●"
 
 
 # ── Private Helpers ───────────────────────────────────────────────────────────

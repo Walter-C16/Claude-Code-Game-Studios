@@ -1,109 +1,329 @@
 extends Control
 
-## ChapterMap — Story node progression screen for Chapter 1.
-## Loads ch01.json, displays nodes as buttons, checks flag prerequisites.
+## ChapterMap — Two-level story navigation: chapter list → chapter detail with areas.
+##
+## Level 1: Shows available chapters as large tappable cards.
+## Level 2: Shows a chapter's city/location header and story nodes grouped by area.
+## Loads chapter data from res://assets/data/chapters/ch{nn}.json.
 
 @onready var title_label: Label = %TitleLabel
 @onready var chapter_list: VBoxContainer = %ChapterList
 @onready var back_btn: Button = %BackBtn
 
-var _chapter_data: Dictionary = {}
-var _nodes: Array = []
+## Tracks which chapter files exist on disk.
+var _chapter_files: Array[String] = []
 
-## Tracks looping pulse tweens for available (unlocked) node buttons so we can
-## kill them when the scene exits without leaking orphaned tweens.
+## Currently displayed chapter data (empty = showing chapter list).
+var _active_chapter: Dictionary = {}
+
+## Looping tweens for node button animations — killed on exit.
 var _pulse_tweens: Array[Tween] = []
-
-## Tracks looping gold glow tweens for completed node buttons.
 var _glow_tweens: Array[Tween] = []
 
 func _ready() -> void:
-	_load_chapter()
-	_build_node_list()
-	# Stagger-animate nodes after a single frame so positions are committed.
+	_discover_chapters()
+	_show_chapter_list()
 	await get_tree().process_frame
 	_animate_entrance()
 
 
-func _load_chapter() -> void:
-	var path: String = "res://assets/data/chapters/ch01.json"
+# ── Chapter Discovery ──────────────────────────────────────────────────────────
+
+## Scans the chapters directory for ch{nn}.json files.
+func _discover_chapters() -> void:
+	_chapter_files.clear()
+	var dir_path: String = "res://assets/data/chapters"
+	if not DirAccess.dir_exists_absolute(dir_path):
+		return
+	var dir: DirAccess = DirAccess.open(dir_path)
+	if dir == null:
+		return
+	dir.list_dir_begin()
+	var file_name: String = dir.get_next()
+	while not file_name.is_empty():
+		if file_name.begins_with("ch") and file_name.ends_with(".json"):
+			_chapter_files.append(file_name)
+		file_name = dir.get_next()
+	_chapter_files.sort()
+
+
+## Loads and parses a single chapter JSON file. Returns empty dict on failure.
+func _load_chapter_file(file_name: String) -> Dictionary:
+	var path: String = "res://assets/data/chapters/%s" % file_name
 	if not FileAccess.file_exists(path):
-		push_warning("ChapterMap: ch01.json not found")
-		return
-	var file = FileAccess.open(path, FileAccess.READ)
-	if not file:
-		return
-	var json = JSON.new()
+		return {}
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return {}
+	var json := JSON.new()
 	if json.parse(file.get_as_text()) != OK:
-		return
-	_chapter_data = json.data
-	_nodes = _chapter_data.get("nodes", [])
-	title_label.text = Localization.get_text(_chapter_data.get("title_key", "Chapter 1"))
+		return {}
+	if json.data is Dictionary:
+		return json.data as Dictionary
+	return {}
 
 
-func _build_node_list() -> void:
-	# Clear existing
+# ── Level 1: Chapter List ──────────────────────────────────────────────────────
+
+## Shows the list of available chapters.
+func _show_chapter_list() -> void:
+	_active_chapter = {}
+	_kill_tweens()
+	title_label.text = "STORY"
+
 	for child: Node in chapter_list.get_children():
 		child.queue_free()
 
-	_pulse_tweens.clear()
-	_glow_tweens.clear()
+	for file_name: String in _chapter_files:
+		var data: Dictionary = _load_chapter_file(file_name)
+		if data.is_empty():
+			continue
+		var chapter_id: String = data.get("id", "")
+		var card: Button = _make_chapter_card(data)
+		chapter_list.add_child(card)
+		card.pressed.connect(_on_chapter_selected.bind(chapter_id, file_name))
 
-	for node_data: Variant in _nodes:
-		var data: Dictionary = node_data as Dictionary
-		var node_id: String = data.get("id", "") as String
-		var node_type: String = data.get("type", "dialogue") as String
-		var prereqs: Array = data.get("prereqs", [])
+	await get_tree().process_frame
+	_animate_entrance()
 
-		# Check if all prereqs are met
+
+## Creates a large card button for a single chapter.
+func _make_chapter_card(data: Dictionary) -> Button:
+	var chapter_id: String = data.get("id", "")
+	var title_key: String = data.get("title_key", "")
+	var subtitle_key: String = data.get("subtitle_key", "")
+	var title_text: String = Localization.get_text(title_key)
+	if title_text == title_key:
+		title_text = chapter_id.replace("ch", "Chapter ").capitalize()
+	var subtitle_text: String = Localization.get_text(subtitle_key)
+	if subtitle_text == subtitle_key:
+		subtitle_text = ""
+
+	# Check if chapter is accessible (ch01 always, others need completion flag).
+	var accessible: bool = true
+	if chapter_id != "ch01":
+		var prev_num: int = int(chapter_id.replace("ch", "")) - 1
+		var prev_flag: String = "ch%02d_complete" % prev_num
+		accessible = GameStore.has_flag(prev_flag)
+
+	# Check chapter completion.
+	var completed: bool = GameStore.has_flag(chapter_id + "_complete")
+
+	var btn: Button = Button.new()
+	btn.custom_minimum_size = Vector2(0.0, 100.0)
+	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn.disabled = not accessible
+
+	# Build label content.
+	var status: String = " ✓" if completed else ""
+	if not accessible:
+		btn.text = "??? — Locked"
+	else:
+		btn.text = "%s%s\n%s" % [title_text, status, subtitle_text]
+
+	# Styling.
+	var style: StyleBoxFlat = StyleBoxFlat.new()
+	style.corner_radius_top_left = 10
+	style.corner_radius_top_right = 10
+	style.corner_radius_bottom_left = 10
+	style.corner_radius_bottom_right = 10
+	style.content_margin_left = 16.0
+	style.content_margin_right = 16.0
+	style.content_margin_top = 12.0
+	style.content_margin_bottom = 12.0
+	style.border_width_left = 1
+	style.border_width_right = 1
+	style.border_width_top = 1
+	style.border_width_bottom = 1
+
+	if completed:
+		style.bg_color = UIConstants.BG_SECONDARY
+		style.border_color = UIConstants.ACCENT_GOLD
+		btn.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
+	elif accessible:
+		style.bg_color = UIConstants.BG_SECONDARY
+		style.border_color = UIConstants.ACCENT_GOLD_BRIGHT
+		btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	else:
+		style.bg_color = UIConstants.BG_PRIMARY
+		style.border_color = UIConstants.TEXT_DISABLED
+		btn.add_theme_color_override("font_color", UIConstants.TEXT_DISABLED)
+
+	btn.add_theme_stylebox_override("normal", style)
+	btn.add_theme_font_size_override("font_size", 16)
+
+	return btn
+
+
+# ── Level 2: Chapter Detail ───────────────────────────────────────────────────
+
+## Shows the detail view for a selected chapter: location header + nodes by area.
+func _on_chapter_selected(chapter_id: String, file_name: String) -> void:
+	var data: Dictionary = _load_chapter_file(file_name)
+	if data.is_empty():
+		return
+	_active_chapter = data
+	_show_chapter_detail(data)
+
+
+## Builds the chapter detail view with location header and area-grouped nodes.
+func _show_chapter_detail(data: Dictionary) -> void:
+	_kill_tweens()
+
+	var title_key: String = data.get("title_key", "")
+	var title_text: String = Localization.get_text(title_key)
+	if title_text == title_key:
+		title_text = data.get("id", "").capitalize()
+	title_label.text = title_text
+
+	for child: Node in chapter_list.get_children():
+		child.queue_free()
+
+	var nodes: Array = data.get("nodes", [])
+
+	# Location header.
+	var location_key: String = data.get("location_key", "")
+	var subtitle_key: String = data.get("subtitle_key", "")
+	if not location_key.is_empty():
+		var loc_text: String = Localization.get_text(subtitle_key)
+		var loc_desc: String = Localization.get_text(location_key)
+
+		var header: VBoxContainer = VBoxContainer.new()
+		header.add_theme_constant_override("separation", 6)
+		chapter_list.add_child(header)
+
+		var loc_lbl: Label = Label.new()
+		loc_lbl.text = loc_text
+		loc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		loc_lbl.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
+		loc_lbl.add_theme_font_size_override("font_size", 20)
+		header.add_child(loc_lbl)
+
+		var desc_lbl: Label = Label.new()
+		desc_lbl.text = loc_desc
+		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		desc_lbl.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+		desc_lbl.add_theme_font_size_override("font_size", 12)
+		header.add_child(desc_lbl)
+
+		# Spacer.
+		var spacer: Control = Control.new()
+		spacer.custom_minimum_size = Vector2(0.0, 8.0)
+		header.add_child(spacer)
+
+		Fx.gold_shimmer(loc_lbl, 3.0)
+
+	# Group nodes by area.
+	var areas: Array[String] = []
+	var area_nodes: Dictionary = {}
+	for node_data: Variant in nodes:
+		var nd: Dictionary = node_data as Dictionary
+		var area: String = nd.get("area", "unknown")
+		if not area_nodes.has(area):
+			area_nodes[area] = []
+			areas.append(area)
+		area_nodes[area].append(nd)
+
+	# Build area sections.
+	for area: String in areas:
+		_build_area_section(area, area_nodes[area])
+
+	await get_tree().process_frame
+	_animate_entrance()
+
+
+## Builds a section header + node buttons for a single area.
+func _build_area_section(area: String, nodes: Array) -> void:
+	# Area header.
+	var area_key: String = "AREA_%s" % area.to_upper()
+	var area_name: String = Localization.get_text(area_key)
+	if area_name == area_key:
+		area_name = area.capitalize()
+
+	var area_label: Label = Label.new()
+	area_label.text = area_name
+	area_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+	area_label.add_theme_font_size_override("font_size", 14)
+	area_label.custom_minimum_size = Vector2(0.0, 32.0)
+	area_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+	chapter_list.add_child(area_label)
+
+	# Node buttons.
+	for node_data: Variant in nodes:
+		var nd: Dictionary = node_data as Dictionary
+		var node_id: String = nd.get("id", "")
+		var node_type: String = nd.get("type", "dialogue")
+		var prereqs: Array = nd.get("prereqs", [])
+
+		# Check prerequisites.
 		var available: bool = true
 		for prereq: Variant in prereqs:
 			if not GameStore.has_flag(str(prereq)):
 				available = false
 				break
 
-		# Check if already completed
+		# Check completion.
 		var completed: bool = false
-		var reward_flags: Array = data.get("rewards", {}).get("flags", [])
+		var reward_flags: Array = nd.get("rewards", {}).get("flags", [])
 		for flag: Variant in reward_flags:
 			if GameStore.has_flag(str(flag)):
 				completed = true
 				break
 
-		# Create button
-		var btn := Button.new()
+		# Build button.
+		var btn: Button = Button.new()
 		var icon: String = "⚔" if node_type == "combat" else "💬"
 		var status: String = " ✓" if completed else ""
 
-		# Get display name from en.json or node_id
 		var name_key: String = "CHAPTER_NODE_%s" % node_id.to_upper()
 		var display_name: String = Localization.get_text(name_key)
 		if display_name == name_key:
-			# No translation — use a readable fallback
 			display_name = node_id.replace("ch01_", "").replace("_", " ").capitalize()
 
-		btn.text = "%s %s%s" % [icon, display_name, status]
-		btn.custom_minimum_size = Vector2(0, 52)
+		btn.text = "%s  %s%s" % [icon, display_name, status]
+		btn.custom_minimum_size = Vector2(0.0, 52.0)
 		btn.disabled = not available or completed
 
-		# Visual states
+		# Styling per state.
+		var style: StyleBoxFlat = StyleBoxFlat.new()
+		style.corner_radius_top_left = 8
+		style.corner_radius_top_right = 8
+		style.corner_radius_bottom_left = 8
+		style.corner_radius_bottom_right = 8
+		style.content_margin_left = 12.0
+		style.content_margin_right = 12.0
+
 		if completed:
-			# Completed nodes: dim modulate to signal done; gold glow pulse on tint.
 			btn.modulate = Color(UIConstants.ACCENT_GOLD_DARK, 0.85)
+			style.bg_color = UIConstants.BG_TERTIARY
+			style.border_color = UIConstants.ACCENT_GOLD_DARK
 			_start_gold_glow(btn)
 		elif not available:
-			# Locked nodes: strongly dimmed and static.
 			btn.modulate = Color(UIConstants.TEXT_DISABLED, 0.5)
+			style.bg_color = UIConstants.BG_PRIMARY
+			style.border_color = UIConstants.TEXT_DISABLED
 		else:
-			# Available nodes: subtle breathing scale animation.
+			style.bg_color = UIConstants.BG_SECONDARY
+			style.border_color = UIConstants.ACCENT_GOLD
+			btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
 			_start_breathing_pulse(btn)
 
+		style.border_width_left = 1
+		style.border_width_right = 1
+		style.border_width_top = 1
+		style.border_width_bottom = 1
+		btn.add_theme_stylebox_override("normal", style)
+		btn.add_theme_font_size_override("font_size", 14)
+
 		if available and not completed:
-			var captured_data: Dictionary = data
+			var captured_data: Dictionary = nd
 			btn.pressed.connect(func() -> void: _on_node_pressed(captured_data))
 
 		chapter_list.add_child(btn)
 
+
+# ── Animations ─────────────────────────────────────────────────────────────────
 
 ## Stagger all node buttons scaling from 0 to 1 with spring overshoot.
 func _animate_entrance() -> void:
@@ -123,7 +343,7 @@ func _animate_entrance() -> void:
 ## Gentle breathing scale loop for available (unlocked) nodes.
 func _start_breathing_pulse(btn: Button) -> void:
 	var t: Tween = btn.create_tween().set_loops()
-	t.tween_property(btn, "scale", Vector2(1.03, 1.03), 1.2) \
+	t.tween_property(btn, "scale", Vector2(1.02, 1.02), 1.2) \
 		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
 	t.tween_property(btn, "scale", Vector2.ONE, 1.2) \
 		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
@@ -140,11 +360,25 @@ func _start_gold_glow(btn: Button) -> void:
 	_glow_tweens.append(t)
 
 
+## Kills all looping tweens to prevent orphan leaks.
+func _kill_tweens() -> void:
+	for t: Tween in _pulse_tweens:
+		if t != null and t.is_valid():
+			t.kill()
+	for t: Tween in _glow_tweens:
+		if t != null and t.is_valid():
+			t.kill()
+	_pulse_tweens.clear()
+	_glow_tweens.clear()
+
+
+# ── Node Interaction ───────────────────────────────────────────────────────────
+
 func _on_node_pressed(node_data: Dictionary) -> void:
 	var node_type: String = node_data.get("type", "dialogue") as String
 	var node_id: String = node_data.get("id", "") as String
 
-	# Apply meet effects before navigation
+	# Apply meet effects before navigation.
 	var effects: Array = node_data.get("effects", [])
 	for fx: Variant in effects:
 		var fx_dict: Dictionary = fx as Dictionary
@@ -168,19 +402,12 @@ func _on_node_pressed(node_data: Dictionary) -> void:
 		)
 
 
-## Apply node rewards (gold, xp, flags) — called when returning from combat/dialogue
-func _apply_rewards(node_data: Dictionary) -> void:
-	var rewards: Dictionary = node_data.get("rewards", {}) as Dictionary
-	var gold: int = rewards.get("gold", 0) as int
-	var xp: int = rewards.get("xp", 0) as int
-	var flags: Array = rewards.get("flags", [])
-	if gold > 0:
-		GameStore.add_gold(gold)
-	if xp > 0:
-		GameStore.add_xp(xp)
-	for flag: Variant in flags:
-		GameStore.set_flag(str(flag))
-
+# ── Navigation ─────────────────────────────────────────────────────────────────
 
 func _on_back_pressed() -> void:
-	SceneManager.change_scene(SceneManager.SceneId.HUB)
+	if not _active_chapter.is_empty():
+		# Go back to chapter list from chapter detail.
+		_show_chapter_list()
+	else:
+		# Go back to hub from chapter list.
+		SceneManager.change_scene(SceneManager.SceneId.HUB)

@@ -187,7 +187,8 @@ func play_hand(selected_indices: Array[int]) -> Dictionary:
 	# Build the per-hand scoring context by merging the frozen captain context
 	# with blessing values returned from BlessingSystem.
 	var context: Dictionary = _captain_context.duplicate(true)
-	context["enemy_element"] = _enemy_config.get("element", "") as String
+	var raw_element: Variant = _enemy_config.get("element", "")
+	context["enemy_element"] = str(raw_element) if raw_element != null else ""
 	context["blessing_chips"] = blessing_result.get("blessing_chips", 0) as int
 	context["blessing_mult"]  = blessing_result.get("blessing_mult",  0.0) as float
 

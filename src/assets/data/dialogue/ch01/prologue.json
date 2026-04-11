@@ -10,7 +10,12 @@
         {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_05"},
         {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_06"},
         {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_07"},
-        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_08"}
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_08"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_09"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_10"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_11_SHAKE"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_12"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "PROLOGUE_LINE_13_SHAKE"}
       ],
       "choices": [],
       "next": ""

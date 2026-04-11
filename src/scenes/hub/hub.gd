@@ -23,6 +23,9 @@ var _displayed_gold: int = 0
 
 # ── Built-in Virtual Methods ───────────────────────────────────────────────────
 
+## Welcome popup overlay — built dynamically on first visit.
+var _welcome_popup: PanelContainer
+
 func _ready() -> void:
 	_update_companion_display()
 	_update_currency()
@@ -33,6 +36,14 @@ func _ready() -> void:
 	# Entrance animation: stagger all direct children from their edges.
 	await get_tree().process_frame
 	_animate_entrance()
+
+	# During early game, only Story is enabled until ch01_tutorial_done.
+	if not GameStore.has_flag("ch01_exposition_done"):
+		_lock_tabs_for_tutorial()
+
+	# Show welcome popup on first Hub visit (after prologue + tutorial combat).
+	if GameStore.has_flag("prologue_done") and not GameStore.has_flag("hub_welcomed"):
+		_show_welcome_popup()
 
 
 # ── Display ────────────────────────────────────────────────────────────────────
@@ -84,9 +95,129 @@ func _animate_entrance() -> void:
 	_start_name_shimmer()
 
 
+# ── Tutorial Lock ──────────────────────────────────────────────────────────────
+
+## Disables all Hub tab buttons except STORY during the first-time tutorial.
+func _lock_tabs_for_tutorial() -> void:
+	var bottom_tabs: Node = get_node_or_null("BottomTabs")
+	var more_tabs: Node = get_node_or_null("MoreTabs")
+	if bottom_tabs != null:
+		for child: Node in bottom_tabs.get_children():
+			if child is Button and child.name != "StoryBtn":
+				(child as Button).disabled = true
+				(child as Button).modulate.a = 0.35
+	if more_tabs != null:
+		for child: Node in more_tabs.get_children():
+			if child is Button:
+				(child as Button).disabled = true
+				(child as Button).modulate.a = 0.35
+
+
+## Re-enables all Hub tab buttons after the tutorial welcome is dismissed.
+func _unlock_tabs() -> void:
+	var bottom_tabs: Node = get_node_or_null("BottomTabs")
+	var more_tabs: Node = get_node_or_null("MoreTabs")
+	if bottom_tabs != null:
+		for child: Node in bottom_tabs.get_children():
+			if child is Button:
+				(child as Button).disabled = false
+				(child as Button).modulate.a = 1.0
+	if more_tabs != null:
+		for child: Node in more_tabs.get_children():
+			if child is Button:
+				(child as Button).disabled = false
+				(child as Button).modulate.a = 1.0
+
+
+# ── Welcome Popup ──────────────────────────────────────────────────────────────
+
+## Builds and shows a one-time welcome popup guiding the player to tap Story.
+func _show_welcome_popup() -> void:
+	# Semi-transparent backdrop to dim the hub.
+	var backdrop: ColorRect = ColorRect.new()
+	backdrop.name = "WelcomeBackdrop"
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop.color = Color(0.0, 0.0, 0.0, 0.6)
+	add_child(backdrop)
+
+	# Center the popup using anchors at 50%/50% with symmetric offsets.
+	_welcome_popup = PanelContainer.new()
+	_welcome_popup.anchor_left = 0.5
+	_welcome_popup.anchor_right = 0.5
+	_welcome_popup.anchor_top = 0.5
+	_welcome_popup.anchor_bottom = 0.5
+	_welcome_popup.offset_left = -170.0
+	_welcome_popup.offset_right = 170.0
+	_welcome_popup.offset_top = -140.0
+	_welcome_popup.offset_bottom = 140.0
+	var panel_style: StyleBoxFlat = StyleBoxFlat.new()
+	panel_style.bg_color = UIConstants.BG_SECONDARY
+	panel_style.corner_radius_top_left = 14
+	panel_style.corner_radius_top_right = 14
+	panel_style.corner_radius_bottom_left = 14
+	panel_style.corner_radius_bottom_right = 14
+	panel_style.border_width_left = 2
+	panel_style.border_width_right = 2
+	panel_style.border_width_top = 2
+	panel_style.border_width_bottom = 2
+	panel_style.border_color = UIConstants.ACCENT_GOLD
+	panel_style.content_margin_left = 24.0
+	panel_style.content_margin_right = 24.0
+	panel_style.content_margin_top = 20.0
+	panel_style.content_margin_bottom = 20.0
+	_welcome_popup.add_theme_stylebox_override("panel", panel_style)
+	add_child(_welcome_popup)
+
+	var vbox: VBoxContainer = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 16)
+	_welcome_popup.add_child(vbox)
+
+	var title_lbl: Label = Label.new()
+	title_lbl.text = Localization.get_text("HUB_WELCOME_TITLE")
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
+	title_lbl.add_theme_font_size_override("font_size", 22)
+	vbox.add_child(title_lbl)
+
+	var body_lbl: Label = Label.new()
+	body_lbl.text = Localization.get_text("HUB_WELCOME_TEXT")
+	body_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body_lbl.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	body_lbl.add_theme_font_size_override("font_size", 15)
+	vbox.add_child(body_lbl)
+
+	var ok_btn: Button = Button.new()
+	ok_btn.text = Localization.get_text("HUB_WELCOME_OK")
+	ok_btn.custom_minimum_size = Vector2(0.0, 52.0)
+	ok_btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	ok_btn.add_theme_font_size_override("font_size", 16)
+	var btn_style: StyleBoxFlat = StyleBoxFlat.new()
+	btn_style.bg_color = UIConstants.BG_TERTIARY
+	btn_style.corner_radius_top_left = 8
+	btn_style.corner_radius_top_right = 8
+	btn_style.corner_radius_bottom_left = 8
+	btn_style.corner_radius_bottom_right = 8
+	btn_style.border_width_left = 1
+	btn_style.border_width_right = 1
+	btn_style.border_width_top = 1
+	btn_style.border_width_bottom = 1
+	btn_style.border_color = UIConstants.ACCENT_GOLD
+	ok_btn.add_theme_stylebox_override("normal", btn_style)
+	ok_btn.pressed.connect(func() -> void:
+		GameStore.set_flag("hub_welcomed")
+		backdrop.queue_free()
+		_welcome_popup.queue_free()
+	)
+	vbox.add_child(ok_btn)
+
+	# Slide-in animation.
+	Fx.slide_in(_welcome_popup, Vector2(0.0, 40.0), 0.35)
+	Fx.gold_shimmer(title_lbl, 2.5)
+
+
 # ── Signal Callbacks ────────────────────────────────────────────────────────────
 
-func _on_state_changed() -> void:
+func _on_state_changed(_key: String = "") -> void:
 	var new_gold: int = GameStore.get_gold()
 	if new_gold != _displayed_gold:
 		var old: int = _displayed_gold
