@@ -36,12 +36,12 @@ romance as mechanical investment, and roguelike Abyss for replayability.
 | 11 | Deck Management | Gameplay | Vertical Slice | Designed | design/gdd/deck-management.md | Companion Data |
 | 12 | Divine Blessings | Gameplay | Vertical Slice | Designed | design/gdd/divine-blessings.md | Romance & Social, Poker Combat |
 | 13 | Camp | UI | Vertical Slice | Designed | design/gdd/camp.md | Romance & Social, Scene Navigation |
-| 14 | Intimacy | Gameplay | Alpha | Not Started | — | Romance & Social, Companion Data |
-| 15 | Equipment | Gameplay | Alpha | Not Started | — | Companion Data, Save System |
-| 16 | Exploration | Gameplay | Alpha | Not Started | — | Companion Data, Save System |
-| 17 | Abyss Mode | Gameplay | Alpha | Not Started | — | Poker Combat, Deck Management, Divine Blessings |
-| 18 | Abyss Modifiers | Gameplay | Alpha | Not Started | — | Abyss Mode |
-| 19 | Audio (inferred) | Audio | Alpha | Not Started | — | — |
+| 14 | Intimacy | Gameplay | Alpha | Designed | design/gdd/intimacy.md | Romance & Social, Companion Data |
+| 15 | Equipment | Gameplay | Alpha | Designed | design/gdd/equipment.md | Companion Data, Save System |
+| 16 | Exploration | Gameplay | Alpha | Designed | design/gdd/exploration.md | Companion Data, Save System |
+| 17 | Abyss Mode | Gameplay | Alpha | Designed | design/gdd/abyss-mode.md | Poker Combat, Deck Management, Divine Blessings |
+| 18 | Abyss Modifiers | Gameplay | Alpha | Designed | design/gdd/abyss-modifiers.md | Abyss Mode |
+| 19 | Audio | Audio | Alpha | Designed | design/gdd/audio.md | — |
 | 20 | Gallery | Meta | Full Vision | Not Started | — | Intimacy, Story Flow |
 | 21 | Achievements | Meta | Full Vision | Not Started | — | Story Flow, Romance & Social, Abyss Mode, Poker Combat |
 
@@ -162,11 +162,12 @@ None found. The dependency graph is a clean DAG. No systems have mutual dependen
 | Metric | Count |
 |--------|-------|
 | Total systems identified | 21 |
-| Design docs started | 13 |
+| Design docs started | 19 |
 | Design docs reviewed | 0 |
 | Design docs approved | 0 |
 | MVP systems designed | 10/10 |
 | Vertical Slice systems designed | 3/3 |
+| Alpha systems designed | 6/6 |
 
 ---
 
