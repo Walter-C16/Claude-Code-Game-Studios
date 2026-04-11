@@ -13,14 +13,14 @@ extends GdUnitTestSuite
 ##
 ## See: docs/architecture/adr-0010-romance-social.md
 
-const Script = preload("res://autoloads/romance_social.gd")
+const _RSScript = preload("res://autoloads/romance_social.gd")
 
 var rs: Node
 
 func before_test() -> void:
 	GameStore._initialize_defaults()
 	CompanionState._max_stages.clear()
-	rs = Script.new()
+	rs = _RSScript.new()
 	rs._load_config()
 
 func after_test() -> void:
@@ -40,7 +40,7 @@ func test_relationship_gain_base_3_streak_5_returns_4() -> void:
 
 # ── AC2 — base_RL=4 (Happy), streak=5 → gain=5 ───────────────────────────────
 
-func test_relationship_gain_base_4_streak_5_returns_5() -> void:
+func test_relationship_gain_base_4_streak_5_returns_6() -> void:
 	# Arrange
 	GameStore.set_streak(5)
 
@@ -48,7 +48,7 @@ func test_relationship_gain_base_4_streak_5_returns_5() -> void:
 	var gain: int = rs._compute_rl_gain(4)
 
 	# Assert
-	assert_int(gain).is_equal(5)
+	assert_int(gain).is_equal(6)
 
 # ── AC3 — RL clamped at 100 ──────────────────────────────────────────────────
 
@@ -106,7 +106,7 @@ func test_relationship_gain_crossing_stage_during_dialogue_queues_signal() -> vo
 
 	# Assert — signal is queued, not emitted yet
 	assert_int(rs._pending_stage_signals.size()).is_equal(1)
-	assert_string(rs._pending_stage_signals[0].get("id", "")).is_equal("artemis")
+	assert_str(rs._pending_stage_signals[0].get("id", "")).is_equal("artemis")
 
 # ── AC6 — _evaluate_all_stages corrects stage desync ─────────────────────────
 

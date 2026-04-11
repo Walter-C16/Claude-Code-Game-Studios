@@ -12,14 +12,14 @@ extends GdUnitTestSuite
 ##
 ## See: docs/architecture/adr-0010-romance-social.md
 
-const Script = preload("res://autoloads/romance_social.gd")
+const _RSScript = preload("res://autoloads/romance_social.gd")
 
 var rs: Node
 
 func before_test() -> void:
 	GameStore._initialize_defaults()
 	CompanionState._max_stages.clear()
-	rs = Script.new()
+	rs = _RSScript.new()
 	rs._load_config()
 
 func after_test() -> void:

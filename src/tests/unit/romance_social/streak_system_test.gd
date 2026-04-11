@@ -13,14 +13,14 @@ extends GdUnitTestSuite
 ##
 ## See: docs/architecture/adr-0010-romance-social.md
 
-const Script = preload("res://autoloads/romance_social.gd")
+const _RSScript = preload("res://autoloads/romance_social.gd")
 
 var rs: Node
 
 func before_test() -> void:
 	GameStore._initialize_defaults()
 	CompanionState._max_stages.clear()
-	rs = Script.new()
+	rs = _RSScript.new()
 	rs._load_config()
 
 func after_test() -> void:
@@ -76,7 +76,7 @@ func test_streak_system_gap_exactly_two_resets_to_1() -> void:
 
 func test_streak_system_first_session_no_prior_date_sets_streak_1() -> void:
 	# Arrange — no prior date (factory default)
-	assert_string(GameStore.get_last_interaction_date()).is_equal("")
+	assert_str(GameStore.get_last_interaction_date()).is_equal("")
 
 	# Act — trigger update
 	rs._update_streak_on_interaction()
