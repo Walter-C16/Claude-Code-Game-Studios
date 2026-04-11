@@ -1,6 +1,18 @@
 extends Control
 
 ## Dialogue scene — typewriter text, portrait, choices, background.
+##
+## Drives visual presentation only. All dialogue state lives in DialogueRunner
+## (autoload #9). This scene connects to DialogueRunner signals and calls
+## DialogueRunner.advance() / complete_typewriter() / select_choice() for input.
+##
+## Signal wiring (all in _ready, code-side):
+##   DialogueRunner.line_ready      → _on_line_ready(line_data)
+##   DialogueRunner.choices_ready   → _on_choices_ready(choices)
+##   DialogueRunner.dialogue_ended  → _on_dialogue_ended(sequence_id)
+##   DialogueRunner.typewriter_complete → _on_typewriter_complete()
+
+# ── Node References ────────────────────────────────────────────────────────────
 
 @onready var bg: TextureRect = %Background
 @onready var portrait: TextureRect = %Portrait
@@ -10,77 +22,107 @@ extends Control
 @onready var continue_indicator: Label = %ContinueIndicator
 @onready var dialogue_panel: PanelContainer = %DialoguePanel
 
-# Typewriter state
+# ── Private State ──────────────────────────────────────────────────────────────
+
+## Full text for the current line, used by the local typewriter animation.
 var _full_text: String = ""
+
+## Current visible character count driven by _process.
 var _visible_chars: int = 0
+
+## True while the local typewriter animation is running.
 var _typewriter_active: bool = false
+
+## Characters per second for the typewriter animation.
+## Sourced from DialogueRunner.cps so both share the same config value.
 var _chars_per_second: float = 40.0
+
+# ── Built-in Virtual Methods ───────────────────────────────────────────────────
 
 func _ready() -> void:
 	choices_container.visible = false
 	continue_indicator.visible = false
 
-	DialogueStore.line_changed.connect(_on_line_changed)
-	DialogueStore.choices_presented.connect(_on_choices_presented)
-	DialogueStore.dialogue_ended.connect(_on_dialogue_ended)
+	# Sync CPS from the runner's loaded config value.
+	_chars_per_second = DialogueRunner.cps
 
-	# Show first line
-	if DialogueStore.active:
-		_show_current_line()
+	# Wire DialogueRunner signals — code connections, not editor connections.
+	DialogueRunner.line_ready.connect(_on_line_ready)
+	DialogueRunner.choices_ready.connect(_on_choices_ready)
+	DialogueRunner.dialogue_ended.connect(_on_dialogue_ended)
+	DialogueRunner.typewriter_complete.connect(_on_typewriter_complete)
 
+	# If the runner is already mid-sequence (scene loaded mid-dialogue), nothing
+	# extra is needed here — the next line_ready signal will update the display.
+
+## Drives the visual typewriter animation each frame.
+## When complete, calls DialogueRunner.complete_typewriter() to sync runner state.
 func _process(delta: float) -> void:
-	if _typewriter_active:
-		_visible_chars += int(_chars_per_second * SettingsStore.text_speed * delta)
-		if _visible_chars >= _full_text.length():
-			_visible_chars = _full_text.length()
-			_typewriter_active = false
-			_on_typewriter_complete()
+	if not _typewriter_active:
+		return
+	_visible_chars += int(_chars_per_second * delta)
+	if _visible_chars >= _full_text.length():
+		_visible_chars = _full_text.length()
+		_typewriter_active = false
 		text_label.visible_characters = _visible_chars
+		# Notify the runner that the visual animation is done.
+		DialogueRunner.complete_typewriter()
+		return
+	text_label.visible_characters = _visible_chars
 
 func _input(event: InputEvent) -> void:
-	if not DialogueStore.active:
+	if not DialogueRunner.is_active():
 		return
 	if event is InputEventMouseButton and event.pressed:
 		_handle_tap()
 	elif event is InputEventScreenTouch and event.pressed:
 		_handle_tap()
 
+# ── Input Handling ─────────────────────────────────────────────────────────────
+
 func _handle_tap() -> void:
-	if _typewriter_active:
-		# Skip typewriter — show full text immediately
-		_visible_chars = _full_text.length()
-		text_label.visible_characters = _visible_chars
-		_typewriter_active = false
-		_on_typewriter_complete()
-	elif not DialogueStore.is_choice_node:
-		# Advance to next line
-		var has_more := DialogueStore.advance_line()
-		if not has_more and not DialogueStore.is_choice_node:
-			# Dialogue/node ended, will be handled by dialogue_ended signal
-			pass
+	# advance() handles both tap-to-complete and tap-to-advance internally.
+	DialogueRunner.advance()
 
-# ---------------------------------------------------------------------------
-# Display
-# ---------------------------------------------------------------------------
+# ── Signal Callbacks ───────────────────────────────────────────────────────────
 
-func _show_current_line() -> void:
-	var line: Dictionary = DialogueStore.get_current_line()
-	if line.is_empty():
-		return
+## Called when the runner has a new line ready for display.
+## line_data keys: speaker, speaker_type, text_key, mood, text_params (optional).
+func _on_line_ready(line_data: Dictionary) -> void:
+	_display_line(line_data)
 
-	# Speaker
-	var speaker: String = line.get("speaker", "narrator")
+## Called when the runner has entered a choice node and choices are ready.
+func _on_choices_ready(choices: Array) -> void:
+	_show_choices(choices)
+
+## Called when the active dialogue sequence ends.
+## StoryFlow is the orchestrator and handles its own sequencing via EventBus.
+## This scene only acts when StoryFlow is NOT active (standalone/dev dialogue).
+func _on_dialogue_ended(_sequence_id: String) -> void:
+	if not StoryFlow.is_active():
+		SceneManager.change_scene(SceneManager.SceneId.HUB)
+
+## Called when the visual typewriter animation signals completion from the runner.
+## Used here only to show the continue indicator (choices are shown via choices_ready).
+func _on_typewriter_complete() -> void:
+	continue_indicator.visible = true
+
+# ── Display ────────────────────────────────────────────────────────────────────
+
+## Renders a single dialogue line: speaker label, portrait, and typewriter text.
+func _display_line(line_data: Dictionary) -> void:
+	var speaker: String = line_data.get("speaker", "narrator")
+
+	# Speaker label — blank for narrator.
 	if speaker == "narrator":
 		speaker_label.text = ""
 	else:
-		speaker_label.text = DialogueRunner.get_text("COMPANION_%s" % speaker.to_upper(), {})
-		if speaker_label.text.begins_with("COMPANION_"):
-			speaker_label.text = speaker.capitalize()
+		speaker_label.text = speaker.capitalize()
 
-	# Portrait
-	var mood_str: String = line.get("mood", "neutral") if line.get("mood") else "neutral"
+	# Portrait — companions and named characters only; narrator/priestess have none.
+	var mood: String = line_data.get("mood", "neutral") if line_data.get("mood") else "neutral"
 	if speaker != "narrator" and speaker != "priestess":
-		var path := Companions.get_portrait_path(speaker, mood_str)
+		var path: String = CompanionRegistry.get_portrait_path(speaker, mood)
 		if ResourceLoader.exists(path):
 			portrait.texture = load(path)
 			portrait.visible = true
@@ -89,34 +131,28 @@ func _show_current_line() -> void:
 	else:
 		portrait.visible = false
 
-	# Text (typewriter)
-	var text_key: String = line.get("text_key", "")
-	_full_text = DialogueRunner.get_text(text_key)
+	# Text — start typewriter animation.
+	var raw_text: String = line_data.get("text", line_data.get("text_key", ""))
+	_full_text = raw_text
 	text_label.text = _full_text
 	text_label.visible_characters = 0
 	_visible_chars = 0
 	_typewriter_active = true
 
-	# Hide choices and continue indicator during typewriter
+	# Reset UI state for new line.
 	choices_container.visible = false
 	continue_indicator.visible = false
 
-func _on_typewriter_complete() -> void:
-	if DialogueStore.is_choice_node and DialogueStore.current_line_index >= DialogueStore.current_lines.size() - 1:
-		# Show choices after last line of a choice node
-		_show_choices()
-	else:
-		continue_indicator.visible = true
-
-func _show_choices() -> void:
-	# Clear old choice buttons
-	for child in choices_container.get_children():
+## Populates and shows the choice buttons for a branching node.
+func _show_choices(choices: Array) -> void:
+	# Remove previous choice buttons.
+	for child: Node in choices_container.get_children():
 		child.queue_free()
 
-	for i in range(DialogueStore.current_choices.size()):
-		var choice: Dictionary = DialogueStore.current_choices[i]
+	for i: int in range(choices.size()):
+		var choice: Dictionary = choices[i]
 		var btn := Button.new()
-		btn.text = DialogueRunner.get_text(choice.get("text_key", ""))
+		btn.text = choice.get("text", choice.get("text_key", ""))
 		btn.custom_minimum_size = Vector2(0, 44)
 		btn.pressed.connect(_on_choice_selected.bind(i))
 		choices_container.add_child(btn)
@@ -126,22 +162,4 @@ func _show_choices() -> void:
 
 func _on_choice_selected(index: int) -> void:
 	choices_container.visible = false
-	DialogueStore.select_choice(index)
-
-# ---------------------------------------------------------------------------
-# Signals
-# ---------------------------------------------------------------------------
-
-func _on_line_changed() -> void:
-	_show_current_line()
-
-func _on_choices_presented(_choices: Array) -> void:
-	_show_choices()
-
-func _on_dialogue_ended() -> void:
-	# Check if this is part of the intro flow
-	if StoryFlow.active:
-		StoryFlow.advance_step()
-	else:
-		# Default: go back to hub
-		SceneManager.change_scene(SceneManager.SceneId.HUB)
+	DialogueRunner.select_choice(index)

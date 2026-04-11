@@ -29,8 +29,9 @@ SaveManager="*res://autoloads/save_manager.gd"
 SceneManager="*res://autoloads/scene_manager.gd"
 CompanionRegistry="*res://autoloads/companion_registry.gd"
 EnemyRegistry="*res://autoloads/enemy_registry.gd"
-DialogueStore="*res://autoloads/dialogue_store.gd"
-CombatStore="*res://autoloads/combat_store.gd"
+DialogueRunner="*res://autoloads/dialogue_runner.gd"
+RomanceSocial="*res://autoloads/romance_social.gd"
+StoryFlow="*res://autoloads/story_flow.gd"
 
 [display]
 
