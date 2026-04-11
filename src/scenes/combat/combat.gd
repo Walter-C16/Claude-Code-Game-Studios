@@ -265,6 +265,11 @@ func _on_sort_pressed() -> void:
 	_refresh_hand()
 
 
+## Retreat from combat — return to Hub without rewards.
+func _on_retreat_pressed() -> void:
+	SceneManager.change_scene(SceneManager.SceneId.HUB)
+
+
 func _on_card_toggled(index: int, pressed: bool) -> void:
 	if pressed:
 		if not index in _selected_indices:

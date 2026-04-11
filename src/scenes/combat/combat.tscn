@@ -140,6 +140,13 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "DISCARD"
 
+[node name="RetreatBtn" type="Button" parent="MainLayout/ActionRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "FLEE"
+theme_override_colors/font_color = Color(0.85, 0.4, 0.4, 1)
+
 [node name="VictoryOverlay" type="Control" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -245,5 +252,6 @@ text = "RETREAT"
 [connection signal="pressed" from="MainLayout/ActionRow/SortBtn" to="." method="_on_sort_pressed"]
 [connection signal="pressed" from="MainLayout/ActionRow/PlayBtn" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MainLayout/ActionRow/DiscardBtn" to="." method="_on_discard_pressed"]
+[connection signal="pressed" from="MainLayout/ActionRow/RetreatBtn" to="." method="_on_retreat_pressed"]
 [connection signal="pressed" from="VictoryOverlay/VictoryPanel/VictoryContinueBtn" to="." method="_on_victory_continue_pressed"]
 [connection signal="pressed" from="DefeatOverlay/DefeatPanel/DefeatRetreatBtn" to="." method="_on_defeat_retreat_pressed"]
