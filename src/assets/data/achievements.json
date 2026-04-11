@@ -1,0 +1,138 @@
+{
+  "achievements": [
+    {
+      "id": "story_ch01_complete",
+      "title_key": "achievement.story_ch01.title",
+      "description_key": "achievement.story_ch01.desc",
+      "icon_key": "achievement.story_ch01.icon",
+      "category": "story",
+      "condition": {
+        "type": "flag",
+        "flag_name": "story_ch01_complete"
+      }
+    },
+    {
+      "id": "meet_all_companions",
+      "title_key": "achievement.meet_all_companions.title",
+      "description_key": "achievement.meet_all_companions.desc",
+      "icon_key": "achievement.meet_all_companions.icon",
+      "category": "story",
+      "condition": {
+        "type": "flag",
+        "flag_name": "all_companions_met"
+      }
+    },
+    {
+      "id": "story_ch02_complete",
+      "title_key": "achievement.story_ch02.title",
+      "description_key": "achievement.story_ch02.desc",
+      "icon_key": "achievement.story_ch02.icon",
+      "category": "story",
+      "condition": {
+        "type": "flag",
+        "flag_name": "story_ch02_complete"
+      }
+    },
+    {
+      "id": "combat_wins_10",
+      "title_key": "achievement.combat_wins_10.title",
+      "description_key": "achievement.combat_wins_10.desc",
+      "icon_key": "achievement.combat_wins_10.icon",
+      "category": "combat",
+      "condition": {
+        "type": "combat_wins",
+        "counter": "combat_wins",
+        "target": 10
+      }
+    },
+    {
+      "id": "royal_flush",
+      "title_key": "achievement.royal_flush.title",
+      "description_key": "achievement.royal_flush.desc",
+      "icon_key": "achievement.royal_flush.icon",
+      "category": "combat",
+      "condition": {
+        "type": "flag",
+        "flag_name": "played_royal_flush"
+      }
+    },
+    {
+      "id": "abyss_ante_8",
+      "title_key": "achievement.abyss_ante_8.title",
+      "description_key": "achievement.abyss_ante_8.desc",
+      "icon_key": "achievement.abyss_ante_8.icon",
+      "category": "combat",
+      "condition": {
+        "type": "flag",
+        "flag_name": "abyss_ante_8_cleared"
+      }
+    },
+    {
+      "id": "romance_stage_5",
+      "title_key": "achievement.romance_stage_5.title",
+      "description_key": "achievement.romance_stage_5.desc",
+      "icon_key": "achievement.romance_stage_5.icon",
+      "category": "romance",
+      "condition": {
+        "type": "romance_stage",
+        "target": 5
+      }
+    },
+    {
+      "id": "all_dates_complete",
+      "title_key": "achievement.all_dates_complete.title",
+      "description_key": "achievement.all_dates_complete.desc",
+      "icon_key": "achievement.all_dates_complete.icon",
+      "category": "romance",
+      "condition": {
+        "type": "flag",
+        "flag_name": "all_dates_complete"
+      }
+    },
+    {
+      "id": "gallery_all_unlocked",
+      "title_key": "achievement.gallery_all_unlocked.title",
+      "description_key": "achievement.gallery_all_unlocked.desc",
+      "icon_key": "achievement.gallery_all_unlocked.icon",
+      "category": "collection",
+      "condition": {
+        "type": "gallery_count",
+        "target": 15
+      }
+    },
+    {
+      "id": "equip_legendary",
+      "title_key": "achievement.equip_legendary.title",
+      "description_key": "achievement.equip_legendary.desc",
+      "icon_key": "achievement.equip_legendary.icon",
+      "category": "collection",
+      "condition": {
+        "type": "equipment_rarity",
+        "rarity": "legendary"
+      }
+    },
+    {
+      "id": "romance_stage_3_all",
+      "title_key": "achievement.romance_stage_3_all.title",
+      "description_key": "achievement.romance_stage_3_all.desc",
+      "icon_key": "achievement.romance_stage_3_all.icon",
+      "category": "romance",
+      "condition": {
+        "type": "flag",
+        "flag_name": "all_companions_stage_3"
+      }
+    },
+    {
+      "id": "combat_wins_50",
+      "title_key": "achievement.combat_wins_50.title",
+      "description_key": "achievement.combat_wins_50.desc",
+      "icon_key": "achievement.combat_wins_50.icon",
+      "category": "combat",
+      "condition": {
+        "type": "combat_wins",
+        "counter": "combat_wins",
+        "target": 50
+      }
+    }
+  ]
+}

@@ -88,6 +88,14 @@ var _equipped_amulet: String = ""
 var _pending_equipment: Array[String] = []
 
 # ---------------------------------------------------------------------------
+# Private State — Counters (Achievements, Stats tracking)
+# ---------------------------------------------------------------------------
+
+## Generic integer counters for achievement tracking and lifetime stats.
+## Keys are String counter names (e.g. "combat_wins"). Values are int.
+var _counters: Dictionary = {}
+
+# ---------------------------------------------------------------------------
 # Private State — Exploration (STORY-EXPLORE-001..005)
 # ---------------------------------------------------------------------------
 
@@ -149,6 +157,7 @@ func _initialize_defaults() -> void:
 	_pending_equipment = []
 	_exploration_state = {}
 	_companion_xp = {}
+	_counters = {}
 
 # ---------------------------------------------------------------------------
 # Public Getters — Companion State
@@ -461,6 +470,30 @@ func add_companion_xp(companion_id: String, amount: int) -> void:
 	state_changed.emit("companion_xp")
 
 # ---------------------------------------------------------------------------
+# Public Getters — Counters (Achievements / Lifetime Stats)
+# ---------------------------------------------------------------------------
+
+## Returns the current value of the named counter.
+## Returns 0 if the counter has never been set or incremented.
+func get_counter(counter_name: String) -> int:
+	return int(_counters.get(counter_name, 0))
+
+## Increments the named counter by [param amount] (default 1) and marks dirty.
+## Creates the counter at 0 before incrementing if it does not yet exist.
+func increment_counter(counter_name: String, amount: int = 1) -> void:
+	var current: int = int(_counters.get(counter_name, 0))
+	_counters[counter_name] = current + amount
+	_mark_dirty()
+	state_changed.emit("counter")
+
+## Sets the named counter to an exact value and marks dirty.
+## Useful for restoring counter state from a save file.
+func set_counter(counter_name: String, value: int) -> void:
+	_counters[counter_name] = value
+	_mark_dirty()
+	state_changed.emit("counter")
+
+# ---------------------------------------------------------------------------
 # Serialization
 # ---------------------------------------------------------------------------
 
@@ -492,6 +525,7 @@ func to_dict() -> Dictionary:
 		"pending_equipment": _pending_equipment.duplicate(),
 		"exploration_state": _exploration_state.duplicate(),
 		"companion_xp": _companion_xp.duplicate(),
+		"counters": _counters.duplicate(),
 	}
 
 ## Restores mutable game state from a previously serialized Dictionary.
@@ -539,6 +573,11 @@ func from_dict(data: Dictionary) -> void:
 	_pending_equipment.clear()
 	for entry: Variant in raw_pending:
 		_pending_equipment.append(str(entry))
+	_counters = {}
+	var raw_counters: Dictionary = data.get("counters", {})
+	for key: Variant in raw_counters:
+		_counters[str(key)] = int(raw_counters[key])
+
 	# Explicitly clear both flags — loading is not a mutation and must not
 	# trigger a save flush even if the store had prior dirty state (AC5).
 	_dirty = false

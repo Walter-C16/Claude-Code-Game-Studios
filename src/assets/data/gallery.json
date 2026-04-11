@@ -1,0 +1,136 @@
+{
+  "entries": [
+    {
+      "id": "artemis_intimate_1",
+      "title_key": "gallery.artemis_intimate_1.title",
+      "cg_path": "res://assets/images/cg/artemis_intimate_1.png",
+      "unlock_flag": "intimacy_artemis_1_complete",
+      "type": "intimacy",
+      "companion_id": "artemis",
+      "sort_order": 1
+    },
+    {
+      "id": "artemis_intimate_2",
+      "title_key": "gallery.artemis_intimate_2.title",
+      "cg_path": "res://assets/images/cg/artemis_intimate_2.png",
+      "unlock_flag": "intimacy_artemis_2_complete",
+      "type": "intimacy",
+      "companion_id": "artemis",
+      "sort_order": 2
+    },
+    {
+      "id": "artemis_intimate_3",
+      "title_key": "gallery.artemis_intimate_3.title",
+      "cg_path": "res://assets/images/cg/artemis_intimate_3.png",
+      "unlock_flag": "intimacy_artemis_3_complete",
+      "type": "intimacy",
+      "companion_id": "artemis",
+      "sort_order": 3
+    },
+    {
+      "id": "hipolita_intimate_1",
+      "title_key": "gallery.hipolita_intimate_1.title",
+      "cg_path": "res://assets/images/cg/hipolita_intimate_1.png",
+      "unlock_flag": "intimacy_hipolita_1_complete",
+      "type": "intimacy",
+      "companion_id": "hipolita",
+      "sort_order": 4
+    },
+    {
+      "id": "hipolita_intimate_2",
+      "title_key": "gallery.hipolita_intimate_2.title",
+      "cg_path": "res://assets/images/cg/hipolita_intimate_2.png",
+      "unlock_flag": "intimacy_hipolita_2_complete",
+      "type": "intimacy",
+      "companion_id": "hipolita",
+      "sort_order": 5
+    },
+    {
+      "id": "hipolita_intimate_3",
+      "title_key": "gallery.hipolita_intimate_3.title",
+      "cg_path": "res://assets/images/cg/hipolita_intimate_3.png",
+      "unlock_flag": "intimacy_hipolita_3_complete",
+      "type": "intimacy",
+      "companion_id": "hipolita",
+      "sort_order": 6
+    },
+    {
+      "id": "atenea_intimate_1",
+      "title_key": "gallery.atenea_intimate_1.title",
+      "cg_path": "res://assets/images/cg/atenea_intimate_1.png",
+      "unlock_flag": "intimacy_atenea_1_complete",
+      "type": "intimacy",
+      "companion_id": "atenea",
+      "sort_order": 7
+    },
+    {
+      "id": "atenea_intimate_2",
+      "title_key": "gallery.atenea_intimate_2.title",
+      "cg_path": "res://assets/images/cg/atenea_intimate_2.png",
+      "unlock_flag": "intimacy_atenea_2_complete",
+      "type": "intimacy",
+      "companion_id": "atenea",
+      "sort_order": 8
+    },
+    {
+      "id": "atenea_intimate_3",
+      "title_key": "gallery.atenea_intimate_3.title",
+      "cg_path": "res://assets/images/cg/atenea_intimate_3.png",
+      "unlock_flag": "intimacy_atenea_3_complete",
+      "type": "intimacy",
+      "companion_id": "atenea",
+      "sort_order": 9
+    },
+    {
+      "id": "nyx_intimate_1",
+      "title_key": "gallery.nyx_intimate_1.title",
+      "cg_path": "res://assets/images/cg/nyx_intimate_1.png",
+      "unlock_flag": "intimacy_nyx_1_complete",
+      "type": "intimacy",
+      "companion_id": "nyx",
+      "sort_order": 10
+    },
+    {
+      "id": "nyx_intimate_2",
+      "title_key": "gallery.nyx_intimate_2.title",
+      "cg_path": "res://assets/images/cg/nyx_intimate_2.png",
+      "unlock_flag": "intimacy_nyx_2_complete",
+      "type": "intimacy",
+      "companion_id": "nyx",
+      "sort_order": 11
+    },
+    {
+      "id": "nyx_intimate_3",
+      "title_key": "gallery.nyx_intimate_3.title",
+      "cg_path": "res://assets/images/cg/nyx_intimate_3.png",
+      "unlock_flag": "intimacy_nyx_3_complete",
+      "type": "intimacy",
+      "companion_id": "nyx",
+      "sort_order": 12
+    },
+    {
+      "id": "story_ch01_complete",
+      "title_key": "gallery.story_ch01.title",
+      "cg_path": "res://assets/images/cg/story_ch01_ending.png",
+      "unlock_flag": "story_ch01_complete",
+      "type": "story",
+      "sort_order": 13
+    },
+    {
+      "id": "story_ch02_complete",
+      "title_key": "gallery.story_ch02.title",
+      "cg_path": "res://assets/images/cg/story_ch02_ending.png",
+      "unlock_flag": "story_ch02_complete",
+      "type": "story",
+      "sort_order": 14
+    },
+    {
+      "id": "story_ch03_complete",
+      "title_key": "gallery.story_ch03.title",
+      "cg_path": "res://assets/images/cg/story_ch03_ending.png",
+      "unlock_flag": "story_ch03_complete",
+      "type": "story",
+      "sort_order": 15
+    }
+  ]
+}
