@@ -22,10 +22,11 @@ const _CompanionStateScript = preload("res://systems/companion_state.gd")
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 func _setup_stage_4(companion_id: String) -> void:
-	# Force relationship_level to 91 → romance_stage 4.
-	# Stage 4 threshold = 71, stage 5 threshold = 91.
-	GameStore._companion_states[companion_id]["relationship_level"] = 91
+	# Force romance_stage to 4 via _max_stages cache (bypasses threshold check).
+	# Set RL=50 to leave room for RL gain tests without hitting the 100 cap.
+	GameStore._companion_states[companion_id]["relationship_level"] = 50
 	GameStore._companion_states[companion_id]["met"] = true
+	_CompanionStateScript._max_stages[companion_id] = 4
 
 func _setup_stage_5(companion_id: String) -> void:
 	# Force relationship_level to 91 → romance_stage 5 (max).
