@@ -1,0 +1,14 @@
+{
+  "items": [
+    {"id": "bronze_sword", "name_key": "EQUIP_BRONZE_SWORD", "slot": "weapon", "rarity": "common", "chips_bonus": 5, "mult_bonus": 0},
+    {"id": "iron_dagger", "name_key": "EQUIP_IRON_DAGGER", "slot": "weapon", "rarity": "common", "chips_bonus": 8, "mult_bonus": 0},
+    {"id": "steel_spear", "name_key": "EQUIP_STEEL_SPEAR", "slot": "weapon", "rarity": "rare", "chips_bonus": 15, "mult_bonus": 0},
+    {"id": "flame_blade", "name_key": "EQUIP_FLAME_BLADE", "slot": "weapon", "rarity": "rare", "chips_bonus": 20, "mult_bonus": 0},
+    {"id": "divine_bow", "name_key": "EQUIP_DIVINE_BOW", "slot": "weapon", "rarity": "legendary", "chips_bonus": 35, "mult_bonus": 0},
+    {"id": "wooden_charm", "name_key": "EQUIP_WOODEN_CHARM", "slot": "amulet", "rarity": "common", "chips_bonus": 0, "mult_bonus": 0.5},
+    {"id": "silver_pendant", "name_key": "EQUIP_SILVER_PENDANT", "slot": "amulet", "rarity": "rare", "chips_bonus": 0, "mult_bonus": 1.5},
+    {"id": "golden_aegis", "name_key": "EQUIP_GOLDEN_AEGIS", "slot": "amulet", "rarity": "rare", "chips_bonus": 0, "mult_bonus": 2.0},
+    {"id": "star_fragment", "name_key": "EQUIP_STAR_FRAGMENT", "slot": "amulet", "rarity": "legendary", "chips_bonus": 0, "mult_bonus": 4.0},
+    {"id": "olympus_crown", "name_key": "EQUIP_OLYMPUS_CROWN", "slot": "amulet", "rarity": "legendary", "chips_bonus": 0, "mult_bonus": 5.0}
+  ]
+}

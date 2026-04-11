@@ -24,7 +24,7 @@ const _CompanionStateScript = preload("res://systems/companion_state.gd")
 func _setup_stage_4(companion_id: String) -> void:
 	# Force relationship_level to 91 → romance_stage 4.
 	# Stage 4 threshold = 71, stage 5 threshold = 91.
-	GameStore._companion_states[companion_id]["relationship_level"] = 71
+	GameStore._companion_states[companion_id]["relationship_level"] = 91
 	GameStore._companion_states[companion_id]["met"] = true
 
 func _setup_stage_5(companion_id: String) -> void:
@@ -158,8 +158,10 @@ func test_intimacy_system_complete_scene_1_writes_completion_flag() -> void:
 # ── AC-9 — complete_scene 3 awards 20 RL ─────────────────────────────────────
 
 func test_intimacy_system_complete_scene_3_awards_20_rl() -> void:
-	# Arrange — set up scenes 1+2 done, stage 5
-	_setup_stage_5("artemis")
+	# Arrange — set up scenes 1+2 done, stage 4 with room for +20
+	GameStore._companion_states["artemis"]["relationship_level"] = 70
+	GameStore._companion_states["artemis"]["met"] = true
+	_CompanionStateScript._max_stages["artemis"] = 4  # Force stage 4
 	GameStore.set_flag("intimacy_artemis_1_complete")
 	GameStore.set_flag("intimacy_artemis_2_complete")
 	var rl_before = GameStore.get_relationship_level("artemis")
@@ -167,7 +169,7 @@ func test_intimacy_system_complete_scene_3_awards_20_rl() -> void:
 	# Act
 	IntimacySystem.complete_scene("artemis", 3)
 
-	# Assert
+	# Assert — expect +20 (no clamping since 70+20=90 < 100)
 	var rl_after = GameStore.get_relationship_level("artemis")
 	assert_int(rl_after - rl_before).is_equal(20)
 

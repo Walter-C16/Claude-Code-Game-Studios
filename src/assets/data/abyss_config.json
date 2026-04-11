@@ -1,0 +1,123 @@
+{
+  "ante_thresholds": [300, 500, 800, 1200, 1800, 2700, 4000, 6000],
+  "handsPerAnte": 4,
+  "discardsPerAnte": 4,
+  "baseHandGold": 2,
+  "anteCompletionBonus": 15,
+  "shopSlots": 3,
+  "removalCost": 20,
+  "foilCost": 15,
+  "holographicCost": 20,
+  "polychromeCost": 25,
+  "buffs": {
+    "hunters_focus": {
+      "nameKey": "BUFF_HUNTERS_FOCUS",
+      "effect": "chip_bonus",
+      "value": 10,
+      "cost": 10
+    },
+    "divine_favor": {
+      "nameKey": "BUFF_DIVINE_FAVOR",
+      "effect": "mult_bonus",
+      "value": 0.5,
+      "cost": 15
+    },
+    "golden_hand": {
+      "nameKey": "BUFF_GOLDEN_HAND",
+      "effect": "hand_gold_bonus",
+      "value": 5,
+      "cost": 20
+    },
+    "last_gambit": {
+      "nameKey": "BUFF_LAST_GAMBIT",
+      "effect": "hands_allowed_bonus",
+      "value": 1,
+      "cost": 25
+    },
+    "clear_mind": {
+      "nameKey": "BUFF_CLEAR_MIND",
+      "effect": "discards_allowed_bonus",
+      "value": 1,
+      "cost": 20
+    },
+    "fortunes_eye": {
+      "nameKey": "BUFF_FORTUNES_EYE",
+      "effect": "item_find_bonus",
+      "value": 20,
+      "cost": 10
+    }
+  },
+  "modifiers": [
+    {
+      "id": "glass_cannon",
+      "nameKey": "MOD_GLASS_CANNON",
+      "descKey": "MOD_GLASS_CANNON_DESC",
+      "effect": "mult_multiplier",
+      "value": 2.0,
+      "hands_allowed_override": 2
+    },
+    {
+      "id": "ironclad",
+      "nameKey": "MOD_IRONCLAD",
+      "descKey": "MOD_IRONCLAD_DESC",
+      "effect": "chip_bonus_flat",
+      "value": 50
+    },
+    {
+      "id": "lucky_draw",
+      "nameKey": "MOD_LUCKY_DRAW",
+      "descKey": "MOD_LUCKY_DRAW_DESC",
+      "effect": "hand_size_bonus",
+      "value": 2
+    },
+    {
+      "id": "miser_week",
+      "nameKey": "MOD_MISER_WEEK",
+      "descKey": "MOD_MISER_WEEK_DESC",
+      "effect": "gold_multiplier",
+      "value": 2.0
+    },
+    {
+      "id": "cursed_deck",
+      "nameKey": "MOD_CURSED_DECK",
+      "descKey": "MOD_CURSED_DECK_DESC",
+      "effect": "discard_penalty",
+      "value": -1
+    },
+    {
+      "id": "divine_tide",
+      "nameKey": "MOD_DIVINE_TIDE",
+      "descKey": "MOD_DIVINE_TIDE_DESC",
+      "effect": "blessing_mult_bonus",
+      "value": 0.5
+    },
+    {
+      "id": "storm_surge",
+      "nameKey": "MOD_STORM_SURGE",
+      "descKey": "MOD_STORM_SURGE_DESC",
+      "effect": "element_bonus",
+      "value": "Lightning"
+    },
+    {
+      "id": "stone_wall",
+      "nameKey": "MOD_STONE_WALL",
+      "descKey": "MOD_STONE_WALL_DESC",
+      "effect": "element_bonus",
+      "value": "Earth"
+    },
+    {
+      "id": "inferno",
+      "nameKey": "MOD_INFERNO",
+      "descKey": "MOD_INFERNO_DESC",
+      "effect": "element_bonus",
+      "value": "Fire"
+    },
+    {
+      "id": "depths",
+      "nameKey": "MOD_DEPTHS",
+      "descKey": "MOD_DEPTHS_DESC",
+      "effect": "element_bonus",
+      "value": "Water"
+    }
+  ]
+}
