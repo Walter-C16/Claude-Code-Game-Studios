@@ -11,7 +11,6 @@ extends Control
 
 
 func _ready() -> void:
-	back_btn.pressed.connect(_on_back_pressed)
 
 
 ## Navigate back to the hub.

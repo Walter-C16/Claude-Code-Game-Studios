@@ -387,13 +387,19 @@ func _compute_blessings(played_cards: Array[Dictionary]) -> Dictionary:
 	# Evaluate hand rank for context building (lightweight, no side effects)
 	var hand_eval: Dictionary = HandEvaluator.evaluate(played_cards)
 
-	# Build suit_counts from played cards
+	# Build suit_counts from played cards (suit stored as int 0-3, convert to name)
+	const SUIT_NAMES: Array[String] = ["Hearts", "Diamonds", "Clubs", "Spades"]
 	var suit_counts: Dictionary = {}
 	for card: Dictionary in played_cards:
-		var suit: String = card.get("suit", "") as String
-		if suit.is_empty():
+		var suit_idx = card.get("suit", -1)
+		var suit_name: String = ""
+		if suit_idx is int and suit_idx >= 0 and suit_idx < 4:
+			suit_name = SUIT_NAMES[suit_idx]
+		elif suit_idx is String:
+			suit_name = suit_idx
+		if suit_name.is_empty():
 			continue
-		suit_counts[suit] = (suit_counts.get(suit, 0) as int) + 1
+		suit_counts[suit_name] = (suit_counts.get(suit_name, 0) as int) + 1
 
 	# Determine raw hand chips (base_hand_chips only, before bonuses)
 	var raw_hand_chips: int = hand_eval.get("base_chips", 0) as int

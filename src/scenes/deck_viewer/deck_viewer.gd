@@ -12,7 +12,6 @@ extends Control
 
 
 func _ready() -> void:
-	back_btn.pressed.connect(_on_back_pressed)
 	var ctx: Dictionary = SceneManager.get_arrival_context()
 	if ctx.has("deck_id"):
 		title_label.text = "DECK: %s" % ctx["deck_id"]

@@ -12,8 +12,6 @@ extends Control
 
 
 func _ready() -> void:
-	back_btn.pressed.connect(_on_back_pressed)
-	enter_btn.pressed.connect(_on_enter_pressed)
 
 
 ## Begin descent into the Abyss (launches combat).
