@@ -17,10 +17,14 @@ jobs:
         with:
           lfs: true
 
+      - name: Remove local GdUnit4 addon (CI installs its own)
+        run: rm -rf src/addons/gdUnit4
+
       - name: Run GdUnit4 Tests
         uses: MikeSchulze/gdUnit4-action@v1
         with:
           godot-version: '4.6'
+          project-dir: './src'
           paths: |
             tests/unit
             tests/integration
@@ -31,4 +35,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: reports/
+          path: src/reports/
