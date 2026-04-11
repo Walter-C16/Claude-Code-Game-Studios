@@ -12,6 +12,7 @@ extends Control
 
 
 func _ready() -> void:
+	pass
 
 
 ## Navigate back to the hub.

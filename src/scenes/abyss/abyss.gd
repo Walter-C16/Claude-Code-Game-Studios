@@ -12,6 +12,7 @@ extends Control
 
 
 func _ready() -> void:
+	pass
 
 
 ## Begin descent into the Abyss (launches combat).
