@@ -32,6 +32,7 @@ EnemyRegistry="*res://autoloads/enemy_registry.gd"
 DialogueRunner="*res://autoloads/dialogue_runner.gd"
 RomanceSocial="*res://autoloads/romance_social.gd"
 StoryFlow="*res://autoloads/story_flow.gd"
+AudioManager="*res://autoloads/audio_manager.gd"
 
 [display]
 

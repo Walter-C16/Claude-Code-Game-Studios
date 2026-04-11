@@ -1,0 +1,22 @@
+{
+  "artemis": [
+    {"scene": 1, "unlock_stage": 4, "rl_reward": 10, "cg_path": "res://assets/images/cg/artemis_intimate_1.png", "dialogue_seq": "intimacy_artemis_1"},
+    {"scene": 2, "unlock_stage": 4, "rl_reward": 10, "cg_path": "res://assets/images/cg/artemis_intimate_2.png", "dialogue_seq": "intimacy_artemis_2"},
+    {"scene": 3, "unlock_stage": 5, "rl_reward": 20, "cg_path": "res://assets/images/cg/artemis_intimate_3.png", "dialogue_seq": "intimacy_artemis_3"}
+  ],
+  "hipolita": [
+    {"scene": 1, "unlock_stage": 4, "rl_reward": 10, "cg_path": "res://assets/images/cg/hipolita_intimate_1.png", "dialogue_seq": "intimacy_hipolita_1"},
+    {"scene": 2, "unlock_stage": 4, "rl_reward": 10, "cg_path": "res://assets/images/cg/hipolita_intimate_2.png", "dialogue_seq": "intimacy_hipolita_2"},
+    {"scene": 3, "unlock_stage": 5, "rl_reward": 20, "cg_path": "res://assets/images/cg/hipolita_intimate_3.png", "dialogue_seq": "intimacy_hipolita_3"}
+  ],
+  "atenea": [
+    {"scene": 1, "unlock_stage": 4, "rl_reward": 10, "cg_path": "res://assets/images/cg/atenea_intimate_1.png", "dialogue_seq": "intimacy_atenea_1"},
+    {"scene": 2, "unlock_stage": 4, "rl_reward": 10, "cg_path": "res://assets/images/cg/atenea_intimate_2.png", "dialogue_seq": "intimacy_atenea_2"},
+    {"scene": 3, "unlock_stage": 5, "rl_reward": 20, "cg_path": "res://assets/images/cg/atenea_intimate_3.png", "dialogue_seq": "intimacy_atenea_3"}
+  ],
+  "nyx": [
+    {"scene": 1, "unlock_stage": 4, "rl_reward": 10, "cg_path": "res://assets/images/cg/nyx_intimate_1.png", "dialogue_seq": "intimacy_nyx_1"},
+    {"scene": 2, "unlock_stage": 4, "rl_reward": 10, "cg_path": "res://assets/images/cg/nyx_intimate_2.png", "dialogue_seq": "intimacy_nyx_2"},
+    {"scene": 3, "unlock_stage": 5, "rl_reward": 20, "cg_path": "res://assets/images/cg/nyx_intimate_3.png", "dialogue_seq": "intimacy_nyx_3"}
+  ]
+}

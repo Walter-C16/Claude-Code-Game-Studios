@@ -1,0 +1,33 @@
+{
+  "bgm": {
+    "main_menu":       {"file_path": "res://assets/audio/bgm/main_menu.ogg",       "tension_path": null, "loop": true},
+    "camp":            {"file_path": "res://assets/audio/bgm/camp.ogg",            "tension_path": null, "loop": true},
+    "dialogue":        {"file_path": "res://assets/audio/bgm/dialogue.ogg",        "tension_path": null, "loop": true},
+    "combat_standard": {"file_path": "res://assets/audio/bgm/combat_standard.ogg", "tension_path": "res://assets/audio/bgm/combat_standard_tension.ogg", "loop": true},
+    "combat_boss":     {"file_path": "res://assets/audio/bgm/combat_boss.ogg",     "tension_path": "res://assets/audio/bgm/combat_boss_tension.ogg",     "loop": true},
+    "abyss":           {"file_path": "res://assets/audio/bgm/abyss.ogg",           "tension_path": "res://assets/audio/bgm/abyss_tension.ogg",           "loop": true},
+    "intimacy":        {"file_path": "res://assets/audio/bgm/intimacy.ogg",        "tension_path": null, "loop": true},
+    "victory":         {"file_path": "res://assets/audio/bgm/victory.ogg",         "tension_path": null, "loop": false},
+    "defeat":          {"file_path": "res://assets/audio/bgm/defeat.ogg",          "tension_path": null, "loop": false}
+  },
+  "sfx": {
+    "card_select":      "res://assets/audio/sfx/combat/card_select.ogg",
+    "card_play":        "res://assets/audio/sfx/combat/card_play.ogg",
+    "score_tick":       "res://assets/audio/sfx/combat/score_tick.ogg",
+    "element_spark":    "res://assets/audio/sfx/combat/element_spark.ogg",
+    "hand_rank":        "res://assets/audio/sfx/combat/hand_rank.ogg",
+    "victory_chime":    "res://assets/audio/sfx/combat/victory_chime.ogg",
+    "defeat_thud":      "res://assets/audio/sfx/combat/defeat_thud.ogg",
+    "button_tap":       "res://assets/audio/sfx/ui/button_tap.ogg",
+    "menu_open":        "res://assets/audio/sfx/ui/menu_open.ogg",
+    "menu_close":       "res://assets/audio/sfx/ui/menu_close.ogg",
+    "notification_pop": "res://assets/audio/sfx/ui/notification_pop.ogg",
+    "tab_switch":       "res://assets/audio/sfx/ui/tab_switch.ogg",
+    "typewriter_tick":  "res://assets/audio/sfx/dialogue/typewriter_tick.ogg",
+    "choice_appear":    "res://assets/audio/sfx/dialogue/choice_appear.ogg",
+    "companion_grunt":  "res://assets/audio/sfx/dialogue/companion_grunt.ogg",
+    "ambient_birds":    "res://assets/audio/sfx/ambient/ambient_birds.ogg",
+    "abyss_hum":        "res://assets/audio/sfx/ambient/abyss_hum.ogg",
+    "wind":             "res://assets/audio/sfx/ambient/wind.ogg"
+  }
+}
