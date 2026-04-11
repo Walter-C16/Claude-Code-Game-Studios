@@ -53,6 +53,7 @@ var _feedback_tween: Tween
 # ── Built-in Virtual Methods ───────────────────────────────────────────────────
 
 func _ready() -> void:
+	AudioManager.play_bgm("res://assets/audio/bgm/camp.ogg")
 	_build_ui()
 	_build_companion_grid()
 	_refresh_top_bar()

@@ -93,6 +93,7 @@ var _blessing_strip: HBoxContainer
 # ── Built-in virtual methods ──────────────────────────────────────────────────
 
 func _ready() -> void:
+	AudioManager.play_bgm("res://assets/audio/bgm/combat_standard.ogg")
 	victory_overlay.visible = false
 	defeat_overlay.visible = false
 	_build_blessing_strip()
@@ -259,6 +260,7 @@ func _update_action_buttons() -> void:
 ## Plays a short score cascade animation then refreshes stats.
 ## Total cascade must not exceed 2s (AC4, COMBAT-011).
 func _animate_score_cascade(result: Dictionary, played_count: int) -> void:
+	AudioManager.play_sfx("res://assets/audio/sfx/combat/card_play.ogg")
 	# Flash the hand container white as cards "fly" to center.
 	Fx.flash(hand_container, Color(1.0, 1.0, 1.0, 0.6), 0.12)
 
@@ -446,6 +448,8 @@ func _on_state_changed(new_state: int) -> void:
 
 ## White flash → overlay appears → gold title springs up → gentle pulse loop.
 func _play_victory_animation() -> void:
+	AudioManager.play_sfx("res://assets/audio/sfx/combat/victory_chime.ogg")
+	AudioManager.play_bgm("res://assets/audio/bgm/victory.ogg")
 	# Brief full-screen white flash on this Control root.
 	Fx.flash(self, Color(1.0, 1.0, 1.0, 0.85), 0.12)
 	await get_tree().create_timer(0.12).timeout
@@ -475,6 +479,8 @@ func _play_victory_animation() -> void:
 
 ## Dim scene to 60 % → overlay fades in softly.
 func _play_defeat_animation() -> void:
+	AudioManager.play_sfx("res://assets/audio/sfx/combat/defeat_thud.ogg")
+	AudioManager.play_bgm("res://assets/audio/bgm/defeat.ogg")
 	# Dim the combat area (everything except the overlay itself).
 	Fx.dim(self, 0.6, 0.7)
 	await get_tree().create_timer(0.5).timeout

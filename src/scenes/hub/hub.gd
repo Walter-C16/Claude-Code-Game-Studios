@@ -31,6 +31,7 @@ func _ready() -> void:
 	_update_currency()
 	_start_breathing_animation()
 
+	AudioManager.play_bgm("res://assets/audio/bgm/camp.ogg")
 	GameStore.state_changed.connect(_on_state_changed)
 
 	# Entrance animation: stagger all direct children from their edges.

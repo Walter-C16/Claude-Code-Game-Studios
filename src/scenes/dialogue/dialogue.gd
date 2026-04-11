@@ -46,6 +46,7 @@ func _ready() -> void:
 	choices_container.visible = false
 	continue_indicator.visible = false
 
+	AudioManager.play_bgm("res://assets/audio/bgm/dialogue.ogg")
 	# Sync CPS from the runner's loaded config value.
 	_chars_per_second = DialogueRunner.cps
 

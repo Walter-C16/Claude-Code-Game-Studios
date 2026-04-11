@@ -23,6 +23,7 @@ func _ready() -> void:
 
 	# Title slides down from above with a spring overshoot.
 	# await one frame so layout positions are committed before we read them.
+	AudioManager.play_bgm("res://assets/audio/bgm/main_menu.ogg")
 	await get_tree().process_frame
 	_animate_entrance()
 

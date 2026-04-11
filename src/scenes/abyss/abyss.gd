@@ -25,6 +25,7 @@ var _content: VBoxContainer
 func _ready() -> void:
 	title_label.text = "THE ABYSS"
 	enter_btn.visible = false
+	AudioManager.play_bgm("res://assets/audio/bgm/abyss.ogg")
 
 	_config = AbyssConfig.new()
 	_modifiers = AbyssModifiers.new(_config)
