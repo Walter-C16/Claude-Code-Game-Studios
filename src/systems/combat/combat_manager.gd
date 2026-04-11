@@ -55,6 +55,17 @@ var discards_remaining: int = 4
 ## Total PLAY actions used in this encounter (used in combat_completed payload).
 var hands_used: int = 0
 
+## Total DISCARD actions used this encounter. Used in BlessingSystem hand_context.
+## Increments on each discard() call.
+var discards_used: int = 0
+
+## Allowed discards at combat start. Frozen at SETUP for hand_context.
+var discards_allowed: int = 4
+
+## History of per-hand raw chip scores for Artemis Slot 3 (Earth Memory).
+## Each entry is the raw chip total scored that hand.
+var _hands_chips_history: Array[int] = []
+
 # ── Private Config ────────────────────────────────────────────────────────────
 
 ## Frozen snapshot of enemy configuration set at SETUP.
@@ -124,11 +135,14 @@ func setup(
 	# Freeze romance_stages snapshot at SETUP (ADR-0007 AC5)
 	_romance_stages = (captain_ctx.get("romance_stages", {}) as Dictionary).duplicate(true)
 
-	score_threshold = enemy.get("score_threshold", 40) as int
-	hands_remaining = hands_allowed
+	score_threshold    = enemy.get("score_threshold", 40) as int
+	hands_remaining    = hands_allowed
 	discards_remaining = discards_allowed
-	current_score = 0
-	hands_used = 0
+	discards_allowed   = discards_allowed
+	current_score      = 0
+	hands_used         = 0
+	discards_used      = 0
+	_hands_chips_history.clear()
 
 	deck = Deck.create_standard_deck()
 	deck = Deck.shuffle_deck(deck)
@@ -185,6 +199,8 @@ func play_hand(selected_indices: Array[int]) -> Dictionary:
 	current_score += score
 	hands_remaining -= 1
 	hands_used += 1
+	# Record chips for Artemis Slot 3 Earth Memory (prior_hands_scored trigger)
+	_hands_chips_history.append(chips)
 
 	# Remove played cards from hand (descending index order to avoid shift errors)
 	var sorted_indices: Array[int] = selected_indices.duplicate()
@@ -234,6 +250,7 @@ func discard(selected_indices: Array[int]) -> void:
 
 	state = State.DISCARD_DRAW
 	discards_remaining -= 1
+	discards_used += 1
 
 	# Remove discarded cards (descending to avoid shift)
 	var sorted_indices: Array[int] = selected_indices.duplicate()
@@ -264,6 +281,8 @@ func get_state() -> Dictionary:
 		"score_threshold":   score_threshold,
 		"hands_remaining":   hands_remaining,
 		"discards_remaining": discards_remaining,
+		"discards_allowed":  discards_allowed,
+		"discards_used":     discards_used,
 		"hands_used":        hands_used,
 		"hand_cards":        hand.duplicate(true),
 	}
@@ -349,36 +368,73 @@ func _emit_combat_completed(victory: bool) -> void:
 	_event_bus.combat_completed.emit(payload)
 
 
-## Calls BlessingSystem.compute() as a black box (ADR-0007, COMBAT-010).
-## The hand_context passed to BlessingSystem contains the minimum required keys:
-##   played_cards, hand_rank, captain_id, romance_stages.
-## Returns { blessing_chips: int, blessing_mult: float } or zeros if unavailable.
+## Calls BlessingSystem.compute() as a black box (ADR-0007, ADR-0012, DB-006).
 ##
-## CombatManager does NOT access any BlessingSystem internal fields.
+## Builds the full 12-field hand_context required by BlessingSystem (DB-001 AC5):
+##   cards_played, hand_rank, hand_rank_value, suit_counts, current_score,
+##   hands_played, discards_used, discards_remaining, discards_allowed,
+##   signature_card_played, raw_hand_chips, hands_scoring_above.
+##
+## Resolves the frozen romance_stage for the captain from _romance_stages.
+## CombatManager does NOT access any BlessingSystem internal fields — it only
+## calls compute() and reads the two returned values (blessing_chips, blessing_mult).
+##
+## Returns { blessing_chips: int, blessing_mult: float } or zeros if unavailable.
 func _compute_blessings(played_cards: Array[Dictionary]) -> Dictionary:
-	# Evaluate rank for context building (lightweight — no side effects)
+	var captain_id: String  = _captain_context.get("captain_id", "") as String
+	var romance_stage: int  = (_romance_stages.get(captain_id, 0) as int)
+
+	# Evaluate hand rank for context building (lightweight, no side effects)
 	var hand_eval: Dictionary = HandEvaluator.evaluate(played_cards)
 
+	# Build suit_counts from played cards
+	var suit_counts: Dictionary = {}
+	for card: Dictionary in played_cards:
+		var suit: String = card.get("suit", "") as String
+		if suit.is_empty():
+			continue
+		suit_counts[suit] = (suit_counts.get(suit, 0) as int) + 1
+
+	# Determine raw hand chips (base_hand_chips only, before bonuses)
+	var raw_hand_chips: int = hand_eval.get("base_chips", 0) as int
+
+	# Build hands_scoring_above for Artemis Slot 3 (Earth Memory).
+	# Counts how many prior hands scored >= 60 chips (threshold is from the blessing).
+	var hands_scoring_above: Dictionary = {}
+	for prior_chips: int in _hands_chips_history:
+		for threshold: int in [60]:  # thresholds used by Earth Memory
+			if prior_chips >= threshold:
+				hands_scoring_above[threshold] = (hands_scoring_above.get(threshold, 0) as int) + 1
+
+	# Determine if captain's signature card is among played cards.
+	# Signature card is identified by card_value (from companions.json).
+	var signature_card_played: bool = false
+	var captain_card_value: int = _captain_context.get("captain_card_value", -1) as int
+	if captain_card_value >= 0:
+		for card: Dictionary in played_cards:
+			if (card.get("value", -1) as int) == captain_card_value:
+				signature_card_played = true
+				break
+
+	# Build complete 12-field hand_context (DB-001 AC5, DB-006 AC3)
 	var hand_context: Dictionary = {
-		"played_cards":   played_cards,
-		"hand_rank":      hand_eval.get("rank", "") as String,
-		"captain_id":     _captain_context.get("captain_id", "") as String,
-		"romance_stages": _romance_stages,  # frozen snapshot from SETUP
+		"cards_played":          played_cards,
+		"hand_rank":             hand_eval.get("rank", "") as String,
+		"hand_rank_value":       hand_eval.get("rank_value", 0) as int,
+		"suit_counts":           suit_counts,
+		"current_score":         current_score,
+		"hands_played":          hands_used,  # count before this hand increments
+		"discards_used":         discards_used,
+		"discards_remaining":    discards_remaining,
+		"discards_allowed":      discards_allowed,
+		"signature_card_played": signature_card_played,
+		"raw_hand_chips":        raw_hand_chips,
+		"hands_scoring_above":   hands_scoring_above,
 	}
 
-	# Check if a BlessingSystem reference was injected via captain_context
-	var blessing_system: Object = _captain_context.get("blessing_system", null) as Object
-	if blessing_system == null:
-		return { "blessing_chips": 0, "blessing_mult": 0.0 }
-
-	if not blessing_system.has_method("compute"):
-		return { "blessing_chips": 0, "blessing_mult": 0.0 }
-
-	var result: Variant = blessing_system.compute(hand_context)
-	if result == null or not result is Dictionary:
-		return { "blessing_chips": 0, "blessing_mult": 0.0 }
-
+	# BlessingSystem is called as a static class — no injection needed.
 	# Black-box contract: only read the two declared output keys.
+	var result: Dictionary = BlessingSystem.compute(captain_id, romance_stage, hand_context)
 	return {
 		"blessing_chips": result.get("blessing_chips", 0) as int,
 		"blessing_mult":  result.get("blessing_mult",  0.0) as float,

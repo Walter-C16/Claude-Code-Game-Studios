@@ -1,0 +1,187 @@
+{
+  "artemis": [
+    {
+      "slot": 1,
+      "stage": 1,
+      "name_key": "BLESSING_ROOTED_GROUND",
+      "trigger_type": "per_card",
+      "suit": "Clubs",
+      "chips_per_card": 8,
+      "mult_per_card": 0
+    },
+    {
+      "slot": 2,
+      "stage": 2,
+      "name_key": "BLESSING_PATIENT_HUNT",
+      "trigger_type": "discards_remaining_eq",
+      "chips_flat": 20,
+      "mult_flat": 0
+    },
+    {
+      "slot": 3,
+      "stage": 3,
+      "name_key": "BLESSING_EARTH_MEMORY",
+      "trigger_type": "prior_hands_scored",
+      "threshold": 60,
+      "chips_per_stack": 12,
+      "max_stacks": 3,
+      "mult_flat": 0
+    },
+    {
+      "slot": 4,
+      "stage": 3,
+      "name_key": "BLESSING_FOREST_BOND",
+      "trigger_type": "signature_card",
+      "chips_flat": 0,
+      "mult_flat": 3.0
+    },
+    {
+      "slot": 5,
+      "stage": 4,
+      "name_key": "BLESSING_ANCIENT_GROVE",
+      "trigger_type": "cards_played_eq",
+      "count": 5,
+      "chips_flat": 25,
+      "mult_flat": 1.5
+    }
+  ],
+  "hipolita": [
+    {
+      "slot": 1,
+      "stage": 1,
+      "name_key": "BLESSING_EMBER_STRIKE",
+      "trigger_type": "per_card",
+      "suit": "Hearts",
+      "chips_per_card": 10,
+      "mult_per_card": 0
+    },
+    {
+      "slot": 2,
+      "stage": 2,
+      "name_key": "BLESSING_WARCHIEFS_WILL",
+      "trigger_type": "hands_played_max",
+      "max_hands": 2,
+      "chips_flat": 30,
+      "mult_flat": 0
+    },
+    {
+      "slot": 3,
+      "stage": 3,
+      "name_key": "BLESSING_FURY_SURGE",
+      "trigger_type": "hand_rank_min",
+      "min_rank": 3,
+      "chips_flat": 0,
+      "mult_flat": 2.0
+    },
+    {
+      "slot": 4,
+      "stage": 3,
+      "name_key": "BLESSING_BLOOD_PRICE",
+      "trigger_type": "discards_used_min",
+      "min_discards": 2,
+      "chips_flat": 35,
+      "mult_flat": 0
+    },
+    {
+      "slot": 5,
+      "stage": 4,
+      "name_key": "BLESSING_INFERNO_CROWN",
+      "trigger_type": "heart_flush",
+      "min_rank": 5,
+      "chips_flat": 40,
+      "mult_flat": 4.0
+    }
+  ],
+  "atenea": [
+    {
+      "slot": 1,
+      "stage": 1,
+      "name_key": "BLESSING_STATIC_CHARGE",
+      "trigger_type": "per_card",
+      "suit": "Spades",
+      "chips_per_card": 0,
+      "mult_per_card": 0.8
+    },
+    {
+      "slot": 2,
+      "stage": 2,
+      "name_key": "BLESSING_CALCULATED_STRIKE",
+      "trigger_type": "cards_played_eq",
+      "count": 3,
+      "chips_flat": 0,
+      "mult_flat": 2.5
+    },
+    {
+      "slot": 3,
+      "stage": 3,
+      "name_key": "BLESSING_OVERLOAD",
+      "trigger_type": "signature_card",
+      "chips_flat": 33,
+      "mult_flat": 0
+    },
+    {
+      "slot": 4,
+      "stage": 3,
+      "name_key": "BLESSING_STRATEGIC_MASTERY",
+      "trigger_type": "current_score_gate",
+      "score_threshold": 150,
+      "chips_flat": 0,
+      "mult_flat": 3.0
+    },
+    {
+      "slot": 5,
+      "stage": 4,
+      "name_key": "BLESSING_THUNDERCLAP",
+      "trigger_type": "raw_chips_max",
+      "max_chips": 40,
+      "chips_flat": 0,
+      "mult_flat": 5.0
+    }
+  ],
+  "nyx": [
+    {
+      "slot": 1,
+      "stage": 1,
+      "name_key": "BLESSING_MOONLIT_CURRENT",
+      "trigger_type": "per_card",
+      "suit": "Diamonds",
+      "chips_per_card": 7,
+      "mult_per_card": 0
+    },
+    {
+      "slot": 2,
+      "stage": 2,
+      "name_key": "BLESSING_ABYSSAL_DEPTH",
+      "trigger_type": "suit_count",
+      "suit": "Diamonds",
+      "min_count": 2,
+      "chips_flat": 0,
+      "mult_flat": 1.5
+    },
+    {
+      "slot": 3,
+      "stage": 3,
+      "name_key": "BLESSING_STARLESS_NIGHT",
+      "trigger_type": "discards_remaining_eq",
+      "chips_flat": 15,
+      "mult_flat": 2.0
+    },
+    {
+      "slot": 4,
+      "stage": 3,
+      "name_key": "BLESSING_TIDAL_SURGE",
+      "trigger_type": "accumulated_chips_min",
+      "min_chips": 14,
+      "chips_flat": 0,
+      "mult_flat": 2.5
+    },
+    {
+      "slot": 5,
+      "stage": 4,
+      "name_key": "BLESSING_DEVOTED_OCEAN",
+      "trigger_type": "always",
+      "chips_flat": 30,
+      "mult_flat": 3.5
+    }
+  ]
+}

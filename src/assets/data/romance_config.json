@@ -1,0 +1,54 @@
+{
+  "daily_tokens": 3,
+  "streak_multipliers": [1.0, 1.0, 1.1, 1.25, 1.4, 1.5],
+  "talk_base_rl": {
+    "Content": 3,
+    "Happy": 4,
+    "Excited": 4,
+    "Lonely": 2,
+    "Annoyed": 1
+  },
+  "gift_base_rl": {
+    "liked": 2,
+    "neutral": 1,
+    "disliked": 0
+  },
+  "date_round_rl": {
+    "liked": 8,
+    "neutral": 5,
+    "disliked": 3
+  },
+  "date_activity_categories": [
+    "romantic",
+    "active",
+    "intellectual",
+    "domestic",
+    "adventure",
+    "artistic"
+  ],
+  "date_rounds": 4,
+  "date_options_per_round": 3,
+  "mood_durations_days": {
+    "Content": 0,
+    "Happy": 2,
+    "Excited": 3,
+    "Lonely": 3,
+    "Annoyed": 2
+  },
+  "mood_priority": {
+    "Content": 0,
+    "Lonely": 1,
+    "Annoyed": 2,
+    "Happy": 3,
+    "Excited": 4
+  },
+  "combat_buff": {
+    "by_stage": [
+      {"chips": 0,  "mult": 0.0, "combats": 0},
+      {"chips": 5,  "mult": 0.25, "combats": 2},
+      {"chips": 10, "mult": 0.5,  "combats": 3},
+      {"chips": 15, "mult": 0.75, "combats": 3},
+      {"chips": 20, "mult": 1.0,  "combats": 4}
+    ]
+  }
+}

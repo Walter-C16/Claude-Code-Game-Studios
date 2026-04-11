@@ -317,6 +317,17 @@ func set_streak(days: int) -> void:
 # Public Getters — Captain
 # ---------------------------------------------------------------------------
 
+## Returns the last interaction date as a UTC date string (YYYY-MM-DD).
+## Returns an empty String if no interaction has occurred yet.
+func get_last_interaction_date() -> String:
+	return _last_interaction_date
+
+## Sets the last interaction date from a UTC date string (YYYY-MM-DD).
+func set_last_interaction_date(date: String) -> void:
+	_last_interaction_date = date
+	_mark_dirty()
+	state_changed.emit("romance")
+
 ## Returns the companion ID of the last-selected captain. Empty if none.
 func get_last_captain_id() -> String:
 	return _last_captain_id

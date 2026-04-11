@@ -63,3 +63,25 @@ signal chapter_completed(chapter_id: String)
 
 ## Fired when any individual story node transitions to the "complete" state.
 signal node_completed(node_id: String)
+
+# ── Deck Management Signals ──────────────────────────────────────────────────
+# Emitted by: DeckManager
+# Listeners:  CombatSystem
+
+## Fired when captain selection is confirmed and the deck is shuffled.
+## config dict schema: {captain_id: String, captain_chip_bonus: int,
+##   captain_mult_bonus: float, deck: Array[Dictionary]}
+signal combat_configured(config: Dictionary)
+
+# ── Boss / Music Signals ──────────────────────────────────────────────────────
+# Emitted by: StoryFlow (boss node entry)
+# Listeners:  AudioManager, UI layer
+
+## Fired when a boss node is entered to trigger boss music and HP bar.
+signal boss_encounter_started(enemy_id: String)
+
+## Fired when a companion is revealed / met for the first time.
+signal companion_unlocked(companion_id: String)
+
+## Fired when midnight UTC day boundary resets tokens.
+signal midnight_reset
