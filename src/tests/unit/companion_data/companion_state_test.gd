@@ -179,7 +179,7 @@ func test_companion_state_set_relationship_level_stores_valid_value_unmodified()
 
 # ── AC7 — romance_stage_changed signal emitted on stage transition ────────────
 
-func _disabled_test_companion_state_set_relationship_level_emits_romance_stage_changed_on_transition() -> void:
+func _skip_test_companion_state_set_relationship_level_emits_romance_stage_changed_on_transition() -> void:
 	# Arrange — signal monitor via GdUnit4
 	var signal_collector = monitor_signals(EventBus)
 	# Ensure starting at stage 0 (factory default)
@@ -192,7 +192,7 @@ func _disabled_test_companion_state_set_relationship_level_emits_romance_stage_c
 	# Assert — signal was emitted once with correct args
 	await assert_signal(signal_collector).was_emitted("romance_stage_changed")
 
-func _disabled_test_companion_state_romance_stage_changed_carries_correct_old_and_new_stage() -> void:
+func _skip_test_companion_state_romance_stage_changed_carries_correct_old_and_new_stage() -> void:
 	# Arrange — start at stage 0
 	GameStore._set_relationship_level("nyx", 0)
 	_CompanionStateScript._max_stages.erase("nyx")
@@ -208,7 +208,7 @@ func _disabled_test_companion_state_romance_stage_changed_carries_correct_old_an
 
 # ── AC8 — No spurious romance_stage_changed when stage does not change ────────
 
-func _disabled_test_companion_state_set_relationship_level_no_signal_when_stage_unchanged() -> void:
+func _skip_test_companion_state_set_relationship_level_no_signal_when_stage_unchanged() -> void:
 	# Arrange — reach stage 4 (max)
 	GameStore._set_relationship_level("artemis", 100)
 	var _primed: int = _CompanionStateScript.get_romance_stage("artemis")
@@ -220,7 +220,7 @@ func _disabled_test_companion_state_set_relationship_level_no_signal_when_stage_
 	# Assert — signal NOT emitted
 	await assert_signal(signal_collector).was_not_emitted("romance_stage_changed")
 
-func _disabled_test_companion_state_set_relationship_level_no_signal_when_level_increases_within_same_stage() -> void:
+func _skip_test_companion_state_set_relationship_level_no_signal_when_level_increases_within_same_stage() -> void:
 	# Arrange — stage 1 requires rl >= 21; stay within stage 1 (21..50)
 	GameStore._set_relationship_level("hipolita", 21)
 	var _primed: int = _CompanionStateScript.get_romance_stage("hipolita")

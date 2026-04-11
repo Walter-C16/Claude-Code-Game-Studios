@@ -18,9 +18,10 @@ const FIXTURE_CHAPTER: String = "test"
 const FIXTURE_SEQ: String = "test_dialogue"
 
 # State enum mirrors dialogue_runner.gd
+# IDLE=0, LOADING=1, DISPLAYING=2, WAITING=3, CHOOSING=4, RESOLVING=5, BLOCKED=6, ENDED=7
 const STATE_IDLE: int = 0
-const STATE_CHOOSING: int = 5
-const STATE_RESOLVING: int = 6
+const STATE_CHOOSING: int = 4
+const STATE_RESOLVING: int = 5
 
 # ── Helper ────────────────────────────────────────────────────────────────────
 
@@ -183,7 +184,6 @@ func _disabled_test_choice_system_select_choice_applies_effects() -> void:
 	# Arrange — choice A (index 0) has a relationship effect
 	var runner = _make_runner()
 	GameStore._initialize_defaults()
-	var eb_runner = preload("res://autoloads/event_bus.gd").new()
 	var received_companion: String = ""
 	var received_delta: int = -999
 	EventBus.relationship_changed.connect(

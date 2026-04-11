@@ -167,7 +167,7 @@ func test_deck_manager_cancel_from_confirmed_returns_to_select() -> void:
 
 # ── DM-004: combat_configured Signal Handoff ────────────────────────────────────
 
-func _disabled_test_deck_manager_handoff_emits_combat_configured_with_required_keys() -> void:
+func _skip_test_deck_manager_handoff_emits_combat_configured_with_required_keys() -> void:
 	# Arrange — reach CAPTAIN_CONFIRMED
 	GameStore.set_met("artemis", true)
 	_dm.select_companion("artemis")
@@ -187,7 +187,7 @@ func _disabled_test_deck_manager_handoff_emits_combat_configured_with_required_k
 	assert_bool(received_config.has("captain_mult_bonus")).is_true()
 	assert_bool(received_config.has("deck")).is_true()
 
-func _disabled_test_deck_manager_handoff_deck_contains_52_cards() -> void:
+func _skip_test_deck_manager_handoff_deck_contains_52_cards() -> void:
 	# Arrange
 	GameStore.set_met("artemis", true)
 	_dm.select_companion("artemis")
