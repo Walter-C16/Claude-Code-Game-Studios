@@ -191,7 +191,7 @@ func _execute_dialogue_node(node: Dictionary) -> void:
 func _execute_combat_node(node: Dictionary) -> void:
 	var enemy_id: String = node.get("enemy_id", "")
 	_awaiting_combat = true
-	SceneManager.change_scene(SceneManager.SceneId.COMBAT, {"enemy_id": enemy_id, "node_id": node.get("id", "")})
+	SceneManager.change_scene(SceneManager.SceneId.COMBAT, SceneManager.TransitionType.FADE, {"enemy_id": enemy_id, "node_id": node.get("id", "")})
 
 ## Companion unlock: runs unlock dialogue, then sets met=true and emits unlock signal.
 func _execute_companion_unlock_node(node: Dictionary) -> void:

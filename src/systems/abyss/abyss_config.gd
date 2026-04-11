@@ -146,7 +146,7 @@ func get_modifiers_config() -> Array:
 # ── Private Helpers ───────────────────────────────────────────────────────────
 
 ## Returns value from loaded data or falls back to _DEFAULTS.
-func _get(key: String) -> Variant:
+func _get(key: StringName) -> Variant:
 	if _data.has(key):
 		return _data[key]
 	if _DEFAULTS.has(key):
