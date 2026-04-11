@@ -1,0 +1,17 @@
+{
+  "id": "ch01",
+  "title_key": "CHAPTER_1_TITLE",
+  "nodes": [
+    {"id": "ch01_n00", "type": "combat", "enemy_id": "forest_monster", "prereqs": [], "rewards": {"gold": 20, "xp": 10, "flags": ["ch01_tutorial_done"]}},
+    {"id": "ch01_n01", "type": "dialogue", "sequence": "artemis_rescue", "prereqs": ["ch01_tutorial_done"], "rewards": {"flags": ["ch01_met_artemis"]}, "effects": [{"type": "meet", "companion": "artemis"}]},
+    {"id": "ch01_n02", "type": "dialogue", "sequence": "artemis_house", "prereqs": ["ch01_met_artemis"], "rewards": {"gold": 15, "flags": ["ch01_exposition_done"]}},
+    {"id": "ch01_n03", "type": "dialogue", "sequence": "tavern", "prereqs": ["ch01_exposition_done"], "rewards": {"gold": 10, "flags": ["ch01_tavern_done"]}},
+    {"id": "ch01_n04", "type": "dialogue", "sequence": "mountains", "prereqs": ["ch01_tavern_done"], "rewards": {"xp": 20, "flags": ["ch01_artemis_backstory"]}},
+    {"id": "ch01_n05", "type": "combat", "enemy_id": "mountain_beast", "prereqs": ["ch01_artemis_backstory"], "rewards": {"gold": 30, "xp": 15, "flags": ["ch01_village_saved"]}},
+    {"id": "ch01_n06", "type": "dialogue", "sequence": "village_attack", "prereqs": ["ch01_village_saved"], "rewards": {"flags": ["ch01_met_hipolita"]}, "effects": [{"type": "meet", "companion": "hipolita"}]},
+    {"id": "ch01_n07", "type": "dialogue", "sequence": "hipolita_challenge", "prereqs": ["ch01_met_hipolita"], "rewards": {"xp": 15, "flags": ["ch01_challenge_done"]}},
+    {"id": "ch01_n08", "type": "dialogue", "sequence": "village_report", "prereqs": ["ch01_challenge_done"], "rewards": {"gold": 20, "flags": ["ch01_report_done"]}},
+    {"id": "ch01_n09", "type": "combat", "enemy_id": "gaia_spirit", "prereqs": ["ch01_report_done"], "rewards": {"gold": 50, "xp": 40, "flags": ["ch01_boss_defeated"]}},
+    {"id": "ch01_n10", "type": "dialogue", "sequence": "tree_temple", "prereqs": ["ch01_boss_defeated"], "rewards": {"flags": ["ch01_complete", "ch01_gaia_revelation"]}}
+  ]
+}
