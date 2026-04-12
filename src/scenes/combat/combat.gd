@@ -404,7 +404,7 @@ func _apply_story_rewards(node_id: String) -> void:
 			# Meet effects
 			for fx in node.get("effects", []):
 				if fx.get("type", "") == "meet":
-					GameStore.set_met(fx.get("companion", ""), true)
+					CompanionRegistry.meet_companion(fx.get("companion", ""))
 			break
 
 

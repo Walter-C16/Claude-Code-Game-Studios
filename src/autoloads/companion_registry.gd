@@ -45,6 +45,16 @@ func _ready() -> void:
 
 # ── Public Methods ────────────────────────────────────────────────────────────
 
+## Marks a companion as met AND seeds their default known_likes/dislikes
+## in GameStore. Convenience wrapper so story code doesn't have to do both.
+func meet_companion(id: String) -> void:
+	GameStore.set_met(id, true)
+	var profile: Dictionary = get_profile(id)
+	var likes: Array = profile.get("likes", []) as Array
+	var dislikes: Array = profile.get("dislikes", []) as Array
+	GameStore.seed_companion_preferences(id, likes, dislikes)
+
+
 ## Returns a defensive copy of the profile dictionary for [param id].
 ## Returns an empty Dictionary if the ID is not registered (no crash, no error push).
 func get_profile(id: String) -> Dictionary:

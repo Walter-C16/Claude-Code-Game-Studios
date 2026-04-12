@@ -1232,6 +1232,13 @@
   "CH01_BLESSING_09": "The weapon hums with a new rhythm — alive, pulsing in time with the Great Root's heartbeat.",
   "CH01_BLESSING_10": "By all the gods... I've never seen the priestess give her light to anyone. Let's go — Hippolyta won't wait.",
 
+  "GIFT_WILD_BERRIES": "Wild Berries",
+  "GIFT_SILVER_ARROW": "Silver Arrow",
+  "GIFT_BRONZE_BRACER": "Bronze Bracer",
+  "GIFT_HONEY_MEAD": "Honey Mead",
+  "GIFT_OLIVE_OIL": "Olive Oil",
+  "GIFT_ANCIENT_SCROLL": "Ancient Scroll",
+
   "HUB_WELCOME_TITLE": "Welcome",
   "HUB_WELCOME_TEXT": "You made it. This is your base.\n\nMore will unlock as you progress.",
   "HUB_WELCOME_OK": "Continue",

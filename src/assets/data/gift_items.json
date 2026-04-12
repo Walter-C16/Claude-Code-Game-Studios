@@ -1,0 +1,38 @@
+[
+  {
+    "id": "wild_berries",
+    "name_key": "GIFT_WILD_BERRIES",
+    "category": "food",
+    "gold_cost": 5
+  },
+  {
+    "id": "silver_arrow",
+    "name_key": "GIFT_SILVER_ARROW",
+    "category": "weapon",
+    "gold_cost": 15
+  },
+  {
+    "id": "bronze_bracer",
+    "name_key": "GIFT_BRONZE_BRACER",
+    "category": "armor",
+    "gold_cost": 20
+  },
+  {
+    "id": "honey_mead",
+    "name_key": "GIFT_HONEY_MEAD",
+    "category": "drink",
+    "gold_cost": 10
+  },
+  {
+    "id": "olive_oil",
+    "name_key": "GIFT_OLIVE_OIL",
+    "category": "food",
+    "gold_cost": 8
+  },
+  {
+    "id": "ancient_scroll",
+    "name_key": "GIFT_ANCIENT_SCROLL",
+    "category": "scholarly",
+    "gold_cost": 25
+  }
+]

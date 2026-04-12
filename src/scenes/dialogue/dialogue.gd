@@ -124,7 +124,7 @@ func _on_dialogue_ended(_sequence_id: String) -> void:
 	# After crash rescue cutscene, go to Hub (simulating waking up in Artemis's house).
 	if _sequence_id == "crash_rescue":
 		GameStore.set_flag("ch01_crash_rescue_done")
-		GameStore.set_met("artemis", true)
+		CompanionRegistry.meet_companion("artemis")
 		SceneManager.change_scene(SceneManager.SceneId.HUB)
 		return
 	# For all other dialogues, go back to chapter map.

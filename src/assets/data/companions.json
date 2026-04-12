@@ -9,7 +9,9 @@
     "AGI": 20,
     "card_value": 13,
     "starting_location": "forest",
-    "portrait_path_base": "res://assets/images/companions/artemis/artemis"
+    "portrait_path_base": "res://assets/images/companions/artemis/artemis",
+    "likes": ["silver_arrow", "wild_berries"],
+    "dislikes": ["ancient_scroll"]
   },
   "hipolita": {
     "id": "hipolita",
@@ -21,7 +23,9 @@
     "AGI": 18,
     "card_value": 12,
     "starting_location": "amazon_camp",
-    "portrait_path_base": "res://assets/images/companions/hipolita/hipolita"
+    "portrait_path_base": "res://assets/images/companions/hipolita/hipolita",
+    "likes": ["bronze_bracer", "honey_mead"],
+    "dislikes": ["ancient_scroll"]
   },
   "atenea": {
     "id": "atenea",
@@ -33,7 +37,9 @@
     "AGI": 12,
     "card_value": 14,
     "starting_location": "thebes",
-    "portrait_path_base": "res://assets/images/companions/atenea/atenea"
+    "portrait_path_base": "res://assets/images/companions/atenea/atenea",
+    "likes": ["ancient_scroll", "olive_oil"],
+    "dislikes": ["honey_mead"]
   },
   "nyx": {
     "id": "nyx",
@@ -45,7 +51,9 @@
     "AGI": 8,
     "card_value": 11,
     "starting_location": "underworld",
-    "portrait_path_base": "res://assets/images/companions/nyx/nyx"
+    "portrait_path_base": "res://assets/images/companions/nyx/nyx",
+    "likes": ["ancient_scroll", "honey_mead"],
+    "dislikes": ["wild_berries"]
   },
   "priestess": {
     "id": "priestess",
@@ -57,6 +65,8 @@
     "AGI": 0,
     "card_value": 0,
     "starting_location": "temple",
-    "portrait_path_base": "res://assets/images/companions/priestess/priestess"
+    "portrait_path_base": "res://assets/images/companions/priestess/priestess",
+    "likes": [],
+    "dislikes": []
   }
 }

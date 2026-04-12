@@ -384,7 +384,7 @@ func _on_node_pressed(node_data: Dictionary) -> void:
 		var fx_dict: Dictionary = fx as Dictionary
 		var fx_type: String = fx_dict.get("type", "") as String
 		if fx_type == "meet":
-			GameStore.set_met(fx_dict.get("companion", "") as String, true)
+			CompanionRegistry.meet_companion(fx_dict.get("companion", "") as String)
 
 	if node_type == "combat":
 		var enemy_id: String = node_data.get("enemy_id", "forest_monster") as String

@@ -195,6 +195,18 @@ func set_met(id: String, value: bool) -> void:
 	_mark_dirty()
 	state_changed.emit("companion")
 
+
+## Seeds the known_likes / known_dislikes arrays for a companion.
+## Called by higher layers (e.g. StoryFlow after set_met) so GameStore
+## stays free of cross-layer dependencies (ADR-0006).
+func seed_companion_preferences(id: String, likes: Array, dislikes: Array) -> void:
+	if not _companion_states.has(id):
+		return
+	_companion_states[id]["known_likes"] = likes.duplicate()
+	_companion_states[id]["known_dislikes"] = dislikes.duplicate()
+	_mark_dirty()
+	state_changed.emit("companion")
+
 ## Returns the current_mood for the given companion ID.
 ## Returns 0 if `id` is not found.
 func get_mood(id: String) -> int:
