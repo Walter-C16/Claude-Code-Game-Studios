@@ -58,6 +58,7 @@ func _ready() -> void:
 	_build_companion_grid()
 	_refresh_top_bar()
 	GameStore.state_changed.connect(_on_state_changed)
+	tree_exiting.connect(_disconnect_autoload_signals)
 	await get_tree().process_frame
 	Fx.stagger_children(_companion_grid, 0.06, 24.0)
 
@@ -624,3 +625,9 @@ func _on_state_changed(_key: String) -> void:
 	_refresh_top_bar()
 	if not _selected_id.is_empty() and _detail_panel.visible:
 		_refresh_detail_panel()
+
+
+## Disconnects persistent autoload signals on scene exit.
+func _disconnect_autoload_signals() -> void:
+	if GameStore.state_changed.is_connected(_on_state_changed):
+		GameStore.state_changed.disconnect(_on_state_changed)

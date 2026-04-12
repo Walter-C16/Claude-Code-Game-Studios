@@ -267,28 +267,24 @@ static func _ensure_data() -> void:
 		return
 
 	var path: String = "res://assets/data/blessings.json"
-	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		push_error("BlessingSystem: cannot open %s — blessing data unavailable." % path)
-		_cache_loaded = true
+	var raw: Dictionary = JsonLoader.load_dict(path)
+	_cache_loaded = true
+	if raw.is_empty():
 		return
 
-	var text: String = file.get_as_text()
-	file.close()
-
-	var parsed: Variant = JSON.parse_string(text)
-	if parsed == null or not parsed is Dictionary:
-		push_error("BlessingSystem: failed to parse %s as JSON object." % path)
-		_cache_loaded = true
-		return
-
-	var raw: Dictionary = parsed as Dictionary
 	for captain_id: String in raw.keys():
 		var blessings: Array = raw[captain_id] as Array
-		# Sort by slot number to guarantee evaluation order 1-5
-		blessings.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-			return (a.get("slot", 0) as int) < (b.get("slot", 0) as int))
+		# Sort by slot number — BlessingSystem iterates slots in order 1..5
+		# and stops at the first inactive slot (stage-gated). Order is
+		# load-bearing: if slots aren't pre-sorted, unlocks can skip valid
+		# blessings at lower slots.
+		blessings.sort_custom(_compare_slots)
 		_blessings_cache[captain_id] = blessings
+
+
+## Compares two blessing dictionaries by their slot number (ascending).
+static func _compare_slots(a: Dictionary, b: Dictionary) -> bool:
+	return (a.get("slot", 0) as int) < (b.get("slot", 0) as int)
 
 	_cache_loaded = true
 

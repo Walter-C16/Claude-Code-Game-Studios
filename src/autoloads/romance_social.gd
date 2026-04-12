@@ -57,18 +57,7 @@ func _ready() -> void:
 ## Loads romance_config.json from the data directory.
 ## All tuning values must come from this file — no hardcoded literals.
 func _load_config() -> void:
-	var path: String = "res://assets/data/romance_config.json"
-	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		push_error("RomanceSocial: failed to open %s" % path)
-		return
-	var json_text: String = file.get_as_text()
-	file.close()
-	var parsed: Variant = JSON.parse_string(json_text)
-	if parsed == null or not parsed is Dictionary:
-		push_error("RomanceSocial: failed to parse %s" % path)
-		return
-	_config = parsed as Dictionary
+	_config = JsonLoader.load_dict("res://assets/data/romance_config.json")
 
 ## Connects EventBus signals. Only references autoloads 1-8 (boot order safe).
 func _connect_eventbus() -> void:

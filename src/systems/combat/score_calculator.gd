@@ -220,19 +220,9 @@ static func _get_weak_element(enemy_element: String) -> String:
 static func _ensure_config() -> void:
 	if not _config.is_empty():
 		return
-	var file: FileAccess = FileAccess.open(
-		"res://assets/data/hand_ranks.json", FileAccess.READ)
-	if file == null:
-		push_error("ScoreCalculator: failed to open res://assets/data/hand_ranks.json")
-		# Leave _config empty so callers fall through to DEFAULT_ constants.
+	var root: Dictionary = JsonLoader.load_dict("res://assets/data/hand_ranks.json")
+	if root.is_empty():
 		return
-	var json_text: String = file.get_as_text()
-	file.close()
-	var parsed: Variant = JSON.parse_string(json_text)
-	if parsed == null or not parsed is Dictionary:
-		push_error("ScoreCalculator: failed to parse hand_ranks.json")
-		return
-	var root: Dictionary = parsed as Dictionary
 	# scoring_config is optional; if absent defaults are used.
 	_config = root.get("scoring_config", {}) as Dictionary
 	if _config.is_empty():

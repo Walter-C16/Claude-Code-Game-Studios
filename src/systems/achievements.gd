@@ -15,19 +15,10 @@ static var _loaded: bool = false
 static func _ensure_loaded() -> void:
 	if _loaded:
 		return
-	var file = FileAccess.open(DATA_PATH, FileAccess.READ)
-	if not file:
-		push_error("Achievements: failed to open " + DATA_PATH)
-		_loaded = true
-		return
-	var json = JSON.new()
-	if json.parse(file.get_as_text()) != OK:
-		push_error("Achievements: JSON parse error")
-		_loaded = true
-		return
-	if json.data is Dictionary and json.data.has("achievements"):
-		_definitions = json.data["achievements"]
 	_loaded = true
+	var root: Dictionary = JsonLoader.load_dict(DATA_PATH)
+	if root.has("achievements"):
+		_definitions = root["achievements"]
 
 
 ## Returns all achievement definitions with their current unlock status.

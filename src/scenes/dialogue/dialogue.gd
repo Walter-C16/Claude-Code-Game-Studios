@@ -58,6 +58,7 @@ func _ready() -> void:
 	DialogueRunner.choices_ready.connect(_on_choices_ready)
 	DialogueRunner.dialogue_ended.connect(_on_dialogue_ended)
 	DialogueRunner.typewriter_complete.connect(_on_typewriter_complete)
+	tree_exiting.connect(_disconnect_autoload_signals)
 
 	# Read arrival context to start the correct dialogue sequence.
 	var ctx: Dictionary = SceneManager.get_arrival_context()
@@ -141,16 +142,10 @@ func _on_dialogue_ended(_sequence_id: String) -> void:
 
 ## Looks up and applies rewards (gold, xp, flags, meet effects) from ch01.json.
 func _apply_story_rewards(node_id: String) -> void:
-	var path: String = "res://assets/data/chapters/ch01.json"
-	if not FileAccess.file_exists(path):
+	var data: Dictionary = JsonLoader.load_dict("res://assets/data/chapters/ch01.json")
+	if data.is_empty():
 		return
-	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		return
-	var json: JSON = JSON.new()
-	if json.parse(file.get_as_text()) != OK:
-		return
-	var nodes: Array = json.data.get("nodes", [])
+	var nodes: Array = data.get("nodes", [])
 	for node: Variant in nodes:
 		var nd: Dictionary = node as Dictionary
 		if nd.get("id", "") == node_id:
@@ -174,6 +169,18 @@ func _apply_story_rewards(node_id: String) -> void:
 ## Used here only to show the continue indicator (choices are shown via choices_ready).
 func _on_typewriter_complete() -> void:
 	continue_indicator.visible = true
+
+
+## Disconnects persistent autoload signals on scene exit.
+func _disconnect_autoload_signals() -> void:
+	if DialogueRunner.line_ready.is_connected(_on_line_ready):
+		DialogueRunner.line_ready.disconnect(_on_line_ready)
+	if DialogueRunner.choices_ready.is_connected(_on_choices_ready):
+		DialogueRunner.choices_ready.disconnect(_on_choices_ready)
+	if DialogueRunner.dialogue_ended.is_connected(_on_dialogue_ended):
+		DialogueRunner.dialogue_ended.disconnect(_on_dialogue_ended)
+	if DialogueRunner.typewriter_complete.is_connected(_on_typewriter_complete):
+		DialogueRunner.typewriter_complete.disconnect(_on_typewriter_complete)
 
 
 # ── Display ────────────────────────────────────────────────────────────────────

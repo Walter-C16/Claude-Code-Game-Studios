@@ -212,7 +212,14 @@ func open_settings_overlay() -> void:
 		# Layer is still added so state machine stays consistent;
 		# caller must close via _on_settings_closed or direct reset.
 		return
-	var settings_scene: Node = load(SETTINGS_PATH).instantiate()
+	var settings_res: Resource = load(SETTINGS_PATH)
+	if settings_res == null:
+		push_warning("SceneManager.open_settings_overlay: load() returned null for " + SETTINGS_PATH)
+		_settings_layer.queue_free()
+		_settings_layer = null
+		_state = TransitionState.IDLE
+		return
+	var settings_scene: Node = (settings_res as PackedScene).instantiate()
 	_settings_layer.add_child(settings_scene)
 	if settings_scene.has_signal("close_requested"):
 		settings_scene.close_requested.connect(_on_settings_closed)

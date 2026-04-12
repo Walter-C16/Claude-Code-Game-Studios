@@ -249,19 +249,9 @@ func _load_data() -> void:
 	_load_config()
 
 func _load_items() -> void:
-	var file: FileAccess = FileAccess.open(_ITEMS_PATH, FileAccess.READ)
-	if file == null:
-		push_error("EquipmentSystem: failed to open '%s' — all equipment bonuses defaulting to 0" % _ITEMS_PATH)
+	var root: Dictionary = JsonLoader.load_dict(_ITEMS_PATH)
+	if root.is_empty():
 		return
-	var text: String = file.get_as_text()
-	file.close()
-
-	var parsed: Variant = JSON.parse_string(text)
-	if parsed == null or not parsed is Dictionary:
-		push_error("EquipmentSystem: failed to parse '%s' — all equipment bonuses defaulting to 0" % _ITEMS_PATH)
-		return
-
-	var root: Dictionary = parsed as Dictionary
 	var raw_items: Array = root.get("items", []) as Array
 	for raw: Variant in raw_items:
 		if not raw is Dictionary:
@@ -279,21 +269,11 @@ func _load_items() -> void:
 		_items[item_id] = item
 
 func _load_config() -> void:
-	var file: FileAccess = FileAccess.open(_CONFIG_PATH, FileAccess.READ)
-	if file == null:
-		push_warning("EquipmentSystem: failed to open '%s' — using default config" % _CONFIG_PATH)
+	var parsed: Dictionary = JsonLoader.load_dict(_CONFIG_PATH)
+	if parsed.is_empty():
 		_config = _DEFAULT_CONFIG.duplicate()
 		return
-	var text: String = file.get_as_text()
-	file.close()
-
-	var parsed: Variant = JSON.parse_string(text)
-	if parsed == null or not parsed is Dictionary:
-		push_warning("EquipmentSystem: failed to parse '%s' — using default config" % _CONFIG_PATH)
-		_config = _DEFAULT_CONFIG.duplicate()
-		return
-
-	_config = parsed as Dictionary
+	_config = parsed
 
 # ── Private — Rarity Selection ────────────────────────────────────────────────
 

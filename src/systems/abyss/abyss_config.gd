@@ -50,23 +50,7 @@ func _load_config() -> void:
 	if _loaded:
 		return
 	_loaded = true
-
-	if not FileAccess.file_exists(_CONFIG_PATH):
-		push_error("AbyssConfig: config file not found at %s — using defaults" % _CONFIG_PATH)
-		return
-
-	var file: FileAccess = FileAccess.open(_CONFIG_PATH, FileAccess.READ)
-	if file == null:
-		push_error("AbyssConfig: failed to open %s — using defaults" % _CONFIG_PATH)
-		return
-
-	var text: String = file.get_as_text()
-	var parsed: Variant = JSON.parse_string(text)
-	if parsed == null or not (parsed is Dictionary):
-		push_error("AbyssConfig: malformed JSON in %s — using defaults" % _CONFIG_PATH)
-		return
-
-	_data = parsed as Dictionary
+	_data = JsonLoader.load_dict(_CONFIG_PATH)
 
 # ── Public API — Thresholds ───────────────────────────────────────────────────
 

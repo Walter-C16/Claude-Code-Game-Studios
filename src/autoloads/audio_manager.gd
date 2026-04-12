@@ -262,21 +262,7 @@ func _create_players() -> void:
 # ── Private — Manifest + Stream Loading ──────────────────────────────────────
 
 func _load_manifest() -> void:
-	if not FileAccess.file_exists(MANIFEST_PATH):
-		push_warning("[AudioManager] Manifest not found: %s" % MANIFEST_PATH)
-		return
-	var file: FileAccess = FileAccess.open(MANIFEST_PATH, FileAccess.READ)
-	if not file:
-		push_warning("[AudioManager] Could not open manifest: %s" % MANIFEST_PATH)
-		return
-	var json := JSON.new()
-	if json.parse(file.get_as_text()) != OK:
-		push_warning("[AudioManager] JSON parse error in manifest: %s" % json.get_error_message())
-		return
-	if json.data is not Dictionary:
-		push_warning("[AudioManager] Manifest root must be a Dictionary.")
-		return
-	_manifest = json.data as Dictionary
+	_manifest = JsonLoader.load_dict(MANIFEST_PATH)
 
 ## Loads an AudioStream resource from a res:// path.
 ## Returns null if the path is invalid or the resource cannot be loaded.

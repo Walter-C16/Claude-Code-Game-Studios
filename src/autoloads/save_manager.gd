@@ -40,8 +40,13 @@ func save_game() -> bool:
 		return false
 
 	var dir := DirAccess.open("user://")
-	if dir:
-		dir.rename(TEMP_PATH, SAVE_PATH)
+	if dir == null:
+		push_warning("SaveManager: cannot open user:// for rename — save NOT persisted")
+		return false
+	var rename_error: int = dir.rename(TEMP_PATH, SAVE_PATH)
+	if rename_error != OK:
+		push_warning("SaveManager: rename failed with error %d" % rename_error)
+		return false
 	return true
 
 ## Loads save file, migrates if needed, restores GameStore + SettingsStore.

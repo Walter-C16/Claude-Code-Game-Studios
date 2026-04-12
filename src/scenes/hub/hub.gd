@@ -33,6 +33,7 @@ func _ready() -> void:
 
 	AudioManager.play_bgm("res://assets/audio/bgm/camp.ogg")
 	GameStore.state_changed.connect(_on_state_changed)
+	tree_exiting.connect(_disconnect_autoload_signals)
 
 	# Entrance animation: stagger all direct children from their edges.
 	await get_tree().process_frame
@@ -233,6 +234,12 @@ func _show_welcome_popup() -> void:
 
 
 # ── Signal Callbacks ────────────────────────────────────────────────────────────
+
+## Disconnects persistent autoload signals on scene exit to avoid dangling callbacks.
+func _disconnect_autoload_signals() -> void:
+	if GameStore.state_changed.is_connected(_on_state_changed):
+		GameStore.state_changed.disconnect(_on_state_changed)
+
 
 func _on_state_changed(_key: String = "") -> void:
 	var new_gold: int = GameStore.get_gold()

@@ -197,27 +197,8 @@ static func _is_valid_companion(companion_id: String) -> bool:
 static func _ensure_data_loaded() -> void:
 	if _data_loaded:
 		return
-	var path: String = "res://assets/data/intimacy_scenes.json"
-	if not FileAccess.file_exists(path):
-		push_warning("[IntimacySystem] Data file not found: %s" % path)
-		_data_loaded = true
-		return
-	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if not file:
-		push_warning("[IntimacySystem] Could not open data file: %s" % path)
-		_data_loaded = true
-		return
-	var json := JSON.new()
-	if json.parse(file.get_as_text()) != OK:
-		push_warning("[IntimacySystem] JSON parse error in '%s': %s" % [path, json.get_error_message()])
-		_data_loaded = true
-		return
-	if json.data is not Dictionary:
-		push_warning("[IntimacySystem] Expected Dictionary at root of '%s'." % path)
-		_data_loaded = true
-		return
-	_scene_data = json.data as Dictionary
 	_data_loaded = true
+	_scene_data = JsonLoader.load_dict("res://assets/data/intimacy_scenes.json")
 
 ## Resets the static data cache. Used by tests to isolate state.
 static func _reset_cache() -> void:

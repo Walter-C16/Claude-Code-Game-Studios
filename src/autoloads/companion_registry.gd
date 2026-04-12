@@ -105,25 +105,4 @@ func get_element_for_suit(suit: String) -> String:
 ## Loads and parses companions.json from DATA_PATH.
 ## Returns the parsed profiles Dictionary, or {} on any load/parse failure.
 func _load_profiles() -> Dictionary:
-	if not FileAccess.file_exists(DATA_PATH):
-		push_error("CompanionRegistry: data file not found at %s" % DATA_PATH)
-		return {}
-
-	var file: FileAccess = FileAccess.open(DATA_PATH, FileAccess.READ)
-	if file == null:
-		push_error("CompanionRegistry: failed to open %s (error %d)" % [DATA_PATH, FileAccess.get_open_error()])
-		return {}
-
-	var raw_text: String = file.get_as_text()
-	file.close()
-
-	var parse_result: Variant = JSON.parse_string(raw_text)
-	if parse_result == null:
-		push_error("CompanionRegistry: failed to parse JSON at %s" % DATA_PATH)
-		return {}
-
-	if not parse_result is Dictionary:
-		push_error("CompanionRegistry: expected top-level Dictionary in %s" % DATA_PATH)
-		return {}
-
-	return parse_result
+	return JsonLoader.load_dict(DATA_PATH)

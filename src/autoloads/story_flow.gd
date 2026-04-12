@@ -63,30 +63,13 @@ func _ready() -> void:
 ## Logs a warning and sets a "to_be_continued" state on load failure.
 func load_chapter(chapter_id: String) -> void:
 	var path: String = CHAPTER_PATH_TEMPLATE % chapter_id
-	if not FileAccess.file_exists(path):
-		push_warning("[StoryFlow] Chapter file not found: %s" % path)
+	var parsed: Dictionary = JsonLoader.load_dict(path)
+	if parsed.is_empty():
 		_chapter = {"id": chapter_id, "nodes": [], "_state": "to_be_continued"}
 		_nodes = {}
 		return
 
-	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		push_warning("[StoryFlow] Failed to open chapter file: %s" % path)
-		_chapter = {"id": chapter_id, "nodes": [], "_state": "to_be_continued"}
-		_nodes = {}
-		return
-
-	var raw_text: String = file.get_as_text()
-	file.close()
-
-	var parsed: Variant = JSON.parse_string(raw_text)
-	if parsed == null or not parsed is Dictionary:
-		push_warning("[StoryFlow] Failed to parse chapter JSON: %s" % path)
-		_chapter = {"id": chapter_id, "nodes": [], "_state": "to_be_continued"}
-		_nodes = {}
-		return
-
-	_chapter = parsed as Dictionary
+	_chapter = parsed
 	_nodes = {}
 	var node_list: Array = _chapter.get("nodes", [])
 	for item: Variant in node_list:

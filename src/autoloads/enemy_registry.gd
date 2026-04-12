@@ -110,37 +110,9 @@ func get_enemy_name(id: String) -> String:
 ## On any load failure the registry remains empty and combat falls back to
 ## inline enemy_config from story nodes (per ADR-0016 risk mitigation).
 func _load_enemies() -> void:
-	if not FileAccess.file_exists(DATA_PATH):
-		push_error("EnemyRegistry: data file not found: %s" % DATA_PATH)
+	var root: Dictionary = JsonLoader.load_dict(DATA_PATH)
+	if root.is_empty():
 		return
-
-	var file: FileAccess = FileAccess.open(DATA_PATH, FileAccess.READ)
-	if not file:
-		push_error(
-			"EnemyRegistry: cannot open '%s' (error %d)" % [DATA_PATH, FileAccess.get_open_error()]
-		)
-		return
-
-	var json_string: String = file.get_as_text()
-	file.close()
-
-	var json: JSON = JSON.new()
-	var parse_error: int = json.parse(json_string)
-	if parse_error != OK:
-		push_error(
-			"EnemyRegistry: JSON parse error in '%s' at line %d: %s"
-			% [DATA_PATH, json.get_error_line(), json.get_error_message()]
-		)
-		return
-
-	if not json.data is Dictionary:
-		push_error(
-			"EnemyRegistry: expected root Dictionary in '%s', got %s"
-			% [DATA_PATH, type_string(typeof(json.data))]
-		)
-		return
-
-	var root: Dictionary = json.data
 
 	# Read configurable attack ratio from the config block.
 	if root.has("config") and root["config"] is Dictionary:

@@ -49,18 +49,7 @@ func _discover_chapters() -> void:
 
 ## Loads and parses a single chapter JSON file. Returns empty dict on failure.
 func _load_chapter_file(file_name: String) -> Dictionary:
-	var path: String = "res://assets/data/chapters/%s" % file_name
-	if not FileAccess.file_exists(path):
-		return {}
-	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		return {}
-	var json := JSON.new()
-	if json.parse(file.get_as_text()) != OK:
-		return {}
-	if json.data is Dictionary:
-		return json.data as Dictionary
-	return {}
+	return JsonLoader.load_dict("res://assets/data/chapters/%s" % file_name)
 
 
 # ── Level 1: Chapter List ──────────────────────────────────────────────────────

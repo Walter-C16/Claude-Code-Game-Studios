@@ -73,16 +73,7 @@ static func tag_signature_cards(
 static func _ensure_config() -> void:
 	if not _suits_config.is_empty():
 		return
-	var file: FileAccess = FileAccess.open(
-		"res://assets/data/hand_ranks.json", FileAccess.READ)
-	if file == null:
-		push_error("Deck: failed to open res://assets/data/hand_ranks.json")
+	var root: Dictionary = JsonLoader.load_dict("res://assets/data/hand_ranks.json")
+	if root.is_empty():
 		return
-	var json_text: String = file.get_as_text()
-	file.close()
-	var parsed: Variant = JSON.parse_string(json_text)
-	if parsed == null or not parsed is Dictionary:
-		push_error("Deck: failed to parse hand_ranks.json")
-		return
-	var root: Dictionary = parsed as Dictionary
 	_suits_config = root.get("suits", {}) as Dictionary

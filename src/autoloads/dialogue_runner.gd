@@ -1,7 +1,5 @@
 extends Node
 
-const _CompanionStateScript = preload("res://systems/companion_state.gd")
-
 ## DialogueRunner — Dialogue Script Engine (ADR-0008)
 ##
 ## Autoload #9. Loads JSON dialogue sequences from
@@ -399,7 +397,7 @@ func _check_conditions(conditions: Array) -> bool:
 			"romance_stage":
 				var companion_id: String = c.get("companion", "")
 				var min_stage: int = c.get("min", 0)
-				if _CompanionStateScript.get_romance_stage(companion_id) < min_stage:
+				if CompanionState.get_romance_stage(companion_id) < min_stage:
 					return false
 			"met":
 				var companion_id: String = c.get("companion", "")
@@ -446,7 +444,7 @@ func _check_gates(data: Dictionary) -> String:
 	if req_stage != null and req_stage is Dictionary:
 		var companion_id: String = (req_stage as Dictionary).get("companion", "")
 		var min_stage: int = (req_stage as Dictionary).get("min", 0)
-		if _CompanionStateScript.get_romance_stage(companion_id) < min_stage:
+		if CompanionState.get_romance_stage(companion_id) < min_stage:
 			return "requires_romance_stage"
 
 	# requires_flag: story flag must be set in GameStore.
@@ -477,21 +475,9 @@ func _reset_state() -> void:
 	_typewriter_complete = true
 
 func _load_json(path: String) -> Dictionary:
-	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if not file:
-		return {}
-	var json := JSON.new()
-	if json.parse(file.get_as_text()) != OK:
-		push_warning("[DialogueRunner] JSON parse error in '%s': %s" % [path, json.get_error_message()])
-		return {}
-	if json.data is not Dictionary:
-		return {}
-	return json.data as Dictionary
+	return JsonLoader.load_dict(path)
 
 func _load_config() -> void:
-	if not FileAccess.file_exists(CONFIG_PATH):
-		push_warning("[DialogueRunner] Config not found at '%s' — using defaults." % CONFIG_PATH)
-		return
-	var data: Dictionary = _load_json(CONFIG_PATH)
+	var data: Dictionary = JsonLoader.load_dict(CONFIG_PATH)
 	if data.has("cps"):
 		cps = float(data["cps"])

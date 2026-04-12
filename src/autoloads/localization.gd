@@ -120,38 +120,6 @@ func _interpolate(text: String, params: Dictionary) -> String:
 
 ## Loads and parses the JSON string table for locale_code.
 ## Returns the parsed Dictionary on success, or an empty Dictionary on any error.
-## All failures are reported via push_error() — never silently swallowed.
 func _load_table(locale_code: String) -> Dictionary:
 	var path: String = I18N_PATH + locale_code + ".json"
-
-	if not FileAccess.file_exists(path):
-		push_error("Localization: string table not found: " + path)
-		return {}
-
-	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if not file:
-		push_error(
-			"Localization: cannot open '%s' (error %d)" % [path, FileAccess.get_open_error()]
-		)
-		return {}
-
-	var json_string: String = file.get_as_text()
-	file.close()
-
-	var json: JSON = JSON.new()
-	var error: int = json.parse(json_string)
-	if error != OK:
-		push_error(
-			"Localization: JSON parse error in '%s' at line %d: %s"
-			% [path, json.get_error_line(), json.get_error_message()]
-		)
-		return {}
-
-	if not json.data is Dictionary:
-		push_error(
-			"Localization: expected root Dictionary in '%s', got %s"
-			% [path, type_string(typeof(json.data))]
-		)
-		return {}
-
-	return json.data
+	return JsonLoader.load_dict(path)

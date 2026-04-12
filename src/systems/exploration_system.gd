@@ -233,22 +233,10 @@ static func _ensure_mission_data() -> void:
 	if _data_loaded:
 		return
 
-	var file: FileAccess = FileAccess.open(DATA_PATH, FileAccess.READ)
-	if file == null:
-		push_error("ExplorationSystem: cannot open %s — mission data unavailable." % DATA_PATH)
+	var root: Dictionary = JsonLoader.load_dict(DATA_PATH)
+	if root.is_empty():
 		_data_loaded = true
 		return
-
-	var text: String = file.get_as_text()
-	file.close()
-
-	var parsed: Variant = JSON.parse_string(text)
-	if parsed == null or not parsed is Dictionary:
-		push_error("ExplorationSystem: failed to parse %s as JSON." % DATA_PATH)
-		_data_loaded = true
-		return
-
-	var root: Dictionary = parsed as Dictionary
 
 	var missions_array: Array = root.get("missions", []) as Array
 	for entry: Variant in missions_array:
@@ -266,24 +254,8 @@ static func _ensure_mission_data() -> void:
 static func _ensure_companion_data() -> void:
 	if _companions_loaded:
 		return
-
-	var file: FileAccess = FileAccess.open(COMPANIONS_PATH, FileAccess.READ)
-	if file == null:
-		push_error("ExplorationSystem: cannot open %s — companion stats unavailable." % COMPANIONS_PATH)
-		_companions_loaded = true
-		return
-
-	var text: String = file.get_as_text()
-	file.close()
-
-	var parsed: Variant = JSON.parse_string(text)
-	if parsed == null or not parsed is Dictionary:
-		push_error("ExplorationSystem: failed to parse %s as JSON." % COMPANIONS_PATH)
-		_companions_loaded = true
-		return
-
-	_companion_data = parsed as Dictionary
 	_companions_loaded = true
+	_companion_data = JsonLoader.load_dict(COMPANIONS_PATH)
 
 
 ## Resets the static data cache. Called by tests to allow re-injection.

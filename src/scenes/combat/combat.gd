@@ -391,31 +391,26 @@ func _on_victory_continue_pressed() -> void:
 ## Applies gold, xp, flags, and meet effects. Stacks on top of the base
 ## VICTORY_GOLD_REWARD / VICTORY_XP_REWARD already granted by the caller.
 func _apply_story_rewards(node_id: String) -> void:
-	var path: String = "res://assets/data/chapters/ch01.json"
-	if not FileAccess.file_exists(path):
+	var data: Dictionary = JsonLoader.load_dict("res://assets/data/chapters/ch01.json")
+	if data.is_empty():
 		return
-	var file = FileAccess.open(path, FileAccess.READ)
-	if not file:
-		return
-	var json = JSON.new()
-	if json.parse(file.get_as_text()) != OK:
-		return
-	var nodes: Array = json.data.get("nodes", [])
-	for node in nodes:
-		if node.get("id", "") == node_id:
-			var rewards: Dictionary = node.get("rewards", {})
+	var nodes: Array = data.get("nodes", [])
+	for node: Variant in nodes:
+		var nd: Dictionary = node as Dictionary
+		if nd.get("id", "") == node_id:
+			var rewards: Dictionary = nd.get("rewards", {})
 			var gold: int = int(rewards.get("gold", 0))
 			var xp: int = int(rewards.get("xp", 0))
 			if gold > 0:
 				GameStore.add_gold(gold)
 			if xp > 0:
 				GameStore.add_xp(xp)
-			for flag in rewards.get("flags", []):
+			for flag: Variant in rewards.get("flags", []):
 				GameStore.set_flag(str(flag))
-			# Meet effects
-			for fx in node.get("effects", []):
-				if fx.get("type", "") == "meet":
-					CompanionRegistry.meet_companion(fx.get("companion", ""))
+			for fx: Variant in nd.get("effects", []):
+				var fx_dict: Dictionary = fx as Dictionary
+				if fx_dict.get("type", "") == "meet":
+					CompanionRegistry.meet_companion(fx_dict.get("companion", "") as String)
 			break
 
 
@@ -427,7 +422,14 @@ func _on_defeat_retry_pressed() -> void:
 
 	_selected_indices.clear()
 
-	var captain_id: String = _combat_manager._captain_context.get("captain_id", "") as String
+	# Read the previous captain id from arrival context, not from the old
+	# CombatManager (which may have been freed or reinitialized).
+	var captain_id: String = ""
+	if _combat_manager != null:
+		var prev_ctx: Dictionary = _combat_manager._captain_context as Dictionary
+		captain_id = prev_ctx.get("captain_id", "") as String
+	if captain_id.is_empty():
+		captain_id = GameStore.get_last_captain_id()
 	var captain_ctx: Dictionary = _build_captain_context(captain_id)
 
 	_combat_manager = CombatManagerScript.new()
@@ -613,8 +615,8 @@ func _build_captain_context(captain_id: String) -> Dictionary:
 
 	return {
 		"captain_id":            captain_id,
-		"captain_chip_bonus":    floori(strength * 0.5),
-		"captain_mult_modifier": 1.0 + intel * 0.025,
+		"captain_chip_bonus":    floori(strength * DeckManager.CHIP_BONUS_MULTIPLIER),
+		"captain_mult_modifier": 1.0 + intel * DeckManager.MULT_BONUS_INCREMENT,
 		"social_buff_chips":     buff_chips,
 		"social_buff_mult":      buff_mult,
 		"romance_stages":        romance_stages,

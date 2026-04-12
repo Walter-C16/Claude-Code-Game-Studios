@@ -89,28 +89,10 @@ static func _ensure_loaded() -> void:
 		return
 	_data_loaded = true
 
-	if not FileAccess.file_exists(DATA_PATH):
-		push_warning("[Gallery] Data file not found: %s" % DATA_PATH)
+	var root: Dictionary = JsonLoader.load_dict(DATA_PATH)
+	if root.is_empty():
 		return
 
-	var file: FileAccess = FileAccess.open(DATA_PATH, FileAccess.READ)
-	if file == null:
-		push_warning("[Gallery] Could not open data file: %s" % DATA_PATH)
-		return
-
-	var json := JSON.new()
-	var err: Error = json.parse(file.get_as_text())
-	file.close()
-
-	if err != OK:
-		push_warning("[Gallery] JSON parse error in '%s': %s" % [DATA_PATH, json.get_error_message()])
-		return
-
-	if json.data is not Dictionary:
-		push_warning("[Gallery] Expected Dictionary at root of '%s'." % DATA_PATH)
-		return
-
-	var root: Dictionary = json.data as Dictionary
 	var raw_entries: Array = root.get("entries", []) as Array
 
 	for raw: Variant in raw_entries:

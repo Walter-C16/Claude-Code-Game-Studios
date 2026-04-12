@@ -85,33 +85,13 @@ static func _ensure_loaded() -> void:
 
 ## Parses the JSON data file and populates _items_cache.
 static func _load_items() -> void:
-	if not FileAccess.file_exists(DATA_PATH):
-		push_error("[GiftItems] Data file not found: %s" % DATA_PATH)
-		_load_failed = true
-		return
-
-	var file: FileAccess = FileAccess.open(DATA_PATH, FileAccess.READ)
-	if file == null:
-		push_error("[GiftItems] Failed to open: %s" % DATA_PATH)
-		_load_failed = true
-		return
-
-	var raw_text: String = file.get_as_text()
-	file.close()
-
-	var parsed: Variant = JSON.parse_string(raw_text)
-	if parsed == null:
-		push_error("[GiftItems] Failed to parse JSON: %s" % DATA_PATH)
-		_load_failed = true
-		return
-
-	if not parsed is Array:
-		push_error("[GiftItems] Expected top-level Array in %s" % DATA_PATH)
+	var items: Array = JsonLoader.load_array(DATA_PATH)
+	if items.is_empty():
 		_load_failed = true
 		return
 
 	_items_cache.clear()
-	for entry: Variant in parsed as Array:
+	for entry: Variant in items:
 		if entry is Dictionary:
 			_items_cache.append(entry as Dictionary)
 
