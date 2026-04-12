@@ -244,6 +244,10 @@ func _show_choices(choices: Array) -> void:
 		var btn := Button.new()
 		btn.text = choice.get("text", choice.get("text_key", ""))
 		btn.custom_minimum_size = Vector2(0, 44)
+		btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		# Wrap long choice text and allow the button to grow vertically.
+		btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		btn.clip_text = false
 		btn.modulate.a = 0.0  # start invisible; stagger_children will fade them in
 		btn.pressed.connect(_on_choice_selected.bind(i))
 		choices_container.add_child(btn)
