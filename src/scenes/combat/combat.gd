@@ -367,11 +367,14 @@ func _on_victory_continue_pressed() -> void:
 	# Check if this was a story combat — apply story node flags
 	var story_node: String = _enemy_config.get("story_node", "") as String
 	if story_node == "ch01_n00":
-		# Tutorial combat done — set flags and go to chapter map
+		# Tutorial combat done — set flag and play rescue cutscene
 		GameStore.set_flag("ch01_tutorial_done")
-		GameStore.set_met("artemis", true)
-		# After first combat, go to Hub (player unlocks chapter map)
-		SceneManager.change_scene(SceneManager.SceneId.HUB)
+		# After tutorial combat: pistol runs out, Artemis saves, player collapses
+		SceneManager.change_scene(
+			SceneManager.SceneId.DIALOGUE,
+			SceneManager.TransitionType.FADE,
+			{"chapter_id": "ch01", "sequence_id": "crash_rescue", "story_node": "ch01_crash"}
+		)
 	elif not story_node.is_empty():
 		# Story combat — apply rewards and return to chapter map
 		_apply_story_rewards(story_node)

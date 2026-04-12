@@ -1,0 +1,21 @@
+{
+  "prerequisites": [],
+  "nodes": {
+    "start": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_BLESSING_01"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "calm", "text_key": "CH01_BLESSING_02"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "calm", "text_key": "CH01_BLESSING_03"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "calm", "text_key": "CH01_BLESSING_04"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "surprised", "text_key": "CH01_BLESSING_05"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "warm", "text_key": "CH01_BLESSING_06"},
+        {"speaker": "priestess", "speaker_type": "npc", "mood": "warm", "text_key": "CH01_BLESSING_07"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_BLESSING_08_SHAKE"},
+        {"speaker": "narrator", "speaker_type": "narrator", "text_key": "CH01_BLESSING_09"},
+        {"speaker": "artemis", "speaker_type": "companion", "mood": "warm", "text_key": "CH01_BLESSING_10"}
+      ],
+      "choices": [],
+      "next": ""
+    }
+  }
+}

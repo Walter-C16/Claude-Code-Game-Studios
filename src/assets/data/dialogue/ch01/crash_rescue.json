@@ -1,0 +1,16 @@
+{
+  "prerequisites": [],
+  "nodes": {
+    "start": {
+      "lines": [
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "CRASH_RESCUE_01"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "CRASH_RESCUE_02_SHAKE"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "CRASH_RESCUE_03"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "CRASH_RESCUE_04"},
+        {"speaker": "narrator", "speaker_type": "narrator", "mood": "", "text_key": "CRASH_RESCUE_05_SHAKE"}
+      ],
+      "choices": [],
+      "next": ""
+    }
+  }
+}

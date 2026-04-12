@@ -112,9 +112,8 @@ func _on_choices_ready(choices: Array) -> void:
 ## StoryFlow is the orchestrator and handles its own sequencing via EventBus.
 ## This scene only acts when StoryFlow is NOT active (standalone/dev dialogue).
 func _on_dialogue_ended(_sequence_id: String) -> void:
-	# After prologue, go to tutorial combat
+	# After prologue, go to tutorial combat.
 	if _sequence_id == "prologue":
-		# Set the flag and go to first combat
 		GameStore.set_flag("prologue_done")
 		SceneManager.change_scene(
 			SceneManager.SceneId.COMBAT,
@@ -122,7 +121,13 @@ func _on_dialogue_ended(_sequence_id: String) -> void:
 			{"enemy_id": "forest_monster", "captain_id": "", "story_node": "ch01_n00"}
 		)
 		return
-	# For all other dialogues, go back to chapter map
+	# After crash rescue cutscene, go to Hub (simulating waking up in Artemis's house).
+	if _sequence_id == "crash_rescue":
+		GameStore.set_flag("ch01_crash_rescue_done")
+		GameStore.set_met("artemis", true)
+		SceneManager.change_scene(SceneManager.SceneId.HUB)
+		return
+	# For all other dialogues, go back to chapter map.
 	SceneManager.change_scene(SceneManager.SceneId.CHAPTER_MAP)
 
 
