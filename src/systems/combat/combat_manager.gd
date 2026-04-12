@@ -20,6 +20,13 @@ extends RefCounted
 ## See: docs/architecture/adr-0007-poker-combat.md
 ## Stories: STORY-COMBAT-008, STORY-COMBAT-009, STORY-COMBAT-010
 
+# ── Constants ─────────────────────────────────────────────────────────────────
+
+## Threshold for Artemis Slot 3 (Earth Memory) blessing — counts prior hands
+## that scored at or above this many chips. Mirrors the value in
+## assets/data/blessings.json for the "earth_memory" blessing.
+const _EARTH_MEMORY_THRESHOLD: int = 60
+
 # ── State Enum ────────────────────────────────────────────────────────────────
 
 enum State { SETUP, DRAW, SELECT, RESOLVE, DISCARD_DRAW, VICTORY, DEFEAT }
@@ -392,12 +399,12 @@ func _compute_blessings(played_cards: Array[Dictionary]) -> Dictionary:
 	const SUIT_NAMES: Array[String] = ["Hearts", "Diamonds", "Clubs", "Spades"]
 	var suit_counts: Dictionary = {}
 	for card: Dictionary in played_cards:
-		var suit_idx = card.get("suit", -1)
+		var suit_variant: Variant = card.get("suit", -1)
 		var suit_name: String = ""
-		if suit_idx is int and suit_idx >= 0 and suit_idx < 4:
-			suit_name = SUIT_NAMES[suit_idx]
-		elif suit_idx is String:
-			suit_name = suit_idx
+		if suit_variant is int and suit_variant >= 0 and suit_variant < 4:
+			suit_name = SUIT_NAMES[suit_variant]
+		elif suit_variant is String:
+			suit_name = suit_variant
 		if suit_name.is_empty():
 			continue
 		suit_counts[suit_name] = (suit_counts.get(suit_name, 0) as int) + 1
@@ -406,12 +413,13 @@ func _compute_blessings(played_cards: Array[Dictionary]) -> Dictionary:
 	var raw_hand_chips: int = hand_eval.get("base_chips", 0) as int
 
 	# Build hands_scoring_above for Artemis Slot 3 (Earth Memory).
-	# Counts how many prior hands scored >= 60 chips (threshold is from the blessing).
+	# Counts how many prior hands scored >= EARTH_MEMORY_THRESHOLD chips.
+	# The threshold mirrors the value in blessings.json for Artemis slot 3;
+	# if you change that, update _EARTH_MEMORY_THRESHOLD too.
 	var hands_scoring_above: Dictionary = {}
 	for prior_chips: int in _hands_chips_history:
-		for threshold: int in [60]:  # thresholds used by Earth Memory
-			if prior_chips >= threshold:
-				hands_scoring_above[threshold] = (hands_scoring_above.get(threshold, 0) as int) + 1
+		if prior_chips >= _EARTH_MEMORY_THRESHOLD:
+			hands_scoring_above[_EARTH_MEMORY_THRESHOLD] = (hands_scoring_above.get(_EARTH_MEMORY_THRESHOLD, 0) as int) + 1
 
 	# Determine if captain's signature card is among played cards.
 	# Signature card is identified by card_value (from companions.json).

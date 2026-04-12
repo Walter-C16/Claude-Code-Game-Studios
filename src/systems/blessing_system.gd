@@ -286,8 +286,6 @@ static func _ensure_data() -> void:
 static func _compare_slots(a: Dictionary, b: Dictionary) -> bool:
 	return (a.get("slot", 0) as int) < (b.get("slot", 0) as int)
 
-	_cache_loaded = true
-
 
 ## Returns the blessing dict for a specific slot number, or empty dict if not found.
 static func _find_slot(blessings: Array, slot_num: int) -> Dictionary:

@@ -10,11 +10,14 @@ extends RefCounted
 ##
 ## All methods are static — no instantiation needed.
 ##
-## Usage:
-##   var data: Dictionary = JsonLoader.load_dict("res://assets/data/foo.json")
-##   if data.is_empty():
-##       return  # error already pushed
-##   var items: Array = data.get("items", [])
+## ── Layer Classification ──
+## JsonLoader is a FOUNDATION-level stateless utility (like Godot's JSON
+## or FileAccess). It has no mutable state, no dependencies on other
+## project modules, and is safe for any layer to call — including
+## autoloads. It lives in src/systems/ for file organization only;
+## the classification follows ADR-0006's "stateless utility classes are
+## foundation-level regardless of directory" rule (see also: CompanionState,
+## Fx, UIConstants).
 
 # ── Public API ─────────────────────────────────────────────────────────────────
 

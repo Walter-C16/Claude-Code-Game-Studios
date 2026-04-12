@@ -25,12 +25,13 @@ static func _ensure_loaded() -> void:
 static func get_all() -> Array:
 	_ensure_loaded()
 	var result: Array = []
-	for def in _definitions:
-		var unlocked: bool = check_achievement(def.get("id", ""))
+	for def: Variant in _definitions:
+		var def_dict: Dictionary = def as Dictionary
+		var unlocked: bool = check_achievement(def_dict.get("id", ""))
 		result.append({
-			"id": def.get("id", ""),
-			"title_key": def.get("title_key", ""),
-			"description_key": def.get("description_key", ""),
+			"id": def_dict.get("id", ""),
+			"title_key": def_dict.get("title_key", ""),
+			"description_key": def_dict.get("description_key", ""),
 			"unlocked": unlocked,
 		})
 	return result
