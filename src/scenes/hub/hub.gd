@@ -38,9 +38,8 @@ func _ready() -> void:
 	await get_tree().process_frame
 	_animate_entrance()
 
-	# During early game, only Story is enabled until ch01_tutorial_done.
-	if not GameStore.has_flag("ch01_exposition_done"):
-		_lock_tabs_for_tutorial()
+	# Progressive tab unlock based on story progress.
+	_apply_progressive_unlock()
 
 	# Show welcome popup on first Hub visit (after prologue + tutorial combat).
 	if GameStore.has_flag("prologue_done") and not GameStore.has_flag("hub_welcomed"):
@@ -96,38 +95,55 @@ func _animate_entrance() -> void:
 	_start_name_shimmer()
 
 
-# ── Tutorial Lock ──────────────────────────────────────────────────────────────
+# ── Progressive Tab Unlock ─────────────────────────────────────────────────────
 
-## Disables all Hub tab buttons except STORY during the first-time tutorial.
-func _lock_tabs_for_tutorial() -> void:
+## Unlocks hub tabs progressively based on story flags.
+## Tier 0 (start): Only STORY + SETTINGS
+## Tier 1 (met artemis): + CAMP, DECK
+## Tier 2 (exposition done): + ARENA
+## Tier 3 (chapter 1 complete): + EXPLORE, EQUIP, ABYSS
+func _apply_progressive_unlock() -> void:
+	var has_met: bool = GameStore.has_flag("ch01_met_artemis")
+	var has_expo: bool = GameStore.has_flag("ch01_exposition_done")
+	var has_ch1: bool = GameStore.has_flag("ch01_complete")
+
+	# Map button names to their unlock tier.
+	var unlock_map: Dictionary = {
+		"StoryBtn": 0,
+		"SettingsBtn": 0,
+		"CampBtn": 1,
+		"DeckBtn": 1,
+		"ArenaBtn": 2,
+		"ExploreBtn": 3,
+		"AbyssBtn": 3,
+		"EquipBtn": 3,
+	}
+
+	# Current player tier.
+	var tier: int = 0
+	if has_ch1:
+		tier = 3
+	elif has_expo:
+		tier = 2
+	elif has_met:
+		tier = 1
+
 	var bottom_tabs: Node = get_node_or_null("BottomTabs")
 	var more_tabs: Node = get_node_or_null("MoreTabs")
-	if bottom_tabs != null:
-		for child: Node in bottom_tabs.get_children():
-			if child is Button and child.name != "StoryBtn":
-				(child as Button).disabled = true
-				(child as Button).modulate.a = 0.35
-	if more_tabs != null:
-		for child: Node in more_tabs.get_children():
-			if child is Button:
-				(child as Button).disabled = true
-				(child as Button).modulate.a = 0.35
 
-
-## Re-enables all Hub tab buttons after the tutorial welcome is dismissed.
-func _unlock_tabs() -> void:
-	var bottom_tabs: Node = get_node_or_null("BottomTabs")
-	var more_tabs: Node = get_node_or_null("MoreTabs")
-	if bottom_tabs != null:
-		for child: Node in bottom_tabs.get_children():
+	for tab_parent: Node in [bottom_tabs, more_tabs]:
+		if tab_parent == null:
+			continue
+		for child: Node in tab_parent.get_children():
 			if child is Button:
-				(child as Button).disabled = false
-				(child as Button).modulate.a = 1.0
-	if more_tabs != null:
-		for child: Node in more_tabs.get_children():
-			if child is Button:
-				(child as Button).disabled = false
-				(child as Button).modulate.a = 1.0
+				var btn: Button = child as Button
+				var required: int = unlock_map.get(btn.name, 99)
+				if tier >= required:
+					btn.disabled = false
+					btn.modulate.a = 1.0
+				else:
+					btn.disabled = true
+					btn.modulate.a = 0.35
 
 
 # ── Welcome Popup ──────────────────────────────────────────────────────────────
