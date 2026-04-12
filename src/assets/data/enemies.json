@@ -17,9 +17,9 @@
     {
       "id": "mountain_beast",
       "name_key": "ENEMY_MOUNTAIN_BEAST",
-      "hp": 80,
-      "score_threshold": 50,
-      "element": null,
+      "hp": 90,
+      "score_threshold": 65,
+      "element": "Earth",
       "type": "Normal",
       "chapter": "chapter_1",
       "context": "Act 1 encounter",
@@ -39,8 +39,8 @@
     {
       "id": "gaia_spirit",
       "name_key": "ENEMY_GAIA_SPIRIT",
-      "hp": 250,
-      "score_threshold": 130,
+      "hp": 280,
+      "score_threshold": 160,
       "element": "Earth",
       "type": "Boss",
       "chapter": "chapter_1",

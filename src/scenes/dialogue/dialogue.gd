@@ -40,6 +40,9 @@ var _chars_per_second: float = 40.0
 ## Speaker from the previous line — used to detect speaker changes.
 var _last_speaker: String = ""
 
+## Story node id this dialogue was launched for — used to apply rewards on end.
+var _story_node: String = ""
+
 # ── Built-in Virtual Methods ───────────────────────────────────────────────────
 
 func _ready() -> void:
@@ -60,6 +63,7 @@ func _ready() -> void:
 	var ctx: Dictionary = SceneManager.get_arrival_context()
 	var chapter_id: String = ctx.get("chapter_id", "")
 	var sequence_id: String = ctx.get("sequence_id", "")
+	_story_node = ctx.get("story_node", "") as String
 	if not chapter_id.is_empty() and not sequence_id.is_empty():
 		DialogueRunner.start_dialogue(chapter_id, sequence_id)
 
@@ -112,6 +116,10 @@ func _on_choices_ready(choices: Array) -> void:
 ## StoryFlow is the orchestrator and handles its own sequencing via EventBus.
 ## This scene only acts when StoryFlow is NOT active (standalone/dev dialogue).
 func _on_dialogue_ended(_sequence_id: String) -> void:
+	# Apply any story node rewards (gold, xp, flags) before navigating.
+	if not _story_node.is_empty():
+		_apply_story_rewards(_story_node)
+
 	# After prologue, go to tutorial combat.
 	if _sequence_id == "prologue":
 		GameStore.set_flag("prologue_done")
@@ -129,6 +137,37 @@ func _on_dialogue_ended(_sequence_id: String) -> void:
 		return
 	# For all other dialogues, go back to chapter map.
 	SceneManager.change_scene(SceneManager.SceneId.CHAPTER_MAP)
+
+
+## Looks up and applies rewards (gold, xp, flags, meet effects) from ch01.json.
+func _apply_story_rewards(node_id: String) -> void:
+	var path: String = "res://assets/data/chapters/ch01.json"
+	if not FileAccess.file_exists(path):
+		return
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return
+	var json: JSON = JSON.new()
+	if json.parse(file.get_as_text()) != OK:
+		return
+	var nodes: Array = json.data.get("nodes", [])
+	for node: Variant in nodes:
+		var nd: Dictionary = node as Dictionary
+		if nd.get("id", "") == node_id:
+			var rewards: Dictionary = nd.get("rewards", {})
+			var gold: int = int(rewards.get("gold", 0))
+			var xp: int = int(rewards.get("xp", 0))
+			if gold > 0:
+				GameStore.add_gold(gold)
+			if xp > 0:
+				GameStore.add_xp(xp)
+			for flag: Variant in rewards.get("flags", []):
+				GameStore.set_flag(str(flag))
+			for fx: Variant in nd.get("effects", []):
+				var fx_dict: Dictionary = fx as Dictionary
+				if fx_dict.get("type", "") == "meet":
+					CompanionRegistry.meet_companion(fx_dict.get("companion", "") as String)
+			break
 
 
 ## Called when the visual typewriter animation signals completion from the runner.

@@ -238,7 +238,10 @@ func _tween_hp_bar(target_value: float) -> void:
 ## Updates the enemy name label from the arrival config.
 func _update_enemy_display() -> void:
 	var name_key: String = _enemy_config.get("name_key", "") as String
-	enemy_name_label.text = name_key if name_key.is_empty() else name_key
+	if name_key.is_empty():
+		enemy_name_label.text = "Enemy"
+	else:
+		enemy_name_label.text = Localization.get_text(name_key)
 
 
 ## Enables/disables PLAY and DISCARD buttons based on current selection and state.
@@ -385,6 +388,8 @@ func _on_victory_continue_pressed() -> void:
 
 
 ## Look up story node rewards from ch01.json and apply them.
+## Applies gold, xp, flags, and meet effects. Stacks on top of the base
+## VICTORY_GOLD_REWARD / VICTORY_XP_REWARD already granted by the caller.
 func _apply_story_rewards(node_id: String) -> void:
 	var path: String = "res://assets/data/chapters/ch01.json"
 	if not FileAccess.file_exists(path):
@@ -399,6 +404,12 @@ func _apply_story_rewards(node_id: String) -> void:
 	for node in nodes:
 		if node.get("id", "") == node_id:
 			var rewards: Dictionary = node.get("rewards", {})
+			var gold: int = int(rewards.get("gold", 0))
+			var xp: int = int(rewards.get("xp", 0))
+			if gold > 0:
+				GameStore.add_gold(gold)
+			if xp > 0:
+				GameStore.add_xp(xp)
 			for flag in rewards.get("flags", []):
 				GameStore.set_flag(str(flag))
 			# Meet effects
