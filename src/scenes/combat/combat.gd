@@ -379,9 +379,16 @@ func _on_victory_continue_pressed() -> void:
 			{"chapter_id": "ch01", "sequence_id": "crash_rescue", "story_node": "ch01_crash"}
 		)
 	elif not story_node.is_empty():
-		# Story combat — apply rewards and return to chapter map
+		# Story combat — apply rewards and return to the chapter detail view.
+		# Derive chapter_id from the story_node prefix (e.g. "ch01_n05" → "ch01").
 		_apply_story_rewards(story_node)
-		SceneManager.change_scene(SceneManager.SceneId.CHAPTER_MAP)
+		var parts: PackedStringArray = story_node.split("_")
+		var chapter_id: String = parts[0] if parts.size() > 0 else ""
+		SceneManager.change_scene(
+			SceneManager.SceneId.CHAPTER_MAP,
+			SceneManager.TransitionType.FADE,
+			{"chapter_id": chapter_id} if not chapter_id.is_empty() else {}
+		)
 	else:
 		# Arena/free combat — go to Hub
 		SceneManager.change_scene(SceneManager.SceneId.HUB)

@@ -22,6 +22,20 @@ var _glow_tweens: Array[Tween] = []
 
 func _ready() -> void:
 	_discover_chapters()
+
+	# If returning from a dialogue/combat inside a chapter, jump straight
+	# back to that chapter's detail view instead of the top-level list.
+	var ctx: Dictionary = SceneManager.get_arrival_context()
+	var target_chapter: String = ctx.get("chapter_id", "") as String
+	if not target_chapter.is_empty():
+		var file_name: String = "%s.json" % target_chapter
+		if _chapter_files.has(file_name):
+			var data: Dictionary = _load_chapter_file(file_name)
+			if not data.is_empty():
+				_active_chapter = data
+				_show_chapter_detail(data)
+				return
+
 	_show_chapter_list()
 	await get_tree().process_frame
 	_animate_entrance()

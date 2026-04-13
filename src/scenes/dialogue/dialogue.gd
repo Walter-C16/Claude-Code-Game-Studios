@@ -43,6 +43,10 @@ var _last_speaker: String = ""
 ## Story node id this dialogue was launched for — used to apply rewards on end.
 var _story_node: String = ""
 
+## Chapter id this dialogue belongs to — used to return to the correct chapter
+## detail view on end instead of the top-level chapter list.
+var _chapter_id: String = ""
+
 # ── Built-in Virtual Methods ───────────────────────────────────────────────────
 
 func _ready() -> void:
@@ -62,11 +66,11 @@ func _ready() -> void:
 
 	# Read arrival context to start the correct dialogue sequence.
 	var ctx: Dictionary = SceneManager.get_arrival_context()
-	var chapter_id: String = ctx.get("chapter_id", "")
+	_chapter_id = ctx.get("chapter_id", "") as String
 	var sequence_id: String = ctx.get("sequence_id", "")
 	_story_node = ctx.get("story_node", "") as String
-	if not chapter_id.is_empty() and not sequence_id.is_empty():
-		DialogueRunner.start_dialogue(chapter_id, sequence_id)
+	if not _chapter_id.is_empty() and not sequence_id.is_empty():
+		DialogueRunner.start_dialogue(_chapter_id, sequence_id)
 
 
 ## Drives the visual typewriter animation each frame.
@@ -136,8 +140,15 @@ func _on_dialogue_ended(_sequence_id: String) -> void:
 		CompanionRegistry.meet_companion("artemis")
 		SceneManager.change_scene(SceneManager.SceneId.HUB)
 		return
-	# For all other dialogues, go back to chapter map.
-	SceneManager.change_scene(SceneManager.SceneId.CHAPTER_MAP)
+	# For all other dialogues, go back to the chapter detail view.
+	var return_ctx: Dictionary = {}
+	if not _chapter_id.is_empty():
+		return_ctx["chapter_id"] = _chapter_id
+	SceneManager.change_scene(
+		SceneManager.SceneId.CHAPTER_MAP,
+		SceneManager.TransitionType.FADE,
+		return_ctx
+	)
 
 
 ## Looks up and applies rewards (gold, xp, flags, meet effects) from ch01.json.
