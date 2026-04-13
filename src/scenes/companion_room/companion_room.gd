@@ -61,6 +61,10 @@ func _ready() -> void:
 	tree_exiting.connect(_disconnect_autoload_signals)
 	await get_tree().process_frame
 	Fx.stagger_children(_companion_grid, 0.06, 24.0)
+	TutorialOverlay.show_once(self,
+		"tutorial_camp_shown",
+		"TUTORIAL_CAMP_TITLE",
+		"TUTORIAL_CAMP_BODY")
 
 
 # ── UI Construction ────────────────────────────────────────────────────────────

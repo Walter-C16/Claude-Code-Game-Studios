@@ -50,6 +50,17 @@ func _ready() -> void:
 	# wakes up in her house (ch01_exposition_done) and returns to the Hub.
 	elif GameStore.has_flag("ch01_exposition_done") and not GameStore.has_flag("artemis_join_shown"):
 		call_deferred("_show_companion_join_splash", "artemis")
+	# Otherwise show the Hub tutorial once (after the welcome flow has run).
+	elif GameStore.has_flag("hub_welcomed"):
+		call_deferred("_show_hub_tutorial")
+
+
+## Shows the Hub tutorial overlay once.
+func _show_hub_tutorial() -> void:
+	TutorialOverlay.show_once(self,
+		"tutorial_hub_shown",
+		"TUTORIAL_HUB_TITLE",
+		"TUTORIAL_HUB_BODY")
 
 
 # ── Display ────────────────────────────────────────────────────────────────────

@@ -1251,6 +1251,28 @@
   "ARTEMIS_JOINS_SUBTITLE": "Artemis joins your party!",
   "ARTEMIS_JOINS_DESCRIPTION": "Goddess of the Hunt · Earth Element\nAGI 20 · STR 17 · INT 13\n\nAssign her in the Deck screen to unlock her signature card.",
   "ARTEMIS_JOINS_OK": "Welcome her",
+
+  "TUTORIAL_BADGE": "TUTORIAL",
+  "TUTORIAL_OK": "Got it",
+
+  "TUTORIAL_COMBAT_TITLE": "Card Combat",
+  "TUTORIAL_COMBAT_BODY": "• Tap up to 5 cards to build a hand.\n• Press PLAY to score them — pairs, flushes and straights score higher.\n• DISCARD swaps unwanted cards (limited per battle).\n• Reach the score threshold before you run out of hands to win.\n• Suits are tied to elements: Hearts/Fire, Diamonds/Water, Clubs/Earth, Spades/Lightning.",
+
+  "TUTORIAL_HUB_TITLE": "Your Base",
+  "TUTORIAL_HUB_BODY": "This is your base camp. As you progress the story, more tabs unlock:\n\n• Story — continue the chapter\n• Camp — talk to companions\n• Deck — equip companion signature cards\n• Tavern — daily card tournaments\n\nThe tab marked in gold is what you should tap next.",
+
+  "TUTORIAL_CAMP_TITLE": "Spend Time Together",
+  "TUTORIAL_CAMP_BODY": "• You have 3 daily tokens — they reset every day.\n• TALK costs 1 token and earns relationship XP.\n• GIFT costs 1 token plus gold; the right gift gives a bigger bonus.\n• Build a streak — interactions in a row multiply your gains.\n• Romance stages unlock new dialogue, blessings and intimate scenes.",
+
+  "TUTORIAL_DECK_TITLE": "Build Your Deck",
+  "TUTORIAL_DECK_BODY": "• Tap a companion to see their stats and divine blessings.\n• USE IN DECK lets you pick which card their signature replaces (any 2–A in their element suit).\n• ASSIGN CAPTAIN gives you their stat bonuses in combat — STR adds chips, INT boosts mult.\n• Only one captain at a time. Replace freely.",
+
+  "TUTORIAL_CHAPTER_MAP_TITLE": "Story Map",
+  "TUTORIAL_CHAPTER_MAP_BODY": "• Each chapter is a sequence of locations.\n• Tap a chapter to see who you can talk to at each place.\n• The GOLD scene is your next story step.\n• Side activities (like tournaments) sit in the same list.\n• Tap the back arrow to return to the chapter list.",
+
+  "TUTORIAL_TAVERN_TITLE": "Tavern Tournaments",
+  "TUTORIAL_TAVERN_BODY": "• Each tavern hosts a card tournament you can enter once per day.\n• Win and you earn extra gold to spend on gifts and equipment.\n• Different taverns have different difficulties and strong elements.\n• New taverns unlock as the story takes you to new lands.",
+
   "HUB_WELCOME_TITLE": "Welcome",
   "HUB_WELCOME_TEXT": "You made it. This is your base.\n\nMore will unlock as you progress.",
   "HUB_WELCOME_OK": "Continue",

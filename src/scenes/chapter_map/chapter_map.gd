@@ -34,11 +34,21 @@ func _ready() -> void:
 			if not data.is_empty():
 				_active_chapter = data
 				_show_chapter_detail(data)
+				_maybe_show_tutorial()
 				return
 
 	_show_chapter_list()
 	await get_tree().process_frame
 	_animate_entrance()
+	_maybe_show_tutorial()
+
+
+## Shows the chapter map tutorial overlay once.
+func _maybe_show_tutorial() -> void:
+	TutorialOverlay.show_once(self,
+		"tutorial_chapter_map_shown",
+		"TUTORIAL_CHAPTER_MAP_TITLE",
+		"TUTORIAL_CHAPTER_MAP_BODY")
 
 
 # ── Chapter Discovery ──────────────────────────────────────────────────────────

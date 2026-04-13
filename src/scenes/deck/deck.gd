@@ -47,6 +47,10 @@ func _ready() -> void:
 	_build_detail_view()
 	_build_bottom_action_bar()
 	_show_grid_view()
+	TutorialOverlay.show_once(self,
+		"tutorial_deck_shown",
+		"TUTORIAL_DECK_TITLE",
+		"TUTORIAL_DECK_BODY")
 
 
 func _on_back_pressed() -> void:

@@ -104,6 +104,10 @@ func _ready() -> void:
 	defeat_overlay.visible = false
 	_build_blessing_strip()
 
+	# First-combat tutorial — fires after the scene is ready so the popup
+	# overlays the combat HUD properly.
+	call_deferred("_maybe_show_tutorial")
+
 	retreat_confirm.visible = false
 
 	# Read arrival context (consumed once — SceneManager clears it after this call)
@@ -357,6 +361,14 @@ func _on_sort_pressed() -> void:
 
 
 ## Show retreat confirmation popup.
+## Shows the first-combat tutorial overlay once.
+func _maybe_show_tutorial() -> void:
+	TutorialOverlay.show_once(self,
+		"tutorial_combat_shown",
+		"TUTORIAL_COMBAT_TITLE",
+		"TUTORIAL_COMBAT_BODY")
+
+
 func _on_back_pressed() -> void:
 	retreat_confirm.visible = true
 

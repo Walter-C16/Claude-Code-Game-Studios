@@ -21,6 +21,10 @@ func _ready() -> void:
 	_populate()
 	await get_tree().process_frame
 	Fx.stagger_children(tavern_list, 0.05, 24.0)
+	TutorialOverlay.show_once(self,
+		"tutorial_tavern_shown",
+		"TUTORIAL_TAVERN_TITLE",
+		"TUTORIAL_TAVERN_BODY")
 
 
 func _on_back_pressed() -> void:
