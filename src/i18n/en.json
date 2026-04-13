@@ -1261,12 +1261,13 @@
 
   "HAND_PREVIEW_LABEL": "Best hand: %s",
   "HAND_PREVIEW_NONE": "Pick cards to see your best hand",
+  "HAND_PREVIEW_TUTORIAL_EMPTY": "Tap any card below to start — you can't lose here.",
 
   "TUTORIAL_BADGE": "TUTORIAL",
   "TUTORIAL_OK": "Got it",
 
   "TUTORIAL_COMBAT_TITLE": "Card Combat",
-  "TUTORIAL_COMBAT_BODY": "Pick cards and play them to score. Beat the threshold before your hands run out.",
+  "TUTORIAL_COMBAT_BODY": "Tap cards to pick them, then press PLAY to score. Reach the score on the right to win.\n\nThis first fight is a safe practice — you can't lose.",
 
   "TUTORIAL_HUB_TITLE": "Your Base",
   "TUTORIAL_HUB_BODY": "New paths open as the story unfolds. The gold tab is where to go next.",

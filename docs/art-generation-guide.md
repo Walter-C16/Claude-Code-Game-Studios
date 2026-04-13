@@ -379,6 +379,99 @@ Suggested approach: Generate one template per suit, then use img2img or inpainti
 
 ---
 
+## Character Consistency (Face, Body, Clothes)
+
+The game needs each companion to look identical across 6 moods, 3 CG scenes, and potentially multiple poses/angles. Naive prompting alone will not give you that. Here are the techniques that actually work in ComfyUI, ranked by reliability.
+
+### Technique 1 — Character Sheet + IPAdapter FaceID (recommended first pass)
+
+**What**: Generate one reference image that locks in the character's face, body, and outfit. Then use IPAdapter FaceID to transfer that identity into every subsequent generation.
+
+**Steps:**
+1. **Generate the character sheet.** Full-body shot, neutral pose, plain background, detailed prompt covering face + hair + eyes + outfit + body type. Pick the best out of ~20 generations. Save the seed.
+2. **Install ComfyUI custom nodes**: `ComfyUI-IPAdapter-plus`, `ComfyUI-ReActor` (face swap), `ComfyUI_InstantID` (optional).
+3. **Load IPAdapter FaceID Plus v2** (`ip-adapter-faceid-plusv2_sdxl.bin` for SDXL checkpoints).
+4. **Build a workflow**: `Checkpoint → CLIPTextEncode → IPAdapter FaceID (with reference image) → KSampler → VAEDecode`. Weight around 0.7-0.9 for strong identity lock.
+5. **For each new pose/mood**: keep the same reference image fed into IPAdapter, vary only the prompt (expression, pose, background). Face stays consistent.
+
+**Why it works**: IPAdapter FaceID extracts an embedding from the reference face and injects it into every generation step. Clothes and body drift slightly but face is locked hard.
+
+### Technique 2 — Character LoRA (gold standard if you can train)
+
+**What**: Train a small LoRA on 10-20 reference images of the character. Works for SD 1.5, SDXL, Flux.
+
+**Steps:**
+1. Generate (or collect) 10-20 varied shots of the character: different angles, lighting, expressions. Keep face + clothes consistent across them.
+2. Caption each with a consistent trigger word (e.g. `darkolympus_artemis, silver hair, green hunting chiton, bronze circlet`).
+3. Train with **Kohya_ss** or **ComfyUI LoRA Trainer**. For SDXL, 2000-4000 steps at learning rate 1e-4 is usually enough. RunPod or a local 24GB GPU.
+4. Use the LoRA at weight 0.8-1.0 in every prompt: `<lora:darkolympus_artemis:0.9>`.
+5. The LoRA captures face **and** outfit, so body/clothes stay consistent across moods and CGs.
+
+**When to use**: If IPAdapter alone isn't giving you outfit consistency, or if you need the character in dozens of scenes. Worth the 1-2 hour setup investment per main companion.
+
+### Technique 3 — PuLID (fast, no training)
+
+**What**: PuLID (2024) is a lightweight face-ID preservation node that's faster than IPAdapter and often better at blending the reference face into new poses.
+
+**Steps:**
+1. Install `ComfyUI_PuLID_Flux_ll` (for Flux) or `ComfyUI_PuLID` (for SDXL).
+2. Load one or more reference face shots.
+3. Chain: `Checkpoint → PuLID Apply → KSampler`.
+4. PuLID blends face identity without freezing pose or clothes — good for mood variants on a fixed body.
+
+**When to use**: Quick iteration. Not as strong for outfit consistency as a LoRA, but much faster setup.
+
+### Technique 4 — Reference-Only ControlNet + OpenPose
+
+**What**: For pose-specific shots (CGs, intimate scenes, action poses) combine:
+- **Reference-Only ControlNet** — copies style/look from a reference image without training
+- **OpenPose ControlNet** — locks the body pose from a pose-reference image
+
+**Steps:**
+1. Generate pose skeletons with OpenPose Editor (or extract from a stock photo).
+2. Use your character sheet as the reference-only input.
+3. ControlNet weight 0.7 for both, so the KSampler can still follow the prompt for facial expression.
+
+**When to use**: CG scenes where you need the character in a specific pose (sitting by a fire, reaching out, etc.). Combines well with IPAdapter FaceID for maximum consistency.
+
+### Technique 5 — Regional Prompting (for multi-character scenes)
+
+**What**: Use `ComfyUI Impact Pack` or `Regional Prompter` to prompt different regions of the image independently. Lets you put Artemis on the left with her outfit and Hippolyta on the right with hers, without prompt bleed.
+
+**When to use**: CG scenes with 2+ companions (e.g. final Ch1 threesome, tavern scene).
+
+---
+
+### Recommended Workflow per Asset
+
+| Asset type | Technique | Notes |
+|---|---|---|
+| Character sheet (1 per companion) | Manual curation | Pick best of 20 at base resolution |
+| Mood portraits (6 per companion) | IPAdapter FaceID + img2img on sheet | Weight 0.8, denoise 0.4-0.55 |
+| Intimate CGs (3 per companion) | LoRA + OpenPose ControlNet | Best consistency for poses |
+| Action/combat stills | IPAdapter FaceID + Reference-Only ControlNet | Face locked, pose free |
+| Multi-character scenes | LoRA per character + Regional Prompter | One region per character |
+
+### Checkpoint Recommendations (2025)
+
+- **Flux.1 dev** — Best general coherence, great prompt following, but slower (~30s per image on 24GB)
+- **Pony Diffusion XL** — Strong for characters but has an anime lean; good base for fantasy with proper negatives
+- **Juggernaut XL v9** — Photorealistic fantasy, excellent for the dark mythology aesthetic
+- **RealVisXL v4** — Alternative to Juggernaut, slightly softer
+
+For Dark Olympus's painterly look, I'd start with **Juggernaut XL v9** + a painterly LoRA (search CivitAI for "oil painting SDXL") + IPAdapter FaceID.
+
+### Minimum Viable Pipeline (if you only set up one thing)
+
+1. Install ComfyUI + ComfyUI-IPAdapter-plus
+2. Generate Artemis character sheet (best of 20 at 1024x1536)
+3. Use that sheet as IPAdapter FaceID reference for all her mood portraits
+4. Repeat for each companion
+
+That alone gives you usable consistent portraits. The LoRA/ControlNet techniques add quality but aren't required.
+
+---
+
 ## Priority Order for Generation
 
 If time is limited, generate in this order:

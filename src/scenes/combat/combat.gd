@@ -138,6 +138,15 @@ func _ready() -> void:
 	if ctx.has("story_node"):
 		_enemy_config["story_node"] = ctx.get("story_node", "")
 
+	# Tutorial combat safety net — the first fight can't be lost. Override
+	# the enemy config to a forgiving threshold and unlimited hands so new
+	# players learn the mechanics without frustration.
+	if _enemy_config.get("story_node", "") == "ch01_n00":
+		_enemy_config["score_threshold"] = 20
+		_enemy_config["hands_allowed"] = 99
+		_enemy_config["discards_allowed"] = 10
+		_enemy_config["hp"] = 20
+
 	# Build captain scoring context from CompanionRegistry + GameStore
 	var captain_ctx: Dictionary = _build_captain_context(captain_id)
 
@@ -300,13 +309,20 @@ func _update_action_buttons() -> void:
 
 ## Runs HandEvaluator on the current selection and updates the preview label.
 ## Empty selection shows a prompt; any non-empty selection shows the best rank.
+## Tutorial combat gets softer, more guiding text.
 func _update_hand_preview() -> void:
 	if _hand_preview_label == null:
 		return
+	var is_tutorial: bool = _enemy_config.get("story_node", "") == "ch01_n00"
+
 	if _selected_indices.is_empty() or _combat_manager == null:
-		_hand_preview_label.text = Localization.get_text("HAND_PREVIEW_NONE")
+		if is_tutorial:
+			_hand_preview_label.text = Localization.get_text("HAND_PREVIEW_TUTORIAL_EMPTY")
+		else:
+			_hand_preview_label.text = Localization.get_text("HAND_PREVIEW_NONE")
 		_hand_preview_label.add_theme_color_override("font_color", UIConstants.TEXT_DISABLED)
 		return
+
 	var selected_cards: Array[Dictionary] = []
 	for idx: int in _selected_indices:
 		if idx >= 0 and idx < _combat_manager.hand.size():
