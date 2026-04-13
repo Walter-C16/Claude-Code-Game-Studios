@@ -72,6 +72,12 @@ var _active_combat_buff: Dictionary = {}
 ## Companion ID of the last-selected captain. Empty = none selected.
 var _last_captain_id: String = ""
 
+## Companion IDs currently assigned to the combat deck — their signature
+## cards replace the vanilla cards at the matching (element, card_value)
+## slot. One companion per unique (element, card_value). Separate from
+## the captain slot.
+var _deck_companions: Array[String] = []
+
 # ---------------------------------------------------------------------------
 # Private State — Equipment (STORY-EQUIP-002, STORY-EQUIP-003)
 # ---------------------------------------------------------------------------
@@ -152,6 +158,7 @@ func _initialize_defaults() -> void:
 	_last_interaction_date = ""
 	_active_combat_buff = {}
 	_last_captain_id = ""
+	_deck_companions = []
 	_equipped_weapon = ""
 	_equipped_amulet = ""
 	_pending_equipment = []
@@ -392,6 +399,35 @@ func set_last_captain_id(id: String) -> void:
 	_mark_dirty()
 	state_changed.emit("captain")
 
+
+## Returns a copy of the deck companion id list.
+func get_deck_companions() -> Array[String]:
+	return _deck_companions.duplicate()
+
+
+## Returns true if [param id] is currently assigned to the deck.
+func has_deck_companion(id: String) -> bool:
+	return _deck_companions.has(id)
+
+
+## Adds [param id] to the deck companion list (idempotent).
+func add_deck_companion(id: String) -> void:
+	if _deck_companions.has(id):
+		return
+	_deck_companions.append(id)
+	_mark_dirty()
+	state_changed.emit("deck")
+
+
+## Removes [param id] from the deck companion list (no-op if absent).
+func remove_deck_companion(id: String) -> void:
+	var idx: int = _deck_companions.find(id)
+	if idx < 0:
+		return
+	_deck_companions.remove_at(idx)
+	_mark_dirty()
+	state_changed.emit("deck")
+
 # ---------------------------------------------------------------------------
 # Public Getters — Equipment (STORY-EQUIP-002, STORY-EQUIP-003)
 # ---------------------------------------------------------------------------
@@ -532,6 +568,7 @@ func to_dict() -> Dictionary:
 		"last_interaction_date": _last_interaction_date,
 		"active_combat_buff": _active_combat_buff.duplicate(),
 		"last_captain_id": _last_captain_id,
+		"deck_companions": _deck_companions.duplicate(),
 		"equipped_weapon": _equipped_weapon,
 		"equipped_amulet": _equipped_amulet,
 		"pending_equipment": _pending_equipment.duplicate(),
@@ -579,6 +616,9 @@ func from_dict(data: Dictionary) -> void:
 	_last_interaction_date = data.get("last_interaction_date", "")
 	_active_combat_buff = data.get("active_combat_buff", {}).duplicate()
 	_last_captain_id = data.get("last_captain_id", "")
+	_deck_companions.clear()
+	for entry: Variant in (data.get("deck_companions", []) as Array):
+		_deck_companions.append(str(entry))
 	_equipped_weapon = data.get("equipped_weapon", "")
 	_equipped_amulet = data.get("equipped_amulet", "")
 	var raw_pending: Array = data.get("pending_equipment", []) as Array
