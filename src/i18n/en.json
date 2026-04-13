@@ -1283,9 +1283,9 @@
   "TUTORIAL_TAVERN_TITLE": "Taverns",
   "TUTORIAL_TAVERN_BODY": "Play a tournament once a day per tavern. Win for gold to spend where you will.",
 
-  "HUB_WELCOME_TITLE": "Welcome",
-  "HUB_WELCOME_TEXT": "You made it. This is your base.\n\nMore will unlock as you progress.",
-  "HUB_WELCOME_OK": "Continue",
+  "HUB_WELCOME_TITLE": "Your Journey Begins",
+  "HUB_WELCOME_TEXT": "This is your base camp between battles.\n\nTap the glowing STORY tab below to begin Chapter 1 — The Fallen Forest.",
+  "HUB_WELCOME_OK": "Begin",
   "CHAPTER_1_TITLE": "Chapter 1 — The Fallen Forest",
   "CHAPTER_1_SUBTITLE": "Sardis, Lydia",
   "CHAPTER_1_LOCATION": "The ancient kingdom of Sardis lies at the edge of the mortal world. Once a seat of kings, now a refuge for scattered gods.",

@@ -18,6 +18,11 @@ extends Control
 var _breathe_tween: Tween
 var _name_shimmer_tween: Tween
 
+## Looping pulse on the Story button, shown after the welcome popup so the
+## player knows exactly which tab to tap first. Killed on scene exit or when
+## the player taps Story.
+var _story_highlight_tween: Tween
+
 ## Last known gold value — used to drive the count-up animation.
 var _displayed_gold: int = 0
 
@@ -376,12 +381,37 @@ func _show_welcome_popup() -> void:
 		GameStore.set_flag("hub_welcomed")
 		backdrop.queue_free()
 		_welcome_popup.queue_free()
+		_start_story_highlight()
 	)
 	vbox.add_child(ok_btn)
 
 	# Slide-in animation.
 	Fx.slide_in(_welcome_popup, Vector2(0.0, 40.0), 0.35)
 	Fx.gold_shimmer(title_lbl, 2.5)
+
+
+## Starts a looping attention-grab on the Story button so first-time players
+## know exactly where to go. Pulses the button scale + flashes the border
+## color between gold-dark and gold-bright. Killed on scene exit or story tap.
+func _start_story_highlight() -> void:
+	var story_btn: Node = get_node_or_null("BottomTabs/StoryBtn")
+	if story_btn == null or not story_btn is Button:
+		return
+	var btn: Button = story_btn as Button
+	btn.pivot_offset = btn.size * 0.5
+
+	# Kill any prior highlight (defensive — shouldn't happen).
+	if _story_highlight_tween != null and _story_highlight_tween.is_valid():
+		_story_highlight_tween.kill()
+
+	_story_highlight_tween = btn.create_tween().set_loops()
+	_story_highlight_tween.tween_property(btn, "scale", Vector2(1.08, 1.08), 0.55) \
+		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+	_story_highlight_tween.tween_property(btn, "scale", Vector2.ONE, 0.55) \
+		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SINE)
+
+	# Gold glow on the button text as a second attention cue.
+	Fx.gold_shimmer(btn, 1.4)
 
 
 # ── Signal Callbacks ────────────────────────────────────────────────────────────
@@ -397,6 +427,8 @@ func _disconnect_autoload_signals() -> void:
 		_breathe_tween.kill()
 	if _name_shimmer_tween != null and _name_shimmer_tween.is_valid():
 		_name_shimmer_tween.kill()
+	if _story_highlight_tween != null and _story_highlight_tween.is_valid():
+		_story_highlight_tween.kill()
 
 
 func _on_state_changed(_key: String = "") -> void:
@@ -410,6 +442,10 @@ func _on_state_changed(_key: String = "") -> void:
 # ── Tab Buttons ────────────────────────────────────────────────────────────────
 
 func _on_story_pressed() -> void:
+	# Stop the welcome-flow highlight immediately so the button settles
+	# before the scene transition fades out.
+	if _story_highlight_tween != null and _story_highlight_tween.is_valid():
+		_story_highlight_tween.kill()
 	SceneManager.change_scene(SceneManager.SceneId.CHAPTER_MAP)
 
 
