@@ -21,11 +21,19 @@ func _ready() -> void:
 	continue_btn.modulate.a = 0.0
 	version_label.modulate.a = 0.0
 
+	# Kill the looping shimmer tween on exit so it doesn't animate a freed label.
+	tree_exiting.connect(_kill_shimmer)
+
 	# Title slides down from above with a spring overshoot.
 	# await one frame so layout positions are committed before we read them.
 	AudioManager.play_bgm("res://assets/audio/bgm/main_menu.ogg")
 	await get_tree().process_frame
 	_animate_entrance()
+
+
+func _kill_shimmer() -> void:
+	if _shimmer_tween != null and _shimmer_tween.is_valid():
+		_shimmer_tween.kill()
 
 
 ## Returns true when a playable save file exists.

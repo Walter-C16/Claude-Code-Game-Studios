@@ -387,9 +387,16 @@ func _show_welcome_popup() -> void:
 # ── Signal Callbacks ────────────────────────────────────────────────────────────
 
 ## Disconnects persistent autoload signals on scene exit to avoid dangling callbacks.
+## Disconnects persistent autoload signals and kills looping tweens on scene
+## exit. Looping tweens (breathe + name shimmer) keep running against a freed
+## portrait/label if not explicitly killed — this is the cleanup hook.
 func _disconnect_autoload_signals() -> void:
 	if GameStore.state_changed.is_connected(_on_state_changed):
 		GameStore.state_changed.disconnect(_on_state_changed)
+	if _breathe_tween != null and _breathe_tween.is_valid():
+		_breathe_tween.kill()
+	if _name_shimmer_tween != null and _name_shimmer_tween.is_valid():
+		_name_shimmer_tween.kill()
 
 
 func _on_state_changed(_key: String = "") -> void:

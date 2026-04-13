@@ -22,6 +22,7 @@ var _glow_tweens: Array[Tween] = []
 
 func _ready() -> void:
 	_discover_chapters()
+	tree_exiting.connect(_kill_tweens)
 
 	# If returning from a dialogue/combat inside a chapter, jump straight
 	# back to that chapter's detail view instead of the top-level list.
