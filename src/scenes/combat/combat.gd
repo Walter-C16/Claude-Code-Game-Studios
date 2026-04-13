@@ -170,9 +170,11 @@ func _refresh_hand() -> void:
 
 ## Creates a single card button for the given card dictionary and hand index.
 ## Minimum touch target: 64x90px (AC2, COMBAT-011).
+## Signature cards (is_signature + companion_id) display the companion's
+## display name below the element icon.
 func _create_card_button(card: Dictionary, index: int) -> Button:
 	var btn := Button.new()
-	btn.custom_minimum_size = Vector2(64, 90)
+	btn.custom_minimum_size = Vector2(64, 100)
 	btn.toggle_mode = true
 	btn.button_pressed = index in _selected_indices
 
@@ -183,10 +185,25 @@ func _create_card_button(card: Dictionary, index: int) -> Button:
 	var element: String = card.get("element", "") as String
 	var icon_text: String = _element_icon(element)
 
-	btn.text = "%s\n%s" % [val_str, icon_text]
+	# Signature line: companion name shown under the element icon when this
+	# card was replaced by a companion via the deck screen.
+	var signature_line: String = ""
+	var is_signature: bool = card.get("is_signature", false)
+	var card_companion_id: String = card.get("companion_id", "") as String
+	if is_signature and not card_companion_id.is_empty():
+		var profile: Dictionary = CompanionRegistry.get_profile(card_companion_id)
+		var display_name: String = profile.get("display_name", card_companion_id.capitalize()) as String
+		signature_line = "\n" + display_name
 
-	# Color tint by element (never sole differentiator — icon carries shape too)
-	btn.modulate = _element_color(element).lerp(Color.WHITE, 0.5)
+	btn.text = "%s\n%s%s" % [val_str, icon_text, signature_line]
+	btn.add_theme_font_size_override("font_size", 12)
+
+	# Color tint by element (never sole differentiator — icon carries shape too).
+	# Signature cards get a brighter tint to stand out in the hand.
+	if is_signature:
+		btn.modulate = _element_color(element).lerp(Color.WHITE, 0.3)
+	else:
+		btn.modulate = _element_color(element).lerp(Color.WHITE, 0.5)
 
 	# Store real index as metadata so card-rise animation can find this button.
 	btn.set_meta("card_index", index)

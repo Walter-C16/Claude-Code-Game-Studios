@@ -72,11 +72,12 @@ var _active_combat_buff: Dictionary = {}
 ## Companion ID of the last-selected captain. Empty = none selected.
 var _last_captain_id: String = ""
 
-## Companion IDs currently assigned to the combat deck — their signature
-## cards replace the vanilla cards at the matching (element, card_value)
-## slot. One companion per unique (element, card_value). Separate from
-## the captain slot.
-var _deck_companions: Array[String] = []
+## Companions currently assigned to the combat deck, keyed by companion id.
+## Value is the card_value (2–14) the player chose for that companion's
+## signature slot. The (element, card_value) combination must be unique —
+## adding a companion into an occupied slot requires replacement.
+## Separate from the captain slot.
+var _deck_companions: Dictionary = {}
 
 # ---------------------------------------------------------------------------
 # Private State — Equipment (STORY-EQUIP-002, STORY-EQUIP-003)
@@ -158,7 +159,7 @@ func _initialize_defaults() -> void:
 	_last_interaction_date = ""
 	_active_combat_buff = {}
 	_last_captain_id = ""
-	_deck_companions = []
+	_deck_companions = {}
 	_equipped_weapon = ""
 	_equipped_amulet = ""
 	_pending_equipment = []
@@ -400,9 +401,12 @@ func set_last_captain_id(id: String) -> void:
 	state_changed.emit("captain")
 
 
-## Returns a copy of the deck companion id list.
+## Returns a list of companion ids currently assigned to the deck.
 func get_deck_companions() -> Array[String]:
-	return _deck_companions.duplicate()
+	var ids: Array[String] = []
+	for key: Variant in _deck_companions.keys():
+		ids.append(str(key))
+	return ids
 
 
 ## Returns true if [param id] is currently assigned to the deck.
@@ -410,21 +414,24 @@ func has_deck_companion(id: String) -> bool:
 	return _deck_companions.has(id)
 
 
-## Adds [param id] to the deck companion list (idempotent).
-func add_deck_companion(id: String) -> void:
-	if _deck_companions.has(id):
-		return
-	_deck_companions.append(id)
+## Returns the chosen card value (2–14) for [param id], or 0 if not assigned.
+func get_deck_companion_value(id: String) -> int:
+	return int(_deck_companions.get(id, 0))
+
+
+## Assigns [param id] to the deck at the given [param card_value] slot.
+## Overwrites any prior assignment for this companion.
+func add_deck_companion(id: String, card_value: int) -> void:
+	_deck_companions[id] = card_value
 	_mark_dirty()
 	state_changed.emit("deck")
 
 
 ## Removes [param id] from the deck companion list (no-op if absent).
 func remove_deck_companion(id: String) -> void:
-	var idx: int = _deck_companions.find(id)
-	if idx < 0:
+	if not _deck_companions.has(id):
 		return
-	_deck_companions.remove_at(idx)
+	_deck_companions.erase(id)
 	_mark_dirty()
 	state_changed.emit("deck")
 
@@ -616,9 +623,18 @@ func from_dict(data: Dictionary) -> void:
 	_last_interaction_date = data.get("last_interaction_date", "")
 	_active_combat_buff = data.get("active_combat_buff", {}).duplicate()
 	_last_captain_id = data.get("last_captain_id", "")
-	_deck_companions.clear()
-	for entry: Variant in (data.get("deck_companions", []) as Array):
-		_deck_companions.append(str(entry))
+	_deck_companions = {}
+	var saved_deck: Variant = data.get("deck_companions", {})
+	if saved_deck is Dictionary:
+		for key: Variant in (saved_deck as Dictionary).keys():
+			_deck_companions[str(key)] = int((saved_deck as Dictionary)[key])
+	elif saved_deck is Array:
+		# Legacy saves stored an Array[String] with no card_value;
+		# fall back to each companion's default card_value from CompanionRegistry.
+		for entry: Variant in saved_deck as Array:
+			var cid: String = str(entry)
+			var profile: Dictionary = CompanionRegistry.get_profile(cid)
+			_deck_companions[cid] = int(profile.get("card_value", 0))
 	_equipped_weapon = data.get("equipped_weapon", "")
 	_equipped_amulet = data.get("equipped_amulet", "")
 	var raw_pending: Array = data.get("pending_equipment", []) as Array

@@ -217,10 +217,26 @@ func _show_chapter_detail(data: Dictionary) -> void:
 
 		Fx.gold_shimmer(loc_lbl, 3.0)
 
-	# Group nodes by area.
+	# Filter nodes — only "currently present" ones (available + uncompleted).
+	# Completed nodes are hidden (the person has moved on), locked ones are
+	# hidden too (not yet at this place in the story).
+	var available_nodes: Array = []
+	var next_story_id: String = ""
+	for node_data: Variant in nodes:
+		var nd: Dictionary = node_data as Dictionary
+		if _is_node_completed(nd):
+			continue
+		if not _are_prereqs_met(nd):
+			continue
+		available_nodes.append(nd)
+		# First available-uncompleted node (in JSON order) is the story progression.
+		if next_story_id.is_empty():
+			next_story_id = nd.get("id", "") as String
+
+	# Group available nodes by area.
 	var areas: Array[String] = []
 	var area_nodes: Dictionary = {}
-	for node_data: Variant in nodes:
+	for node_data: Variant in available_nodes:
 		var nd: Dictionary = node_data as Dictionary
 		var area: String = nd.get("area", "unknown")
 		if not area_nodes.has(area):
@@ -228,16 +244,46 @@ func _show_chapter_detail(data: Dictionary) -> void:
 			areas.append(area)
 		area_nodes[area].append(nd)
 
-	# Build area sections.
+	# Build area sections — skip empty areas.
 	for area: String in areas:
-		_build_area_section(area, area_nodes[area])
+		_build_area_section(area, area_nodes[area], next_story_id)
+
+	# Show "chapter complete" if nothing is available.
+	if available_nodes.is_empty():
+		var done_label: Label = Label.new()
+		done_label.text = "All paths in this chapter are complete."
+		done_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		done_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		done_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
+		done_label.add_theme_font_size_override("font_size", 14)
+		done_label.custom_minimum_size = Vector2(0.0, 48.0)
+		chapter_list.add_child(done_label)
 
 	await get_tree().process_frame
 	_animate_entrance()
 
 
+## Returns true if any reward flag from this node is already set.
+func _is_node_completed(nd: Dictionary) -> bool:
+	var reward_flags: Array = nd.get("rewards", {}).get("flags", [])
+	for flag: Variant in reward_flags:
+		if GameStore.has_flag(str(flag)):
+			return true
+	return false
+
+
+## Returns true if every prereq flag for this node is set in GameStore.
+func _are_prereqs_met(nd: Dictionary) -> bool:
+	for prereq: Variant in nd.get("prereqs", []):
+		if not GameStore.has_flag(str(prereq)):
+			return false
+	return true
+
+
 ## Builds a section header + node buttons for a single area.
-func _build_area_section(area: String, nodes: Array) -> void:
+## Only available-uncompleted nodes reach this point; the one whose id matches
+## [param next_story_id] is drawn in gold font to mark the story's next beat.
+func _build_area_section(area: String, nodes: Array, next_story_id: String) -> void:
 	# Area header.
 	var area_key: String = "AREA_%s" % area.to_upper()
 	var area_name: String = Localization.get_text(area_key)
@@ -252,43 +298,25 @@ func _build_area_section(area: String, nodes: Array) -> void:
 	area_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	chapter_list.add_child(area_label)
 
-	# Node buttons.
+	# Node buttons — all entries here are available and uncompleted.
 	for node_data: Variant in nodes:
 		var nd: Dictionary = node_data as Dictionary
 		var node_id: String = nd.get("id", "")
 		var node_type: String = nd.get("type", "dialogue")
-		var prereqs: Array = nd.get("prereqs", [])
+		var is_next_story: bool = node_id == next_story_id
 
-		# Check prerequisites.
-		var available: bool = true
-		for prereq: Variant in prereqs:
-			if not GameStore.has_flag(str(prereq)):
-				available = false
-				break
-
-		# Check completion.
-		var completed: bool = false
-		var reward_flags: Array = nd.get("rewards", {}).get("flags", [])
-		for flag: Variant in reward_flags:
-			if GameStore.has_flag(str(flag)):
-				completed = true
-				break
-
-		# Build button.
 		var btn: Button = Button.new()
 		var icon: String = "⚔" if node_type == "combat" else "💬"
-		var status: String = " ✓" if completed else ""
 
 		var name_key: String = "CHAPTER_NODE_%s" % node_id.to_upper()
 		var display_name: String = Localization.get_text(name_key)
 		if display_name == name_key:
 			display_name = node_id.replace("ch01_", "").replace("_", " ").capitalize()
 
-		btn.text = "%s  %s%s" % [icon, display_name, status]
+		btn.text = "%s  %s" % [icon, display_name]
 		btn.custom_minimum_size = Vector2(0.0, 52.0)
-		btn.disabled = not available or completed
 
-		# Styling per state.
+		# Styling — the next-story node stands out in gold.
 		var style: StyleBoxFlat = StyleBoxFlat.new()
 		style.corner_radius_top_left = 8
 		style.corner_radius_top_right = 8
@@ -297,31 +325,28 @@ func _build_area_section(area: String, nodes: Array) -> void:
 		style.content_margin_left = 12.0
 		style.content_margin_right = 12.0
 
-		if completed:
-			btn.modulate = Color(UIConstants.ACCENT_GOLD_DARK, 0.85)
+		if is_next_story:
+			# The story progression node — full gold highlight, pulse + shimmer.
+			style.bg_color = UIConstants.BG_SECONDARY
+			style.border_color = UIConstants.ACCENT_GOLD_BRIGHT
+			btn.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+			btn.add_theme_font_size_override("font_size", 16)
+			_start_breathing_pulse(btn)
+		else:
+			# Side content — normal readable styling, no pulse.
 			style.bg_color = UIConstants.BG_TERTIARY
 			style.border_color = UIConstants.ACCENT_GOLD_DARK
-			_start_gold_glow(btn)
-		elif not available:
-			btn.modulate = Color(UIConstants.TEXT_DISABLED, 0.5)
-			style.bg_color = UIConstants.BG_PRIMARY
-			style.border_color = UIConstants.TEXT_DISABLED
-		else:
-			style.bg_color = UIConstants.BG_SECONDARY
-			style.border_color = UIConstants.ACCENT_GOLD
 			btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
-			_start_breathing_pulse(btn)
+			btn.add_theme_font_size_override("font_size", 14)
 
 		style.border_width_left = 1
 		style.border_width_right = 1
 		style.border_width_top = 1
 		style.border_width_bottom = 1
 		btn.add_theme_stylebox_override("normal", style)
-		btn.add_theme_font_size_override("font_size", 14)
 
-		if available and not completed:
-			var captured_data: Dictionary = nd
-			btn.pressed.connect(func() -> void: _on_node_pressed(captured_data))
+		var captured_data: Dictionary = nd
+		btn.pressed.connect(func() -> void: _on_node_pressed(captured_data))
 
 		chapter_list.add_child(btn)
 

@@ -82,27 +82,25 @@ func _ready() -> void:
 ## Call handoff() to shuffle and emit the signal — do NOT shuffle here.
 func build_deck() -> Array[Dictionary]:
 	var deck: Array[Dictionary] = []
-	var captain_profile: Dictionary = {}
-	if not _selected_captain_id.is_empty():
-		captain_profile = CompanionRegistry.get_profile(_selected_captain_id)
+
+	# Build a (suit, value) → companion_id lookup from the player's deck assignments.
+	# Each deck companion has chosen a card_value; their element maps to a suit.
+	var signature_lookup: Dictionary = {}
+	for cid: String in GameStore.get_deck_companions():
+		var profile: Dictionary = CompanionRegistry.get_profile(cid)
+		var element: String = profile.get("element", "") as String
+		var suit: String = _suit_for_element(element)
+		var value: int = GameStore.get_deck_companion_value(cid)
+		if suit.is_empty() or value <= 0:
+			continue
+		signature_lookup[_slot_key(suit, value)] = cid
 
 	for suit: String in SUITS:
 		var element: String = CompanionRegistry.get_element_for_suit(suit)
-		# Determine which companion (if any) has this suit as their signature.
-		var suit_companion_id: String = _get_companion_for_suit(suit)
-
 		for value: int in VALUES:
-			var is_signature: bool = false
-			var companion_id: String = ""
-
-			# Signature card: captain's suit + value 14 (Ace).
-			if not _selected_captain_id.is_empty():
-				var captain_suit: String = captain_profile.get("suit", "")
-				if captain_suit == suit and value == 14:
-					is_signature = true
-					companion_id = _selected_captain_id
-			elif suit_companion_id != "":
-				companion_id = suit_companion_id
+			var key: String = _slot_key(suit, value)
+			var companion_id: String = signature_lookup.get(key, "") as String
+			var is_signature: bool = not companion_id.is_empty()
 
 			deck.append({
 				"suit": suit,
@@ -115,6 +113,21 @@ func build_deck() -> Array[Dictionary]:
 
 	_deck = deck
 	return deck
+
+
+## Returns the canonical suit for a given element (inverse of get_element_for_suit).
+func _suit_for_element(element: String) -> String:
+	match element:
+		"Fire": return "Hearts"
+		"Water": return "Diamonds"
+		"Earth": return "Clubs"
+		"Lightning": return "Spades"
+		_: return ""
+
+
+## Builds a unique key for the (suit, value) slot lookup dictionary.
+func _slot_key(suit: String, value: int) -> String:
+	return "%s:%d" % [suit, value]
 
 ## Returns the chip (flat) bonus for a given STR stat value.
 ## Formula: floor(STR * CHIP_BONUS_MULTIPLIER). Sourced from Poker Combat GDD.
