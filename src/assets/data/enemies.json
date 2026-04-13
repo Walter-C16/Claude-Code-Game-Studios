@@ -46,6 +46,17 @@
       "chapter": "chapter_1",
       "context": "Chapter 1 boss",
       "portrait_key": "gaia_spirit"
+    },
+    {
+      "id": "sardis_card_master",
+      "name_key": "ENEMY_SARDIS_CARD_MASTER",
+      "hp": 100,
+      "score_threshold": 70,
+      "element": "Fire",
+      "type": "Tournament",
+      "chapter": "chapter_1",
+      "context": "Sardis tavern tournament opponent",
+      "portrait_key": "sardis_card_master"
     }
   ]
 }

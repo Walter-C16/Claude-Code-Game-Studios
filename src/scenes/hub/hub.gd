@@ -46,6 +46,11 @@ func _ready() -> void:
 	if GameStore.has_flag("prologue_done") and not GameStore.has_flag("hub_welcomed"):
 		_show_welcome_popup()
 
+	# Show "Artemis joins your party" gacha splash once — after the player
+	# wakes up in her house (ch01_exposition_done) and returns to the Hub.
+	elif GameStore.has_flag("ch01_exposition_done") and not GameStore.has_flag("artemis_join_shown"):
+		call_deferred("_show_companion_join_splash", "artemis")
+
 
 # ── Display ────────────────────────────────────────────────────────────────────
 
@@ -99,13 +104,15 @@ func _animate_entrance() -> void:
 # ── Progressive Tab Unlock ─────────────────────────────────────────────────────
 
 ## Unlocks hub tabs progressively based on story flags.
-## Tier 0 (start): Only STORY + SETTINGS
-## Tier 1 (met artemis): + CAMP, DECK
-## Tier 2 (exposition done): + ARENA
-## Tier 3 (chapter 1 complete): + EXPLORE, EQUIP, ABYSS
+## Tier 0 (start, pre-Artemis-house): Only STORY + SETTINGS
+## Tier 1 (ch01_exposition_done — woke up in Artemis's house):
+##          + CAMP, DECK (gacha splash triggers this tier)
+## Tier 2 (ch01_tavern_done — after the first tavern scene):
+##          + ARENA button (rebranded to TAVERN for the tournament map)
+## Tier 3 (ch01_complete): + EXPLORE, EQUIP, ABYSS
 func _apply_progressive_unlock() -> void:
-	var has_met: bool = GameStore.has_flag("ch01_met_artemis")
 	var has_expo: bool = GameStore.has_flag("ch01_exposition_done")
+	var has_tavern: bool = GameStore.has_flag("ch01_tavern_done")
 	var has_ch1: bool = GameStore.has_flag("ch01_complete")
 
 	# Map button names to their unlock tier.
@@ -124,10 +131,15 @@ func _apply_progressive_unlock() -> void:
 	var tier: int = 0
 	if has_ch1:
 		tier = 3
-	elif has_expo:
+	elif has_tavern:
 		tier = 2
-	elif has_met:
+	elif has_expo:
 		tier = 1
+
+	# Rename Arena → Tavern once tier 2 is reached.
+	var arena_btn: Node = get_node_or_null("BottomTabs/ArenaBtn")
+	if arena_btn is Button:
+		(arena_btn as Button).text = "TAVERN" if tier >= 2 else "ARENA"
 
 	var bottom_tabs: Node = get_node_or_null("BottomTabs")
 	var more_tabs: Node = get_node_or_null("MoreTabs")
@@ -145,6 +157,134 @@ func _apply_progressive_unlock() -> void:
 				else:
 					btn.disabled = true
 					btn.modulate.a = 0.35
+
+
+# ── Companion Join Splash (Gacha-style) ───────────────────────────────────────
+
+## Shows a one-time fullscreen reveal when a major companion joins the party.
+## Sets a {id}_join_shown flag so it never replays. Animates the portrait
+## with a gold flash and a spring scale.
+func _show_companion_join_splash(companion_id: String) -> void:
+	var profile: Dictionary = CompanionRegistry.get_profile(companion_id)
+	if profile.is_empty():
+		return
+
+	# Black backdrop with gold-rim spotlight.
+	var backdrop: ColorRect = ColorRect.new()
+	backdrop.name = "GachaBackdrop"
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop.color = Color(0.0, 0.0, 0.0, 0.0)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(backdrop)
+	var fade_in: Tween = create_tween()
+	fade_in.tween_property(backdrop, "color:a", 0.85, 0.4)
+
+	# Centered panel.
+	var panel: PanelContainer = PanelContainer.new()
+	panel.name = "GachaPanel"
+	panel.anchor_left = 0.5
+	panel.anchor_right = 0.5
+	panel.anchor_top = 0.5
+	panel.anchor_bottom = 0.5
+	panel.offset_left = -180.0
+	panel.offset_right = 180.0
+	panel.offset_top = -260.0
+	panel.offset_bottom = 260.0
+	var style: StyleBoxFlat = StyleBoxFlat.new()
+	style.bg_color = UIConstants.BG_SECONDARY
+	style.corner_radius_top_left = 16
+	style.corner_radius_top_right = 16
+	style.corner_radius_bottom_left = 16
+	style.corner_radius_bottom_right = 16
+	style.border_width_left = 3
+	style.border_width_right = 3
+	style.border_width_top = 3
+	style.border_width_bottom = 3
+	style.border_color = UIConstants.ACCENT_GOLD_BRIGHT
+	style.content_margin_left = 20.0
+	style.content_margin_right = 20.0
+	style.content_margin_top = 20.0
+	style.content_margin_bottom = 20.0
+	panel.add_theme_stylebox_override("panel", style)
+	add_child(panel)
+
+	var vbox: VBoxContainer = VBoxContainer.new()
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	vbox.add_theme_constant_override("separation", 12)
+	panel.add_child(vbox)
+
+	# Title.
+	var title: Label = Label.new()
+	title.text = Localization.get_text("ARTEMIS_JOINS_TITLE")
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
+	title.add_theme_font_size_override("font_size", 16)
+	vbox.add_child(title)
+
+	# Portrait.
+	var portrait_rect: TextureRect = TextureRect.new()
+	portrait_rect.custom_minimum_size = Vector2(0.0, 240.0)
+	portrait_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	portrait_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH
+	var portrait_path: String = CompanionRegistry.get_portrait_path(companion_id, "happy")
+	if not ResourceLoader.exists(portrait_path):
+		portrait_path = CompanionRegistry.get_portrait_path(companion_id, "neutral")
+	if ResourceLoader.exists(portrait_path):
+		portrait_rect.texture = load(portrait_path)
+	else:
+		portrait_rect.modulate = Color(0.3, 0.25, 0.2, 1.0)
+	vbox.add_child(portrait_rect)
+
+	# Subtitle (the headline).
+	var subtitle: Label = Label.new()
+	subtitle.text = Localization.get_text("ARTEMIS_JOINS_SUBTITLE")
+	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	subtitle.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+	subtitle.add_theme_font_size_override("font_size", 22)
+	vbox.add_child(subtitle)
+	Fx.gold_shimmer(subtitle, 2.0)
+
+	# Description.
+	var desc: Label = Label.new()
+	desc.text = Localization.get_text("ARTEMIS_JOINS_DESCRIPTION")
+	desc.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	desc.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	desc.add_theme_font_size_override("font_size", 13)
+	vbox.add_child(desc)
+
+	# OK button.
+	var ok_btn: Button = Button.new()
+	ok_btn.text = Localization.get_text("ARTEMIS_JOINS_OK")
+	ok_btn.custom_minimum_size = Vector2(0.0, 52.0)
+	ok_btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	ok_btn.add_theme_font_size_override("font_size", 16)
+	var btn_style: StyleBoxFlat = StyleBoxFlat.new()
+	btn_style.bg_color = UIConstants.BG_TERTIARY
+	btn_style.corner_radius_top_left = 8
+	btn_style.corner_radius_top_right = 8
+	btn_style.corner_radius_bottom_left = 8
+	btn_style.corner_radius_bottom_right = 8
+	btn_style.border_width_left = 1
+	btn_style.border_width_right = 1
+	btn_style.border_width_top = 1
+	btn_style.border_width_bottom = 1
+	btn_style.border_color = UIConstants.ACCENT_GOLD
+	ok_btn.add_theme_stylebox_override("normal", btn_style)
+	ok_btn.pressed.connect(func() -> void:
+		GameStore.set_flag("%s_join_shown" % companion_id)
+		backdrop.queue_free()
+		panel.queue_free()
+	)
+	vbox.add_child(ok_btn)
+
+	# Spring scale entrance.
+	panel.scale = Vector2(0.4, 0.4)
+	panel.pivot_offset = Vector2(180.0, 260.0)
+	var spring: Tween = create_tween()
+	spring.tween_property(panel, "scale", Vector2.ONE, 0.55) \
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
 
 
 # ── Welcome Popup ──────────────────────────────────────────────────────────────
@@ -284,20 +424,9 @@ func _on_achievements_pressed() -> void:
 
 
 func _on_arena_pressed() -> void:
-	# Pass enemy config to combat.gd via arrival context.
-	# combat.gd reads SceneManager.get_arrival_context() in _ready() and builds
-	# the enemy + deck from EnemyRegistry using the id provided here.
-	# TODO: replace "arena_challenger" with a real EnemyRegistry id when the
-	#       enemy data file is populated (Balance values not yet ported).
-	var context: Dictionary = {
-		"enemy_id": "arena_challenger",
-		"captain_id": GameStore.get_last_captain_id(),
-	}
-	SceneManager.change_scene(
-		SceneManager.SceneId.COMBAT,
-		SceneManager.TransitionType.FADE,
-		context
-	)
+	# The "arena" tab is rebranded to "Tavern" after ch01_tavern_done.
+	# It now routes to the Tavern Map (list of tournaments by location).
+	SceneManager.change_scene(SceneManager.SceneId.TAVERN_MAP)
 
 
 func _on_settings_pressed() -> void:

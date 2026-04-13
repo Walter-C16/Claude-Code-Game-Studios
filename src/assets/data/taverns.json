@@ -1,0 +1,19 @@
+{
+  "taverns": [
+    {
+      "id": "sardis_tavern",
+      "name_key": "TAVERN_SARDIS_NAME",
+      "location_key": "TAVERN_SARDIS_LOCATION",
+      "description_key": "TAVERN_SARDIS_DESCRIPTION",
+      "chapter": "ch01",
+      "unlock_flag": "ch01_tavern_done",
+      "difficulty": 1,
+      "strong_element": "Fire",
+      "score_threshold": 70,
+      "hands_allowed": 4,
+      "discards_allowed": 4,
+      "base_gold_reward": 40,
+      "enemy_id": "sardis_card_master"
+    }
+  ]
+}

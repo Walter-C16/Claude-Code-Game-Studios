@@ -102,6 +102,10 @@ var _pending_equipment: Array[String] = []
 ## Keys are String counter names (e.g. "combat_wins"). Values are int.
 var _counters: Dictionary = {}
 
+## Per-tavern last-played date tracking {tavern_id: "YYYY-MM-DD"} for the
+## once-per-day tournament reward. Reset implicit via date comparison.
+var _tavern_last_played: Dictionary = {}
+
 # ---------------------------------------------------------------------------
 # Private State — Exploration (STORY-EXPLORE-001..005)
 # ---------------------------------------------------------------------------
@@ -166,6 +170,7 @@ func _initialize_defaults() -> void:
 	_exploration_state = {}
 	_companion_xp = {}
 	_counters = {}
+	_tavern_last_played = {}
 
 # ---------------------------------------------------------------------------
 # Public Getters — Companion State
@@ -435,6 +440,26 @@ func remove_deck_companion(id: String) -> void:
 	_mark_dirty()
 	state_changed.emit("deck")
 
+
+## Returns true if the player can play the given tavern's daily tournament
+## today. A tavern can be played once per local calendar day.
+func can_play_tavern_today(tavern_id: String) -> bool:
+	var last: String = str(_tavern_last_played.get(tavern_id, ""))
+	return last != _today_date_string()
+
+
+## Records that the given tavern was played today and marks state dirty.
+func mark_tavern_played(tavern_id: String) -> void:
+	_tavern_last_played[tavern_id] = _today_date_string()
+	_mark_dirty()
+	state_changed.emit("tavern")
+
+
+## Returns "YYYY-MM-DD" for today's local calendar date.
+func _today_date_string() -> String:
+	var dt: Dictionary = Time.get_date_dict_from_system()
+	return "%04d-%02d-%02d" % [dt.get("year", 0), dt.get("month", 0), dt.get("day", 0)]
+
 # ---------------------------------------------------------------------------
 # Public Getters — Equipment (STORY-EQUIP-002, STORY-EQUIP-003)
 # ---------------------------------------------------------------------------
@@ -576,6 +601,7 @@ func to_dict() -> Dictionary:
 		"active_combat_buff": _active_combat_buff.duplicate(),
 		"last_captain_id": _last_captain_id,
 		"deck_companions": _deck_companions.duplicate(),
+		"tavern_last_played": _tavern_last_played.duplicate(),
 		"equipped_weapon": _equipped_weapon,
 		"equipped_amulet": _equipped_amulet,
 		"pending_equipment": _pending_equipment.duplicate(),
@@ -623,6 +649,10 @@ func from_dict(data: Dictionary) -> void:
 	_last_interaction_date = data.get("last_interaction_date", "")
 	_active_combat_buff = data.get("active_combat_buff", {}).duplicate()
 	_last_captain_id = data.get("last_captain_id", "")
+	_tavern_last_played = {}
+	var saved_tavern: Dictionary = data.get("tavern_last_played", {})
+	for key: Variant in saved_tavern.keys():
+		_tavern_last_played[str(key)] = str(saved_tavern[key])
 	_deck_companions = {}
 	var saved_deck: Variant = data.get("deck_companions", {})
 	if saved_deck is Dictionary:

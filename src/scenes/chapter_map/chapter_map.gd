@@ -248,8 +248,13 @@ func _show_chapter_detail(data: Dictionary) -> void:
 	for area: String in areas:
 		_build_area_section(area, area_nodes[area], next_story_id)
 
+	# Tavern area may have no available story nodes but should still show
+	# the tournament button once the tavern system is unlocked.
+	if GameStore.has_flag("ch01_tavern_done") and not areas.has("tavern"):
+		_build_area_section("tavern", [], next_story_id)
+
 	# Show "chapter complete" if nothing is available.
-	if available_nodes.is_empty():
+	if available_nodes.is_empty() and not GameStore.has_flag("ch01_tavern_done"):
 		var done_label: Label = Label.new()
 		done_label.text = "All paths in this chapter are complete."
 		done_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -261,6 +266,36 @@ func _show_chapter_detail(data: Dictionary) -> void:
 
 	await get_tree().process_frame
 	_animate_entrance()
+
+
+## Builds a "Tournament" button that routes to the Tavern Map scene.
+## Used inside tavern-area sections once the tavern system is unlocked.
+func _make_tournament_button() -> Button:
+	var btn: Button = Button.new()
+	btn.text = "🏆  Tournament"
+	btn.custom_minimum_size = Vector2(0.0, 52.0)
+	btn.add_theme_font_size_override("font_size", 14)
+	btn.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+
+	var style: StyleBoxFlat = StyleBoxFlat.new()
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_left = 8
+	style.corner_radius_bottom_right = 8
+	style.content_margin_left = 12.0
+	style.content_margin_right = 12.0
+	style.bg_color = UIConstants.BG_TERTIARY
+	style.border_color = UIConstants.ACCENT_GOLD
+	style.border_width_left = 1
+	style.border_width_right = 1
+	style.border_width_top = 1
+	style.border_width_bottom = 1
+	btn.add_theme_stylebox_override("normal", style)
+
+	btn.pressed.connect(func() -> void:
+		SceneManager.change_scene(SceneManager.SceneId.TAVERN_MAP)
+	)
+	return btn
 
 
 ## Returns true if any reward flag from this node is already set.
@@ -297,6 +332,11 @@ func _build_area_section(area: String, nodes: Array, next_story_id: String) -> v
 	area_label.custom_minimum_size = Vector2(0.0, 32.0)
 	area_label.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	chapter_list.add_child(area_label)
+
+	# Inject a "Tournament" button at tavern areas once the player has
+	# unlocked the tavern system (ch01_tavern_done).
+	if area == "tavern" and GameStore.has_flag("ch01_tavern_done"):
+		chapter_list.add_child(_make_tournament_button())
 
 	# Node buttons — all entries here are available and uncompleted.
 	for node_data: Variant in nodes:

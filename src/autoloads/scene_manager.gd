@@ -30,6 +30,7 @@ enum SceneId {
 	ABYSS,
 	GALLERY,
 	ACHIEVEMENTS,
+	TAVERN_MAP,
 	SETTINGS,
 }
 
@@ -76,6 +77,7 @@ const SCENE_PATHS: Dictionary = {
 	SceneId.ABYSS:           "res://scenes/abyss/abyss.tscn",
 	SceneId.GALLERY:         "res://scenes/gallery/gallery.tscn",
 	SceneId.ACHIEVEMENTS:    "res://scenes/achievements/achievements.tscn",
+	SceneId.TAVERN_MAP:      "res://scenes/tavern_map/tavern_map.tscn",
 }
 
 ## Duration in seconds for each half of a fade transition (out + in).

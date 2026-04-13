@@ -84,6 +84,12 @@ var _sort_mode: StringName = SORT_VALUE
 ## Enemy config dict read from SceneManager arrival context.
 var _enemy_config: Dictionary = {}
 
+## Tavern id if this combat was launched as a tournament; empty otherwise.
+var _tavern_id: String = ""
+
+## Extra gold awarded on tournament victory (on top of VICTORY_GOLD_REWARD).
+var _tavern_gold_reward: int = 0
+
 ## Tracks the displayed score so the count-up animation knows its starting value.
 var _displayed_score: int = 0
 
@@ -103,6 +109,10 @@ func _ready() -> void:
 	# Read arrival context (consumed once — SceneManager clears it after this call)
 	var ctx: Dictionary = SceneManager.get_arrival_context()
 	var captain_id: String = ctx.get("captain_id", "") as String
+
+	# Tournament metadata — empty for non-tavern combats.
+	_tavern_id = ctx.get("tavern_id", "") as String
+	_tavern_gold_reward = int(ctx.get("tavern_gold_reward", 0))
 
 	# Build enemy config — support both "enemy_config" dict and "enemy_id" string
 	if ctx.has("enemy_config"):
@@ -383,6 +393,13 @@ func _on_card_toggled(index: int, pressed: bool) -> void:
 func _on_victory_continue_pressed() -> void:
 	GameStore.add_gold(VICTORY_GOLD_REWARD)
 	GameStore.add_xp(VICTORY_XP_REWARD)
+
+	# Tournament combat — award extra daily gold and return to Tavern Map.
+	if not _tavern_id.is_empty():
+		GameStore.add_gold(_tavern_gold_reward)
+		GameStore.mark_tavern_played(_tavern_id)
+		SceneManager.change_scene(SceneManager.SceneId.TAVERN_MAP)
+		return
 
 	# Check if this was a story combat — apply story node flags
 	var story_node: String = _enemy_config.get("story_node", "") as String
