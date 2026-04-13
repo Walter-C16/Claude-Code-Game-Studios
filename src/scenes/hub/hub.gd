@@ -381,6 +381,9 @@ func _show_welcome_popup() -> void:
 		GameStore.set_flag("hub_welcomed")
 		backdrop.queue_free()
 		_welcome_popup.queue_free()
+		# Chain into the hub tutorial immediately so first-time players see
+		# it on the same visit instead of waiting for a later Hub return.
+		_show_hub_tutorial()
 		_start_story_highlight()
 	)
 	vbox.add_child(ok_btn)
