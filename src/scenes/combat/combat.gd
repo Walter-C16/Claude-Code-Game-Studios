@@ -96,6 +96,10 @@ var _displayed_score: int = 0
 ## Dynamically built HBoxContainer showing active blessing icons above the hand.
 var _blessing_strip: HBoxContainer
 
+## Dynamically built label showing the best poker hand rank you can make
+## with the currently selected cards. Updates on every selection change.
+var _hand_preview_label: Label
+
 # ── Built-in virtual methods ──────────────────────────────────────────────────
 
 func _ready() -> void:
@@ -103,6 +107,7 @@ func _ready() -> void:
 	victory_overlay.visible = false
 	defeat_overlay.visible = false
 	_build_blessing_strip()
+	_build_hand_preview()
 
 	# First-combat tutorial — fires after the scene is ready so the popup
 	# overlays the combat HUD properly.
@@ -289,6 +294,27 @@ func _update_action_buttons() -> void:
 
 	play_btn.text    = "PLAY %d" % sel if sel > 0 else "PLAY HAND"
 	discard_btn.text = "DISC %d" % sel if sel > 0 else "DISCARD"
+
+	_update_hand_preview()
+
+
+## Runs HandEvaluator on the current selection and updates the preview label.
+## Empty selection shows a prompt; any non-empty selection shows the best rank.
+func _update_hand_preview() -> void:
+	if _hand_preview_label == null:
+		return
+	if _selected_indices.is_empty() or _combat_manager == null:
+		_hand_preview_label.text = Localization.get_text("HAND_PREVIEW_NONE")
+		_hand_preview_label.add_theme_color_override("font_color", UIConstants.TEXT_DISABLED)
+		return
+	var selected_cards: Array[Dictionary] = []
+	for idx: int in _selected_indices:
+		if idx >= 0 and idx < _combat_manager.hand.size():
+			selected_cards.append(_combat_manager.hand[idx])
+	var result: Dictionary = HandEvaluator.evaluate(selected_cards)
+	var rank_name: String = result.get("rank", "High Card")
+	_hand_preview_label.text = Localization.get_text("HAND_PREVIEW_LABEL") % rank_name
+	_hand_preview_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
 
 
 ## Plays a short score cascade animation then refreshes stats.
@@ -580,6 +606,24 @@ func _build_blessing_strip() -> void:
 		parent.move_child(_blessing_strip, hand_idx)
 
 	_populate_blessing_icons()
+
+
+## Builds the hand rank preview label directly above the hand container.
+## Shows "Pick cards to see your best hand" when nothing is selected, and
+## "Best hand: Pair" (etc.) once the player picks one or more cards.
+func _build_hand_preview() -> void:
+	_hand_preview_label = Label.new()
+	_hand_preview_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_hand_preview_label.add_theme_color_override("font_color", UIConstants.TEXT_DISABLED)
+	_hand_preview_label.add_theme_font_size_override("font_size", 13)
+	_hand_preview_label.text = Localization.get_text("HAND_PREVIEW_NONE")
+
+	# Insert right below the blessing strip, above the hand container.
+	var parent: Node = hand_container.get_parent()
+	if parent != null:
+		var hand_idx: int = hand_container.get_index()
+		parent.add_child(_hand_preview_label)
+		parent.move_child(_hand_preview_label, hand_idx)
 
 
 ## Fills the blessing strip with icons for the current captain's active blessings.

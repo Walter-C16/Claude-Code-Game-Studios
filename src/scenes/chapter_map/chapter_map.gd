@@ -359,10 +359,20 @@ func _build_area_section(area: String, nodes: Array, next_story_id: String) -> v
 		var btn: Button = Button.new()
 		var icon: String = "⚔" if node_type == "combat" else "💬"
 
-		var name_key: String = "CHAPTER_NODE_%s" % node_id.to_upper()
-		var display_name: String = Localization.get_text(name_key)
-		if display_name == name_key:
-			display_name = node_id.replace("ch01_", "").replace("_", " ").capitalize()
+		# Prefer the character_key field (points directly to a localized
+		# character name). Fall back to the legacy CHAPTER_NODE_* lookup
+		# and finally a humanized node id if neither is present.
+		var character_key: String = nd.get("character_key", "") as String
+		var display_name: String = ""
+		if not character_key.is_empty():
+			display_name = Localization.get_text(character_key)
+			if display_name == character_key:
+				display_name = character_key.capitalize()
+		if display_name.is_empty():
+			var legacy_key: String = "CHAPTER_NODE_%s" % node_id.to_upper()
+			display_name = Localization.get_text(legacy_key)
+			if display_name == legacy_key:
+				display_name = node_id.replace("ch01_", "").replace("_", " ").capitalize()
 
 		btn.text = "%s  %s" % [icon, display_name]
 		btn.custom_minimum_size = Vector2(0.0, 52.0)

@@ -457,9 +457,17 @@ func _on_use_in_deck_pressed() -> void:
 		_populate_grid()
 		return
 
-	# Otherwise open the card value picker so the player can choose which
-	# card this companion's signature replaces.
-	_show_card_value_picker()
+	# Assign to the companion's canonical slot — each companion has a fixed
+	# (element, card_value) signature defined in companions.json (e.g.
+	# Artemis = Earth 13 = K of Clubs). No picker needed.
+	var profile: Dictionary = CompanionRegistry.get_profile(_selected_id)
+	var fixed_value: int = int(profile.get("card_value", 0))
+	if fixed_value <= 0:
+		return
+	GameStore.add_deck_companion(_selected_id, fixed_value)
+	_update_action_buttons_for(_selected_id)
+	_populate_grid()
+	Fx.pop_scale(_use_in_deck_btn)
 
 
 func _on_assign_captain_pressed() -> void:
@@ -487,171 +495,6 @@ func _on_assign_captain_pressed() -> void:
 			GameStore.set_last_captain_id(_selected_id)
 			_update_action_buttons_for(_selected_id)
 	)
-
-
-# ── Slot Conflict Check ────────────────────────────────────────────────────────
-
-## Returns the id of a deck companion that occupies the same (element, card_value)
-## slot as [param candidate_id] at [param target_value], or empty string if free.
-func _find_slot_conflict(candidate_id: String, target_value: int) -> String:
-	var candidate: Dictionary = CompanionRegistry.get_profile(candidate_id)
-	var target_element: String = candidate.get("element", "") as String
-	for id: String in GameStore.get_deck_companions():
-		if id == candidate_id:
-			continue
-		var other: Dictionary = CompanionRegistry.get_profile(id)
-		var other_element: String = other.get("element", "") as String
-		var other_value: int = GameStore.get_deck_companion_value(id)
-		if other_element == target_element and other_value == target_value:
-			return id
-	return ""
-
-
-## Assigns the currently-selected companion to the deck at [param card_value].
-## If another companion already occupies that slot, shows a replace popup.
-func _assign_to_deck(card_value: int) -> void:
-	if _selected_id.is_empty():
-		return
-
-	var conflict_id: String = _find_slot_conflict(_selected_id, card_value)
-	if not conflict_id.is_empty():
-		_show_replace_popup(
-			"Deck Slot Taken",
-			"%s already uses this card slot. Replace with %s?" % [
-				CompanionRegistry.get_profile(conflict_id).get("display_name", conflict_id),
-				CompanionRegistry.get_profile(_selected_id).get("display_name", _selected_id),
-			],
-			func() -> void:
-				GameStore.remove_deck_companion(conflict_id)
-				GameStore.add_deck_companion(_selected_id, card_value)
-				_update_action_buttons_for(_selected_id)
-		)
-		return
-
-	GameStore.add_deck_companion(_selected_id, card_value)
-	_update_action_buttons_for(_selected_id)
-	Fx.pop_scale(_use_in_deck_btn)
-
-
-# ── Card Value Picker ──────────────────────────────────────────────────────────
-
-## Shows a popup grid of card value buttons (2..A) so the player can pick
-## which slot the selected companion should occupy.
-func _show_card_value_picker() -> void:
-	_close_popup()
-
-	var backdrop: ColorRect = ColorRect.new()
-	backdrop.name = "PopupBackdrop"
-	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	backdrop.color = Color(0.0, 0.0, 0.0, 0.6)
-	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
-	add_child(backdrop)
-
-	_active_popup = PanelContainer.new()
-	_active_popup.anchor_left = 0.5
-	_active_popup.anchor_right = 0.5
-	_active_popup.anchor_top = 0.5
-	_active_popup.anchor_bottom = 0.5
-	_active_popup.offset_left = -190.0
-	_active_popup.offset_right = 190.0
-	_active_popup.offset_top = -200.0
-	_active_popup.offset_bottom = 200.0
-
-	var style: StyleBoxFlat = StyleBoxFlat.new()
-	style.bg_color = UIConstants.BG_SECONDARY
-	style.corner_radius_top_left = 12
-	style.corner_radius_top_right = 12
-	style.corner_radius_bottom_left = 12
-	style.corner_radius_bottom_right = 12
-	style.border_width_left = 2
-	style.border_width_right = 2
-	style.border_width_top = 2
-	style.border_width_bottom = 2
-	style.border_color = UIConstants.ACCENT_GOLD
-	style.content_margin_left = 16.0
-	style.content_margin_right = 16.0
-	style.content_margin_top = 16.0
-	style.content_margin_bottom = 16.0
-	_active_popup.add_theme_stylebox_override("panel", style)
-	add_child(_active_popup)
-
-	var vbox: VBoxContainer = VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 10)
-	_active_popup.add_child(vbox)
-
-	var title: Label = Label.new()
-	var display_name: String = CompanionRegistry.get_profile(_selected_id).get("display_name", _selected_id)
-	title.text = "%s — Pick Card Value" % display_name
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
-	title.add_theme_font_size_override("font_size", 16)
-	vbox.add_child(title)
-
-	var info: Label = Label.new()
-	info.text = "Choose which card value this companion's signature replaces."
-	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	info.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
-	info.add_theme_font_size_override("font_size", 12)
-	vbox.add_child(info)
-
-	# Grid of 13 value buttons (2..A). 5 per row.
-	var grid: GridContainer = GridContainer.new()
-	grid.columns = 5
-	grid.add_theme_constant_override("h_separation", 6)
-	grid.add_theme_constant_override("v_separation", 6)
-	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	vbox.add_child(grid)
-
-	for value: int in range(2, 15):
-		grid.add_child(_make_value_button(value))
-
-	var cancel_btn: Button = _make_action_button("Cancel")
-	cancel_btn.pressed.connect(_close_popup)
-	vbox.add_child(cancel_btn)
-
-	Fx.slide_in(_active_popup, Vector2(0.0, 20.0), 0.25)
-
-
-## Creates a single card-value button for the picker grid.
-## Buttons are disabled when another deck companion already occupies that
-## (element, value) slot AND that companion is not the selected one.
-func _make_value_button(value: int) -> Button:
-	var btn: Button = Button.new()
-	btn.custom_minimum_size = Vector2(56.0, 52.0)
-	btn.text = _card_value_name(value)
-	btn.add_theme_font_size_override("font_size", 18)
-
-	var candidate: Dictionary = CompanionRegistry.get_profile(_selected_id)
-	var element: String = candidate.get("element", "") as String
-
-	var conflict_id: String = _find_slot_conflict(_selected_id, value)
-	var has_conflict: bool = not conflict_id.is_empty()
-
-	var style: StyleBoxFlat = StyleBoxFlat.new()
-	style.bg_color = UIConstants.BG_TERTIARY
-	style.corner_radius_top_left = 6
-	style.corner_radius_top_right = 6
-	style.corner_radius_bottom_left = 6
-	style.corner_radius_bottom_right = 6
-	style.border_width_left = 1
-	style.border_width_right = 1
-	style.border_width_top = 1
-	style.border_width_bottom = 1
-	if has_conflict:
-		style.border_color = UIConstants.STATUS_WARNING
-		btn.add_theme_color_override("font_color", UIConstants.STATUS_WARNING)
-	else:
-		style.border_color = _element_color(element)
-		btn.add_theme_color_override("font_color", _element_color(element))
-	btn.add_theme_stylebox_override("normal", style)
-
-	btn.pressed.connect(func() -> void:
-		_close_popup()
-		_assign_to_deck(value)
-	)
-
-	return btn
 
 
 # ── Replace Popup ──────────────────────────────────────────────────────────────

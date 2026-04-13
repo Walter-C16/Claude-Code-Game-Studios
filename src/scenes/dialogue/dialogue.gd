@@ -179,7 +179,12 @@ func _apply_story_rewards(node_id: String) -> void:
 ## Called when the visual typewriter animation signals completion from the runner.
 ## Used here only to show the continue indicator (choices are shown via choices_ready).
 func _on_typewriter_complete() -> void:
-	continue_indicator.visible = true
+	# Hide the continue indicator if the next beat is a choice list —
+	# the player will see choice buttons instead of "tap to continue".
+	if DialogueRunner.has_pending_choices():
+		continue_indicator.visible = false
+	else:
+		continue_indicator.visible = true
 
 
 ## Disconnects persistent autoload signals on scene exit.

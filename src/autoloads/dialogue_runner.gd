@@ -192,6 +192,12 @@ func is_active() -> bool:
 func get_state() -> State:
 	return _state
 
+
+## Returns true if the current node has choices to show after the last line.
+## UI uses this to suppress the "tap to continue" indicator on choice nodes.
+func has_pending_choices() -> bool:
+	return _current_choices.size() > 0 and _current_line_index >= _current_lines.size() - 1
+
 # ── Text Utilities ────────────────────────────────────────────────────────────
 
 ## Strips {pause:N} markers from [param raw_text] and returns clean display text.

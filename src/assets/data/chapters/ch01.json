@@ -4,17 +4,17 @@
   "subtitle_key": "CHAPTER_1_SUBTITLE",
   "location_key": "CHAPTER_1_LOCATION",
   "nodes": [
-    {"id": "ch01_n00", "type": "combat", "enemy_id": "forest_monster", "area": "forest", "prereqs": [], "rewards": {"gold": 20, "xp": 10, "flags": ["ch01_tutorial_done"]}},
-    {"id": "ch01_n01", "type": "dialogue", "sequence": "artemis_rescue", "area": "forest", "prereqs": ["ch01_tutorial_done"], "rewards": {"flags": ["ch01_met_artemis"]}, "effects": [{"type": "meet", "companion": "artemis"}]},
-    {"id": "ch01_n02", "type": "dialogue", "sequence": "artemis_house", "area": "village", "prereqs": ["ch01_met_artemis"], "rewards": {"gold": 15, "flags": ["ch01_exposition_done"]}},
-    {"id": "ch01_n03", "type": "dialogue", "sequence": "tavern", "area": "tavern", "prereqs": ["ch01_exposition_done"], "rewards": {"gold": 10, "flags": ["ch01_tavern_done"]}},
-    {"id": "ch01_n03b", "type": "dialogue", "sequence": "tree_temple_blessing", "area": "temple", "prereqs": ["ch01_tavern_done"], "rewards": {"xp": 10, "flags": ["ch01_priestess_blessing"]}},
-    {"id": "ch01_n04", "type": "dialogue", "sequence": "mountains", "area": "mountains", "prereqs": ["ch01_priestess_blessing"], "rewards": {"xp": 20, "flags": ["ch01_artemis_backstory"]}},
-    {"id": "ch01_n05", "type": "combat", "enemy_id": "mountain_beast", "area": "mountains", "prereqs": ["ch01_artemis_backstory"], "rewards": {"gold": 30, "xp": 15, "flags": ["ch01_village_saved"]}},
-    {"id": "ch01_n06", "type": "dialogue", "sequence": "village_attack", "area": "village", "prereqs": ["ch01_village_saved"], "rewards": {"flags": ["ch01_met_hipolita"]}, "effects": [{"type": "meet", "companion": "hipolita"}]},
-    {"id": "ch01_n07", "type": "dialogue", "sequence": "hipolita_challenge", "area": "arena", "prereqs": ["ch01_met_hipolita"], "rewards": {"xp": 15, "flags": ["ch01_challenge_done"]}},
-    {"id": "ch01_n08", "type": "dialogue", "sequence": "village_report", "area": "village", "prereqs": ["ch01_challenge_done"], "rewards": {"gold": 20, "flags": ["ch01_report_done"]}},
-    {"id": "ch01_n09", "type": "combat", "enemy_id": "gaia_spirit", "area": "temple", "prereqs": ["ch01_report_done"], "rewards": {"gold": 50, "xp": 40, "flags": ["ch01_boss_defeated"]}},
-    {"id": "ch01_n10", "type": "dialogue", "sequence": "tree_temple", "area": "temple", "prereqs": ["ch01_boss_defeated"], "rewards": {"flags": ["ch01_complete", "ch01_gaia_revelation"]}}
+    {"id": "ch01_n00", "type": "combat", "enemy_id": "forest_monster", "area": "forest", "character_key": "ENEMY_FOREST_MONSTER", "prereqs": [], "rewards": {"gold": 20, "xp": 10, "flags": ["ch01_tutorial_done"]}},
+    {"id": "ch01_n01", "type": "dialogue", "sequence": "artemis_rescue", "area": "forest", "character_key": "CHARACTER_ARTEMIS", "prereqs": ["ch01_tutorial_done"], "rewards": {"flags": ["ch01_met_artemis"]}, "effects": [{"type": "meet", "companion": "artemis"}]},
+    {"id": "ch01_n02", "type": "dialogue", "sequence": "artemis_house", "area": "village", "character_key": "CHARACTER_ARTEMIS", "prereqs": ["ch01_met_artemis"], "rewards": {"gold": 15, "flags": ["ch01_exposition_done"]}},
+    {"id": "ch01_n03", "type": "dialogue", "sequence": "tavern", "area": "tavern", "character_key": "CHARACTER_THALOS", "prereqs": ["ch01_exposition_done"], "rewards": {"gold": 10, "flags": ["ch01_tavern_done"]}},
+    {"id": "ch01_n03b", "type": "dialogue", "sequence": "tree_temple_blessing", "area": "temple", "character_key": "CHARACTER_PRIESTESS", "prereqs": ["ch01_tavern_done"], "rewards": {"xp": 10, "flags": ["ch01_priestess_blessing"]}},
+    {"id": "ch01_n04", "type": "dialogue", "sequence": "mountains", "area": "mountains", "character_key": "CHARACTER_ARTEMIS", "prereqs": ["ch01_priestess_blessing"], "rewards": {"xp": 20, "flags": ["ch01_artemis_backstory"]}},
+    {"id": "ch01_n05", "type": "combat", "enemy_id": "mountain_beast", "area": "mountains", "character_key": "ENEMY_MOUNTAIN_BEAST", "prereqs": ["ch01_artemis_backstory"], "rewards": {"gold": 30, "xp": 15, "flags": ["ch01_village_saved"]}},
+    {"id": "ch01_n06", "type": "dialogue", "sequence": "village_attack", "area": "village", "character_key": "CHARACTER_HIPPOLYTA", "prereqs": ["ch01_village_saved"], "rewards": {"flags": ["ch01_met_hipolita"]}, "effects": [{"type": "meet", "companion": "hipolita"}]},
+    {"id": "ch01_n07", "type": "dialogue", "sequence": "hipolita_challenge", "area": "arena", "character_key": "CHARACTER_HIPPOLYTA", "prereqs": ["ch01_met_hipolita"], "rewards": {"xp": 15, "flags": ["ch01_challenge_done"]}},
+    {"id": "ch01_n08", "type": "dialogue", "sequence": "village_report", "area": "village", "character_key": "CHARACTER_THALOS", "prereqs": ["ch01_challenge_done"], "rewards": {"gold": 20, "flags": ["ch01_report_done"]}},
+    {"id": "ch01_n09", "type": "combat", "enemy_id": "gaia_spirit", "area": "temple", "character_key": "ENEMY_GAIA_SPIRIT", "prereqs": ["ch01_report_done"], "rewards": {"gold": 50, "xp": 40, "flags": ["ch01_boss_defeated"]}},
+    {"id": "ch01_n10", "type": "dialogue", "sequence": "tree_temple", "area": "temple", "character_key": "CHARACTER_PRIESTESS", "prereqs": ["ch01_boss_defeated"], "rewards": {"flags": ["ch01_complete", "ch01_gaia_revelation"]}}
   ]
 }
