@@ -276,6 +276,7 @@ func _resolve_hit(actor: Combatant, target: Combatant, move: BattleMove) -> Dict
 		"crit": false,
 		"reaction": "",
 		"dodged": false,
+		"effect": move.effect,
 	}
 
 	if not move.is_damaging():

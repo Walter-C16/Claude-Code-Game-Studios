@@ -1,6 +1,16 @@
 extends Control
 
-## Settings overlay — Volume sliders + language display.
+## Settings overlay.
+##
+## Wraps SettingsStore with a player-facing screen. The .tscn ships with the
+## three volume sliders (master, SFX, music) and a Close button; this script
+## localizes all labels and appends two extra controls at runtime:
+##
+##   • Text Speed slider       — SettingsStore.set_text_speed
+##   • Combat Timers toggle    — SettingsStore.set_combat_disable_timers
+##                               (accessibility — see design/quick-specs/turn-timer.md)
+##
+## Runtime injection keeps the .tscn untouched so the scene file stays minimal.
 
 signal close_requested
 
@@ -13,31 +23,35 @@ signal close_requested
 var _master_value_label: Label
 var _sfx_value_label: Label
 var _music_value_label: Label
+var _text_speed_slider: HSlider
+var _text_speed_value_label: Label
+var _combat_timers_checkbox: CheckBox
+
 
 func _ready() -> void:
-	# Style the title.
-	title_label.text = "SETTINGS"
+	# Title and close button.
+	title_label.text = Localization.get_text("SETTINGS_TITLE").to_upper()
 	title_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
 	title_label.add_theme_font_size_override("font_size", 22)
 
-	# Style close button.
-	close_btn.text = "X"
-	close_btn.custom_minimum_size = Vector2(48.0, 48.0)
+	close_btn.text = Localization.get_text("SETTINGS_CLOSE")
+	close_btn.custom_minimum_size = Vector2(0.0, 48.0)
 	close_btn.pressed.connect(_on_close)
 
-	# Initialize sliders from SettingsStore.
+	# Localize the existing volume labels from the .tscn.
+	_set_label_text("Panel/VBox/MasterLabel", "SETTINGS_MASTER_VOL")
+	_set_label_text("Panel/VBox/SfxLabel", "SETTINGS_SFX_VOL")
+	_set_label_text("Panel/VBox/MusicLabel", "SETTINGS_MUSIC_VOL")
+
+	# Volume sliders — state from SettingsStore.
 	master_slider.value = SettingsStore.get_master_volume() * 100.0
 	sfx_slider.value = SettingsStore.get_sfx_volume() * 100.0
 	music_slider.value = SettingsStore.get_music_volume() * 100.0
 
-	# Add percentage labels next to sliders.
 	_master_value_label = _add_value_label(master_slider)
 	_sfx_value_label = _add_value_label(sfx_slider)
 	_music_value_label = _add_value_label(music_slider)
 
-	_update_value_labels()
-
-	# Wire slider changes.
 	master_slider.value_changed.connect(func(v: float) -> void:
 		SettingsStore.set_master_volume(v / 100.0)
 		_update_value_labels()
@@ -51,17 +65,92 @@ func _ready() -> void:
 		_update_value_labels()
 	)
 
-	# Style all labels in the panel.
-	var panel: Node = get_node_or_null("Panel/VBox")
-	if panel != null:
-		for child: Node in panel.get_children():
+	# Append the extra gameplay controls that don't live in the .tscn.
+	_install_extra_controls()
+
+	_update_value_labels()
+
+	# Style every plain label in the panel so section headers and slider
+	# labels share a common look.
+	var vbox: Node = get_node_or_null("Panel/VBox")
+	if vbox != null:
+		for child: Node in vbox.get_children():
 			if child is Label and child != title_label:
-				child.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
-				child.add_theme_font_size_override("font_size", 14)
+				(child as Label).add_theme_color_override(
+					"font_color", UIConstants.TEXT_SECONDARY
+				)
+				(child as Label).add_theme_font_size_override("font_size", 14)
+
+
+## Adds the new text-speed slider and combat-timer toggle. Inserted just above
+## the CloseBtn so the button stays the last element in the VBox.
+func _install_extra_controls() -> void:
+	var vbox: VBoxContainer = get_node_or_null("Panel/VBox") as VBoxContainer
+	if vbox == null:
+		return
+
+	# Spacer between audio and gameplay sections.
+	var spacer: Control = Control.new()
+	spacer.custom_minimum_size = Vector2(0.0, 12.0)
+	_insert_before_close(vbox, spacer)
+
+	# Gameplay header.
+	var header: Label = Label.new()
+	header.text = Localization.get_text("SETTINGS_GAMEPLAY_HEADER")
+	header.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
+	header.add_theme_font_size_override("font_size", 15)
+	_insert_before_close(vbox, header)
+
+	# Text speed label.
+	var ts_label: Label = Label.new()
+	ts_label.text = Localization.get_text("SETTINGS_TEXT_SPEED")
+	ts_label.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+	ts_label.add_theme_font_size_override("font_size", 14)
+	_insert_before_close(vbox, ts_label)
+
+	# Text speed slider (0.1x to 3.0x, displayed as 10%–300%).
+	_text_speed_slider = HSlider.new()
+	_text_speed_slider.min_value = 10.0
+	_text_speed_slider.max_value = 300.0
+	_text_speed_slider.step = 10.0
+	_text_speed_slider.value = SettingsStore.get_text_speed() * 100.0
+	_insert_before_close(vbox, _text_speed_slider)
+	_text_speed_value_label = _add_value_label(_text_speed_slider)
+	_text_speed_slider.value_changed.connect(func(v: float) -> void:
+		SettingsStore.set_text_speed(v / 100.0)
+		_update_value_labels()
+	)
+
+	# Combat timers toggle.
+	_combat_timers_checkbox = CheckBox.new()
+	_combat_timers_checkbox.text = Localization.get_text("SETTINGS_DISABLE_TIMERS")
+	_combat_timers_checkbox.button_pressed = SettingsStore.combat_disable_timers
+	_combat_timers_checkbox.add_theme_color_override(
+		"font_color", UIConstants.TEXT_PRIMARY
+	)
+	_combat_timers_checkbox.add_theme_font_size_override("font_size", 14)
+	_combat_timers_checkbox.toggled.connect(func(pressed: bool) -> void:
+		SettingsStore.set_combat_disable_timers(pressed)
+	)
+	_insert_before_close(vbox, _combat_timers_checkbox)
+
+
+## Inserts [param node] right above CloseBtn in the VBox. Keeps the close
+## button as the last child so the layout remains stable.
+func _insert_before_close(vbox: VBoxContainer, node: Control) -> void:
+	vbox.add_child(node)
+	if close_btn != null and close_btn.get_parent() == vbox:
+		vbox.move_child(node, close_btn.get_index())
 
 
 func _on_close() -> void:
 	close_requested.emit()
+
+
+func _set_label_text(node_path: String, key: String) -> void:
+	var node: Node = get_node_or_null(node_path)
+	if node is Label:
+		(node as Label).text = Localization.get_text(key)
 
 
 func _add_value_label(slider: HSlider) -> Label:
@@ -69,7 +158,6 @@ func _add_value_label(slider: HSlider) -> Label:
 	lbl.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
 	lbl.add_theme_font_size_override("font_size", 13)
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	# Insert after the slider in its parent.
 	var parent: Node = slider.get_parent()
 	if parent != null:
 		var idx: int = slider.get_index()
@@ -85,3 +173,5 @@ func _update_value_labels() -> void:
 		_sfx_value_label.text = "%d%%" % int(sfx_slider.value)
 	if _music_value_label != null:
 		_music_value_label.text = "%d%%" % int(music_slider.value)
+	if _text_speed_value_label != null and _text_speed_slider != null:
+		_text_speed_value_label.text = "%d%%" % int(_text_speed_slider.value)

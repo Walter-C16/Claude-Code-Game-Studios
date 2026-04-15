@@ -456,7 +456,8 @@ func _on_move_executed(_actor: Combatant, _move: BattleMove, _targets: Array) ->
 
 ## Called by _execute_queued_move and _run_enemy_ai with the Dictionary
 ## returned by BattleManager.execute_move. Iterates the hits array and
-## spawns a floating damage number + shake/flash per target.
+## spawns a floating damage number + shake/flash per target, plus any
+## effect-specific VFX labels (PIERCE, TRUE, MARKED, CHAIN, etc.).
 func _animate_hit_results(result: Dictionary) -> void:
 	if not result.get("success", false):
 		return
@@ -467,22 +468,155 @@ func _animate_hit_results(result: Dictionary) -> void:
 		var damage: int = int(hit_dict.get("damage", 0))
 		var is_crit: bool = hit_dict.get("crit", false)
 		var reaction_name: String = hit_dict.get("reaction", "") as String
+		var dodged: bool = hit_dict.get("dodged", false)
+		var effect: String = hit_dict.get("effect", "") as String
+		var is_repeat: bool = hit_dict.get("repeat", false)
 		if target == null:
 			continue
 		var slot: Control = _find_slot_for(target)
 		if slot == null:
 			continue
+
+		# Dodge — no damage, no flash, small sidestep shake + MISS label.
+		if dodged:
+			Fx.shake(slot, 3.0, 0.2)
+			_spawn_effect_label(
+				slot,
+				Localization.get_text("BATTLE_VFX_MISS"),
+				Color(0.65, 0.85, 1.0, 1.0),
+				18
+			)
+			continue
+
 		var body: ColorRect = slot.get_meta("body_rect", null) as ColorRect
 		if body != null:
-			var flash_color: Color = Color(1.0, 1.0, 1.0, 0.7)
-			if is_crit:
-				flash_color = Color(1.0, 0.85, 0.3, 0.8)
-			elif not reaction_name.is_empty():
-				flash_color = Color(0.85, 0.5, 1.0, 0.75)
+			var flash_color: Color = _pick_flash_color(is_crit, reaction_name, effect)
 			Fx.flash(body, flash_color, HIT_FLASH_DURATION)
 			Fx.shake(slot, 4.0 if not is_crit else 7.0, 0.25)
 		if damage > 0:
 			_spawn_damage_number(slot, damage, is_crit, not reaction_name.is_empty())
+
+		# Effect-specific label. Fires alongside the damage number so the
+		# player learns what just happened even when numbers blur together.
+		_spawn_effect_vfx(slot, effect, is_repeat, damage > 0)
+
+
+## Chooses the body flash color based on crit / reaction / effect signals.
+## Effect colors win over reaction colors, and reaction colors win over
+## the plain crit gold, so the most "interesting" thing is what the player
+## sees first.
+func _pick_flash_color(is_crit: bool, reaction_name: String, effect: String) -> Color:
+	match effect:
+		"pierce_def":
+			return Color(0.55, 0.75, 1.0, 0.85)  # blue pierce
+		"ignore_defense":
+			return Color(1.0, 1.0, 1.0, 0.95)    # pure white — true damage
+		"apply_hunter_mark_2_turns":
+			return Color(1.0, 0.35, 0.35, 0.85)  # red mark
+		"dispel_enemy_buffs":
+			return Color(0.2, 0.2, 0.25, 0.9)    # dark strip
+	if not reaction_name.is_empty():
+		return Color(0.85, 0.5, 1.0, 0.75)       # purple reaction
+	if is_crit:
+		return Color(1.0, 0.85, 0.3, 0.8)        # gold crit
+	return Color(1.0, 1.0, 1.0, 0.7)             # plain white
+
+
+## Spawns the effect-name label that floats above the target when a move
+## applies a distinctive mechanic. Skips trivial cases to keep the screen
+## from becoming a word soup on multi-hit attacks.
+func _spawn_effect_vfx(slot: Control, effect: String, is_repeat: bool, had_damage: bool) -> void:
+	# Repeat-on-crit hits get a CHAIN callout — only when damage landed so
+	# the player sees a visual rhythm on consecutive crits.
+	if is_repeat and had_damage:
+		_spawn_effect_label(
+			slot,
+			Localization.get_text("BATTLE_VFX_CHAIN"),
+			UIConstants.ACCENT_GOLD_BRIGHT,
+			20
+		)
+		return
+
+	match effect:
+		"pierce_def":
+			_spawn_effect_label(
+				slot,
+				Localization.get_text("BATTLE_VFX_PIERCE"),
+				Color(0.55, 0.75, 1.0, 1.0),
+				18
+			)
+		"ignore_defense":
+			_spawn_effect_label(
+				slot,
+				Localization.get_text("BATTLE_VFX_TRUE"),
+				Color(1.0, 1.0, 1.0, 1.0),
+				20
+			)
+		"apply_hunter_mark_2_turns":
+			_spawn_effect_label(
+				slot,
+				Localization.get_text("BATTLE_VFX_MARKED"),
+				Color(1.0, 0.35, 0.35, 1.0),
+				18
+			)
+		"party_shield_30_percent":
+			_spawn_effect_label(
+				slot,
+				Localization.get_text("BATTLE_VFX_SHIELD"),
+				Color(0.4, 0.8, 1.0, 1.0),
+				16
+			)
+		"dodge_next_attack":
+			_spawn_effect_label(
+				slot,
+				Localization.get_text("BATTLE_VFX_EVADE"),
+				Color(0.6, 0.85, 1.0, 1.0),
+				16
+			)
+		"dispel_enemy_buffs":
+			_spawn_effect_label(
+				slot,
+				Localization.get_text("BATTLE_VFX_DISPEL"),
+				Color(0.85, 0.5, 1.0, 1.0),
+				18
+			)
+		"guaranteed_crit_3_turns":
+			_spawn_effect_label(
+				slot,
+				Localization.get_text("BATTLE_VFX_CRIT_STANCE"),
+				UIConstants.ACCENT_GOLD_BRIGHT,
+				16
+			)
+
+
+## Creates a short-lived floating label above a unit slot with an arbitrary
+## string and color. Used for effect callouts (PIERCE!, CHAIN!, TRUE! etc.)
+## and the dodge MISS! message. Floats up and fades like damage numbers but
+## starts slightly higher so it doesn't collide with them.
+func _spawn_effect_label(on_slot: Control, text: String, color: Color, font_size: int) -> void:
+	var lbl: Label = Label.new()
+	lbl.text = text
+	lbl.add_theme_font_size_override("font_size", font_size)
+	lbl.add_theme_color_override("font_color", color)
+	lbl.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.9))
+	lbl.add_theme_constant_override("shadow_offset_x", 1)
+	lbl.add_theme_constant_override("shadow_offset_y", 1)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
+	arena.add_child(lbl)
+	var slot_pos: Vector2 = on_slot.global_position - arena.global_position
+	var start: Vector2 = slot_pos + Vector2(on_slot.size.x * 0.5 - 36.0, -28.0)
+	lbl.position = start
+	lbl.modulate.a = 0.0
+
+	# Fade in with a tiny pop, then float up and fade out.
+	var tween: Tween = create_tween().set_parallel(true)
+	tween.tween_property(lbl, "modulate:a", 1.0, 0.12).set_ease(Tween.EASE_OUT)
+	tween.tween_property(lbl, "position:y", start.y - 50.0, 0.9) \
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	tween.chain().tween_property(lbl, "modulate:a", 0.0, 0.3) \
+		.set_ease(Tween.EASE_IN)
+	tween.chain().tween_callback(lbl.queue_free)
 
 
 ## Creates a short-lived floating label above a unit slot showing damage.
