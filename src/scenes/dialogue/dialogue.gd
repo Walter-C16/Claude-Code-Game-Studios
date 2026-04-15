@@ -125,13 +125,13 @@ func _on_dialogue_ended(_sequence_id: String) -> void:
 	if not _story_node.is_empty():
 		_apply_story_rewards(_story_node)
 
-	# After prologue, go to tutorial combat.
+	# After prologue, go to tutorial combat (action battle scene).
 	if _sequence_id == "prologue":
 		GameStore.set_flag("prologue_done")
 		SceneManager.change_scene(
-			SceneManager.SceneId.COMBAT,
+			SceneManager.SceneId.BATTLE,
 			SceneManager.TransitionType.FADE,
-			{"enemy_id": "forest_monster", "captain_id": "", "story_node": "ch01_n00"}
+			{"enemy_ids": ["forest_monster"], "story_node": "ch01_n00"}
 		)
 		return
 	# After crash rescue cutscene, go to Hub (simulating waking up in Artemis's house).

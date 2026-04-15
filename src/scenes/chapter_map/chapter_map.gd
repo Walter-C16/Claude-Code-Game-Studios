@@ -478,9 +478,9 @@ func _on_node_pressed(node_data: Dictionary) -> void:
 	if node_type == "combat":
 		var enemy_id: String = node_data.get("enemy_id", "forest_monster") as String
 		SceneManager.change_scene(
-			SceneManager.SceneId.COMBAT,
+			SceneManager.SceneId.BATTLE,
 			SceneManager.TransitionType.FADE,
-			{"enemy_id": enemy_id, "captain_id": GameStore.get_last_captain_id(), "story_node": node_id}
+			{"enemy_ids": [enemy_id], "story_node": node_id}
 		)
 	else:
 		var sequence: String = node_data.get("sequence", "") as String

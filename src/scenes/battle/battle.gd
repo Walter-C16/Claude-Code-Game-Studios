@@ -1,0 +1,550 @@
+extends Control
+
+## Battle — Side-view turn-based action combat scene.
+##
+## Wraps a BattleManager instance and drives the UI from its signals.
+## Flow:
+##   1. _ready reads arrival context (enemy_ids, story_node, tavern_id unused)
+##   2. Builds party from GameStore.get_deck_companions() + protagonist
+##   3. BattleManager.setup() and listens to its signals
+##   4. On player turn: enables action buttons, waits for tap
+##   5. On enemy turn: runs _run_enemy_ai after a small delay
+##   6. On victory/defeat: shows overlay and handles story rewards
+##
+## This scene replaces the poker combat scene for story combats. The old
+## combat.gd is still used for tavern tournaments.
+
+# ── Constants ─────────────────────────────────────────────────────────────────
+
+## How long to pause between enemy turn_started and enemy action.
+const ENEMY_AI_DELAY: float = 0.8
+
+## How long to show reaction banners before clearing.
+const REACTION_BANNER_DURATION: float = 1.4
+
+## Hit flash duration when a unit takes damage.
+const HIT_FLASH_DURATION: float = 0.2
+
+# ── Node references ──────────────────────────────────────────────────────────
+
+@onready var arena: Control = %Arena
+@onready var enemy_row: HBoxContainer = %EnemyRow
+@onready var party_row: HBoxContainer = %PartyRow
+@onready var reaction_banner: Label = %ReactionBanner
+@onready var turn_banner: Label = %TurnBanner
+@onready var hud_panel: PanelContainer = %HudPanel
+@onready var actor_name_label: Label = %ActorName
+@onready var hp_bar: ProgressBar = %HpBar
+@onready var hp_label: Label = %HpLabel
+@onready var energy_label: Label = %EnergyLabel
+@onready var ult_label: Label = %UltLabel
+@onready var attack_btn: Button = %AttackBtn
+@onready var special_btn: Button = %SpecialBtn
+@onready var ultimate_btn: Button = %UltimateBtn
+@onready var hint_label: Label = %HintLabel
+@onready var victory_overlay: ColorRect = %VictoryOverlay
+@onready var victory_continue_btn: Button = %VictoryContinueBtn
+@onready var defeat_overlay: ColorRect = %DefeatOverlay
+@onready var defeat_retry_btn: Button = %DefeatRetryBtn
+@onready var defeat_retreat_btn: Button = %DefeatRetreatBtn
+
+# ── Private state ────────────────────────────────────────────────────────────
+
+var _battle: BattleManager
+var _party_slots: Array[Control] = []
+var _enemy_slots: Array[Control] = []
+var _pending_move_type: String = ""
+var _is_picking_target: bool = false
+
+## Arrival context — captured in _ready, used in victory handler.
+var _story_node: String = ""
+var _enemy_ids: Array[String] = []
+
+# ── Built-in ──────────────────────────────────────────────────────────────────
+
+func _ready() -> void:
+	AudioManager.play_bgm("res://assets/audio/bgm/combat_standard.ogg")
+	victory_overlay.visible = false
+	defeat_overlay.visible = false
+	reaction_banner.text = ""
+
+	attack_btn.pressed.connect(_on_attack_pressed)
+	special_btn.pressed.connect(_on_special_pressed)
+	ultimate_btn.pressed.connect(_on_ultimate_pressed)
+	victory_continue_btn.pressed.connect(_on_victory_continue)
+	defeat_retry_btn.pressed.connect(_on_defeat_retry)
+	defeat_retreat_btn.pressed.connect(_on_defeat_retreat)
+
+	var ctx: Dictionary = SceneManager.get_arrival_context()
+	_story_node = ctx.get("story_node", "") as String
+	_enemy_ids = _resolve_enemy_ids(ctx)
+
+	var party_ids: Array[String] = _build_party_ids()
+	_battle = BattleManager.new()
+	_battle.turn_started.connect(_on_turn_started)
+	_battle.move_executed.connect(_on_move_executed)
+	_battle.reaction_triggered.connect(_on_reaction_triggered)
+	_battle.battle_ended.connect(_on_battle_ended)
+
+	if not _battle.setup(party_ids, _enemy_ids):
+		push_error("battle.gd: BattleManager.setup failed")
+		_on_defeat_retreat()
+		return
+
+	_apply_tutorial_safety_net()
+	_build_unit_slots()
+	_refresh_all()
+
+	# Kick off the first turn — the signal fires inside setup(), but we missed
+	# it because we hadn't connected yet. Drive it from here.
+	var starter: Combatant = _battle.current_combatant()
+	if starter != null:
+		_on_turn_started(starter)
+
+
+# ── Setup helpers ────────────────────────────────────────────────────────────
+
+## Reads the enemy list from arrival context. Accepts either "enemy_ids"
+## (Array) or "enemy_id" (single String, legacy callers).
+func _resolve_enemy_ids(ctx: Dictionary) -> Array[String]:
+	var ids: Array[String] = []
+	if ctx.has("enemy_ids"):
+		for x: Variant in (ctx.get("enemy_ids", []) as Array):
+			ids.append(str(x))
+	elif ctx.has("enemy_id"):
+		ids.append(ctx.get("enemy_id", "") as String)
+	if ids.is_empty():
+		ids.append("forest_monster")
+	return ids
+
+
+## Builds the active party id list. Always includes the protagonist in slot 0,
+## followed by up to 3 companions assigned to the deck via GameStore.
+func _build_party_ids() -> Array[String]:
+	var ids: Array[String] = ["protagonist"]
+	for cid: String in GameStore.get_deck_companions():
+		if ids.size() >= 4:
+			break
+		ids.append(cid)
+	return ids
+
+
+## Tutorial combat safety net — ch01_n00 is the first fight and can't be lost.
+## Knock the single enemy's HP down so the player sees a quick victory
+## regardless of their input.
+func _apply_tutorial_safety_net() -> void:
+	if _story_node != "ch01_n00":
+		return
+	for enemy: Combatant in _battle.enemies:
+		enemy.stats.max_hp = 30
+		enemy.stats.current_hp = 30
+		enemy.stats.atk = 5
+
+
+# ── Unit slot widgets ─────────────────────────────────────────────────────────
+
+func _build_unit_slots() -> void:
+	for child: Node in party_row.get_children():
+		child.queue_free()
+	for child: Node in enemy_row.get_children():
+		child.queue_free()
+
+	_party_slots.clear()
+	for p: Combatant in _battle.party:
+		var slot: Control = _make_unit_slot(p, false)
+		party_row.add_child(slot)
+		_party_slots.append(slot)
+
+	_enemy_slots.clear()
+	for e: Combatant in _battle.enemies:
+		var slot: Control = _make_unit_slot(e, true)
+		enemy_row.add_child(slot)
+		_enemy_slots.append(slot)
+
+
+## Builds a single unit slot — name label, colored body rect, HP bar.
+## Returns a Control whose children can be reached via the "combatant" meta.
+func _make_unit_slot(combatant: Combatant, is_enemy: bool) -> Control:
+	var root: PanelContainer = PanelContainer.new()
+	root.custom_minimum_size = Vector2(84.0, 180.0)
+	root.set_meta("combatant", combatant)
+
+	var style: StyleBoxFlat = StyleBoxFlat.new()
+	style.bg_color = UIConstants.BG_SECONDARY
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_left = 8
+	style.corner_radius_bottom_right = 8
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
+	style.border_color = _element_color(combatant.stats.element) if not is_enemy else UIConstants.STATUS_DANGER
+	style.content_margin_left = 4.0
+	style.content_margin_right = 4.0
+	style.content_margin_top = 4.0
+	style.content_margin_bottom = 4.0
+	root.add_theme_stylebox_override("panel", style)
+
+	var vbox: VBoxContainer = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 2)
+	root.add_child(vbox)
+
+	# Name label.
+	var name_label: Label = Label.new()
+	name_label.text = combatant.display_name
+	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_label.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	name_label.add_theme_font_size_override("font_size", 11)
+	vbox.add_child(name_label)
+
+	# Body rect (placeholder for sprite).
+	var body: ColorRect = ColorRect.new()
+	body.custom_minimum_size = Vector2(0.0, 110.0)
+	body.color = _element_color(combatant.stats.element).darkened(0.3)
+	vbox.add_child(body)
+	root.set_meta("body_rect", body)
+
+	# HP bar.
+	var bar: ProgressBar = ProgressBar.new()
+	bar.custom_minimum_size = Vector2(0.0, 8.0)
+	bar.max_value = 1.0
+	bar.step = 0.01
+	bar.show_percentage = false
+	bar.value = 1.0
+	vbox.add_child(bar)
+	root.set_meta("hp_bar", bar)
+
+	# HP numeric label.
+	var hp_lbl: Label = Label.new()
+	hp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hp_lbl.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+	hp_lbl.add_theme_font_size_override("font_size", 10)
+	hp_lbl.text = "%d/%d" % [combatant.stats.current_hp, combatant.stats.max_hp]
+	vbox.add_child(hp_lbl)
+	root.set_meta("hp_label", hp_lbl)
+
+	# Overlay button for target picking — initially transparent and disabled.
+	var pick_btn: Button = Button.new()
+	pick_btn.flat = true
+	pick_btn.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	pick_btn.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pick_btn.pressed.connect(_on_target_slot_pressed.bind(combatant))
+	root.add_child(pick_btn)
+	root.set_meta("pick_btn", pick_btn)
+
+	return root
+
+
+# ── Refresh ──────────────────────────────────────────────────────────────────
+
+func _refresh_all() -> void:
+	for slot: Control in _party_slots:
+		_refresh_unit_slot(slot)
+	for slot: Control in _enemy_slots:
+		_refresh_unit_slot(slot)
+	_refresh_actor_hud()
+
+
+func _refresh_unit_slot(slot: Control) -> void:
+	var c: Combatant = slot.get_meta("combatant", null) as Combatant
+	if c == null:
+		return
+	var bar: ProgressBar = slot.get_meta("hp_bar", null) as ProgressBar
+	if bar != null:
+		bar.value = c.stats.hp_fraction()
+	var hp_lbl: Label = slot.get_meta("hp_label", null) as Label
+	if hp_lbl != null:
+		hp_lbl.text = "%d/%d" % [c.stats.current_hp, c.stats.max_hp]
+	slot.modulate.a = 1.0 if c.is_alive() else 0.3
+
+
+func _refresh_actor_hud() -> void:
+	var actor: Combatant = _battle.current_combatant()
+	if actor == null:
+		return
+	actor_name_label.text = actor.display_name
+	hp_bar.value = actor.stats.hp_fraction()
+	hp_label.text = "HP %d / %d" % [actor.stats.current_hp, actor.stats.max_hp]
+	energy_label.text = "EN %d / %d" % [actor.stats.current_energy, actor.stats.max_energy]
+	ult_label.text = "ULT %d / %d" % [actor.stats.current_ultimate, actor.stats.max_ultimate]
+
+	# Action buttons are only interactable on player turns.
+	var is_player_turn: bool = not actor.is_enemy
+	attack_btn.disabled = not is_player_turn
+	special_btn.disabled = not is_player_turn or not actor.can_cast("special")
+	ultimate_btn.disabled = not is_player_turn or not actor.can_cast("ultimate")
+
+	var turn_num: int = _battle.turn_number
+	if actor.is_enemy:
+		turn_banner.text = "Turn %d — %s's move" % [turn_num, actor.display_name]
+		hint_label.text = ""
+	else:
+		turn_banner.text = "Turn %d — Your move, %s" % [turn_num, actor.display_name]
+		if _is_picking_target:
+			hint_label.text = "Tap a target"
+		else:
+			hint_label.text = "Choose an action"
+
+
+# ── Signal callbacks from BattleManager ──────────────────────────────────────
+
+func _on_turn_started(combatant: Combatant) -> void:
+	_refresh_all()
+	_is_picking_target = false
+	_set_target_picking(false)
+
+	if combatant.is_enemy:
+		# Give the player a beat to see what's happening before the enemy acts.
+		await get_tree().create_timer(ENEMY_AI_DELAY).timeout
+		if _battle.is_battle_over():
+			return
+		_run_enemy_ai(combatant)
+
+
+func _on_move_executed(actor: Combatant, move: BattleMove, targets: Array) -> void:
+	_refresh_all()
+	# Flash hit targets.
+	for tgt: Variant in targets:
+		var t: Combatant = tgt as Combatant
+		var slot: Control = _find_slot_for(t)
+		if slot != null:
+			var body: ColorRect = slot.get_meta("body_rect", null) as ColorRect
+			if body != null:
+				Fx.flash(body, Color(1.0, 1.0, 1.0, 0.6), HIT_FLASH_DURATION)
+
+
+func _on_reaction_triggered(reaction_name: String, _on_combatant: Combatant) -> void:
+	reaction_banner.text = reaction_name
+	Fx.pop_scale(reaction_banner, 1.25, 0.35)
+	await get_tree().create_timer(REACTION_BANNER_DURATION).timeout
+	if reaction_banner.text == reaction_name:
+		reaction_banner.text = ""
+
+
+func _on_battle_ended(victory: bool) -> void:
+	_is_picking_target = false
+	_set_target_picking(false)
+	if victory:
+		victory_overlay.visible = true
+		Fx.pop_scale(victory_overlay.get_child(0) as Control, 1.2, 0.6)
+	else:
+		defeat_overlay.visible = true
+
+
+# ── Player actions ───────────────────────────────────────────────────────────
+
+func _on_attack_pressed() -> void:
+	_queue_move("normal")
+
+
+func _on_special_pressed() -> void:
+	_queue_move("special")
+
+
+func _on_ultimate_pressed() -> void:
+	_queue_move("ultimate")
+
+
+## Records which move the player wants to use, then either resolves it
+## immediately (AoE / self-target) or starts the target picker.
+func _queue_move(move_type: String) -> void:
+	var actor: Combatant = _battle.current_combatant()
+	if actor == null or actor.is_enemy:
+		return
+	if not actor.can_cast(move_type):
+		hint_label.text = "Not enough resource"
+		return
+	var move: BattleMove = actor.get_move(move_type)
+	if move == null:
+		return
+
+	_pending_move_type = move_type
+
+	if move.targets_many():
+		# AoE — no target picking needed.
+		var targets: Array[Combatant] = _battle.live_enemies() if move.targets_enemies() else _battle.live_party()
+		_execute_queued_move(targets)
+		return
+	if move.target == "self":
+		_execute_queued_move([actor] as Array[Combatant])
+		return
+	if move.target == "single_ally":
+		# Pick an ally. For now, just auto-target the lowest-HP ally.
+		var lowest: Combatant = _lowest_hp_ally()
+		if lowest != null:
+			_execute_queued_move([lowest] as Array[Combatant])
+		return
+
+	# Single enemy — enter target picker.
+	_is_picking_target = true
+	_set_target_picking(true)
+	hint_label.text = "Tap an enemy to target"
+
+
+func _execute_queued_move(targets: Array[Combatant]) -> void:
+	var mt: String = _pending_move_type
+	_pending_move_type = ""
+	_is_picking_target = false
+	_set_target_picking(false)
+	_battle.execute_move(mt, targets)
+
+
+## Toggles pick buttons on enemy slots (for targeting single enemies).
+func _set_target_picking(picking: bool) -> void:
+	for slot: Control in _enemy_slots:
+		var c: Combatant = slot.get_meta("combatant", null) as Combatant
+		if c == null or not c.is_alive():
+			continue
+		var btn: Button = slot.get_meta("pick_btn", null) as Button
+		if btn != null:
+			btn.mouse_filter = Control.MOUSE_FILTER_STOP if picking else Control.MOUSE_FILTER_IGNORE
+		# Subtle gold highlight during picking.
+		slot.modulate = Color(1.3, 1.2, 1.0, 1.0) if picking and c.is_alive() else Color(1.0, 1.0, 1.0, 1.0)
+
+
+func _on_target_slot_pressed(target: Combatant) -> void:
+	if not _is_picking_target or _pending_move_type.is_empty():
+		return
+	if not target.is_alive():
+		return
+	_execute_queued_move([target] as Array[Combatant])
+
+
+# ── Enemy AI ─────────────────────────────────────────────────────────────────
+
+## Simple AI: prefer ultimate > special > normal. Target random living ally.
+func _run_enemy_ai(actor: Combatant) -> void:
+	var move_type: String = "normal"
+	if actor.can_cast("ultimate") and randf() < 0.5:
+		move_type = "ultimate"
+	elif actor.can_cast("special") and randf() < 0.6:
+		move_type = "special"
+
+	var move: BattleMove = actor.get_move(move_type)
+	if move == null:
+		move_type = "normal"
+		move = actor.get_move("normal")
+	if move == null:
+		return
+
+	var targets: Array[Combatant] = []
+	if move.target == "all_allies":
+		# An enemy "all_allies" targets the ENEMY side (itself). Reverse.
+		targets = _battle.live_enemies()
+	elif move.targets_many():
+		targets = _battle.live_party()
+	else:
+		var alive: Array[Combatant] = _battle.live_party()
+		if alive.is_empty():
+			return
+		targets.append(alive[randi() % alive.size()])
+
+	_battle.execute_move(move_type, targets)
+
+
+# ── Victory / Defeat actions ─────────────────────────────────────────────────
+
+func _on_victory_continue() -> void:
+	# Apply story rewards if this was a story combat.
+	if not _story_node.is_empty():
+		_apply_story_rewards(_story_node)
+
+	if _story_node == "ch01_n00":
+		# Tutorial combat → continues into crash_rescue cutscene
+		GameStore.set_flag("ch01_tutorial_done")
+		SceneManager.change_scene(
+			SceneManager.SceneId.DIALOGUE,
+			SceneManager.TransitionType.FADE,
+			{"chapter_id": "ch01", "sequence_id": "crash_rescue", "story_node": "ch01_crash"}
+		)
+		return
+
+	if not _story_node.is_empty():
+		# Story combat → return to chapter detail view.
+		var parts: PackedStringArray = _story_node.split("_")
+		var chapter_id: String = parts[0] if parts.size() > 0 else ""
+		SceneManager.change_scene(
+			SceneManager.SceneId.CHAPTER_MAP,
+			SceneManager.TransitionType.FADE,
+			{"chapter_id": chapter_id} if not chapter_id.is_empty() else {}
+		)
+		return
+
+	# Fallback — back to Hub.
+	SceneManager.change_scene(SceneManager.SceneId.HUB)
+
+
+func _on_defeat_retry() -> void:
+	victory_overlay.visible = false
+	defeat_overlay.visible = false
+	_battle = null
+	# Re-run _ready logic. Simplest: reload the scene.
+	SceneManager.change_scene(
+		SceneManager.SceneId.BATTLE,
+		SceneManager.TransitionType.FADE,
+		{"enemy_ids": _enemy_ids, "story_node": _story_node}
+	)
+
+
+func _on_defeat_retreat() -> void:
+	SceneManager.change_scene(SceneManager.SceneId.HUB)
+
+
+# ── Story reward helper (mirrors combat.gd) ──────────────────────────────────
+
+func _apply_story_rewards(node_id: String) -> void:
+	var data: Dictionary = JsonLoader.load_dict("res://assets/data/chapters/ch01.json")
+	if data.is_empty():
+		return
+	var nodes: Array = data.get("nodes", [])
+	for node: Variant in nodes:
+		var nd: Dictionary = node as Dictionary
+		if nd.get("id", "") == node_id:
+			var rewards: Dictionary = nd.get("rewards", {})
+			var gold: int = int(rewards.get("gold", 0))
+			var xp: int = int(rewards.get("xp", 0))
+			if gold > 0:
+				GameStore.add_gold(gold)
+			if xp > 0:
+				GameStore.add_xp(xp)
+			for flag: Variant in rewards.get("flags", []):
+				GameStore.set_flag(str(flag))
+			for fx: Variant in nd.get("effects", []):
+				var fx_dict: Dictionary = fx as Dictionary
+				if fx_dict.get("type", "") == "meet":
+					CompanionRegistry.meet_companion(fx_dict.get("companion", "") as String)
+			break
+
+
+# ── Helpers ──────────────────────────────────────────────────────────────────
+
+func _find_slot_for(c: Combatant) -> Control:
+	for slot: Control in _party_slots:
+		if slot.get_meta("combatant", null) == c:
+			return slot
+	for slot: Control in _enemy_slots:
+		if slot.get_meta("combatant", null) == c:
+			return slot
+	return null
+
+
+func _lowest_hp_ally() -> Combatant:
+	var best: Combatant = null
+	var best_frac: float = 2.0
+	for c: Combatant in _battle.live_party():
+		var f: float = c.stats.hp_fraction()
+		if f < best_frac:
+			best_frac = f
+			best = c
+	return best
+
+
+func _element_color(element: String) -> Color:
+	match element:
+		"Fire": return UIConstants.ELEM_FIRE_FG
+		"Water": return UIConstants.ELEM_WATER_FG
+		"Earth": return UIConstants.ELEM_EARTH_FG
+		"Lightning": return UIConstants.ELEM_LIGHTNING_FG
+		"Neutral": return UIConstants.ACCENT_GOLD
+		_: return UIConstants.TEXT_SECONDARY
