@@ -115,9 +115,16 @@ var _tavern_last_played: Dictionary = {}
 ##   start_utc (int), duration_seconds (float).
 var _exploration_state: Dictionary = {}
 
-## Per-companion XP pool keyed by companion ID.
-## Accumulated via exploration dispatch and combat captain duty.
+## Per-companion XP pool keyed by companion ID. Decreases on level-up (XP
+## is spent as a resource, not just a cumulative counter).
+## Accumulated via exploration dispatch and combat victories.
 var _companion_xp: Dictionary = {}
+
+## Per-companion combat level keyed by companion ID. Stored explicitly
+## (not derived) because level-ups are a player action — paying gold +
+## spending banked XP — not an automatic threshold. Unset entries default
+## to 1. See design/quick-specs/companion-leveling.md.
+var _companion_levels: Dictionary = {}
 
 # ---------------------------------------------------------------------------
 # Private State — Persistence (GS-003 will add deferred flush)
@@ -169,6 +176,7 @@ func _initialize_defaults() -> void:
 	_pending_equipment = []
 	_exploration_state = {}
 	_companion_xp = {}
+	_companion_levels = {}
 	_counters = {}
 	_tavern_last_played = {}
 
@@ -542,12 +550,68 @@ func get_companion_xp(companion_id: String) -> int:
 	return int(_companion_xp.get(companion_id, 0))
 
 ## Adds [param amount] XP to [param companion_id]'s pool and marks state dirty.
-## No-op for unknown companion IDs (pool is created lazily).
+## No-op for unknown companion IDs (pool is created lazily). Negative values
+## are clamped to 0 so XP is monotonic.
 func add_companion_xp(companion_id: String, amount: int) -> void:
+	if amount <= 0:
+		return
 	var current: int = int(_companion_xp.get(companion_id, 0))
 	_companion_xp[companion_id] = current + amount
 	_mark_dirty()
 	state_changed.emit("companion_xp")
+
+## Returns the stored combat level for [param companion_id]. Unset entries
+## default to 1. Level is NOT derived from XP — the player manually spends
+## XP + gold to level up via `level_up_companion`.
+func get_companion_level(companion_id: String) -> int:
+	return int(_companion_levels.get(companion_id, 1))
+
+## Returns the XP cost to buy the next level for [param companion_id], or 0
+## if already at the cap. Matches CompanionLevel.xp_needed_for_next so the
+## curve stays authoritative in one place.
+func get_level_up_xp_cost(companion_id: String) -> int:
+	var level: int = get_companion_level(companion_id)
+	return CompanionLevel.xp_needed_for_next(level)
+
+## Returns the gold cost to buy the next level. Linear: 25 × current_level.
+## Total across levels 1→20 is ~5000 gold per companion.
+func get_level_up_gold_cost(companion_id: String) -> int:
+	var level: int = get_companion_level(companion_id)
+	if level >= CompanionLevel.LEVEL_CAP:
+		return 0
+	return 25 * level
+
+## True if the player can afford the next level-up right now — enough XP
+## banked, enough gold on hand, and not yet at the level cap.
+func can_level_up(companion_id: String) -> bool:
+	var level: int = get_companion_level(companion_id)
+	if level >= CompanionLevel.LEVEL_CAP:
+		return false
+	var xp: int = get_companion_xp(companion_id)
+	if xp < get_level_up_xp_cost(companion_id):
+		return false
+	if _player_gold < get_level_up_gold_cost(companion_id):
+		return false
+	return true
+
+## Executes the level-up: spends XP + gold, increments the stored level,
+## marks state dirty. Returns true on success. Returns false (with no
+## state change) if preconditions aren't met.
+func level_up_companion(companion_id: String) -> bool:
+	if not can_level_up(companion_id):
+		return false
+	var xp_cost: int = get_level_up_xp_cost(companion_id)
+	var gold_cost: int = get_level_up_gold_cost(companion_id)
+	var current_xp: int = int(_companion_xp.get(companion_id, 0))
+	_companion_xp[companion_id] = current_xp - xp_cost
+	_player_gold -= gold_cost
+	var current_level: int = int(_companion_levels.get(companion_id, 1))
+	_companion_levels[companion_id] = current_level + 1
+	_mark_dirty()
+	state_changed.emit("gold")
+	state_changed.emit("companion_xp")
+	state_changed.emit("companion_level")
+	return true
 
 # ---------------------------------------------------------------------------
 # Public Getters — Counters (Achievements / Lifetime Stats)
@@ -607,6 +671,7 @@ func to_dict() -> Dictionary:
 		"pending_equipment": _pending_equipment.duplicate(),
 		"exploration_state": _exploration_state.duplicate(),
 		"companion_xp": _companion_xp.duplicate(),
+		"companion_levels": _companion_levels.duplicate(),
 		"counters": _counters.duplicate(),
 	}
 
@@ -675,6 +740,18 @@ func from_dict(data: Dictionary) -> void:
 	var raw_counters: Dictionary = data.get("counters", {})
 	for key: Variant in raw_counters:
 		_counters[str(key)] = int(raw_counters[key])
+
+	# Companion XP + levels. Both default to empty dicts — any missing entry
+	# falls through to XP 0 / level 1 via the getters. Pre-Phase H saves
+	# had no companion_levels key at all; that's fine.
+	_companion_xp = {}
+	var raw_xp: Dictionary = data.get("companion_xp", {})
+	for key: Variant in raw_xp:
+		_companion_xp[str(key)] = int(raw_xp[key])
+	_companion_levels = {}
+	var raw_levels: Dictionary = data.get("companion_levels", {})
+	for key: Variant in raw_levels:
+		_companion_levels[str(key)] = int(raw_levels[key])
 
 	# Explicitly clear both flags — loading is not a mutation and must not
 	# trigger a save flush even if the store had prior dirty state (AC5).

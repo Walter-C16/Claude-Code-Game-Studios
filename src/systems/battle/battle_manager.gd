@@ -127,6 +127,13 @@ func setup(party_ids: Array[String], enemy_ids: Array[String]) -> bool:
 		push_error("BattleManager.setup: empty roster after build")
 		return false
 
+	# Level scaling — apply per-level stat bonuses from GameStore._companion_xp
+	# before blessings and Epithets so the higher-tier systems layer on top of
+	# a leveled baseline. Protagonist scales the same way under id "protagonist".
+	for combatant: Combatant in party:
+		var level: int = GameStore.get_companion_level(combatant.id)
+		CompanionLevel.apply_to_stats(combatant.stats, level)
+
 	# Gun element — the protagonist's gun fires whichever element the first
 	# companion in the party supplies. Slot 0 is always the protagonist, so the
 	# first non-proto ally at slot 1 is the source. If the party is proto-only

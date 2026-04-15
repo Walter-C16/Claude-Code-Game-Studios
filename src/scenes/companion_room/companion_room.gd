@@ -36,6 +36,10 @@ var _detail_role_label: Label
 var _detail_rl_bar: ProgressBar
 var _detail_stage_label: Label
 var _detail_mood_label: Label
+var _detail_level_label: Label
+var _detail_xp_bar: ProgressBar
+var _detail_level_up_btn: Button
+var _detail_level_up_cost_label: Label
 var _talk_btn: Button
 var _gift_open_btn: Button
 var _gift_modal: PanelContainer
@@ -222,6 +226,50 @@ func _build_detail_panel() -> void:
 	_detail_rl_bar.add_theme_stylebox_override("background", bar_bg)
 	vbox.add_child(_detail_rl_bar)
 
+	# Combat level + XP progress bar. Displayed below the relationship bar so
+	# players read romance first (the primary arc) then combat progression.
+	_detail_level_label = Label.new()
+	_detail_level_label.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	_detail_level_label.add_theme_font_size_override("font_size", 13)
+	vbox.add_child(_detail_level_label)
+
+	_detail_xp_bar = ProgressBar.new()
+	_detail_xp_bar.min_value = 0.0
+	_detail_xp_bar.max_value = 1.0
+	_detail_xp_bar.step = 0.001
+	_detail_xp_bar.custom_minimum_size = Vector2(0.0, 10.0)
+	_detail_xp_bar.show_percentage = false
+	var xp_fill: StyleBoxFlat = StyleBoxFlat.new()
+	xp_fill.bg_color = UIConstants.ACCENT_GOLD_BRIGHT
+	xp_fill.corner_radius_top_left = 3
+	xp_fill.corner_radius_top_right = 3
+	xp_fill.corner_radius_bottom_left = 3
+	xp_fill.corner_radius_bottom_right = 3
+	_detail_xp_bar.add_theme_stylebox_override("fill", xp_fill)
+	var xp_bg: StyleBoxFlat = StyleBoxFlat.new()
+	xp_bg.bg_color = UIConstants.BG_TERTIARY
+	xp_bg.corner_radius_top_left = 3
+	xp_bg.corner_radius_top_right = 3
+	xp_bg.corner_radius_bottom_left = 3
+	xp_bg.corner_radius_bottom_right = 3
+	_detail_xp_bar.add_theme_stylebox_override("background", xp_bg)
+	vbox.add_child(_detail_xp_bar)
+
+	# Level up button + cost hint. The button is disabled until the player
+	# has enough banked XP AND enough gold for the next level.
+	_detail_level_up_cost_label = Label.new()
+	_detail_level_up_cost_label.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+	_detail_level_up_cost_label.add_theme_font_size_override("font_size", 11)
+	vbox.add_child(_detail_level_up_cost_label)
+
+	_detail_level_up_btn = Button.new()
+	_detail_level_up_btn.text = Localization.get_text("COMPANION_LEVEL_UP_BUTTON")
+	_detail_level_up_btn.custom_minimum_size = Vector2(0.0, 40.0)
+	_detail_level_up_btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	_detail_level_up_btn.add_theme_font_size_override("font_size", 14)
+	_detail_level_up_btn.pressed.connect(_on_level_up_pressed)
+	vbox.add_child(_detail_level_up_btn)
+
 	# Action buttons row.
 	var btn_row: HBoxContainer = HBoxContainer.new()
 	btn_row.add_theme_constant_override("separation", 12)
@@ -399,6 +447,38 @@ func _refresh_detail_panel() -> void:
 
 	# RL bar.
 	_detail_rl_bar.value = float(rl)
+
+	# Combat level + XP. XP is spent on level-up, so the bar shows
+	# "banked XP / XP needed for next level". "MAX" replaces the fraction at cap.
+	var level: int = GameStore.get_companion_level(_selected_id)
+	var banked_xp: int = GameStore.get_companion_xp(_selected_id)
+	var xp_cost: int = GameStore.get_level_up_xp_cost(_selected_id)
+	var gold_cost: int = GameStore.get_level_up_gold_cost(_selected_id)
+	if xp_cost <= 0:
+		_detail_level_label.text = "%s %d · %s" % [
+			Localization.get_text("COMPANION_LEVEL_LABEL"),
+			level,
+			Localization.get_text("COMPANION_LEVEL_MAX"),
+		]
+		_detail_xp_bar.value = 1.0
+		_detail_level_up_cost_label.text = ""
+		_detail_level_up_btn.disabled = true
+		_detail_level_up_btn.visible = false
+	else:
+		_detail_level_label.text = "%s %d · %d / %d XP" % [
+			Localization.get_text("COMPANION_LEVEL_LABEL"),
+			level,
+			banked_xp,
+			xp_cost,
+		]
+		_detail_xp_bar.value = clampf(float(banked_xp) / float(xp_cost), 0.0, 1.0)
+		_detail_level_up_cost_label.text = "%s: %d XP · %d Gold" % [
+			Localization.get_text("COMPANION_LEVEL_UP_COST"),
+			xp_cost,
+			gold_cost,
+		]
+		_detail_level_up_btn.visible = true
+		_detail_level_up_btn.disabled = not GameStore.can_level_up(_selected_id)
 
 	# Button availability — grey out if no tokens.
 	var has_tokens: bool = GameStore.get_daily_tokens() > 0
@@ -586,6 +666,17 @@ func _on_gift_btn_pressed() -> void:
 	if _selected_id.is_empty():
 		return
 	_show_gift_modal()
+
+
+func _on_level_up_pressed() -> void:
+	if _selected_id.is_empty():
+		return
+	if not GameStore.level_up_companion(_selected_id):
+		return
+	_show_feedback("Level Up!")
+	_refresh_detail_panel()
+	_refresh_top_bar()
+	Fx.pulse(_detail_level_label)
 
 
 func _on_gift_item_selected(item_id: String) -> void:

@@ -355,17 +355,25 @@ func _refresh_actor_hud() -> void:
 	var actor: Combatant = _battle.current_combatant()
 	if actor == null:
 		return
-	# Name + active blessings count. Protagonist and enemies always show 0.
+	# Name · Lv N [blessings]. Enemies are shown with their display name only.
+	var name_prefix: String = actor.display_name
+	if not actor.is_enemy:
+		var level: int = GameStore.get_companion_level(actor.id)
+		name_prefix = "%s · %s %d" % [
+			actor.display_name,
+			Localization.get_text("BATTLE_LEVEL_SHORT"),
+			level,
+		]
 	var bless_count: int = 0
 	if not actor.is_enemy and _battle.active_blessings.has(actor.id):
 		bless_count = (_battle.active_blessings[actor.id] as Array).size()
 	if bless_count > 0:
 		actor_name_label.text = "%s  [%s]" % [
-			actor.display_name,
+			name_prefix,
 			Localization.get_text("BATTLE_BLESSINGS_ACTIVE") % bless_count,
 		]
 	else:
-		actor_name_label.text = actor.display_name
+		actor_name_label.text = name_prefix
 	hp_bar.value = actor.stats.hp_fraction()
 	hp_label.text = "HP %d / %d" % [actor.stats.current_hp, actor.stats.max_hp]
 	energy_label.text = "⚡ %d / %d" % [actor.stats.current_energy, actor.stats.max_energy]
@@ -664,10 +672,24 @@ func _on_battle_ended(victory: bool) -> void:
 	_is_picking_target = false
 	_set_target_picking(false)
 	if victory:
+		_grant_victory_xp()
 		victory_overlay.visible = true
 		Fx.pop_scale(victory_overlay.get_child(0) as Control, 1.2, 0.6)
 	else:
 		defeat_overlay.visible = true
+
+
+## Post-victory XP distribution. Every party member that was still standing
+## at the end of the fight earns the full combat_victory amount; KO'd
+## members still get a reduced share (they learned from the fight). See
+## design/quick-specs/companion-leveling.md for tuning.
+const COMBAT_VICTORY_XP_ALIVE: int = 30
+const COMBAT_VICTORY_XP_FALLEN: int = 10
+
+func _grant_victory_xp() -> void:
+	for member: Combatant in _battle.party:
+		var amount: int = COMBAT_VICTORY_XP_ALIVE if member.is_alive() else COMBAT_VICTORY_XP_FALLEN
+		GameStore.add_companion_xp(member.id, amount)
 
 
 # ── Player actions ───────────────────────────────────────────────────────────
