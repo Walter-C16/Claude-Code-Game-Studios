@@ -1,20 +1,27 @@
 extends Control
 
-## Deck — Companion grid (browse) + detail view (assign to deck / captain).
+## Party — Companion grid (browse) + detail view (add / remove from party).
 ##
 ## Flow:
-##   Grid view: 2-column grid of met companions, each showing their card value.
-##   Tap a companion → detail view: full portrait, stats, blessings, action buttons.
-##   Use in Deck: assigns companion's signature card to the deck.
-##     If another companion already occupies the same (element, card_value) slot,
-##     a confirm popup asks to replace.
-##   Assign Captain: sets this companion as the captain.
-##     If another captain exists, confirm popup asks to replace.
+##   Grid view: 2-column grid of met companions, each showing a party slot
+##   number (P1, P2, P3) if they're in the active party.
+##   Tap a companion → detail view: full portrait, stats, blessings, and a
+##   single action button (Add to Party / Remove from Party).
+##   Party cap: 3 companions (plus the protagonist who is always in slot 0
+##   during battle). Trying to add when the party is full prompts to replace.
+##
+## The file is still named "deck" for backward compat with the scene id and
+## existing saves; the player-facing label is "MY PARTY" and the data is
+## stored in GameStore._deck_companions.
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
 const VIEW_GRID: int = 0
 const VIEW_DETAIL: int = 1
+
+## Maximum companions in the active party. The protagonist is implicit and
+## always occupies slot 0 — these 3 slots cover the other battle positions.
+const MAX_PARTY_SIZE: int = 3
 
 # ── Node References ────────────────────────────────────────────────────────────
 
@@ -33,15 +40,14 @@ var _detail_name_label: Label
 var _detail_role_label: Label
 var _detail_stats_label: Label
 var _detail_blessings_container: VBoxContainer
-var _use_in_deck_btn: Button
-var _assign_captain_btn: Button
+var _party_action_btn: Button
 var _scroll: ScrollContainer
 var _active_popup: PanelContainer
 
 # ── Built-in Virtual Methods ───────────────────────────────────────────────────
 
 func _ready() -> void:
-	title_label.text = "MY DECK"
+	title_label.text = Localization.get_text("PARTY_TITLE")
 	_clear_tscn_placeholder()
 	_build_grid_view()
 	_build_detail_view()
@@ -168,38 +174,51 @@ func _make_companion_cell(id: String, profile: Dictionary) -> Control:
 	name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vbox.add_child(name_label)
 
-	# Card value badge — bottom-right overlay on the cell.
-	var value_label: Label = Label.new()
-	value_label.text = _card_value_name(int(profile.get("card_value", 0)))
-	value_label.add_theme_color_override("font_color", _element_color(profile.get("element", "") as String))
-	value_label.add_theme_font_size_override("font_size", 22)
-	value_label.anchor_left = 1.0
-	value_label.anchor_right = 1.0
-	value_label.anchor_top = 1.0
-	value_label.anchor_bottom = 1.0
-	value_label.offset_left = -32.0
-	value_label.offset_top = -30.0
-	value_label.offset_right = -8.0
-	value_label.offset_bottom = -6.0
-	value_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	btn.add_child(value_label)
+	# Element badge — bottom-right overlay on the cell (replaces card value).
+	var element_label: Label = Label.new()
+	element_label.text = profile.get("element", "") as String
+	element_label.add_theme_color_override("font_color", _element_color(profile.get("element", "") as String))
+	element_label.add_theme_font_size_override("font_size", 12)
+	element_label.anchor_left = 1.0
+	element_label.anchor_right = 1.0
+	element_label.anchor_top = 1.0
+	element_label.anchor_bottom = 1.0
+	element_label.offset_left = -60.0
+	element_label.offset_top = -22.0
+	element_label.offset_right = -6.0
+	element_label.offset_bottom = -4.0
+	element_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	element_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	btn.add_child(element_label)
 
-	# Captain indicator (gold crown) — top-right overlay.
-	if GameStore.get_last_captain_id() == id:
-		var crown: Label = Label.new()
-		crown.text = "★"
-		crown.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
-		crown.add_theme_font_size_override("font_size", 20)
-		crown.anchor_left = 1.0
-		crown.anchor_right = 1.0
-		crown.offset_left = -26.0
-		crown.offset_top = 4.0
-		crown.offset_right = -6.0
-		crown.offset_bottom = 24.0
-		crown.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		btn.add_child(crown)
+	# Party slot indicator — top-right overlay shows P1/P2/P3 when in party.
+	var party_slot: int = _party_slot_of(id)
+	if party_slot > 0:
+		var slot_label: Label = Label.new()
+		slot_label.text = "P%d" % party_slot
+		slot_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+		slot_label.add_theme_font_size_override("font_size", 18)
+		slot_label.anchor_left = 1.0
+		slot_label.anchor_right = 1.0
+		slot_label.offset_left = -34.0
+		slot_label.offset_top = 4.0
+		slot_label.offset_right = -6.0
+		slot_label.offset_bottom = 28.0
+		slot_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		btn.add_child(slot_label)
 
 	return btn
+
+
+## Returns the 1-based party slot index (1, 2, or 3) for the given companion,
+## or 0 if they're not in the party. The slot number reflects insertion order
+## in GameStore.get_deck_companions().
+func _party_slot_of(companion_id: String) -> int:
+	var members: Array[String] = GameStore.get_deck_companions()
+	for i: int in range(members.size()):
+		if members[i] == companion_id:
+			return i + 1
+	return 0
 
 
 func _show_grid_view() -> void:
@@ -207,10 +226,13 @@ func _show_grid_view() -> void:
 	_selected_id = ""
 	_scroll.visible = true
 	_detail_root.visible = false
-	_use_in_deck_btn.visible = false
-	_assign_captain_btn.visible = false
+	_party_action_btn.visible = false
 	_populate_grid()
-	deck_size_label.text = "%d/%d in deck" % [GameStore.get_deck_companions().size(), _combatant_count()]
+	deck_size_label.text = "%d/%d %s" % [
+		GameStore.get_deck_companions().size(),
+		MAX_PARTY_SIZE,
+		Localization.get_text("PARTY_IN_PARTY_SUFFIX"),
+	]
 	await get_tree().process_frame
 	Fx.stagger_children(_grid_container, 0.05, 20.0)
 
@@ -285,8 +307,7 @@ func _show_detail_view(id: String) -> void:
 	_selected_id = id
 	_scroll.visible = false
 	_detail_root.visible = true
-	_use_in_deck_btn.visible = true
-	_assign_captain_btn.visible = true
+	_party_action_btn.visible = true
 
 	var profile: Dictionary = CompanionRegistry.get_profile(id)
 	var portrait_path: String = CompanionRegistry.get_portrait_path(id, "neutral")
@@ -298,18 +319,31 @@ func _show_detail_view(id: String) -> void:
 	_detail_name_label.text = profile.get("display_name", id.capitalize())
 	_detail_role_label.text = profile.get("role", "")
 	var element: String = profile.get("element", "") as String
-	var card_value: int = int(profile.get("card_value", 0))
-	_detail_stats_label.text = "%s  %s | STR %d  INT %d  AGI %d" % [
-		_card_value_name(card_value), element,
-		int(profile.get("STR", 0)),
-		int(profile.get("INT", 0)),
-		int(profile.get("AGI", 0)),
-	]
+	var battle_row: Dictionary = _battle_stats_for(id)
+	if not battle_row.is_empty():
+		_detail_stats_label.text = "%s | HP %d  ATK %d  DEF %d  AGI %d  CRIT %d%%" % [
+			element,
+			int(battle_row.get("hp", 0)),
+			int(battle_row.get("atk", 0)),
+			int(battle_row.get("def", 0)),
+			int(battle_row.get("agi", 0)),
+			int(battle_row.get("crit_chance", 0)),
+		]
+	else:
+		_detail_stats_label.text = element
 
 	_populate_blessings_list(id)
 	_update_action_buttons_for(id)
 
 	Fx.slide_in(_detail_root, Vector2(0.0, 30.0), 0.3)
+
+
+## Loads the battle-stats row for [param companion_id] from the JSON file.
+## Returns empty dict if the id is not in the characters section.
+func _battle_stats_for(companion_id: String) -> Dictionary:
+	var data: Dictionary = JsonLoader.load_dict("res://assets/data/character_battle_stats.json")
+	var chars: Dictionary = data.get("characters", {}) as Dictionary
+	return chars.get(companion_id, {}) as Dictionary
 
 
 func _populate_blessings_list(id: String) -> void:
@@ -390,24 +424,19 @@ func _make_blessing_row(blessing: Dictionary, current_stage: int) -> PanelContai
 func _build_bottom_action_bar() -> void:
 	var bar: HBoxContainer = HBoxContainer.new()
 	bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	bar.offset_top = -104.0
+	bar.offset_top = -76.0
 	bar.offset_bottom = -12.0
 	bar.offset_left = 12.0
 	bar.offset_right = -12.0
 	bar.add_theme_constant_override("separation", 10)
 	add_child(bar)
 
-	_use_in_deck_btn = _make_action_button("Use in Deck")
-	_use_in_deck_btn.pressed.connect(_on_use_in_deck_pressed)
-	bar.add_child(_use_in_deck_btn)
-
-	_assign_captain_btn = _make_action_button("Assign Captain")
-	_assign_captain_btn.pressed.connect(_on_assign_captain_pressed)
-	bar.add_child(_assign_captain_btn)
+	_party_action_btn = _make_action_button(Localization.get_text("PARTY_ADD_BTN"))
+	_party_action_btn.pressed.connect(_on_party_action_pressed)
+	bar.add_child(_party_action_btn)
 
 	# Hidden until a companion is selected.
-	_use_in_deck_btn.visible = false
-	_assign_captain_btn.visible = false
+	_party_action_btn.visible = false
 
 
 func _make_action_button(text: String) -> Button:
@@ -433,11 +462,11 @@ func _make_action_button(text: String) -> Button:
 
 
 func _update_action_buttons_for(id: String) -> void:
-	var in_deck: bool = GameStore.has_deck_companion(id)
-	var is_captain: bool = GameStore.get_last_captain_id() == id
-	_use_in_deck_btn.text = "Remove from Deck" if in_deck else "Use in Deck"
-	_assign_captain_btn.text = "✓ Captain" if is_captain else "Assign Captain"
-	_assign_captain_btn.disabled = is_captain
+	var in_party: bool = GameStore.has_deck_companion(id)
+	if in_party:
+		_party_action_btn.text = Localization.get_text("PARTY_REMOVE_BTN")
+	else:
+		_party_action_btn.text = Localization.get_text("PARTY_ADD_BTN")
 
 
 # ── Actions ────────────────────────────────────────────────────────────────────
@@ -446,65 +475,44 @@ func _on_companion_selected(id: String) -> void:
 	_show_detail_view(id)
 
 
-func _on_use_in_deck_pressed() -> void:
+## Single entry point for the Add/Remove party action.
+## Toggles the selected companion in or out of the party. If adding and the
+## party is already at MAX_PARTY_SIZE, shows a picker popup so the player
+## can choose which member to replace.
+func _on_party_action_pressed() -> void:
 	if _selected_id.is_empty():
 		return
 
-	# Toggle off if already in deck.
+	# Already in party → remove.
 	if GameStore.has_deck_companion(_selected_id):
 		GameStore.remove_deck_companion(_selected_id)
+		_sync_captain_with_party()
 		_update_action_buttons_for(_selected_id)
 		_populate_grid()
 		return
 
-	# Assign to the companion's canonical slot — each companion has a fixed
-	# (element, card_value) signature defined in companions.json (e.g.
-	# Artemis = Earth 13 = K of Clubs). No picker needed.
+	# Not in party — add if there's room.
+	var members: Array[String] = GameStore.get_deck_companions()
 	var profile: Dictionary = CompanionRegistry.get_profile(_selected_id)
-	var fixed_value: int = int(profile.get("card_value", 0))
-	if fixed_value <= 0:
-		return
-	GameStore.add_deck_companion(_selected_id, fixed_value)
-	_update_action_buttons_for(_selected_id)
-	_populate_grid()
-	Fx.pop_scale(_use_in_deck_btn)
+	var card_value: int = int(profile.get("card_value", 0))
 
-
-func _on_assign_captain_pressed() -> void:
-	if _selected_id.is_empty():
-		return
-
-	var current_captain: String = GameStore.get_last_captain_id()
-	if current_captain == _selected_id:
-		return  # already captain
-
-	if current_captain.is_empty():
-		GameStore.set_last_captain_id(_selected_id)
+	if members.size() < MAX_PARTY_SIZE:
+		GameStore.add_deck_companion(_selected_id, card_value)
+		_sync_captain_with_party()
 		_update_action_buttons_for(_selected_id)
-		Fx.pop_scale(_assign_captain_btn)
+		_populate_grid()
+		Fx.pop_scale(_party_action_btn)
 		return
 
-	var captain_name: String = CompanionRegistry.get_profile(current_captain).get("display_name", current_captain)
-	_show_replace_popup(
-		"Replace Captain",
-		"%s is already your captain. Replace with %s?" % [
-			captain_name,
-			CompanionRegistry.get_profile(_selected_id).get("display_name", _selected_id),
-		],
-		func() -> void:
-			GameStore.set_last_captain_id(_selected_id)
-			_update_action_buttons_for(_selected_id)
-	)
+	# Full party — prompt which member to replace.
+	_show_replace_party_picker(profile.get("display_name", _selected_id))
 
 
-# ── Replace Popup ──────────────────────────────────────────────────────────────
-
-## Shows a confirm popup with the given title/body, calling on_confirm if the
-## player accepts. The popup captures input so the underlying view is locked.
-func _show_replace_popup(popup_title: String, body: String, on_confirm: Callable) -> void:
+## Shows a popup listing current party members so the player picks who to
+## kick out when adding a new companion to a full party.
+func _show_replace_party_picker(incoming_name: String) -> void:
 	_close_popup()
 
-	# Dim backdrop that eats input.
 	var backdrop: ColorRect = ColorRect.new()
 	backdrop.name = "PopupBackdrop"
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -519,8 +527,8 @@ func _show_replace_popup(popup_title: String, body: String, on_confirm: Callable
 	_active_popup.anchor_bottom = 0.5
 	_active_popup.offset_left = -170.0
 	_active_popup.offset_right = 170.0
-	_active_popup.offset_top = -120.0
-	_active_popup.offset_bottom = 120.0
+	_active_popup.offset_top = -180.0
+	_active_popup.offset_bottom = 180.0
 	var style: StyleBoxFlat = StyleBoxFlat.new()
 	style.bg_color = UIConstants.BG_SECONDARY
 	style.corner_radius_top_left = 12
@@ -540,42 +548,62 @@ func _show_replace_popup(popup_title: String, body: String, on_confirm: Callable
 	add_child(_active_popup)
 
 	var vbox: VBoxContainer = VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 12)
+	vbox.add_theme_constant_override("separation", 10)
 	_active_popup.add_child(vbox)
 
 	var title: Label = Label.new()
-	title.text = popup_title
+	title.text = Localization.get_text("PARTY_FULL_TITLE")
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
 	title.add_theme_font_size_override("font_size", 18)
 	vbox.add_child(title)
 
-	var body_label: Label = Label.new()
-	body_label.text = body
-	body_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	body_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	body_label.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
-	body_label.add_theme_font_size_override("font_size", 14)
-	body_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	vbox.add_child(body_label)
+	var body: Label = Label.new()
+	body.text = Localization.get_text("PARTY_FULL_BODY") % incoming_name
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	body.add_theme_font_size_override("font_size", 13)
+	vbox.add_child(body)
 
-	var btn_row: HBoxContainer = HBoxContainer.new()
-	btn_row.add_theme_constant_override("separation", 10)
-	vbox.add_child(btn_row)
+	# One button per current party member.
+	for cid: String in GameStore.get_deck_companions():
+		var name: String = CompanionRegistry.get_profile(cid).get("display_name", cid) as String
+		var btn: Button = _make_action_button(name)
+		var captured: String = cid
+		btn.pressed.connect(func() -> void:
+			var incoming_profile: Dictionary = CompanionRegistry.get_profile(_selected_id)
+			var incoming_value: int = int(incoming_profile.get("card_value", 0))
+			GameStore.remove_deck_companion(captured)
+			GameStore.add_deck_companion(_selected_id, incoming_value)
+			_sync_captain_with_party()
+			_update_action_buttons_for(_selected_id)
+			_populate_grid()
+			_close_popup()
+		)
+		vbox.add_child(btn)
 
-	var cancel_btn: Button = _make_action_button("Cancel")
+	var cancel_btn: Button = _make_action_button(Localization.get_text("PARTY_CANCEL_BTN"))
 	cancel_btn.pressed.connect(_close_popup)
-	btn_row.add_child(cancel_btn)
-
-	var confirm_btn: Button = _make_action_button("Replace")
-	confirm_btn.pressed.connect(func() -> void:
-		on_confirm.call()
-		_close_popup()
-	)
-	btn_row.add_child(confirm_btn)
+	vbox.add_child(cancel_btn)
 
 	Fx.slide_in(_active_popup, Vector2(0.0, 20.0), 0.25)
 
+
+## Backward-compat bridge for the old poker combat (tavern tournaments):
+## they still read GameStore.get_last_captain_id() to compute STR/INT bonuses.
+## We auto-sync the captain slot to the first party member so players never
+## have to manage two concepts.
+func _sync_captain_with_party() -> void:
+	var members: Array[String] = GameStore.get_deck_companions()
+	if members.is_empty():
+		if not GameStore.get_last_captain_id().is_empty():
+			GameStore.set_last_captain_id("")
+	else:
+		GameStore.set_last_captain_id(members[0])
+
+
+# ── Popup Cleanup ─────────────────────────────────────────────────────────────
 
 func _close_popup() -> void:
 	if _active_popup == null:
@@ -589,15 +617,6 @@ func _close_popup() -> void:
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
 
-func _card_value_name(value: int) -> String:
-	match value:
-		11: return "J"
-		12: return "Q"
-		13: return "K"
-		14: return "A"
-		_: return str(value)
-
-
 func _element_color(element: String) -> Color:
 	match element:
 		"Fire": return UIConstants.ELEM_FIRE_FG
@@ -605,13 +624,3 @@ func _element_color(element: String) -> Color:
 		"Earth": return UIConstants.ELEM_EARTH_FG
 		"Lightning": return UIConstants.ELEM_LIGHTNING_FG
 		_: return UIConstants.TEXT_SECONDARY
-
-
-## Count of companions with a valid combat card_value (excludes priestess).
-func _combatant_count() -> int:
-	var n: int = 0
-	for id: String in CompanionRegistry.get_all_ids():
-		var profile: Dictionary = CompanionRegistry.get_profile(id)
-		if int(profile.get("card_value", 0)) > 0:
-			n += 1
-	return n

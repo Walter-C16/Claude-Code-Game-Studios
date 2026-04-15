@@ -173,7 +173,7 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(0, 52)
 theme_override_colors/font_color = Color(0.667, 0.533, 0.333, 1)
 theme_override_font_sizes/font_size = 12
-text = "DECK"
+text = "PARTY"
 
 [node name="ExploreBtn" type="Button" parent="MoreTabs"]
 layout_mode = 2

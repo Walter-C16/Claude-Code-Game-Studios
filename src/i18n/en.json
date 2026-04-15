@@ -1293,6 +1293,14 @@
   "MOVE_ENEMY_THORN": "Thorn Rain",
   "MOVE_ENEMY_GAIA_WRATH": "Gaia's Wrath",
 
+  "PARTY_TITLE": "MY PARTY",
+  "PARTY_IN_PARTY_SUFFIX": "in party",
+  "PARTY_ADD_BTN": "Add to Party",
+  "PARTY_REMOVE_BTN": "Remove from Party",
+  "PARTY_CANCEL_BTN": "Cancel",
+  "PARTY_FULL_TITLE": "Party Full",
+  "PARTY_FULL_BODY": "Your party is full. Pick who to replace with %s.",
+
   "TUTORIAL_BADGE": "TUTORIAL",
   "TUTORIAL_OK": "Got it",
 
@@ -1305,8 +1313,8 @@
   "TUTORIAL_CAMP_TITLE": "Bonds",
   "TUTORIAL_CAMP_BODY": "Spend tokens to grow close. Gifts they love strengthen the bond faster.",
 
-  "TUTORIAL_DECK_TITLE": "Your Deck",
-  "TUTORIAL_DECK_BODY": "Slot companions into your deck for signature cards. A captain gives stat bonuses in combat.",
+  "TUTORIAL_DECK_TITLE": "Your Party",
+  "TUTORIAL_DECK_BODY": "Pick up to three companions to fight beside you. Their elements combine for powerful reactions.",
 
   "TUTORIAL_CHAPTER_MAP_TITLE": "Places",
   "TUTORIAL_CHAPTER_MAP_BODY": "Each place holds people to meet. Follow the gold thread to continue the story.",
