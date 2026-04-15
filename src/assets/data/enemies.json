@@ -53,10 +53,123 @@
       "hp": 100,
       "score_threshold": 70,
       "element": "Fire",
-      "type": "Tournament",
+      "type": "Duel",
       "chapter": "chapter_1",
       "context": "Sardis tavern tournament opponent",
       "portrait_key": "sardis_card_master"
+    },
+
+    {
+      "id": "cave_bat",
+      "name_key": "ENEMY_CAVE_BAT",
+      "hp": 65,
+      "score_threshold": 40,
+      "element": "Water",
+      "type": "Normal",
+      "chapter": "chapter_2",
+      "context": "Underground caverns below Olympus",
+      "portrait_key": "cave_bat"
+    },
+    {
+      "id": "thunder_imp",
+      "name_key": "ENEMY_THUNDER_IMP",
+      "hp": 75,
+      "score_threshold": 55,
+      "element": "Lightning",
+      "type": "Normal",
+      "chapter": "chapter_2",
+      "context": "Stormy mountain passes",
+      "portrait_key": "thunder_imp"
+    },
+    {
+      "id": "magma_hound",
+      "name_key": "ENEMY_MAGMA_HOUND",
+      "hp": 130,
+      "score_threshold": 85,
+      "element": "Fire",
+      "type": "Normal",
+      "chapter": "chapter_2",
+      "context": "Volcanic borderlands",
+      "portrait_key": "magma_hound"
+    },
+    {
+      "id": "river_drake",
+      "name_key": "ENEMY_RIVER_DRAKE",
+      "hp": 135,
+      "score_threshold": 90,
+      "element": "Water",
+      "type": "Normal",
+      "chapter": "chapter_2",
+      "context": "Corrupted river delta",
+      "portrait_key": "river_drake"
+    },
+    {
+      "id": "obsidian_guardian",
+      "name_key": "ENEMY_OBSIDIAN_GUARDIAN",
+      "hp": 170,
+      "score_threshold": 110,
+      "element": "Earth",
+      "type": "Normal",
+      "chapter": "chapter_2",
+      "context": "Fallen temple ruins",
+      "portrait_key": "obsidian_guardian"
+    },
+
+    {
+      "id": "storm_harpy",
+      "name_key": "ENEMY_STORM_HARPY",
+      "hp": 200,
+      "score_threshold": 140,
+      "element": "Lightning",
+      "type": "Duel",
+      "chapter": "chapter_3",
+      "context": "Sky bridge elite",
+      "portrait_key": "storm_harpy"
+    },
+    {
+      "id": "shade_walker",
+      "name_key": "ENEMY_SHADE_WALKER",
+      "hp": 190,
+      "score_threshold": 135,
+      "element": "Water",
+      "type": "Duel",
+      "chapter": "chapter_3",
+      "context": "Nyx-touched assassin",
+      "portrait_key": "shade_walker"
+    },
+
+    {
+      "id": "poseidon_echo",
+      "name_key": "ENEMY_POSEIDON_ECHO",
+      "hp": 300,
+      "score_threshold": 180,
+      "element": "Water",
+      "type": "Boss",
+      "chapter": "chapter_2",
+      "context": "Fragment of the sea god — chapter 2 boss",
+      "portrait_key": "poseidon_echo"
+    },
+    {
+      "id": "hephaestus_remnant",
+      "name_key": "ENEMY_HEPHAESTUS_REMNANT",
+      "hp": 320,
+      "score_threshold": 195,
+      "element": "Fire",
+      "type": "Boss",
+      "chapter": "chapter_3",
+      "context": "Fragment of the forge god — chapter 3 boss",
+      "portrait_key": "hephaestus_remnant"
+    },
+    {
+      "id": "zeus_fragment",
+      "name_key": "ENEMY_ZEUS_FRAGMENT",
+      "hp": 340,
+      "score_threshold": 210,
+      "element": "Lightning",
+      "type": "Boss",
+      "chapter": "chapter_4",
+      "context": "Fragment of the sky king — chapter 4 boss",
+      "portrait_key": "zeus_fragment"
     }
   ]
 }

@@ -123,6 +123,129 @@
       "has_ultimate": false,
       "ai_profile": "defensive",
       "turn_timer_seconds": 0
+    },
+
+    "cave_bat": {
+      "element": "Water",
+      "hp": 65,
+      "atk": 13,
+      "def": 5,
+      "agi": 16,
+      "crit_chance": 6.0,
+      "crit_damage": 140.0,
+      "has_ultimate": false,
+      "ai_profile": "aggressive",
+      "turn_timer_seconds": 0
+    },
+    "thunder_imp": {
+      "element": "Lightning",
+      "hp": 75,
+      "atk": 16,
+      "def": 6,
+      "agi": 22,
+      "crit_chance": 12.0,
+      "crit_damage": 160.0,
+      "has_ultimate": false,
+      "ai_profile": "aggressive",
+      "turn_timer_seconds": 30
+    },
+    "magma_hound": {
+      "element": "Fire",
+      "hp": 130,
+      "atk": 22,
+      "def": 11,
+      "agi": 14,
+      "crit_chance": 8.0,
+      "crit_damage": 160.0,
+      "has_ultimate": false,
+      "ai_profile": "berserker",
+      "turn_timer_seconds": 30
+    },
+    "river_drake": {
+      "element": "Water",
+      "hp": 135,
+      "atk": 19,
+      "def": 13,
+      "agi": 13,
+      "crit_chance": 7.0,
+      "crit_damage": 150.0,
+      "has_ultimate": false,
+      "ai_profile": "tactical",
+      "turn_timer_seconds": 45
+    },
+    "obsidian_guardian": {
+      "element": "Earth",
+      "hp": 170,
+      "atk": 18,
+      "def": 18,
+      "agi": 10,
+      "crit_chance": 4.0,
+      "crit_damage": 150.0,
+      "has_ultimate": false,
+      "ai_profile": "defensive",
+      "turn_timer_seconds": 45
+    },
+
+    "storm_harpy": {
+      "element": "Lightning",
+      "hp": 200,
+      "atk": 24,
+      "def": 12,
+      "agi": 20,
+      "crit_chance": 14.0,
+      "crit_damage": 170.0,
+      "has_ultimate": false,
+      "ai_profile": "tactical",
+      "turn_timer_seconds": 30
+    },
+    "shade_walker": {
+      "element": "Water",
+      "hp": 190,
+      "atk": 26,
+      "def": 11,
+      "agi": 17,
+      "crit_chance": 10.0,
+      "crit_damage": 165.0,
+      "has_ultimate": false,
+      "ai_profile": "tactical",
+      "turn_timer_seconds": 30
+    },
+
+    "poseidon_echo": {
+      "element": "Water",
+      "hp": 300,
+      "atk": 28,
+      "def": 16,
+      "agi": 12,
+      "crit_chance": 9.0,
+      "crit_damage": 175.0,
+      "has_ultimate": true,
+      "ai_profile": "tactical",
+      "turn_timer_seconds": 60
+    },
+    "hephaestus_remnant": {
+      "element": "Fire",
+      "hp": 320,
+      "atk": 30,
+      "def": 18,
+      "agi": 11,
+      "crit_chance": 11.0,
+      "crit_damage": 180.0,
+      "has_ultimate": true,
+      "ai_profile": "berserker",
+      "turn_timer_seconds": 60
+    },
+    "zeus_fragment": {
+      "element": "Lightning",
+      "hp": 340,
+      "atk": 32,
+      "def": 15,
+      "agi": 14,
+      "crit_chance": 13.0,
+      "crit_damage": 185.0,
+      "has_ultimate": true,
+      "ai_profile": "aggressive",
+      "turn_timer_seconds": 45
     }
   }
 }

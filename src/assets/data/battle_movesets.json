@@ -201,5 +201,245 @@
       "energy_cost": 0,
       "effect": "corrupted_bloom"
     }
+  },
+
+  "amazon_challenger": {
+    "normal": {
+      "id": "amazon_cleave",
+      "name_key": "MOVE_ENEMY_AMAZON_CLEAVE",
+      "target": "single_ally",
+      "element": "Fire",
+      "damage_mult": 1.1,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "amazon_bladestorm",
+      "name_key": "MOVE_ENEMY_AMAZON_BLADESTORM",
+      "target": "all_allies",
+      "element": "Fire",
+      "damage_mult": 0.75,
+      "energy_cost": 35
+    }
+  },
+
+  "cave_bat": {
+    "normal": {
+      "id": "bat_bite",
+      "name_key": "MOVE_ENEMY_BAT_BITE",
+      "target": "single_ally",
+      "element": "Water",
+      "damage_mult": 1.0,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "bat_screech",
+      "name_key": "MOVE_ENEMY_BAT_SCREECH",
+      "target": "all_allies",
+      "element": "Water",
+      "damage_mult": 0.6,
+      "energy_cost": 30
+    }
+  },
+
+  "thunder_imp": {
+    "normal": {
+      "id": "imp_spark",
+      "name_key": "MOVE_ENEMY_IMP_SPARK",
+      "target": "single_ally",
+      "element": "Lightning",
+      "damage_mult": 1.2,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "imp_arc",
+      "name_key": "MOVE_ENEMY_IMP_ARC",
+      "target": "single_ally",
+      "element": "Lightning",
+      "damage_mult": 1.6,
+      "energy_cost": 35
+    }
+  },
+
+  "magma_hound": {
+    "normal": {
+      "id": "hound_bite",
+      "name_key": "MOVE_ENEMY_HOUND_BITE",
+      "target": "single_ally",
+      "element": "Fire",
+      "damage_mult": 1.1,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "hound_cinder_fang",
+      "name_key": "MOVE_ENEMY_HOUND_CINDER_FANG",
+      "target": "single_ally",
+      "element": "Fire",
+      "damage_mult": 1.5,
+      "energy_cost": 35,
+      "effect": "pierce_def"
+    }
+  },
+
+  "river_drake": {
+    "normal": {
+      "id": "drake_lash",
+      "name_key": "MOVE_ENEMY_DRAKE_LASH",
+      "target": "single_ally",
+      "element": "Water",
+      "damage_mult": 1.0,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "drake_tide_call",
+      "name_key": "MOVE_ENEMY_DRAKE_TIDE_CALL",
+      "target": "all_allies",
+      "element": "Water",
+      "damage_mult": 0.7,
+      "energy_cost": 40
+    }
+  },
+
+  "obsidian_guardian": {
+    "normal": {
+      "id": "obsidian_hammer",
+      "name_key": "MOVE_ENEMY_OBSIDIAN_HAMMER",
+      "target": "single_ally",
+      "element": "Earth",
+      "damage_mult": 1.0,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "obsidian_ward",
+      "name_key": "MOVE_ENEMY_OBSIDIAN_WARD",
+      "target": "self",
+      "element": "Earth",
+      "damage_mult": 0.0,
+      "energy_cost": 30,
+      "effect": "party_shield_30_percent"
+    }
+  },
+
+  "storm_harpy": {
+    "normal": {
+      "id": "harpy_talon",
+      "name_key": "MOVE_ENEMY_HARPY_TALON",
+      "target": "single_ally",
+      "element": "Lightning",
+      "damage_mult": 1.15,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "harpy_gale",
+      "name_key": "MOVE_ENEMY_HARPY_GALE",
+      "target": "all_allies",
+      "element": "Lightning",
+      "damage_mult": 0.85,
+      "energy_cost": 40
+    }
+  },
+
+  "shade_walker": {
+    "normal": {
+      "id": "shade_strike",
+      "name_key": "MOVE_ENEMY_SHADE_STRIKE",
+      "target": "single_ally",
+      "element": "Water",
+      "damage_mult": 1.1,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "shade_unravel",
+      "name_key": "MOVE_ENEMY_SHADE_UNRAVEL",
+      "target": "single_ally",
+      "element": "Water",
+      "damage_mult": 0.0,
+      "energy_cost": 35,
+      "effect": "dispel_enemy_buffs"
+    }
+  },
+
+  "poseidon_echo": {
+    "normal": {
+      "id": "poseidon_trident",
+      "name_key": "MOVE_ENEMY_POSEIDON_TRIDENT",
+      "target": "single_ally",
+      "element": "Water",
+      "damage_mult": 1.2,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "poseidon_wave",
+      "name_key": "MOVE_ENEMY_POSEIDON_WAVE",
+      "target": "all_allies",
+      "element": "Water",
+      "damage_mult": 0.9,
+      "energy_cost": 35
+    },
+    "ultimate": {
+      "id": "poseidon_maelstrom",
+      "name_key": "MOVE_ENEMY_POSEIDON_MAELSTROM",
+      "target": "all_allies",
+      "element": "Water",
+      "damage_mult": 1.9,
+      "energy_cost": 0,
+      "effect": "apply_hunter_mark_2_turns"
+    }
+  },
+
+  "hephaestus_remnant": {
+    "normal": {
+      "id": "hephaestus_hammer",
+      "name_key": "MOVE_ENEMY_HEPHAESTUS_HAMMER",
+      "target": "single_ally",
+      "element": "Fire",
+      "damage_mult": 1.25,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "hephaestus_forgefire",
+      "name_key": "MOVE_ENEMY_HEPHAESTUS_FORGEFIRE",
+      "target": "single_ally",
+      "element": "Fire",
+      "damage_mult": 1.7,
+      "energy_cost": 35,
+      "effect": "pierce_def"
+    },
+    "ultimate": {
+      "id": "hephaestus_anvil",
+      "name_key": "MOVE_ENEMY_HEPHAESTUS_ANVIL",
+      "target": "self",
+      "element": "Fire",
+      "damage_mult": 0.0,
+      "energy_cost": 0,
+      "effect": "guaranteed_crit_3_turns"
+    }
+  },
+
+  "zeus_fragment": {
+    "normal": {
+      "id": "zeus_bolt",
+      "name_key": "MOVE_ENEMY_ZEUS_BOLT",
+      "target": "single_ally",
+      "element": "Lightning",
+      "damage_mult": 1.25,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "zeus_thunderclap",
+      "name_key": "MOVE_ENEMY_ZEUS_THUNDERCLAP",
+      "target": "all_allies",
+      "element": "Lightning",
+      "damage_mult": 0.9,
+      "energy_cost": 35
+    },
+    "ultimate": {
+      "id": "zeus_judgment",
+      "name_key": "MOVE_ENEMY_ZEUS_JUDGMENT",
+      "target": "single_ally",
+      "element": "Lightning",
+      "damage_mult": 2.4,
+      "energy_cost": 0,
+      "effect": "ignore_defense"
+    }
   }
 }
