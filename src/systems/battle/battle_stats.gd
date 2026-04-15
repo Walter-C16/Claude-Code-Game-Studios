@@ -26,6 +26,17 @@ var max_ultimate: int = 100
 var ult_charge_source: String = "any_action"
 var ult_charge_rate: int = 10
 
+## AI personality profile — consumed by BattleAi.choose_action for enemies.
+## One of: "aggressive", "tactical", "berserker", "defensive". Ignored for
+## player-controlled combatants.
+var ai_profile: String = "aggressive"
+
+## Optional per-enemy turn timer in seconds. 0 means no timer.
+## BattleManager.setup() takes the MAX across all enemies in the encounter
+## and uses that as the player-side turn time limit (the player gets the most
+## generous timer of any enemy on the field). Player units ignore this field.
+var turn_timer_seconds: int = 0
+
 # ── Runtime state ────────────────────────────────────────────────────────────
 
 var current_hp: int = 100
@@ -59,6 +70,8 @@ static func from_dict(data: Dictionary) -> BattleStats:
 	stats.max_ultimate = int(data.get("max_ultimate", 100))
 	stats.ult_charge_source = data.get("ult_charge_source", "any_action") as String
 	stats.ult_charge_rate = int(data.get("ult_charge_rate", 10))
+	stats.ai_profile = data.get("ai_profile", "aggressive") as String
+	stats.turn_timer_seconds = int(data.get("turn_timer_seconds", 0))
 
 	# Start battle at full HP, full energy, zero ultimate.
 	stats.current_hp = stats.max_hp

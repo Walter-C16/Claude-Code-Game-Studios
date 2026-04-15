@@ -67,13 +67,14 @@ static func stagger_children(container: Control, delay_per: float = 0.05, from_y
 			i += 1
 
 
-## Gold shimmer: oscillates label modulate between bright and warm gold on a loop.
-## Returns the Tween so callers can stop it with tween.kill() when needed.
-static func gold_shimmer(label: Label, duration: float = 2.0) -> Tween:
-	var tween: Tween = label.create_tween().set_loops()
-	tween.tween_property(label, "modulate", Color(1.2, 1.1, 0.9, 1.0), duration * 0.5) \
+## Gold shimmer: oscillates a Control's modulate between bright and warm gold
+## on a loop. Works with Label, Button, or any Control that responds to
+## modulate. Returns the Tween so callers can stop it with tween.kill().
+static func gold_shimmer(target: Control, duration: float = 2.0) -> Tween:
+	var tween: Tween = target.create_tween().set_loops()
+	tween.tween_property(target, "modulate", Color(1.2, 1.1, 0.9, 1.0), duration * 0.5) \
 		.set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(label, "modulate", Color(1.0, 0.95, 0.85, 1.0), duration * 0.5) \
+	tween.tween_property(target, "modulate", Color(1.0, 0.95, 0.85, 1.0), duration * 0.5) \
 		.set_ease(Tween.EASE_IN_OUT)
 	return tween
 

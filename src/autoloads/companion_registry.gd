@@ -46,13 +46,24 @@ func _ready() -> void:
 # ── Public Methods ────────────────────────────────────────────────────────────
 
 ## Marks a companion as met AND seeds their default known_likes/dislikes
-## in GameStore. Convenience wrapper so story code doesn't have to do both.
+## in GameStore. Also drops them straight into the active party if there's
+## an open slot — meeting a companion is the moment they join the journey,
+## so the player shouldn't have to open the Deck screen to start using her.
+## A full party (4 slots) silently skips the auto-add; the player can swap
+## her in manually from the Deck screen.
 func meet_companion(id: String) -> void:
 	GameStore.set_met(id, true)
 	var profile: Dictionary = get_profile(id)
 	var likes: Array = profile.get("likes", []) as Array
 	var dislikes: Array = profile.get("dislikes", []) as Array
 	GameStore.seed_companion_preferences(id, likes, dislikes)
+
+	# Auto-join the active party if there's room and they aren't already in.
+	if not GameStore.has_deck_companion(id):
+		var current: Array[String] = GameStore.get_deck_companions()
+		if current.size() < 4:
+			var card_value: int = int(profile.get("card_value", 0))
+			GameStore.add_deck_companion(id, card_value)
 
 
 ## Returns a defensive copy of the profile dictionary for [param id].

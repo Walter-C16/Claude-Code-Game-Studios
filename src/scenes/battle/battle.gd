@@ -56,6 +56,13 @@ var _enemy_slots: Array[Control] = []
 var _pending_move_type: String = ""
 var _is_picking_target: bool = false
 
+## Per-turn countdown timer. Created on _ready if the encounter has a non-zero
+## turn_time_limit AND the global accessibility kill switch is off. Drives the
+## %TimerBar widget through _process. Null when the encounter is untimed.
+var _turn_timer: BattleTurnTimer = null
+var _timer_bar: ProgressBar = null
+var _timer_label: Label = null
+
 ## Arrival context — captured in _ready, used in victory handler.
 var _story_node: String = ""
 var _enemy_ids: Array[String] = []
@@ -93,6 +100,7 @@ func _ready() -> void:
 
 	_apply_tutorial_safety_net()
 	_build_unit_slots()
+	_install_turn_timer()
 	_refresh_all()
 
 	# Kick off the first turn — the signal fires inside setup(), but we missed
@@ -100,6 +108,76 @@ func _ready() -> void:
 	var starter: Combatant = _battle.current_combatant()
 	if starter != null:
 		_on_turn_started(starter)
+
+
+# ── Turn timer ───────────────────────────────────────────────────────────────
+
+## Builds the per-turn countdown timer + UI bar if the encounter has a
+## non-zero turn_time_limit and the accessibility kill switch isn't on. The
+## tutorial fight is hard-overridden — never timed regardless of enemy data.
+func _install_turn_timer() -> void:
+	if _story_node == "ch01_n00":
+		return
+	if _battle.turn_time_limit <= 0:
+		return
+	if SettingsStore.combat_disable_timers:
+		return
+
+	_turn_timer = BattleTurnTimer.new()
+	_turn_timer.expired.connect(_on_turn_timer_expired)
+
+	# Bar widget — sits inside the HUD panel above the action buttons. Built
+	# at runtime so the .tscn doesn't need to be edited.
+	var bar_box: VBoxContainer = VBoxContainer.new()
+	bar_box.name = "TimerBox"
+	bar_box.add_theme_constant_override("separation", 2)
+
+	_timer_label = Label.new()
+	_timer_label.text = Localization.get_text("BATTLE_TIMER_LABEL")
+	_timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_timer_label.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+	_timer_label.add_theme_font_size_override("font_size", 11)
+	bar_box.add_child(_timer_label)
+
+	_timer_bar = ProgressBar.new()
+	_timer_bar.custom_minimum_size = Vector2(0.0, 10.0)
+	_timer_bar.max_value = 1.0
+	_timer_bar.step = 0.001
+	_timer_bar.value = 1.0
+	_timer_bar.show_percentage = false
+	bar_box.add_child(_timer_bar)
+
+	# Slot the box at the top of the HUD panel so it sits above the action
+	# buttons. PanelContainer wraps a single child so we walk one level in.
+	var hud_inner: Node = hud_panel.get_child(0) if hud_panel.get_child_count() > 0 else null
+	if hud_inner is BoxContainer:
+		hud_inner.add_child(bar_box)
+		hud_inner.move_child(bar_box, 0)
+	else:
+		hud_panel.add_child(bar_box)
+
+
+func _on_turn_timer_expired() -> void:
+	if _battle == null or _battle.is_battle_over():
+		return
+	var actor: Combatant = _battle.current_combatant()
+	if actor == null or actor.is_enemy:
+		return
+	var result: Dictionary = _battle.auto_normal_attack()
+	_animate_hit_results(result)
+
+
+func _process(delta: float) -> void:
+	if _turn_timer == null or not _turn_timer.enabled:
+		return
+	if _battle == null or _battle.is_battle_over():
+		return
+	var actor: Combatant = _battle.current_combatant()
+	if actor == null or actor.is_enemy:
+		return
+	_turn_timer.tick(delta)
+	if _timer_bar != null and _battle.turn_time_limit > 0:
+		_timer_bar.value = _turn_timer.time_remaining / float(_battle.turn_time_limit)
 
 
 # ── Setup helpers ────────────────────────────────────────────────────────────
@@ -205,22 +283,36 @@ func _make_unit_slot(combatant: Combatant, is_enemy: bool) -> Control:
 	vbox.add_child(body)
 	root.set_meta("body_rect", body)
 
-	# HP bar.
+	# HP bar — taller and red-tinted so enemy health is easy to read at a glance.
 	var bar: ProgressBar = ProgressBar.new()
-	bar.custom_minimum_size = Vector2(0.0, 8.0)
+	bar.custom_minimum_size = Vector2(0.0, 14.0)
 	bar.max_value = 1.0
 	bar.step = 0.01
 	bar.show_percentage = false
 	bar.value = 1.0
+	var bar_fill: StyleBoxFlat = StyleBoxFlat.new()
+	bar_fill.bg_color = UIConstants.STATUS_DANGER if is_enemy else UIConstants.STATUS_SUCCESS
+	bar_fill.corner_radius_top_left = 3
+	bar_fill.corner_radius_top_right = 3
+	bar_fill.corner_radius_bottom_left = 3
+	bar_fill.corner_radius_bottom_right = 3
+	bar.add_theme_stylebox_override("fill", bar_fill)
+	var bar_bg: StyleBoxFlat = StyleBoxFlat.new()
+	bar_bg.bg_color = Color(0.1, 0.1, 0.12, 0.9)
+	bar_bg.corner_radius_top_left = 3
+	bar_bg.corner_radius_top_right = 3
+	bar_bg.corner_radius_bottom_left = 3
+	bar_bg.corner_radius_bottom_right = 3
+	bar.add_theme_stylebox_override("background", bar_bg)
 	vbox.add_child(bar)
 	root.set_meta("hp_bar", bar)
 
-	# HP numeric label.
+	# HP numeric label — bold and white so the value is unmissable.
 	var hp_lbl: Label = Label.new()
 	hp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	hp_lbl.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
-	hp_lbl.add_theme_font_size_override("font_size", 10)
-	hp_lbl.text = "%d/%d" % [combatant.stats.current_hp, combatant.stats.max_hp]
+	hp_lbl.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	hp_lbl.add_theme_font_size_override("font_size", 14)
+	hp_lbl.text = "%d / %d" % [combatant.stats.current_hp, combatant.stats.max_hp]
 	vbox.add_child(hp_lbl)
 	root.set_meta("hp_label", hp_lbl)
 
@@ -255,7 +347,7 @@ func _refresh_unit_slot(slot: Control) -> void:
 		bar.value = c.stats.hp_fraction()
 	var hp_lbl: Label = slot.get_meta("hp_label", null) as Label
 	if hp_lbl != null:
-		hp_lbl.text = "%d/%d" % [c.stats.current_hp, c.stats.max_hp]
+		hp_lbl.text = "%d / %d" % [c.stats.current_hp, c.stats.max_hp]
 	slot.modulate.a = 1.0 if c.is_alive() else 0.3
 
 
@@ -276,7 +368,18 @@ func _refresh_actor_hud() -> void:
 		actor_name_label.text = actor.display_name
 	hp_bar.value = actor.stats.hp_fraction()
 	hp_label.text = "HP %d / %d" % [actor.stats.current_hp, actor.stats.max_hp]
-	energy_label.text = "EN %d / %d" % [actor.stats.current_energy, actor.stats.max_energy]
+	energy_label.text = "⚡ %d / %d" % [actor.stats.current_energy, actor.stats.max_energy]
+	# Tint energy gold when there's enough for the active special, dim otherwise.
+	var special_cost: int = 0
+	var special_move: BattleMove = actor.get_move("special")
+	if special_move != null:
+		special_cost = special_move.energy_cost
+	var has_enough_energy: bool = actor.stats.current_energy >= special_cost and special_cost > 0
+	energy_label.add_theme_color_override(
+		"font_color",
+		Color(1.0, 0.85, 0.3, 1.0) if has_enough_energy else Color(0.6, 0.6, 0.65, 1.0)
+	)
+	energy_label.add_theme_font_size_override("font_size", 18)
 	ult_label.text = "ULT %d / %d" % [actor.stats.current_ultimate, actor.stats.max_ultimate]
 
 	# Action buttons are only interactable on player turns.
@@ -326,6 +429,18 @@ func _on_turn_started(combatant: Combatant) -> void:
 	_refresh_all()
 	_is_picking_target = false
 	_set_target_picking(false)
+
+	# Turn timer: arm on player turns, hide and reset on enemy turns.
+	if _turn_timer != null:
+		if combatant.is_enemy:
+			_turn_timer.reset()
+			if _timer_bar != null:
+				_timer_bar.get_parent().visible = false
+		else:
+			_turn_timer.start(float(_battle.turn_time_limit))
+			if _timer_bar != null:
+				_timer_bar.get_parent().visible = true
+				_timer_bar.value = 1.0
 
 	if combatant.is_enemy:
 		# Give the player a beat to see what's happening before the enemy acts.
@@ -503,32 +618,15 @@ func _on_target_slot_pressed(target: Combatant) -> void:
 
 # ── Enemy AI ─────────────────────────────────────────────────────────────────
 
-## Simple AI: prefer ultimate > special > normal. Target random living ally.
+## Delegates to BattleAi for profile-driven move + target selection. The
+## actual attack is still driven through BattleManager.execute_move, and the
+## result flows through _animate_hit_results like player-initiated actions.
 func _run_enemy_ai(actor: Combatant) -> void:
-	var move_type: String = "normal"
-	if actor.can_cast("ultimate") and randf() < 0.5:
-		move_type = "ultimate"
-	elif actor.can_cast("special") and randf() < 0.6:
-		move_type = "special"
-
-	var move: BattleMove = actor.get_move(move_type)
-	if move == null:
-		move_type = "normal"
-		move = actor.get_move("normal")
-	if move == null:
+	var action: Dictionary = BattleAi.choose_action(actor, _battle)
+	var move_type: String = action.get("move_type", "normal") as String
+	var targets: Array[Combatant] = action.get("targets", [] as Array[Combatant]) as Array[Combatant]
+	if targets.is_empty():
 		return
-
-	var targets: Array[Combatant] = []
-	if move.target == "all_allies":
-		# An enemy "all_allies" targets the ENEMY side (itself). Reverse.
-		targets = _battle.live_enemies()
-	elif move.targets_many():
-		targets = _battle.live_party()
-	else:
-		var alive: Array[Combatant] = _battle.live_party()
-		if alive.is_empty():
-			return
-		targets.append(alive[randi() % alive.size()])
 
 	var result: Dictionary = _battle.execute_move(move_type, targets)
 	_animate_hit_results(result)

@@ -13,6 +13,11 @@ var _sfx_volume: float = 1.0
 var _music_volume: float = 1.0
 var _text_speed: float = 1.0
 
+## Accessibility kill switch — when true, the per-encounter combat turn timer
+## (see design/quick-specs/turn-timer.md) is hidden globally regardless of
+## what the encounter data declares. Defaults to false (timers honored).
+var combat_disable_timers: bool = false
+
 # Persistence flags (same pattern as GameStore GS-003)
 var _dirty: bool = false
 var _save_pending: bool = false
@@ -77,6 +82,12 @@ func _flush_save() -> void:
 	_dirty = false
 	_save_pending = false
 
+func set_combat_disable_timers(value: bool) -> void:
+	combat_disable_timers = value
+	_mark_dirty()
+	settings_changed.emit("combat_disable_timers")
+
+
 func to_dict() -> Dictionary:
 	return {
 		"locale": _locale,
@@ -84,6 +95,7 @@ func to_dict() -> Dictionary:
 		"sfx_volume": _sfx_volume,
 		"music_volume": _music_volume,
 		"text_speed": _text_speed,
+		"combat_disable_timers": combat_disable_timers,
 	}
 
 func from_dict(data: Dictionary) -> void:
@@ -92,5 +104,6 @@ func from_dict(data: Dictionary) -> void:
 	_sfx_volume = data.get("sfx_volume", 1.0)
 	_music_volume = data.get("music_volume", 1.0)
 	_text_speed = data.get("text_speed", 1.0)
+	combat_disable_timers = data.get("combat_disable_timers", false)
 	_dirty = false
 	_save_pending = false

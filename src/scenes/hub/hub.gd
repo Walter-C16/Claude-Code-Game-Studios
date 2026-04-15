@@ -40,6 +40,10 @@ func _ready() -> void:
 	GameStore.state_changed.connect(_on_state_changed)
 	tree_exiting.connect(_disconnect_autoload_signals)
 
+	# Inject Oracle + Forge placeholder buttons into MoreTabs before the
+	# progressive unlock pass runs so they participate in the same gating.
+	_install_gacha_placeholders()
+
 	# Entrance animation: stagger all direct children from their edges.
 	await get_tree().process_frame
 	_animate_entrance()
@@ -141,7 +145,14 @@ func _apply_progressive_unlock() -> void:
 		"ExploreBtn": 3,
 		"AbyssBtn": 3,
 		"EquipBtn": 3,
+		"OracleBtn": 3,
+		"ForgeBtn": 3,
 	}
+
+	# Names of buttons that exist purely as visual placeholders for systems
+	# that aren't implemented yet. They reach tier 3 (so they appear once the
+	# player is far enough into the story) but stay disabled regardless.
+	var placeholder_buttons: Array[String] = ["OracleBtn", "ForgeBtn"]
 
 	# Current player tier.
 	var tier: int = 0
@@ -167,12 +178,58 @@ func _apply_progressive_unlock() -> void:
 			if child is Button:
 				var btn: Button = child as Button
 				var required: int = unlock_map.get(btn.name, 99)
+				var is_placeholder: bool = btn.name in placeholder_buttons
 				if tier >= required:
-					btn.disabled = false
-					btn.modulate.a = 1.0
+					# Placeholder buttons stay disabled so the player sees the
+					# slot but can't interact — implementation lands in v2.
+					btn.disabled = is_placeholder
+					btn.modulate.a = 0.55 if is_placeholder else 1.0
 				else:
 					btn.disabled = true
 					btn.modulate.a = 0.35
+
+
+# ── Gacha placeholder buttons ────────────────────────────────────────────────
+
+## Adds Oracle + Forge buttons to MoreTabs as visual placeholders. The actual
+## gacha systems (see `design/quick-specs/oracle-gacha.md` and
+## `design/quick-specs/forge-gacha.md`) ship in v2 — these buttons reserve the
+## navigation slots and signal "more is coming" without doing anything yet.
+## They participate in the progressive unlock pass via the `placeholder_buttons`
+## set in `_apply_progressive_unlock`.
+func _install_gacha_placeholders() -> void:
+	var more_tabs: Node = get_node_or_null("MoreTabs")
+	if more_tabs == null:
+		return
+	# Idempotent — bail out if a previous _ready already added them.
+	if more_tabs.get_node_or_null("OracleBtn") != null:
+		return
+
+	var oracle_btn: Button = _make_placeholder_tab_button(
+		"OracleBtn", Localization.get_text("HUB_TAB_ORACLE")
+	)
+	var forge_btn: Button = _make_placeholder_tab_button(
+		"ForgeBtn", Localization.get_text("HUB_TAB_FORGE")
+	)
+	more_tabs.add_child(oracle_btn)
+	more_tabs.add_child(forge_btn)
+
+
+## Builds a single MoreTabs button matching the look of the existing tabs.
+func _make_placeholder_tab_button(node_name: String, label_text: String) -> Button:
+	var btn: Button = Button.new()
+	btn.name = node_name
+	btn.text = label_text
+	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn.custom_minimum_size = Vector2(0.0, 52.0)
+	btn.add_theme_color_override("font_color", Color(0.667, 0.533, 0.333, 1.0))
+	btn.add_theme_font_size_override("font_size", 12)
+	btn.tooltip_text = Localization.get_text("HUB_TAB_COMING_SOON")
+	# Buttons start disabled; the unlock pass keeps them disabled because they
+	# are listed in `placeholder_buttons`. Setting it here means even an
+	# uninitialized state shows the disabled style on first frame.
+	btn.disabled = true
+	return btn
 
 
 # ── Companion Join Splash (Gacha-style) ───────────────────────────────────────

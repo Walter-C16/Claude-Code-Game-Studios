@@ -72,7 +72,9 @@
       "agi": 8,
       "crit_chance": 3.0,
       "crit_damage": 140.0,
-      "has_ultimate": false
+      "has_ultimate": false,
+      "ai_profile": "aggressive",
+      "turn_timer_seconds": 0
     },
     "mountain_beast": {
       "element": "Earth",
@@ -82,7 +84,9 @@
       "agi": 10,
       "crit_chance": 5.0,
       "crit_damage": 150.0,
-      "has_ultimate": false
+      "has_ultimate": false,
+      "ai_profile": "berserker",
+      "turn_timer_seconds": 45
     },
     "amazon_challenger": {
       "element": "Fire",
@@ -92,7 +96,9 @@
       "agi": 15,
       "crit_chance": 12.0,
       "crit_damage": 170.0,
-      "has_ultimate": false
+      "has_ultimate": false,
+      "ai_profile": "tactical",
+      "turn_timer_seconds": 30
     },
     "gaia_spirit": {
       "element": "Earth",
@@ -102,7 +108,9 @@
       "agi": 11,
       "crit_chance": 8.0,
       "crit_damage": 180.0,
-      "has_ultimate": true
+      "has_ultimate": true,
+      "ai_profile": "tactical",
+      "turn_timer_seconds": 60
     },
     "sardis_card_master": {
       "element": "Fire",
@@ -112,7 +120,9 @@
       "agi": 13,
       "crit_chance": 10.0,
       "crit_damage": 160.0,
-      "has_ultimate": false
+      "has_ultimate": false,
+      "ai_profile": "defensive",
+      "turn_timer_seconds": 0
     }
   }
 }

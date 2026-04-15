@@ -228,11 +228,7 @@ func _show_grid_view() -> void:
 	_detail_root.visible = false
 	_party_action_btn.visible = false
 	_populate_grid()
-	deck_size_label.text = "%d/%d %s" % [
-		GameStore.get_deck_companions().size(),
-		MAX_PARTY_SIZE,
-		Localization.get_text("PARTY_IN_PARTY_SUFFIX"),
-	]
+	_refresh_deck_size_label()
 	await get_tree().process_frame
 	Fx.stagger_children(_grid_container, 0.05, 20.0)
 
@@ -489,6 +485,7 @@ func _on_party_action_pressed() -> void:
 		_sync_captain_with_party()
 		_update_action_buttons_for(_selected_id)
 		_populate_grid()
+		_refresh_deck_size_label()
 		return
 
 	# Not in party — add if there's room.
@@ -501,11 +498,26 @@ func _on_party_action_pressed() -> void:
 		_sync_captain_with_party()
 		_update_action_buttons_for(_selected_id)
 		_populate_grid()
+		_refresh_deck_size_label()
 		Fx.pop_scale(_party_action_btn)
 		return
 
 	# Full party — prompt which member to replace.
 	_show_replace_party_picker(profile.get("display_name", _selected_id))
+
+
+## Updates the "X/N In Party" counter that lives in the deck header. The
+## label is normally written in _show_grid_view, but the player can change
+## party membership while sitting in the detail view; this keeps the count
+## in sync without forcing a view switch.
+func _refresh_deck_size_label() -> void:
+	if deck_size_label == null:
+		return
+	deck_size_label.text = "%d/%d %s" % [
+		GameStore.get_deck_companions().size(),
+		MAX_PARTY_SIZE,
+		Localization.get_text("PARTY_IN_PARTY_SUFFIX"),
+	]
 
 
 ## Shows a popup listing current party members so the player picks who to

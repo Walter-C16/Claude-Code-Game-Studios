@@ -63,6 +63,12 @@ var turn_number: int = 0
 ## Schema: {companion_id: Array[blessing_dict]}
 var active_blessings: Dictionary = {}
 
+## Player-side turn time limit in seconds. Computed in setup() as the max
+## of `turn_timer_seconds` across all enemies. 0 means no timer (the
+## encounter is untimed). The battle scene reads this once and instantiates
+## a BattleTurnTimer if it's > 0.
+var turn_time_limit: int = 0
+
 # ── Private config ───────────────────────────────────────────────────────────
 
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -120,6 +126,20 @@ func setup(party_ids: Array[String], enemy_ids: Array[String]) -> bool:
 	if party.is_empty() or enemies.is_empty():
 		push_error("BattleManager.setup: empty roster after build")
 		return false
+
+	# Gun element — the protagonist's gun fires whichever element the first
+	# companion in the party supplies. Slot 0 is always the protagonist, so the
+	# first non-proto ally at slot 1 is the source. If the party is proto-only
+	# the gun stays on its default "Neutral" element.
+	_apply_gun_element()
+
+	# Encounter turn timer — pick the max declared timer across enemies. The
+	# battle scene reads this and decides whether to instantiate a timer UI.
+	turn_time_limit = 0
+	for e: Combatant in enemies:
+		var t: int = e.stats.turn_timer_seconds
+		if t > turn_time_limit:
+			turn_time_limit = t
 
 	_rebuild_turn_queue()
 	turn_number = 1
@@ -201,6 +221,18 @@ func execute_move(move_type_tag: String, targets: Array[Combatant]) -> Dictionar
 			hit_results.append(hit)
 			total_damage_dealt += int(hit.get("damage", 0))
 
+			# repeat_on_crit (Hippolyta): keep striking while critting, cap 2 extra.
+			if move.effect == "repeat_on_crit" and bool(hit.get("crit", false)):
+				var repeats: int = 0
+				while repeats < 2 and tgt.is_alive():
+					var extra: Dictionary = _resolve_hit(actor, tgt, move)
+					extra["repeat"] = true
+					hit_results.append(extra)
+					total_damage_dealt += int(extra.get("damage", 0))
+					if not bool(extra.get("crit", false)):
+						break
+					repeats += 1
+
 	# Ultimate charge accrual — actor gains ult for the turn based on source.
 	_apply_ultimate_charge(actor, total_damage_dealt, hit_results.size())
 
@@ -215,6 +247,24 @@ func execute_move(move_type_tag: String, targets: Array[Combatant]) -> Dictionar
 	}
 
 
+## Auto-cast a normal attack on a random living enemy. Used by the battle
+## scene when the player turn timer expires — drives the battle forward
+## with a sensible default action so a distracted player still plays the
+## game. Uses the same execute_move path as a manual cast, so all energy /
+## charge / blessing / animation logic runs identically.
+func auto_normal_attack() -> Dictionary:
+	if state != State.AWAIT_ACTION:
+		return {"success": false, "error": "not_in_await_action"}
+	var actor: Combatant = current_combatant()
+	if actor == null or actor.is_enemy:
+		return {"success": false, "error": "not_a_player_turn"}
+	var living: Array[Combatant] = live_enemies()
+	if living.is_empty():
+		return {"success": false, "error": "no_living_enemies"}
+	var target: Combatant = living[_rng.randi() % living.size()]
+	return execute_move("normal", [target] as Array[Combatant])
+
+
 # ── Hit resolution ───────────────────────────────────────────────────────────
 
 ## Resolves a single hit of a move against a single target.
@@ -225,23 +275,61 @@ func _resolve_hit(actor: Combatant, target: Combatant, move: BattleMove) -> Dict
 		"damage": 0,
 		"crit": false,
 		"reaction": "",
+		"dodged": false,
 	}
 
 	if not move.is_damaging():
-		# Non-damaging move (buff/heal/shield). Effect dispatch happens below.
+		# Non-damaging move (buff/heal/shield). Effect dispatch only.
 		_apply_effect(actor, target, move)
 		return result
 
+	# Dodge — consume target's "dodge_next" if present and skip the hit.
+	if target.stats.active_effects.has("dodge_next"):
+		target.stats.active_effects.erase("dodge_next")
+		result["dodged"] = true
+		return result
+
+	# Defense subtraction — reduced or skipped by pierce/ignore effects.
+	var def_divisor: int = 2
+	if move.effect == "pierce_def":
+		def_divisor = 4  # half the usual DEF
+	var def_subtract: int = int(target.stats.def_stat / def_divisor)
+	if move.effect == "ignore_defense":
+		def_subtract = 0
+
 	# Raw damage.
 	var raw: float = float(actor.stats.atk) * move.damage_mult
-	var base_dmg: int = maxi(1, int(raw) - int(target.stats.def_stat / 2))
+	var base_dmg: int = maxi(1, int(raw) - def_subtract)
 
-	# Crit roll.
-	var crit_roll: float = _rng.randf() * 100.0
-	var is_crit: bool = crit_roll < actor.stats.crit_chance
+	# Crit roll (forced_crit buff overrides the random roll).
+	var is_crit: bool = false
+	if actor.stats.active_effects.has("forced_crit"):
+		is_crit = true
+	else:
+		var crit_roll: float = _rng.randf() * 100.0
+		is_crit = crit_roll < actor.stats.crit_chance
 	if is_crit:
 		base_dmg = int(float(base_dmg) * (actor.stats.crit_damage / 100.0))
 	result["crit"] = is_crit
+
+	# Hunter mark — target takes amplified damage.
+	if target.stats.active_effects.has("hunter_mark"):
+		var hm: Dictionary = target.stats.active_effects["hunter_mark"] as Dictionary
+		var hm_amp: float = 1.0 + float(hm.get("magnitude", 0.5))
+		base_dmg = int(float(base_dmg) * hm_amp)
+
+	# damage_buff_next (Oracle Mist reaction buff) — consumed on this hit.
+	if actor.stats.active_effects.has("damage_buff_next"):
+		var db: Dictionary = actor.stats.active_effects["damage_buff_next"] as Dictionary
+		var db_pct: float = float(db.get("magnitude", 50.0)) / 100.0
+		base_dmg = int(float(base_dmg) * (1.0 + db_pct))
+		actor.stats.active_effects.erase("damage_buff_next")
+
+	# Shield — target absorbs a fraction of the incoming damage.
+	if target.stats.active_effects.has("shield"):
+		var sh: Dictionary = target.stats.active_effects["shield"] as Dictionary
+		var sh_pct: float = float(sh.get("magnitude", 0.3))
+		base_dmg = maxi(1, int(float(base_dmg) * (1.0 - sh_pct)))
 
 	# Elemental reaction check.
 	var move_element: String = _resolve_move_element(actor, move)
@@ -262,19 +350,18 @@ func _resolve_hit(actor: Combatant, target: Combatant, move: BattleMove) -> Dict
 	var actual: int = target.stats.take_damage(base_dmg)
 	result["damage"] = actual
 
-	# Apply secondary move effect (e.g. pierce_def, DoTs).
+	# Apply secondary move effect (e.g. hunter_mark application, DoTs).
 	if not move.effect.is_empty():
 		_apply_effect(actor, target, move)
 
 	return result
 
 
-## Handles the protagonist's "gun" element pull — Artemis etc. have a fixed
-## element on their moves. Returns the final element for this move instance.
+## Handles the protagonist's "gun" element pull — the gun element is assigned
+## at setup time based on the first companion in the party (see
+## _apply_gun_element). Returns the final element for this move instance.
 func _resolve_move_element(actor: Combatant, move: BattleMove) -> String:
 	if move.element_source == "gun":
-		# Protagonist's gun element comes from the most recently active
-		# blessing. For now, fall back to actor.stats.element.
 		return actor.stats.element
 	if not move.element.is_empty():
 		return move.element
@@ -326,9 +413,112 @@ func _apply_reaction(actor: Combatant, target: Combatant, reaction: Dictionary) 
 
 
 ## Dispatches move-level side effects (distinct from reactions).
-func _apply_effect(_actor: Combatant, _target: Combatant, _move: BattleMove) -> void:
-	# Placeholder — specific effects will be added alongside the battle scene.
-	pass
+##
+## Effects fall into three families:
+##   1) Inline damage modifiers ("pierce_def", "ignore_defense", "repeat_on_crit")
+##      are applied in _resolve_hit / execute_move and are no-ops here.
+##   2) Buffs / debuffs write to active_effects with either turns_left or a
+##      one-shot consumable flag. These are ticked by _tick_effects_for().
+##   3) DoTs write to active_effects with turns_left + magnitude and apply
+##      damage in _tick_effects_for() at the victim's turn boundary.
+func _apply_effect(actor: Combatant, target: Combatant, move: BattleMove) -> void:
+	match move.effect:
+		"pierce_def", "ignore_defense", "repeat_on_crit":
+			pass  # handled inline in _resolve_hit / execute_move
+
+		"apply_hunter_mark_2_turns":
+			# Artemis ult — mark target; next hits against them do +50%.
+			target.stats.active_effects["hunter_mark"] = {
+				"magnitude": 0.5,
+				"turns_left": 2,
+			}
+
+		"guaranteed_crit_3_turns":
+			# Hippolyta ult — self-buff; all outgoing hits auto-crit for 3 turns.
+			actor.stats.active_effects["forced_crit"] = {
+				"turns_left": 3,
+			}
+
+		"party_shield_30_percent":
+			# Atenea special — all allies absorb 30% incoming damage for 2 turns.
+			var is_ally: bool = not actor.is_enemy
+			var allies: Array[Combatant] = live_party() if is_ally else live_enemies()
+			for a: Combatant in allies:
+				a.stats.active_effects["shield"] = {
+					"magnitude": 0.30,
+					"turns_left": 2,
+				}
+
+		"dodge_next_attack":
+			# Nyx special — self-buff that dodges the next incoming hit.
+			actor.stats.active_effects["dodge_next"] = {
+				"magnitude": 1.0,
+			}
+
+		"dispel_enemy_buffs":
+			# Nyx ult — clear buff-family effects from all enemies of the actor.
+			var buff_keys: Array[String] = [
+				"shield", "forced_crit", "damage_buff_next", "dodge_next",
+			]
+			var foes: Array[Combatant] = live_enemies() if not actor.is_enemy else live_party()
+			for e: Combatant in foes:
+				for key: String in buff_keys:
+					if e.stats.active_effects.has(key):
+						e.stats.active_effects.erase(key)
+
+		"corrupted_bloom":
+			# Gaia boss ult — DoT on every live ally of the target's side.
+			var poison_dmg: float = float(actor.stats.atk) * 0.25
+			var victims: Array[Combatant] = live_party() if target == null or not target.is_enemy else live_enemies()
+			for v: Combatant in victims:
+				v.stats.active_effects["corrupted_bloom"] = {
+					"magnitude": poison_dmg,
+					"turns_left": 3,
+				}
+
+		_:
+			if not move.effect.is_empty():
+				push_warning("BattleManager: unknown move effect '%s'" % move.effect)
+
+
+## Ticks down per-turn effects on a single combatant and applies any DoTs.
+## Called in _end_turn for the actor whose turn just ended — that way a
+## 3-turn buff applied at the start of turn N lasts through turn N+2 of the
+## same unit. DoT damage is applied on tick then the counter decrements.
+func _tick_effects_for(combatant: Combatant) -> void:
+	if combatant == null or combatant.stats == null:
+		return
+	var effects: Dictionary = combatant.stats.active_effects
+	if effects.is_empty():
+		return
+
+	# Apply DoT damage first so an expiring DoT still deals its final tick.
+	if effects.has("dot_burn"):
+		var burn: Dictionary = effects["dot_burn"] as Dictionary
+		var burn_mag: int = maxi(1, int(float(burn.get("magnitude", 0.0))))
+		combatant.stats.take_damage(burn_mag)
+	if effects.has("corrupted_bloom"):
+		var cb: Dictionary = effects["corrupted_bloom"] as Dictionary
+		var cb_mag: int = maxi(1, int(float(cb.get("magnitude", 0.0))))
+		combatant.stats.take_damage(cb_mag)
+
+	# Decrement turns_left on every duration-based effect and drop expired.
+	var to_remove: Array[String] = []
+	for key_variant: Variant in effects.keys():
+		var key: String = key_variant as String
+		var entry_variant: Variant = effects[key]
+		if typeof(entry_variant) != TYPE_DICTIONARY:
+			continue
+		var entry: Dictionary = entry_variant as Dictionary
+		if not entry.has("turns_left"):
+			continue
+		var remaining: int = int(entry["turns_left"]) - 1
+		if remaining <= 0:
+			to_remove.append(key)
+		else:
+			entry["turns_left"] = remaining
+	for key: String in to_remove:
+		effects.erase(key)
 
 
 # ── Ultimate charge ──────────────────────────────────────────────────────────
@@ -356,7 +546,15 @@ func _apply_ultimate_charge(actor: Combatant, damage_dealt: int, actions_taken: 
 func _end_turn() -> void:
 	_set_state(State.END_TURN)
 
-	# Victory / defeat check.
+	# Tick duration effects on the actor whose turn just ended. Buffs the actor
+	# cast on themselves (forced_crit, shield, etc.) count down here. DoTs on
+	# the actor also tick — an enemy poisoned by a DoT will take damage at the
+	# close of their own turn.
+	var ending_actor: Combatant = current_combatant()
+	if ending_actor != null:
+		_tick_effects_for(ending_actor)
+
+	# Victory / defeat check (DoT ticks above may have killed someone).
 	if live_enemies().is_empty():
 		_set_state(State.VICTORY)
 		battle_ended.emit(true)
@@ -476,6 +674,36 @@ func _max_slot_for_stage(stage: int) -> int:
 		3: return 4
 		4: return 5
 		_: return 0
+
+
+# ── Gun element ──────────────────────────────────────────────────────────────
+
+## Sets the protagonist's effective element from the first companion in the
+## party. Narrative hook: each goddess imprints her element on Hero's gun when
+## she joins the party. Called once at the end of setup(); no-op if the party
+## has no companions or no protagonist slot.
+func _apply_gun_element() -> void:
+	if party.is_empty():
+		return
+	var proto: Combatant = null
+	for c: Combatant in party:
+		if c.is_protagonist:
+			proto = c
+			break
+	if proto == null:
+		return
+
+	# First non-protagonist ally in party order is the gun source.
+	for c: Combatant in party:
+		if c.is_protagonist:
+			continue
+		if c.stats == null:
+			continue
+		var companion_element: String = c.stats.element
+		if companion_element.is_empty() or companion_element == "Neutral":
+			continue
+		proto.stats.element = companion_element
+		return
 
 
 # ── Display name helpers ─────────────────────────────────────────────────────
