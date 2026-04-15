@@ -1,0 +1,205 @@
+{
+  "protagonist": {
+    "normal": {
+      "id": "proto_shot",
+      "name_key": "MOVE_PROTO_SHOT",
+      "target": "single_enemy",
+      "element_source": "gun",
+      "damage_mult": 1.0,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "proto_charged_shot",
+      "name_key": "MOVE_PROTO_CHARGED",
+      "target": "single_enemy",
+      "element_source": "gun",
+      "damage_mult": 2.0,
+      "energy_cost": 40,
+      "effect": "pierce_def"
+    },
+    "ultimate": {
+      "id": "proto_bullet_storm",
+      "name_key": "MOVE_PROTO_STORM",
+      "target": "single_enemy",
+      "element_source": "gun",
+      "damage_mult": 4.0,
+      "hits": 8,
+      "energy_cost": 0
+    }
+  },
+  "artemis": {
+    "normal": {
+      "id": "artemis_forest_arrow",
+      "name_key": "MOVE_ARTEMIS_ARROW",
+      "target": "single_enemy",
+      "element": "Earth",
+      "damage_mult": 1.0,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "artemis_arrow_rain",
+      "name_key": "MOVE_ARTEMIS_RAIN",
+      "target": "all_enemies",
+      "element": "Earth",
+      "damage_mult": 0.6,
+      "hits": 3,
+      "energy_cost": 50
+    },
+    "ultimate": {
+      "id": "artemis_divine_hunt",
+      "name_key": "MOVE_ARTEMIS_HUNT",
+      "target": "all_enemies",
+      "element": "Earth",
+      "damage_mult": 2.0,
+      "energy_cost": 0,
+      "effect": "apply_hunter_mark_2_turns"
+    }
+  },
+  "hipolita": {
+    "normal": {
+      "id": "hipolita_flame_spear",
+      "name_key": "MOVE_HIPO_SPEAR",
+      "target": "single_enemy",
+      "element": "Fire",
+      "damage_mult": 1.2,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "hipolita_amazon_charge",
+      "name_key": "MOVE_HIPO_CHARGE",
+      "target": "single_enemy",
+      "element": "Fire",
+      "damage_mult": 1.5,
+      "energy_cost": 40,
+      "effect": "repeat_on_crit"
+    },
+    "ultimate": {
+      "id": "hipolita_ares_fury",
+      "name_key": "MOVE_HIPO_FURY",
+      "target": "self",
+      "element": "Fire",
+      "damage_mult": 0.0,
+      "energy_cost": 0,
+      "effect": "guaranteed_crit_3_turns"
+    }
+  },
+  "atenea": {
+    "normal": {
+      "id": "atenea_thunderclap",
+      "name_key": "MOVE_ATENEA_CLAP",
+      "target": "single_enemy",
+      "element": "Lightning",
+      "damage_mult": 1.0,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "atenea_wisdoms_ward",
+      "name_key": "MOVE_ATENEA_WARD",
+      "target": "all_allies",
+      "element": "Lightning",
+      "damage_mult": 0.0,
+      "energy_cost": 45,
+      "effect": "party_shield_30_percent"
+    },
+    "ultimate": {
+      "id": "atenea_judgment",
+      "name_key": "MOVE_ATENEA_JUDGMENT",
+      "target": "single_enemy",
+      "element": "Lightning",
+      "damage_mult": 5.0,
+      "energy_cost": 0,
+      "effect": "ignore_defense"
+    }
+  },
+  "nyx": {
+    "normal": {
+      "id": "nyx_shadow_tide",
+      "name_key": "MOVE_NYX_TIDE",
+      "target": "single_enemy",
+      "element": "Water",
+      "damage_mult": 1.1,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "nyx_night_veil",
+      "name_key": "MOVE_NYX_VEIL",
+      "target": "all_allies",
+      "element": "Water",
+      "damage_mult": 0.0,
+      "energy_cost": 50,
+      "effect": "dodge_next_attack"
+    },
+    "ultimate": {
+      "id": "nyx_eclipse",
+      "name_key": "MOVE_NYX_ECLIPSE",
+      "target": "all_enemies",
+      "element": "Water",
+      "damage_mult": 2.5,
+      "energy_cost": 0,
+      "effect": "dispel_enemy_buffs"
+    }
+  },
+  "forest_monster": {
+    "normal": {
+      "id": "fm_claw",
+      "name_key": "MOVE_ENEMY_CLAW",
+      "target": "single_ally",
+      "element": "Earth",
+      "damage_mult": 1.0,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "fm_lunge",
+      "name_key": "MOVE_ENEMY_LUNGE",
+      "target": "single_ally",
+      "element": "Earth",
+      "damage_mult": 1.4,
+      "energy_cost": 35
+    }
+  },
+  "mountain_beast": {
+    "normal": {
+      "id": "mb_slam",
+      "name_key": "MOVE_ENEMY_SLAM",
+      "target": "single_ally",
+      "element": "Earth",
+      "damage_mult": 1.1,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "mb_quake",
+      "name_key": "MOVE_ENEMY_QUAKE",
+      "target": "all_allies",
+      "element": "Earth",
+      "damage_mult": 0.7,
+      "energy_cost": 40
+    }
+  },
+  "gaia_spirit": {
+    "normal": {
+      "id": "gaia_root_strike",
+      "name_key": "MOVE_ENEMY_ROOT",
+      "target": "single_ally",
+      "element": "Earth",
+      "damage_mult": 1.2,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "gaia_thorn_rain",
+      "name_key": "MOVE_ENEMY_THORN",
+      "target": "all_allies",
+      "element": "Earth",
+      "damage_mult": 0.8,
+      "energy_cost": 35
+    },
+    "ultimate": {
+      "id": "gaia_wrath",
+      "name_key": "MOVE_ENEMY_GAIA_WRATH",
+      "target": "all_allies",
+      "element": "Earth",
+      "damage_mult": 2.0,
+      "energy_cost": 0,
+      "effect": "corrupted_bloom"
+    }
+  }
+}

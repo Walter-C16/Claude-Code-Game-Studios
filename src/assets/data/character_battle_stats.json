@@ -1,0 +1,118 @@
+{
+  "config": {
+    "base_crit_chance": 5.0,
+    "base_crit_damage": 150.0,
+    "energy_regen_per_turn": 15,
+    "max_energy": 100,
+    "max_ultimate": 100
+  },
+  "characters": {
+    "protagonist": {
+      "element": "Neutral",
+      "hp": 120,
+      "atk": 18,
+      "def": 12,
+      "agi": 14,
+      "crit_chance": 5.0,
+      "crit_damage": 150.0,
+      "ult_charge_source": "any_action",
+      "ult_charge_rate": 10
+    },
+    "artemis": {
+      "element": "Earth",
+      "hp": 95,
+      "atk": 22,
+      "def": 8,
+      "agi": 20,
+      "crit_chance": 10.0,
+      "crit_damage": 170.0,
+      "ult_charge_source": "turns_passed",
+      "ult_charge_rate": 20
+    },
+    "hipolita": {
+      "element": "Fire",
+      "hp": 140,
+      "atk": 26,
+      "def": 14,
+      "agi": 16,
+      "crit_chance": 15.0,
+      "crit_damage": 180.0,
+      "ult_charge_source": "damage_dealt",
+      "ult_charge_rate": 1
+    },
+    "atenea": {
+      "element": "Lightning",
+      "hp": 110,
+      "atk": 20,
+      "def": 16,
+      "agi": 12,
+      "crit_chance": 8.0,
+      "crit_damage": 160.0,
+      "ult_charge_source": "damage_taken",
+      "ult_charge_rate": 2
+    },
+    "nyx": {
+      "element": "Water",
+      "hp": 100,
+      "atk": 24,
+      "def": 10,
+      "agi": 18,
+      "crit_chance": 7.0,
+      "crit_damage": 160.0,
+      "ult_charge_source": "reactions",
+      "ult_charge_rate": 25
+    }
+  },
+  "enemies": {
+    "forest_monster": {
+      "element": "Earth",
+      "hp": 60,
+      "atk": 12,
+      "def": 4,
+      "agi": 8,
+      "crit_chance": 3.0,
+      "crit_damage": 140.0,
+      "has_ultimate": false
+    },
+    "mountain_beast": {
+      "element": "Earth",
+      "hp": 120,
+      "atk": 20,
+      "def": 10,
+      "agi": 10,
+      "crit_chance": 5.0,
+      "crit_damage": 150.0,
+      "has_ultimate": false
+    },
+    "amazon_challenger": {
+      "element": "Fire",
+      "hp": 160,
+      "atk": 24,
+      "def": 14,
+      "agi": 15,
+      "crit_chance": 12.0,
+      "crit_damage": 170.0,
+      "has_ultimate": false
+    },
+    "gaia_spirit": {
+      "element": "Earth",
+      "hp": 320,
+      "atk": 28,
+      "def": 18,
+      "agi": 11,
+      "crit_chance": 8.0,
+      "crit_damage": 180.0,
+      "has_ultimate": true
+    },
+    "sardis_card_master": {
+      "element": "Fire",
+      "hp": 140,
+      "atk": 22,
+      "def": 12,
+      "agi": 13,
+      "crit_chance": 10.0,
+      "crit_damage": 160.0,
+      "has_ultimate": false
+    }
+  }
+}
