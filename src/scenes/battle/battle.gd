@@ -263,7 +263,17 @@ func _refresh_actor_hud() -> void:
 	var actor: Combatant = _battle.current_combatant()
 	if actor == null:
 		return
-	actor_name_label.text = actor.display_name
+	# Name + active blessings count. Protagonist and enemies always show 0.
+	var bless_count: int = 0
+	if not actor.is_enemy and _battle.active_blessings.has(actor.id):
+		bless_count = (_battle.active_blessings[actor.id] as Array).size()
+	if bless_count > 0:
+		actor_name_label.text = "%s  [%s]" % [
+			actor.display_name,
+			Localization.get_text("BATTLE_BLESSINGS_ACTIVE") % bless_count,
+		]
+	else:
+		actor_name_label.text = actor.display_name
 	hp_bar.value = actor.stats.hp_fraction()
 	hp_label.text = "HP %d / %d" % [actor.stats.current_hp, actor.stats.max_hp]
 	energy_label.text = "EN %d / %d" % [actor.stats.current_energy, actor.stats.max_energy]

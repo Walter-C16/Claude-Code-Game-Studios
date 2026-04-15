@@ -1,0 +1,169 @@
+{
+  "config": {
+    "note": "Passive stat buffs applied at battle start for each companion in the party. Each companion has 5 slots unlocking at romance stages 1/2/3/3/4 (same progression as the poker-era blessings).",
+    "stage_to_max_slot": {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 4,
+      "4": 5
+    },
+    "effect_types": [
+      "atk_flat",
+      "def_flat",
+      "hp_flat",
+      "crit_chance",
+      "crit_damage",
+      "agi_flat",
+      "ult_charge_bonus"
+    ]
+  },
+  "artemis": [
+    {
+      "slot": 1,
+      "stage": 1,
+      "name_key": "BATTLE_BLESS_ARTEMIS_1",
+      "effect": "atk_flat",
+      "magnitude": 4
+    },
+    {
+      "slot": 2,
+      "stage": 2,
+      "name_key": "BATTLE_BLESS_ARTEMIS_2",
+      "effect": "crit_chance",
+      "magnitude": 8
+    },
+    {
+      "slot": 3,
+      "stage": 3,
+      "name_key": "BATTLE_BLESS_ARTEMIS_3",
+      "effect": "def_flat",
+      "magnitude": 4
+    },
+    {
+      "slot": 4,
+      "stage": 3,
+      "name_key": "BATTLE_BLESS_ARTEMIS_4",
+      "effect": "crit_damage",
+      "magnitude": 15
+    },
+    {
+      "slot": 5,
+      "stage": 4,
+      "name_key": "BATTLE_BLESS_ARTEMIS_5",
+      "effect": "agi_flat",
+      "magnitude": 6
+    }
+  ],
+  "hipolita": [
+    {
+      "slot": 1,
+      "stage": 1,
+      "name_key": "BATTLE_BLESS_HIPOLITA_1",
+      "effect": "atk_flat",
+      "magnitude": 5
+    },
+    {
+      "slot": 2,
+      "stage": 2,
+      "name_key": "BATTLE_BLESS_HIPOLITA_2",
+      "effect": "hp_flat",
+      "magnitude": 20
+    },
+    {
+      "slot": 3,
+      "stage": 3,
+      "name_key": "BATTLE_BLESS_HIPOLITA_3",
+      "effect": "def_flat",
+      "magnitude": 4
+    },
+    {
+      "slot": 4,
+      "stage": 3,
+      "name_key": "BATTLE_BLESS_HIPOLITA_4",
+      "effect": "crit_chance",
+      "magnitude": 12
+    },
+    {
+      "slot": 5,
+      "stage": 4,
+      "name_key": "BATTLE_BLESS_HIPOLITA_5",
+      "effect": "crit_damage",
+      "magnitude": 25
+    }
+  ],
+  "atenea": [
+    {
+      "slot": 1,
+      "stage": 1,
+      "name_key": "BATTLE_BLESS_ATENEA_1",
+      "effect": "def_flat",
+      "magnitude": 3
+    },
+    {
+      "slot": 2,
+      "stage": 2,
+      "name_key": "BATTLE_BLESS_ATENEA_2",
+      "effect": "atk_flat",
+      "magnitude": 3
+    },
+    {
+      "slot": 3,
+      "stage": 3,
+      "name_key": "BATTLE_BLESS_ATENEA_3",
+      "effect": "hp_flat",
+      "magnitude": 15
+    },
+    {
+      "slot": 4,
+      "stage": 3,
+      "name_key": "BATTLE_BLESS_ATENEA_4",
+      "effect": "agi_flat",
+      "magnitude": 2
+    },
+    {
+      "slot": 5,
+      "stage": 4,
+      "name_key": "BATTLE_BLESS_ATENEA_5",
+      "effect": "crit_chance",
+      "magnitude": 10
+    }
+  ],
+  "nyx": [
+    {
+      "slot": 1,
+      "stage": 1,
+      "name_key": "BATTLE_BLESS_NYX_1",
+      "effect": "agi_flat",
+      "magnitude": 4
+    },
+    {
+      "slot": 2,
+      "stage": 2,
+      "name_key": "BATTLE_BLESS_NYX_2",
+      "effect": "atk_flat",
+      "magnitude": 4
+    },
+    {
+      "slot": 3,
+      "stage": 3,
+      "name_key": "BATTLE_BLESS_NYX_3",
+      "effect": "hp_flat",
+      "magnitude": 10
+    },
+    {
+      "slot": 4,
+      "stage": 3,
+      "name_key": "BATTLE_BLESS_NYX_4",
+      "effect": "ult_charge_bonus",
+      "magnitude": 10
+    },
+    {
+      "slot": 5,
+      "stage": 4,
+      "name_key": "BATTLE_BLESS_NYX_5",
+      "effect": "crit_damage",
+      "magnitude": 20
+    }
+  ]
+}

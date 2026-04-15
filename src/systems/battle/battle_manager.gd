@@ -57,6 +57,12 @@ var current_turn_index: int = 0
 ## Monotonic turn counter across the entire battle (1, 2, 3, ...).
 var turn_number: int = 0
 
+## Active battle blessings per ally id — populated during setup from
+## battle_blessings.json, filtered by the companion's current romance
+## stage. Exposed for the UI (HUD shows the count).
+## Schema: {companion_id: Array[blessing_dict]}
+var active_blessings: Dictionary = {}
+
 # ── Private config ───────────────────────────────────────────────────────────
 
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -80,6 +86,8 @@ func setup(party_ids: Array[String], enemy_ids: Array[String]) -> bool:
 	var enemy_rows: Dictionary = data.get("enemies", {}) as Dictionary
 
 	party.clear()
+	active_blessings.clear()
+	var battle_blessings: Dictionary = JsonLoader.load_dict("res://assets/data/battle_blessings.json")
 	for pid: String in party_ids:
 		var row: Dictionary = char_rows.get(pid, {}) as Dictionary
 		if row.is_empty():
@@ -88,7 +96,16 @@ func setup(party_ids: Array[String], enemy_ids: Array[String]) -> bool:
 		var moveset: Dictionary = movesets.get(pid, {}) as Dictionary
 		var is_proto: bool = pid == "protagonist"
 		var name: String = _display_name_for(pid)
-		party.append(Combatant.build(pid, name, false, is_proto, row, moveset))
+		var combatant: Combatant = Combatant.build(pid, name, false, is_proto, row, moveset)
+
+		# Apply passive blessings for this companion. Protagonist has none —
+		# they come from the other companions' relationship stages.
+		if not is_proto and battle_blessings.has(pid):
+			var applied: Array[Dictionary] = _apply_blessings_to(combatant, battle_blessings[pid] as Array)
+			if not applied.is_empty():
+				active_blessings[pid] = applied
+
+		party.append(combatant)
 
 	enemies.clear()
 	for eid: String in enemy_ids:
@@ -395,6 +412,70 @@ func _rebuild_turn_queue() -> void:
 func _set_state(new_state: int) -> void:
 	state = new_state
 	state_changed.emit(new_state)
+
+
+# ── Passive blessings (Phase E) ──────────────────────────────────────────────
+
+## Applies all unlocked blessings for [param combatant] from the companion's
+## 5-slot list in battle_blessings.json. Filters by the companion's current
+## romance stage via CompanionState.get_romance_stage. Mutates combatant.stats
+## in place (base values, not runtime state — current_hp also bumps to the
+## new max_hp so the companion starts at full HP).
+## Returns the Array of blessing dicts that were actually applied.
+func _apply_blessings_to(combatant: Combatant, all_blessings: Array) -> Array[Dictionary]:
+	var applied: Array[Dictionary] = []
+	var stage: int = CompanionState.get_romance_stage(combatant.id)
+	var max_slot: int = _max_slot_for_stage(stage)
+	if max_slot == 0:
+		return applied
+
+	for entry: Variant in all_blessings:
+		var b: Dictionary = entry as Dictionary
+		var slot: int = int(b.get("slot", 0))
+		if slot <= 0 or slot > max_slot:
+			continue
+		_apply_blessing_effect(combatant.stats, b)
+		applied.append(b)
+
+	# Starting HP follows any hp_flat bump.
+	combatant.stats.current_hp = combatant.stats.max_hp
+	return applied
+
+
+## Dispatches on the blessing's "effect" field and mutates the BattleStats.
+func _apply_blessing_effect(stats: BattleStats, blessing: Dictionary) -> void:
+	var effect: String = blessing.get("effect", "") as String
+	var magnitude: float = float(blessing.get("magnitude", 0))
+	match effect:
+		"atk_flat":
+			stats.atk += int(magnitude)
+		"def_flat":
+			stats.def_stat += int(magnitude)
+		"hp_flat":
+			stats.max_hp += int(magnitude)
+		"crit_chance":
+			stats.crit_chance += magnitude
+		"crit_damage":
+			stats.crit_damage += magnitude
+		"agi_flat":
+			stats.agi += int(magnitude)
+		"ult_charge_bonus":
+			stats.ult_charge_rate += int(magnitude)
+		_:
+			push_warning("BattleManager: unknown blessing effect '%s'" % effect)
+
+
+## Mirrors the ADR-0012 stage-to-max-slot table used by the poker
+## BlessingSystem. Keeping the lookup local avoids a dependency on that
+## class and lets battle blessings diverge if the design needs to later.
+func _max_slot_for_stage(stage: int) -> int:
+	match stage:
+		0: return 0
+		1: return 1
+		2: return 2
+		3: return 4
+		4: return 5
+		_: return 0
 
 
 # ── Display name helpers ─────────────────────────────────────────────────────
