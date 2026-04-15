@@ -275,6 +275,12 @@ func _refresh_actor_hud() -> void:
 	special_btn.disabled = not is_player_turn or not actor.can_cast("special")
 	ultimate_btn.disabled = not is_player_turn or not actor.can_cast("ultimate")
 
+	# Localized move names on the buttons — each character's signature moves
+	# show up instead of the generic "Attack/Special/Ultimate" text.
+	_set_move_button(attack_btn, actor.get_move("normal"), "BATTLE_ACTION_ATTACK")
+	_set_move_button(special_btn, actor.get_move("special"), "BATTLE_ACTION_SPECIAL")
+	_set_move_button(ultimate_btn, actor.get_move("ultimate"), "BATTLE_ACTION_ULTIMATE")
+
 	var turn_num: int = _battle.turn_number
 	if actor.is_enemy:
 		turn_banner.text = "Turn %d — %s's move" % [turn_num, actor.display_name]
@@ -282,9 +288,26 @@ func _refresh_actor_hud() -> void:
 	else:
 		turn_banner.text = "Turn %d — Your move, %s" % [turn_num, actor.display_name]
 		if _is_picking_target:
-			hint_label.text = "Tap a target"
+			hint_label.text = Localization.get_text("BATTLE_HINT_TARGET")
 		else:
-			hint_label.text = "Choose an action"
+			hint_label.text = Localization.get_text("BATTLE_HINT_ACTION")
+
+
+## Sets a button's label to the localized move name, including energy/ult cost
+## suffix when relevant. Falls back to a generic label when the actor lacks
+## that move type (e.g. an enemy with no ultimate — button stays disabled).
+func _set_move_button(btn: Button, move: BattleMove, fallback_key: String) -> void:
+	if move == null:
+		btn.text = Localization.get_text(fallback_key)
+		return
+	var name_key: String = move.name_key
+	var move_name: String = Localization.get_text(name_key) if not name_key.is_empty() else Localization.get_text(fallback_key)
+	if move.move_type == "special" and move.energy_cost > 0:
+		btn.text = "%s\n⚡ %d" % [move_name, move.energy_cost]
+	elif move.move_type == "ultimate":
+		btn.text = "%s\n★ ULT" % move_name
+	else:
+		btn.text = move_name
 
 
 # ── Signal callbacks from BattleManager ──────────────────────────────────────
@@ -302,16 +325,72 @@ func _on_turn_started(combatant: Combatant) -> void:
 		_run_enemy_ai(combatant)
 
 
-func _on_move_executed(actor: Combatant, move: BattleMove, targets: Array) -> void:
+func _on_move_executed(_actor: Combatant, _move: BattleMove, _targets: Array) -> void:
 	_refresh_all()
-	# Flash hit targets.
-	for tgt: Variant in targets:
-		var t: Combatant = tgt as Combatant
-		var slot: Control = _find_slot_for(t)
-		if slot != null:
-			var body: ColorRect = slot.get_meta("body_rect", null) as ColorRect
-			if body != null:
-				Fx.flash(body, Color(1.0, 1.0, 1.0, 0.6), HIT_FLASH_DURATION)
+
+
+## Called by _execute_queued_move and _run_enemy_ai with the Dictionary
+## returned by BattleManager.execute_move. Iterates the hits array and
+## spawns a floating damage number + shake/flash per target.
+func _animate_hit_results(result: Dictionary) -> void:
+	if not result.get("success", false):
+		return
+	var hits: Array = result.get("hits", []) as Array
+	for hit: Variant in hits:
+		var hit_dict: Dictionary = hit as Dictionary
+		var target: Combatant = hit_dict.get("target", null) as Combatant
+		var damage: int = int(hit_dict.get("damage", 0))
+		var is_crit: bool = hit_dict.get("crit", false)
+		var reaction_name: String = hit_dict.get("reaction", "") as String
+		if target == null:
+			continue
+		var slot: Control = _find_slot_for(target)
+		if slot == null:
+			continue
+		var body: ColorRect = slot.get_meta("body_rect", null) as ColorRect
+		if body != null:
+			var flash_color: Color = Color(1.0, 1.0, 1.0, 0.7)
+			if is_crit:
+				flash_color = Color(1.0, 0.85, 0.3, 0.8)
+			elif not reaction_name.is_empty():
+				flash_color = Color(0.85, 0.5, 1.0, 0.75)
+			Fx.flash(body, flash_color, HIT_FLASH_DURATION)
+			Fx.shake(slot, 4.0 if not is_crit else 7.0, 0.25)
+		if damage > 0:
+			_spawn_damage_number(slot, damage, is_crit, not reaction_name.is_empty())
+
+
+## Creates a short-lived floating label above a unit slot showing damage.
+## Crits use a larger gold label; reactions use a purple tint.
+func _spawn_damage_number(on_slot: Control, amount: int, is_crit: bool, is_reaction: bool) -> void:
+	var lbl: Label = Label.new()
+	lbl.text = "-%d" % amount
+	if is_crit:
+		lbl.text = "-%d!" % amount
+		lbl.add_theme_font_size_override("font_size", 30)
+		lbl.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+	elif is_reaction:
+		lbl.add_theme_font_size_override("font_size", 22)
+		lbl.add_theme_color_override("font_color", Color(0.85, 0.5, 1.0, 1.0))
+	else:
+		lbl.add_theme_font_size_override("font_size", 20)
+		lbl.add_theme_color_override("font_color", UIConstants.STATUS_DANGER)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
+	# Position above the unit slot (relative to arena so the float anim
+	# tracks the arena, not world coordinates).
+	arena.add_child(lbl)
+	var slot_pos: Vector2 = on_slot.global_position - arena.global_position
+	var start: Vector2 = slot_pos + Vector2(on_slot.size.x * 0.5 - 30.0, -6.0)
+	lbl.position = start
+	lbl.modulate.a = 1.0
+
+	var float_tween: Tween = create_tween().set_parallel(true)
+	float_tween.tween_property(lbl, "position:y", start.y - 40.0, 0.8) \
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	float_tween.tween_property(lbl, "modulate:a", 0.0, 0.8) \
+		.set_ease(Tween.EASE_IN).set_delay(0.3)
+	float_tween.chain().tween_callback(lbl.queue_free)
 
 
 func _on_reaction_triggered(reaction_name: String, _on_combatant: Combatant) -> void:
@@ -387,7 +466,8 @@ func _execute_queued_move(targets: Array[Combatant]) -> void:
 	_pending_move_type = ""
 	_is_picking_target = false
 	_set_target_picking(false)
-	_battle.execute_move(mt, targets)
+	var result: Dictionary = _battle.execute_move(mt, targets)
+	_animate_hit_results(result)
 
 
 ## Toggles pick buttons on enemy slots (for targeting single enemies).
@@ -440,7 +520,8 @@ func _run_enemy_ai(actor: Combatant) -> void:
 			return
 		targets.append(alive[randi() % alive.size()])
 
-	_battle.execute_move(move_type, targets)
+	var result: Dictionary = _battle.execute_move(move_type, targets)
+	_animate_hit_results(result)
 
 
 # ── Victory / Defeat actions ─────────────────────────────────────────────────
