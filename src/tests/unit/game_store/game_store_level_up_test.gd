@@ -94,9 +94,10 @@ func test_game_store_level_up_companion_fails_when_insufficient() -> void:
 
 
 func test_game_store_level_up_companion_rejects_at_level_cap() -> void:
-	# Arrange
+	# Arrange — Artemis is rank S (cap 90). Set her level to her rank cap.
 	_reset()
-	GameStore._companion_levels["artemis"] = 20  # direct poke — already at cap
+	var cap: int = GameStore.get_companion_level_cap("artemis")
+	GameStore._companion_levels["artemis"] = cap
 	GameStore.add_companion_xp("artemis", 100000)
 	GameStore.add_gold(100000)
 
@@ -105,7 +106,7 @@ func test_game_store_level_up_companion_rejects_at_level_cap() -> void:
 
 	# Assert
 	assert_bool(ok).is_false()
-	assert_int(GameStore.get_companion_level("artemis")).is_equal(20)
+	assert_int(GameStore.get_companion_level("artemis")).is_equal(cap)
 	assert_int(GameStore.get_level_up_xp_cost("artemis")).is_equal(0)
 	assert_int(GameStore.get_level_up_gold_cost("artemis")).is_equal(0)
 

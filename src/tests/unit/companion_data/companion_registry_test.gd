@@ -55,7 +55,7 @@ func test_companion_registry_ready_total_profile_count_is_five() -> void:
 
 	# Assert — get_all_ids() is the authoritative count
 	var ids: Array[String] = registry.get_all_ids()
-	assert_int(ids.size()).is_equal(13)
+	assert_int(ids.size()).is_equal(14)
 
 # ── AC2 — get_profile("artemis") has all 10 required keys ───────────────────
 
@@ -84,15 +84,15 @@ func test_companion_registry_get_profile_artemis_has_element_key() -> void:
 	var profile: Dictionary = registry.get_profile("artemis")
 	assert_bool(profile.has("element")).is_true()
 
-func test_companion_registry_get_profile_artemis_has_str_key() -> void:
+func test_companion_registry_get_profile_artemis_has_rank_key() -> void:
 	var registry = _make_registry()
 	var profile: Dictionary = registry.get_profile("artemis")
-	assert_bool(profile.has("STR")).is_true()
+	assert_bool(profile.has("rank")).is_true()
 
-func test_companion_registry_get_profile_artemis_has_int_key() -> void:
+func test_companion_registry_get_profile_artemis_has_element_value() -> void:
 	var registry = _make_registry()
 	var profile: Dictionary = registry.get_profile("artemis")
-	assert_bool(profile.has("INT")).is_true()
+	assert_str(profile.get("element", "") as String).is_equal("Earth")
 
 func test_companion_registry_get_profile_artemis_has_agi_key() -> void:
 	var registry = _make_registry()
@@ -121,8 +121,8 @@ func test_companion_registry_get_profile_artemis_stat_str_is_correct() -> void:
 	# Act
 	var profile: Dictionary = registry.get_profile("artemis")
 
-	# Assert — concrete value from companions.json
-	assert_int(int(profile.get("STR", -1))).is_equal(17)
+	# Assert — concrete value from companions.json (rank, not STR which was removed)
+	assert_str(profile.get("rank", "") as String).is_equal("S")
 
 func test_companion_registry_get_profile_artemis_element_is_earth() -> void:
 	var registry = _make_registry()
@@ -156,7 +156,7 @@ func test_companion_registry_get_all_ids_returns_five_ids() -> void:
 	var ids: Array[String] = registry.get_all_ids()
 
 	# Assert
-	assert_int(ids.size()).is_equal(13)
+	assert_int(ids.size()).is_equal(14)
 
 func test_companion_registry_get_all_ids_contains_artemis() -> void:
 	var registry = _make_registry()
@@ -269,26 +269,26 @@ func test_companion_registry_get_profile_returns_defensive_copy() -> void:
 	# Arrange
 	var registry = _make_registry()
 	var profile_first: Dictionary = registry.get_profile("artemis")
-	var original_str: int = int(profile_first.get("STR", -1))
+	var original_rank: String = profile_first.get("rank", "") as String
 
 	# Act — mutate the returned copy
-	profile_first["STR"] = 999
+	profile_first["rank"] = "TAMPERED"
 
 	# Assert — fresh fetch still has the original value
 	var profile_second: Dictionary = registry.get_profile("artemis")
-	assert_int(int(profile_second.get("STR", -1))).is_equal(original_str)
+	assert_str(profile_second.get("rank", "") as String).is_equal(original_rank)
 
 func test_companion_registry_get_profile_mutation_does_not_affect_other_callers() -> void:
 	# Arrange
 	var registry = _make_registry()
 	var copy_a: Dictionary = registry.get_profile("nyx")
 
-	# Act
-	copy_a["INT"] = 0
+	# Act — mutate a field on the returned copy
+	copy_a["role"] = "TAMPERED"
 
 	# Assert — another caller sees the real value
 	var copy_b: Dictionary = registry.get_profile("nyx")
-	assert_int(int(copy_b.get("INT", -1))).is_equal(19)
+	assert_str(copy_b.get("role", "") as String).is_equal("Primordial Goddess of Night")
 
 # ── AC7 — get_profile() on a known ID completes within 1ms ───────────────────
 

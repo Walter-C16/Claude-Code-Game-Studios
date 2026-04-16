@@ -47,12 +47,12 @@ func test_companion_level_xp_one_below_threshold_stays_at_previous() -> void:
 	assert_int(level).is_equal(1)
 
 
-func test_companion_level_xp_far_past_cap_clamps_at_twenty() -> void:
-	# Act
-	var level: int = CompanionLevelScript.xp_to_level(100000)
+func test_companion_level_xp_far_past_cap_clamps_at_max() -> void:
+	# Act — 10 million XP is well past any reasonable cap
+	var level: int = CompanionLevelScript.xp_to_level(10000000)
 
-	# Assert
-	assert_int(level).is_equal(20)
+	# Assert — clamped at LEVEL_CAP (110, SS rank max)
+	assert_int(level).is_equal(CompanionLevelScript.LEVEL_CAP)
 
 
 func test_companion_level_every_level_threshold_is_monotonic() -> void:
@@ -79,7 +79,7 @@ func test_companion_level_xp_total_matches_design_spec() -> void:
 
 func test_companion_level_xp_needed_for_next_drops_at_cap() -> void:
 	# Act + Assert
-	assert_int(CompanionLevelScript.xp_needed_for_next(20)).is_equal(0)
+	assert_int(CompanionLevelScript.xp_needed_for_next(CompanionLevelScript.LEVEL_CAP)).is_equal(0)
 
 
 func test_companion_level_xp_needed_for_next_matches_expected_delta() -> void:
@@ -99,7 +99,8 @@ func test_companion_level_xp_into_current_level_at_partial_progress() -> void:
 
 func test_companion_level_xp_into_current_level_returns_zero_at_cap() -> void:
 	# Player well past the cap threshold — UI shows "MAX".
-	var xp_into: int = CompanionLevelScript.xp_into_current_level(50000)
+	var cap_xp: int = CompanionLevelScript.xp_total_for_level(CompanionLevelScript.LEVEL_CAP)
+	var xp_into: int = CompanionLevelScript.xp_into_current_level(cap_xp + 100000)
 	assert_int(xp_into).is_equal(0)
 
 
