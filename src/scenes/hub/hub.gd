@@ -152,7 +152,8 @@ func _apply_progressive_unlock() -> void:
 	# Names of buttons that exist purely as visual placeholders for systems
 	# that aren't implemented yet. They reach tier 3 (so they appear once the
 	# player is far enough into the story) but stay disabled regardless.
-	var placeholder_buttons: Array[String] = ["OracleBtn", "ForgeBtn"]
+	# Oracle went live in Phase I.c — it's no longer a placeholder.
+	var placeholder_buttons: Array[String] = ["ForgeBtn"]
 
 	# Current player tier.
 	var tier: int = 0
@@ -205,13 +206,18 @@ func _install_gacha_placeholders() -> void:
 	if more_tabs.get_node_or_null("OracleBtn") != null:
 		return
 
+	# Oracle went live in Phase I.c — it's a real navigation button now.
 	var oracle_btn: Button = _make_placeholder_tab_button(
 		"OracleBtn", Localization.get_text("HUB_TAB_ORACLE")
 	)
+	oracle_btn.tooltip_text = ""  # clear the "coming soon" hint
+	oracle_btn.pressed.connect(_on_oracle_pressed)
+	more_tabs.add_child(oracle_btn)
+
+	# Forge is still a visual placeholder; leaves its disabled state alone.
 	var forge_btn: Button = _make_placeholder_tab_button(
 		"ForgeBtn", Localization.get_text("HUB_TAB_FORGE")
 	)
-	more_tabs.add_child(oracle_btn)
 	more_tabs.add_child(forge_btn)
 
 
@@ -511,6 +517,10 @@ func _on_story_pressed() -> void:
 
 func _on_camp_pressed() -> void:
 	SceneManager.change_scene(SceneManager.SceneId.COMPANION_ROOM)
+
+
+func _on_oracle_pressed() -> void:
+	SceneManager.change_scene(SceneManager.SceneId.ORACLE)
 
 
 func _on_deck_pressed() -> void:
