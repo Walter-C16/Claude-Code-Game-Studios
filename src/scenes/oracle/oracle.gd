@@ -32,8 +32,11 @@ var _ten_btn: Button
 ## Modal overlay that blocks input while a reveal is on screen.
 var _reveal_root: Control
 var _reveal_panel: PanelContainer
+var _reveal_title: Label
 var _reveal_text: RichTextLabel
 var _reveal_continue_btn: Button
+## Looping shimmer on the reveal title, killed when the player continues.
+var _reveal_title_shimmer: Tween
 
 ## Legendary player-pick modal.
 var _pick_root: Control
@@ -71,6 +74,7 @@ func _ready() -> void:
 func _disconnect_autoload_signals() -> void:
 	if GameStore.state_changed.is_connected(_on_state_changed):
 		GameStore.state_changed.disconnect(_on_state_changed)
+	_kill_reveal_title_shimmer()
 
 
 # ── Layout builders ─────────────────────────────────────────────────────────
@@ -290,12 +294,12 @@ func _build_reveal_overlay() -> void:
 	vbox.add_theme_constant_override("separation", 12)
 	_reveal_panel.add_child(vbox)
 
-	var title: Label = Label.new()
-	title.text = Localization.get_text("ORACLE_REVEAL_TITLE")
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
-	title.add_theme_font_size_override("font_size", 22)
-	vbox.add_child(title)
+	_reveal_title = Label.new()
+	_reveal_title.text = Localization.get_text("ORACLE_REVEAL_TITLE")
+	_reveal_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_reveal_title.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+	_reveal_title.add_theme_font_size_override("font_size", 22)
+	vbox.add_child(_reveal_title)
 
 	_reveal_text = RichTextLabel.new()
 	_reveal_text.bbcode_enabled = true
@@ -642,6 +646,10 @@ func _on_single_pull_pressed() -> void:
 	if not _oracle.can_single_pull(gold, pulls):
 		return
 
+	# Press-feedback pop on the button.
+	_single_btn.pivot_offset = _single_btn.size * 0.5
+	Fx.pop_scale(_single_btn, 1.08, 0.25)
+
 	# Charge cost + pull counter up front.
 	GameStore.spend_gold(_oracle.single_cost)
 	GameStore.add_oracle_pulls(1)
@@ -669,6 +677,10 @@ func _on_ten_pull_pressed() -> void:
 	var pulls: int = GameStore.get_oracle_pulls_this_week()
 	if not _oracle.can_ten_pull(gold, pulls):
 		return
+
+	# Press-feedback pop on the button.
+	_ten_btn.pivot_offset = _ten_btn.size * 0.5
+	Fx.pop_scale(_ten_btn, 1.08, 0.25)
 
 	GameStore.spend_gold(_oracle.ten_cost)
 	GameStore.add_oracle_pulls(10)
@@ -752,10 +764,54 @@ func _commit_diff_and_reveal(diff: Dictionary, rolls: Array) -> void:
 
 	_reveal_text.text = _format_reveal(rolls, diff)
 	_reveal_root.visible = true
+	_animate_reveal_entrance((diff["unlocked"] as Array).size() > 0)
 	_refresh_all()
 
 
+## Plays the entrance animation for the reveal overlay. Scale-pops the
+## panel from 85% → 100% with spring, fades its modulate in, fades the
+## text body in with a small delay for a "panel opens, then writing
+## appears" rhythm. If the pull produced any new Epithet I unlock, the
+## title also gets a looping gold shimmer for extra drama.
+func _animate_reveal_entrance(has_unlock: bool) -> void:
+	if _reveal_panel == null:
+		return
+	_reveal_panel.pivot_offset = _reveal_panel.size * 0.5
+	_reveal_panel.scale = Vector2(0.85, 0.85)
+	_reveal_panel.modulate.a = 0.0
+	_reveal_text.modulate.a = 0.0
+
+	var tween: Tween = _reveal_panel.create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(_reveal_panel, "scale", Vector2.ONE, 0.35) \
+		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+	tween.tween_property(_reveal_panel, "modulate:a", 1.0, 0.2) \
+		.set_ease(Tween.EASE_OUT)
+
+	# Text fades in after a short delay so the panel has visual focus
+	# before the reader's eye lands on the contents.
+	var text_tween: Tween = _reveal_text.create_tween()
+	text_tween.tween_interval(0.18)
+	text_tween.tween_property(_reveal_text, "modulate:a", 1.0, 0.25) \
+		.set_ease(Tween.EASE_OUT)
+
+	# Gold shimmer on the title — loops until the player taps Continue.
+	_kill_reveal_title_shimmer()
+	if has_unlock:
+		_reveal_title_shimmer = Fx.gold_shimmer(_reveal_title, 1.4)
+
+
+func _kill_reveal_title_shimmer() -> void:
+	if _reveal_title_shimmer != null and _reveal_title_shimmer.is_valid():
+		_reveal_title_shimmer.kill()
+	_reveal_title_shimmer = null
+
+
 func _on_reveal_continue() -> void:
+	_kill_reveal_title_shimmer()
+	# Restore the title modulate in case a shimmer left it off-tone.
+	if _reveal_title != null:
+		_reveal_title.modulate = Color.WHITE
 	_reveal_root.visible = false
 
 
