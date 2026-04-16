@@ -312,7 +312,7 @@ func _build_gift_modal() -> void:
 	_gift_modal.add_child(vbox)
 
 	var modal_title: Label = Label.new()
-	modal_title.text = "Choose a Gift"
+	modal_title.text = Localization.get_text("GIFT_MODAL_TITLE")
 	modal_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	modal_title.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
 	modal_title.add_theme_font_size_override("font_size", 18)
@@ -328,7 +328,7 @@ func _build_gift_modal() -> void:
 	_gift_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(_gift_list)
 
-	var cancel_btn: Button = _make_action_button("Cancel")
+	var cancel_btn: Button = _make_action_button(Localization.get_text("GIFT_MODAL_CANCEL"))
 	cancel_btn.pressed.connect(_on_gift_modal_cancel)
 	vbox.add_child(cancel_btn)
 
@@ -492,10 +492,14 @@ func _refresh_detail_panel() -> void:
 		_detail_level_up_btn.visible = true
 		_detail_level_up_btn.disabled = not GameStore.can_level_up(_selected_id)
 
-	# Button availability — grey out if no tokens.
+	# Button availability — grey out if no tokens, with a tooltip so the
+	# player understands why the button is unresponsive.
 	var has_tokens: bool = GameStore.get_daily_tokens() > 0
+	var no_tokens_tooltip: String = Localization.get_text("COMPANION_ROOM_NO_TOKENS")
 	_talk_btn.disabled = not has_tokens
+	_talk_btn.tooltip_text = "" if has_tokens else no_tokens_tooltip
 	_gift_open_btn.disabled = not has_tokens
+	_gift_open_btn.tooltip_text = "" if has_tokens else no_tokens_tooltip
 
 
 ## Hides the detail panel.

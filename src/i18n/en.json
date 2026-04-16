@@ -1283,6 +1283,9 @@
   "COMPANION_LEVEL_MAX": "MAX",
   "COMPANION_LEVEL_UP_BUTTON": "Level Up",
   "COMPANION_LEVEL_UP_COST": "Next Level",
+  "COMPANION_ROOM_NO_TOKENS": "No interaction tokens left today",
+  "GIFT_MODAL_TITLE": "Choose a Gift",
+  "GIFT_MODAL_CANCEL": "Cancel",
   "SETTINGS_DISABLE_TIMERS": "Disable combat timers",
   "ARTEMIS_JOINS_OK": "Welcome her",
 
