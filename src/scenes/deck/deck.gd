@@ -285,7 +285,7 @@ func _build_detail_view() -> void:
 
 	# Blessings header.
 	var bless_header: Label = Label.new()
-	bless_header.text = "Divine Blessings"
+	bless_header.text = Localization.get_text("BLESSINGS_HEADER")
 	bless_header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	bless_header.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
 	bless_header.add_theme_font_size_override("font_size", 16)

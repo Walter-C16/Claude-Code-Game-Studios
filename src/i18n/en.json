@@ -141,7 +141,6 @@
   "EXPLORE_HOT_SPRINGS": "Hot Springs",
   "EXPLORE_SELECT_COMPANION": "Select Companion",
   "EXPLORE_REWARD_GOLD": "+{{amount}} Gold",
-  "ABYSS_TITLE": "The Abyss",
   "ABYSS_GOLD": "Gold: {{amount}}",
   "ABYSS_TOKENS": "Tokens: {{amount}}",
   "ABYSS_ENTER": "Enter Combat",
@@ -1301,6 +1300,7 @@
   "ABYSS_DEFEAT": "THE ABYSS CLAIMS YOU",
   "ABYSS_RETURN_HUB": "Return to Hub",
   "ACHIEVEMENTS_TITLE": "ACHIEVEMENTS",
+  "BLESSINGS_HEADER": "Divine Blessings",
   "CHAPTER_MAP_TITLE": "STORY",
   "CHAPTER_PREFIX": "Chapter ",
   "LOCATION_AREA_SARDIS": "Sardis",
@@ -1433,7 +1433,6 @@
 
   "CHARACTER_DAPHNE": "Daphne",
   "CHARACTER_CIRCE": "Circe",
-  "CHARACTER_MEGARA": "Megara",
   "CHARACTER_THETIS": "Thetis",
   "CHARACTER_ECHO": "Echo",
 
@@ -1459,15 +1458,6 @@
   "QUEST_CIRCE_05_TITLE": "The Third Fragment",
   "QUEST_CIRCE_05_DESC": "Circe reveals the Gaia fragment she's been guarding. The path to Gaia's authority opens.",
 
-  "QUEST_MEGARA_TITLE": "The Widow's Legacy",
-  "QUEST_MEGARA_01_TITLE": "The Widow's Trade",
-  "QUEST_MEGARA_01_DESC": "Megara's supply camp was raided. Help her fight off the bandits to open her shop.",
-  "QUEST_MEGARA_02_TITLE": "Heracles' Shield",
-  "QUEST_MEGARA_02_DESC": "Track down Heracles' lost shield in the mountain ruins. Megara says it's the last piece of him.",
-  "QUEST_MEGARA_03_TITLE": "The Letter",
-  "QUEST_MEGARA_03_DESC": "Deliver Megara's letter to an old war companion in Thebes. The words are heavy.",
-  "QUEST_MEGARA_04_TITLE": "Closure",
-  "QUEST_MEGARA_04_DESC": "Help Megara visit Heracles' grave. She needs to say goodbye — and she doesn't want to go alone.",
 
   "QUEST_THETIS_TITLE": "The Sea's Memory",
   "QUEST_THETIS_01_TITLE": "The Hidden Grotto",
