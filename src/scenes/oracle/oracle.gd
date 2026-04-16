@@ -40,6 +40,13 @@ var _pick_root: Control
 var _pick_panel: PanelContainer
 var _pending_legendary_result: Dictionary = {}
 
+## Epithet codex modal — lists all 6 tiers + their rewards per goddess.
+var _codex_root: Control
+var _codex_title: Label
+var _codex_current: Label
+var _codex_list: VBoxContainer
+var _codex_hint: Label
+
 
 # ── Lifecycle ───────────────────────────────────────────────────────────────
 
@@ -161,11 +168,24 @@ func _build_layout() -> void:
 	# Overlays — built once, hidden until needed.
 	_build_reveal_overlay()
 	_build_pick_overlay()
+	_build_codex_overlay()
 
 
 func _build_shard_card(goddess_id: String) -> Control:
-	var card: PanelContainer = PanelContainer.new()
-	card.custom_minimum_size = Vector2(0.0, 80.0)
+	# Wrap the card in a flat Button so the whole row is tappable. Tapping
+	# opens the Epithet codex for that goddess.
+	var card: Button = Button.new()
+	card.flat = true
+	card.custom_minimum_size = Vector2(0.0, 84.0)
+	card.focus_mode = Control.FOCUS_NONE
+	card.pressed.connect(_on_goddess_card_pressed.bind(goddess_id))
+
+	# A PanelContainer behind the button's text gives us the bordered card
+	# look. Button children are laid out inside the button's content box,
+	# so we use a centered margin container to host the info vbox.
+	var panel: PanelContainer = PanelContainer.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var style: StyleBoxFlat = StyleBoxFlat.new()
 	style.bg_color = UIConstants.BG_SECONDARY
 	style.border_color = UIConstants.ACCENT_GOLD_DARK
@@ -175,11 +195,13 @@ func _build_shard_card(goddess_id: String) -> Control:
 	style.content_margin_right = 12.0
 	style.content_margin_top = 8.0
 	style.content_margin_bottom = 8.0
-	card.add_theme_stylebox_override("panel", style)
+	panel.add_theme_stylebox_override("panel", style)
+	card.add_child(panel)
 
 	var vbox: VBoxContainer = VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 4)
-	card.add_child(vbox)
+	vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	panel.add_child(vbox)
 
 	# Row 1 — goddess name + tier badge.
 	var header_row: HBoxContainer = HBoxContainer.new()
@@ -342,6 +364,219 @@ func _build_pick_overlay() -> void:
 		btn.add_theme_font_size_override("font_size", 14)
 		btn.pressed.connect(_on_legendary_goddess_picked.bind(gid))
 		vbox.add_child(btn)
+
+
+## Builds the Epithet codex — a modal that shows all 6 tiers for one
+## goddess plus her current progress. Opened by tapping a goddess card.
+func _build_codex_overlay() -> void:
+	_codex_root = ColorRect.new()
+	_codex_root.name = "CodexRoot"
+	_codex_root.color = Color(0.0, 0.0, 0.0, 0.78)
+	_codex_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_codex_root.mouse_filter = Control.MOUSE_FILTER_STOP
+	_codex_root.visible = false
+	_codex_root.gui_input.connect(_on_codex_backdrop_input)
+	add_child(_codex_root)
+
+	var panel: PanelContainer = PanelContainer.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	panel.custom_minimum_size = Vector2(380.0, 540.0)
+	panel.mouse_filter = Control.MOUSE_FILTER_STOP  # don't leak clicks to backdrop
+	var style: StyleBoxFlat = StyleBoxFlat.new()
+	style.bg_color = UIConstants.BG_SECONDARY
+	style.border_color = UIConstants.ACCENT_GOLD
+	style.set_border_width_all(3)
+	style.set_corner_radius_all(12)
+	style.content_margin_left = 18.0
+	style.content_margin_right = 18.0
+	style.content_margin_top = 16.0
+	style.content_margin_bottom = 16.0
+	panel.add_theme_stylebox_override("panel", style)
+	_codex_root.add_child(panel)
+
+	var vbox: VBoxContainer = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 8)
+	panel.add_child(vbox)
+
+	_codex_title = Label.new()
+	_codex_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_codex_title.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+	_codex_title.add_theme_font_size_override("font_size", 20)
+	vbox.add_child(_codex_title)
+
+	_codex_current = Label.new()
+	_codex_current.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_codex_current.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+	_codex_current.add_theme_font_size_override("font_size", 13)
+	vbox.add_child(_codex_current)
+
+	_codex_hint = Label.new()
+	_codex_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_codex_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_codex_hint.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+	_codex_hint.add_theme_font_size_override("font_size", 12)
+	vbox.add_child(_codex_hint)
+
+	var scroll: ScrollContainer = ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.custom_minimum_size = Vector2(0.0, 340.0)
+	vbox.add_child(scroll)
+
+	_codex_list = VBoxContainer.new()
+	_codex_list.add_theme_constant_override("separation", 6)
+	_codex_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(_codex_list)
+
+	var close_btn: Button = Button.new()
+	close_btn.text = Localization.get_text("ORACLE_CODEX_CLOSE")
+	close_btn.custom_minimum_size = Vector2(0.0, 44.0)
+	close_btn.pressed.connect(_close_codex)
+	vbox.add_child(close_btn)
+
+
+## Populates the codex panel for [param goddess_id] and shows it.
+func _open_codex(goddess_id: String) -> void:
+	var tier: int = GameStore.get_companion_epithet(goddess_id)
+	_codex_title.text = Localization.get_text("ORACLE_CODEX_TITLE") % _goddess_display_name(goddess_id)
+	if tier == 0:
+		_codex_current.text = Localization.get_text("ORACLE_TIER_LOCKED")
+		_codex_hint.text = Localization.get_text("ORACLE_CODEX_LOCKED_HINT")
+	elif tier >= 6:
+		_codex_current.text = Localization.get_text("ORACLE_TIER_MAX")
+		_codex_hint.text = Localization.get_text("ORACLE_CODEX_MAX_HINT")
+	else:
+		_codex_current.text = Localization.get_text("ORACLE_CODEX_CURRENT") % tier
+		_codex_hint.text = ""
+
+	# Clear + rebuild the 6-row list.
+	for child: Node in _codex_list.get_children():
+		child.queue_free()
+
+	for tier_index: int in range(1, 7):
+		_codex_list.add_child(_build_codex_row(goddess_id, tier_index, tier))
+
+	_codex_root.visible = true
+
+
+func _build_codex_row(goddess_id: String, tier_index: int, current_tier: int) -> Control:
+	var row_panel: PanelContainer = PanelContainer.new()
+	row_panel.custom_minimum_size = Vector2(0.0, 64.0)
+
+	var state: int = 0  # 0 = locked, 1 = next goal, 2 = unlocked
+	if tier_index <= current_tier:
+		state = 2
+	elif tier_index == current_tier + 1:
+		state = 1
+
+	var style: StyleBoxFlat = StyleBoxFlat.new()
+	style.bg_color = UIConstants.BG_TERTIARY
+	match state:
+		2:
+			style.border_color = UIConstants.ACCENT_GOLD
+		1:
+			style.border_color = UIConstants.ACCENT_GOLD_DARK
+		_:
+			style.border_color = Color(0.3, 0.25, 0.2, 1.0)
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(6)
+	style.content_margin_left = 10.0
+	style.content_margin_right = 10.0
+	style.content_margin_top = 6.0
+	style.content_margin_bottom = 6.0
+	row_panel.add_theme_stylebox_override("panel", style)
+
+	var vbox: VBoxContainer = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 2)
+	row_panel.add_child(vbox)
+
+	var header: HBoxContainer = HBoxContainer.new()
+	header.add_theme_constant_override("separation", 6)
+	vbox.add_child(header)
+
+	var name_label: Label = Label.new()
+	name_label.text = _epithet_name(tier_index)
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var name_color: Color = UIConstants.TEXT_PRIMARY if state > 0 else UIConstants.TEXT_SECONDARY
+	name_label.add_theme_color_override("font_color", name_color)
+	name_label.add_theme_font_size_override("font_size", 14)
+	header.add_child(name_label)
+
+	var state_label: Label = Label.new()
+	state_label.text = _epithet_state_text(state)
+	var state_color: Color = UIConstants.ACCENT_GOLD_BRIGHT if state == 2 else (
+		UIConstants.ACCENT_GOLD if state == 1 else UIConstants.TEXT_SECONDARY
+	)
+	state_label.add_theme_color_override("font_color", state_color)
+	state_label.add_theme_font_size_override("font_size", 11)
+	header.add_child(state_label)
+
+	var desc_label: Label = Label.new()
+	desc_label.text = _epithet_description(tier_index)
+	desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	desc_label.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+	desc_label.add_theme_font_size_override("font_size", 11)
+	vbox.add_child(desc_label)
+
+	# Cost hint for the next goal only.
+	if state == 1:
+		var cost_label: Label = Label.new()
+		var cost: int = _oracle.epithet_costs[tier_index - 1]
+		cost_label.text = Localization.get_text("EPITHET_COST_SHARDS") % cost
+		cost_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
+		cost_label.add_theme_font_size_override("font_size", 11)
+		vbox.add_child(cost_label)
+
+	return row_panel
+
+
+func _close_codex() -> void:
+	_codex_root.visible = false
+
+
+func _on_codex_backdrop_input(event: InputEvent) -> void:
+	# Tap outside the panel dismisses. The inner panel has MOUSE_FILTER_STOP
+	# so its clicks never reach here — safe.
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event as InputEventMouseButton
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			_close_codex()
+	elif event is InputEventScreenTouch:
+		var st: InputEventScreenTouch = event as InputEventScreenTouch
+		if st.pressed:
+			_close_codex()
+
+
+func _on_goddess_card_pressed(goddess_id: String) -> void:
+	_open_codex(goddess_id)
+
+
+func _epithet_name(tier: int) -> String:
+	match tier:
+		1: return Localization.get_text("EPITHET_1_AWAKENING")
+		2: return Localization.get_text("EPITHET_2_DEVOTION")
+		3: return Localization.get_text("EPITHET_3_VIGIL")
+		4: return Localization.get_text("EPITHET_4_APOTHEOSIS")
+		5: return Localization.get_text("EPITHET_5_COMMUNION")
+		6: return Localization.get_text("EPITHET_6_ETERNAL")
+	return ""
+
+
+func _epithet_description(tier: int) -> String:
+	match tier:
+		1: return Localization.get_text("EPITHET_1_DESC")
+		2: return Localization.get_text("EPITHET_2_DESC")
+		3: return Localization.get_text("EPITHET_3_DESC")
+		4: return Localization.get_text("EPITHET_4_DESC")
+		5: return Localization.get_text("EPITHET_5_DESC")
+		6: return Localization.get_text("EPITHET_6_DESC")
+	return ""
+
+
+func _epithet_state_text(state: int) -> String:
+	match state:
+		2: return Localization.get_text("EPITHET_STATE_UNLOCKED")
+		1: return Localization.get_text("EPITHET_STATE_NEXT")
+		_: return Localization.get_text("EPITHET_STATE_LOCKED")
 
 
 # ── Refresh ──────────────────────────────────────────────────────────────────
