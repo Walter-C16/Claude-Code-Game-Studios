@@ -28,6 +28,12 @@ func _ready() -> void:
 	await get_tree().process_frame
 	Fx.stagger_children(slot_list, 0.05, 20.0)
 
+	# First-visit tutorial explaining equipment slots, fragments, and tier-up.
+	TutorialOverlay.show_once(self,
+		"tutorial_equipment_shown",
+		"TUTORIAL_EQUIP_TITLE",
+		"TUTORIAL_EQUIP_BODY")
+
 
 func _on_back_pressed() -> void:
 	SceneManager.change_scene(SceneManager.SceneId.HUB)

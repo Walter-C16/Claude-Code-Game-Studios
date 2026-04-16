@@ -70,6 +70,16 @@ func _ready() -> void:
 	GameStore.state_changed.connect(_on_state_changed)
 	tree_exiting.connect(_disconnect_autoload_signals)
 
+	# First-visit tutorial explaining Bond Shards, Epithets, and the pull system.
+	call_deferred("_show_tutorial")
+
+
+func _show_tutorial() -> void:
+	TutorialOverlay.show_once(self,
+		"tutorial_oracle_shown",
+		"TUTORIAL_ORACLE_TITLE",
+		"TUTORIAL_ORACLE_BODY")
+
 
 func _disconnect_autoload_signals() -> void:
 	if GameStore.state_changed.is_connected(_on_state_changed):

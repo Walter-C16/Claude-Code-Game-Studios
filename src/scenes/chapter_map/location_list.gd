@@ -37,6 +37,12 @@ func _ready() -> void:
 	GameStore.state_changed.connect(_on_state_changed)
 	tree_exiting.connect(_disconnect_autoload_signals)
 
+	# First-visit tutorial explaining the time-of-day system and exploration.
+	TutorialOverlay.show_once(self,
+		"tutorial_location_shown",
+		"TUTORIAL_LOCATION_TITLE",
+		"TUTORIAL_LOCATION_BODY")
+
 
 func _disconnect_autoload_signals() -> void:
 	if GameStore.state_changed.is_connected(_on_state_changed):

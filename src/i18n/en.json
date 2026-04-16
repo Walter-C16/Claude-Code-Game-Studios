@@ -1322,6 +1322,14 @@
   "LOCATION_STORY_AVAILABLE": "★ Story",
   "LOCATION_DANGER_WARNING": "⚠ Monsters active",
   "LOCATION_DAY_LABEL": "Day %d",
+  "TUTORIAL_ORACLE_TITLE": "Oracle of Delphi",
+  "TUTORIAL_ORACLE_BODY": "Spend gold to receive Bond Shards — fragments of a goddess's power. Accumulate 5 shards to awaken a new companion. Each goddess has 6 Epithet tiers that unlock battle bonuses. Tap a goddess card to see what each tier gives you. You have 30 pulls per week shared with the Forge.",
+  "TUTORIAL_EQUIP_TITLE": "Equipment",
+  "TUTORIAL_EQUIP_BODY": "Equip a weapon for ATK bonus and an amulet for DEF + HP. Items drop from combat victories and the Forge gacha. Spend 5 Forge Fragments to upgrade an equipped item by one tier — each tier multiplies the bonus by 50%.",
+  "TUTORIAL_LOCATION_TITLE": "Sardis",
+  "TUTORIAL_LOCATION_BODY": "Explore locations to find people, advance the story, and encounter monsters. Time passes as you act — morning, afternoon, evening, night. Different people appear at different times. The tavern is busy at night; the river is quiet at dawn. Use the Wait button to skip ahead.",
+  "TUTORIAL_BATTLE_MECHANICS_TITLE": "Combat Basics",
+  "TUTORIAL_BATTLE_MECHANICS_BODY": "Each turn, pick Attack (free), Special (costs energy), or Ultimate (needs a full bar). Energy recharges every turn. Crits deal extra damage — some moves guarantee them. If a timer bar appears, act before it runs out or you'll auto-attack. Elements matter — hitting a target already charged with a different element triggers a reaction.",
   "LOCATION_CONTINUE_STORY": "★ Continue Story",
   "LOCATION_EXPLORE_DANGER": "Explore (danger!)",
   "LOCATION_TOKENS_LEFT": "%d talks left",
@@ -1606,10 +1614,10 @@
   "TUTORIAL_HUB_BODY": "New paths open as the story unfolds. The gold tab is where to go next.",
 
   "TUTORIAL_CAMP_TITLE": "Bonds",
-  "TUTORIAL_CAMP_BODY": "Spend tokens to grow close. Gifts they love strengthen the bond faster.",
+  "TUTORIAL_CAMP_BODY": "Spend tokens to talk or give gifts. Each companion can level up with XP and gold — tap Level Up when ready. Gifts they love strengthen the bond faster.",
 
   "TUTORIAL_DECK_TITLE": "Your Party",
-  "TUTORIAL_DECK_BODY": "Pick up to three companions to fight beside you. Their elements combine for powerful reactions.",
+  "TUTORIAL_DECK_BODY": "Pick up to three companions to fight beside you. Their elements combine for powerful reactions — Fire + Water makes Oracle Mist, Earth + Lightning makes Stone Aegis, and more.",
 
   "TUTORIAL_CHAPTER_MAP_TITLE": "Places",
   "TUTORIAL_CHAPTER_MAP_BODY": "Each place holds people to meet. Follow the gold thread to continue the story.",

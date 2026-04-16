@@ -109,6 +109,14 @@ func _ready() -> void:
 	if starter != null:
 		_on_turn_started(starter)
 
+	# Combat mechanics tutorial — shown on the first NON-tutorial battle
+	# (after ch01_n00 is done). Explains energy, specials, crits, and timer.
+	if _story_node != "ch01_n00":
+		TutorialOverlay.show_once(self,
+			"tutorial_battle_mechanics_shown",
+			"TUTORIAL_BATTLE_MECHANICS_TITLE",
+			"TUTORIAL_BATTLE_MECHANICS_BODY")
+
 
 # ── Turn timer ───────────────────────────────────────────────────────────────
 
