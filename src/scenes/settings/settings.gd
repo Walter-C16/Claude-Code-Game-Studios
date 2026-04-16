@@ -29,6 +29,21 @@ var _combat_timers_checkbox: CheckBox
 
 
 func _ready() -> void:
+	# Wrap the existing VBox in a ScrollContainer so the panel scrolls
+	# when all injected controls exceed the viewport height on portrait
+	# screens (430×932). The .tscn has Panel → VBox; we reparent to
+	# Panel → ScrollContainer → VBox.
+	var panel: Node = get_node_or_null("Panel")
+	var vbox: Node = get_node_or_null("Panel/VBox")
+	if panel != null and vbox != null:
+		var scroll: ScrollContainer = ScrollContainer.new()
+		scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		panel.remove_child(vbox)
+		panel.add_child(scroll)
+		scroll.add_child(vbox)
+		vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
 	# Title and close button.
 	title_label.text = Localization.get_text("SETTINGS_TITLE").to_upper()
 	title_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)

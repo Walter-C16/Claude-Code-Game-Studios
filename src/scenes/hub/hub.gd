@@ -39,6 +39,7 @@ func _ready() -> void:
 
 	AudioManager.play_bgm("res://assets/audio/bgm/camp.ogg")
 	GameStore.state_changed.connect(_on_state_changed)
+	SettingsStore.settings_changed.connect(_on_settings_changed)
 	tree_exiting.connect(_disconnect_autoload_signals)
 
 	# Inject Oracle + Forge placeholder buttons into MoreTabs before the
@@ -87,7 +88,7 @@ func _update_companion_display() -> void:
 		portrait.texture = load(path)
 
 
-## Adds a small info label under the gold display showing day + time + chapter.
+## Adds a small info label under the gold display showing "Day X · Time".
 ## The gold label lives in the .tscn; this injects a sibling label at runtime.
 func _install_hub_info_label() -> void:
 	var parent: Node = gold_label.get_parent()
@@ -96,17 +97,9 @@ func _install_hub_info_label() -> void:
 	var info: Label = Label.new()
 	info.name = "HubInfoLabel"
 	var time_key: String = "LOCATION_TIME_" + GameStore.get_time_of_day_name().to_upper()
-	info.text = "%s %d · %s · %s 1" % [
-		Localization.get_text("LOCATION_DAY_LABEL").replace("%d", str(GameStore.get_day_number())),
-		GameStore.get_day_number(),
-		Localization.get_text(time_key),
-		Localization.get_text("HUB_CHAPTER_LABEL"),
-	]
-	# Simpler approach — just show "Day X · Time · Ch1"
-	var time_name: String = Localization.get_text(time_key)
 	info.text = "%s · %s" % [
 		Localization.get_text("LOCATION_DAY_LABEL") % GameStore.get_day_number(),
-		time_name,
+		Localization.get_text(time_key),
 	]
 	info.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
 	info.add_theme_font_size_override("font_size", 11)
@@ -537,6 +530,8 @@ func _start_story_highlight() -> void:
 func _disconnect_autoload_signals() -> void:
 	if GameStore.state_changed.is_connected(_on_state_changed):
 		GameStore.state_changed.disconnect(_on_state_changed)
+	if SettingsStore.settings_changed.is_connected(_on_settings_changed):
+		SettingsStore.settings_changed.disconnect(_on_settings_changed)
 	if _breathe_tween != null and _breathe_tween.is_valid():
 		_breathe_tween.kill()
 	if _name_shimmer_tween != null and _name_shimmer_tween.is_valid():
@@ -551,6 +546,14 @@ func _on_state_changed(_key: String = "") -> void:
 		var old: int = _displayed_gold
 		_displayed_gold = new_gold
 		_animate_gold_change(old, new_gold)
+
+
+## Refresh visible Hub state when SettingsStore changes (e.g. player
+## toggles combat timers in the Settings overlay). Without this, the
+## Hub stays stale until the player navigates away and back.
+func _on_settings_changed(_key: String) -> void:
+	_update_companion_display()
+	_update_currency()
 
 
 # ── Tab Buttons ────────────────────────────────────────────────────────────────
