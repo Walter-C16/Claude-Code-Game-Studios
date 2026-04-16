@@ -515,7 +515,7 @@ func _on_story_pressed() -> void:
 	# before the scene transition fades out.
 	if _story_highlight_tween != null and _story_highlight_tween.is_valid():
 		_story_highlight_tween.kill()
-	SceneManager.change_scene(SceneManager.SceneId.CHAPTER_MAP)
+	SceneManager.change_scene(SceneManager.SceneId.LOCATION_LIST)
 
 
 func _on_camp_pressed() -> void:

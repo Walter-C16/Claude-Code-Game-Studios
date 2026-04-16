@@ -1,0 +1,162 @@
+{
+  "config": {
+    "time_periods": ["morning", "afternoon", "evening", "night"],
+    "time_labels": {
+      "morning": "LOCATION_TIME_MORNING",
+      "afternoon": "LOCATION_TIME_AFTERNOON",
+      "evening": "LOCATION_TIME_EVENING",
+      "night": "LOCATION_TIME_NIGHT"
+    }
+  },
+
+  "locations": {
+    "artemis_house": {
+      "name_key": "LOCATION_ARTEMIS_HOUSE",
+      "description_key": "LOCATION_ARTEMIS_HOUSE_DESC",
+      "area": "sardis",
+      "discover_flag": "ch01_exposition_done",
+      "npcs": {
+        "morning": ["artemis"],
+        "afternoon": [],
+        "evening": [],
+        "night": ["artemis"]
+      },
+      "encounters": [],
+      "story_nodes": ["ch01_n01", "ch01_n02"]
+    },
+
+    "magical_forest": {
+      "name_key": "LOCATION_MAGICAL_FOREST",
+      "description_key": "LOCATION_MAGICAL_FOREST_DESC",
+      "area": "sardis",
+      "discover_flag": null,
+      "npcs": {
+        "morning": [],
+        "afternoon": ["artemis"],
+        "evening": [],
+        "night": []
+      },
+      "encounters": [
+        {"enemy_id": "forest_monster", "chance": 0.3, "time": ["morning", "afternoon", "evening"]},
+        {"enemy_id": "forest_monster", "chance": 0.5, "time": ["night"]}
+      ],
+      "story_nodes": ["ch01_n00"]
+    },
+
+    "tavern": {
+      "name_key": "LOCATION_TAVERN",
+      "description_key": "LOCATION_TAVERN_DESC",
+      "area": "sardis",
+      "discover_flag": "ch01_exposition_done",
+      "npcs": {
+        "morning": ["lyra"],
+        "afternoon": ["lyra"],
+        "evening": ["lyra", "village_leader"],
+        "night": ["lyra", "village_leader", "megara"]
+      },
+      "encounters": [
+        {"enemy_id": "tavern_drunk", "chance": 0.2, "time": ["night"], "label_key": "ENCOUNTER_TAVERN_DRUNK"}
+      ],
+      "story_nodes": ["ch01_n03"]
+    },
+
+    "tree_temple": {
+      "name_key": "LOCATION_TREE_TEMPLE",
+      "description_key": "LOCATION_TREE_TEMPLE_DESC",
+      "area": "sardis",
+      "discover_flag": "ch01_tavern_done",
+      "npcs": {
+        "morning": ["priestess"],
+        "afternoon": ["priestess"],
+        "evening": ["priestess"],
+        "night": ["priestess"]
+      },
+      "encounters": [],
+      "story_nodes": ["ch01_n03b", "ch01_n10"]
+    },
+
+    "mountains": {
+      "name_key": "LOCATION_MOUNTAINS",
+      "description_key": "LOCATION_MOUNTAINS_DESC",
+      "area": "sardis",
+      "discover_flag": "ch01_priestess_blessing",
+      "npcs": {
+        "morning": [],
+        "afternoon": [],
+        "evening": [],
+        "night": []
+      },
+      "encounters": [
+        {"enemy_id": "mountain_beast", "chance": 0.4, "time": ["morning", "afternoon", "evening"]},
+        {"enemy_id": "mountain_beast", "chance": 0.6, "time": ["night"]}
+      ],
+      "story_nodes": ["ch01_n04", "ch01_n05"]
+    },
+
+    "village_square": {
+      "name_key": "LOCATION_VILLAGE_SQUARE",
+      "description_key": "LOCATION_VILLAGE_SQUARE_DESC",
+      "area": "sardis",
+      "discover_flag": "ch01_exposition_done",
+      "npcs": {
+        "morning": ["village_leader", "melina", "old_kostas"],
+        "afternoon": ["village_leader", "melina"],
+        "evening": ["melina"],
+        "night": []
+      },
+      "encounters": [],
+      "story_nodes": ["ch01_n06", "ch01_n07", "ch01_n08"]
+    },
+
+    "river": {
+      "name_key": "LOCATION_RIVER",
+      "description_key": "LOCATION_RIVER_DESC",
+      "area": "sardis",
+      "discover_flag": "ch01_exposition_done",
+      "npcs": {
+        "morning": ["old_kostas"],
+        "afternoon": ["old_kostas", "naida"],
+        "evening": ["naida"],
+        "night": []
+      },
+      "encounters": [
+        {"enemy_id": "cave_bat", "chance": 0.25, "time": ["evening", "night"]}
+      ],
+      "story_nodes": []
+    },
+
+    "ruins": {
+      "name_key": "LOCATION_RUINS",
+      "description_key": "LOCATION_RUINS_DESC",
+      "area": "sardis",
+      "discover_flag": "ch01_exposition_done",
+      "npcs": {
+        "morning": ["echo_bard"],
+        "afternoon": ["echo_bard"],
+        "evening": ["echo_bard"],
+        "night": ["echo_bard"]
+      },
+      "encounters": [
+        {"enemy_id": "forest_monster", "chance": 0.2, "time": ["night"]}
+      ],
+      "story_nodes": []
+    },
+
+    "crashed_ship": {
+      "name_key": "LOCATION_CRASHED_SHIP",
+      "description_key": "LOCATION_CRASHED_SHIP_DESC",
+      "area": "sardis",
+      "discover_flag": null,
+      "npcs": {
+        "morning": [],
+        "afternoon": [],
+        "evening": [],
+        "night": []
+      },
+      "encounters": [
+        {"enemy_id": "forest_monster", "chance": 0.3, "time": ["morning", "afternoon", "evening", "night"]}
+      ],
+      "story_nodes": []
+    }
+  }
+}

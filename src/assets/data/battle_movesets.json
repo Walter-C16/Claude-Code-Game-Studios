@@ -139,6 +139,24 @@
       "effect": "dispel_enemy_buffs"
     }
   },
+  "tavern_drunk": {
+    "normal": {
+      "id": "drunk_punch",
+      "name_key": "MOVE_ENEMY_DRUNK_PUNCH",
+      "target": "single_ally",
+      "element": "Fire",
+      "damage_mult": 0.9,
+      "energy_cost": 0
+    },
+    "special": {
+      "id": "drunk_bottle_smash",
+      "name_key": "MOVE_ENEMY_DRUNK_BOTTLE",
+      "target": "single_ally",
+      "element": "Fire",
+      "damage_mult": 1.3,
+      "energy_cost": 30
+    }
+  },
   "forest_monster": {
     "normal": {
       "id": "fm_claw",

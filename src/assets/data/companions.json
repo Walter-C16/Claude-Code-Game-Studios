@@ -192,6 +192,21 @@
     "likes": ["honey_mead", "woven_blanket"],
     "dislikes": ["ancient_scroll"]
   },
+  "village_leader": {
+    "id": "village_leader",
+    "display_name": "Thalos",
+    "role": "Village Leader",
+    "type": "side_no_romance",
+    "element": null,
+    "STR": 0,
+    "INT": 0,
+    "AGI": 0,
+    "card_value": 0,
+    "starting_location": "sardis_village",
+    "portrait_path_base": "res://assets/images/companions/thalos/thalos",
+    "likes": ["ancient_scroll", "olive_oil"],
+    "dislikes": ["honey_mead"]
+  },
   "naida": {
     "id": "naida",
     "display_name": "Naida",

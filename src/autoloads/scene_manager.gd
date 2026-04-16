@@ -32,6 +32,7 @@ enum SceneId {
 	GALLERY,
 	ACHIEVEMENTS,
 	TAVERN_MAP,
+	LOCATION_LIST,
 	ORACLE,
 	FORGE,
 	SETTINGS,
@@ -82,6 +83,7 @@ const SCENE_PATHS: Dictionary = {
 	SceneId.GALLERY:         "res://scenes/gallery/gallery.tscn",
 	SceneId.ACHIEVEMENTS:    "res://scenes/achievements/achievements.tscn",
 	SceneId.TAVERN_MAP:      "res://scenes/tavern_map/tavern_map.tscn",
+	SceneId.LOCATION_LIST:   "res://scenes/chapter_map/location_list.tscn",
 	SceneId.ORACLE:          "res://scenes/oracle/oracle.tscn",
 	SceneId.FORGE:           "res://scenes/forge/forge.tscn",
 }

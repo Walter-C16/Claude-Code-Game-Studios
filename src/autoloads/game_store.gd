@@ -146,6 +146,11 @@ var _oracle_pulls_this_week: int = 0
 ## 7 days (604800s) on reset.
 var _week_start_unix: int = 0
 
+## Time of day — 4 periods cycling through the day. Advances after
+## certain actions (visiting a location, completing a quest node, combat).
+## 0 = morning, 1 = afternoon, 2 = evening, 3 = night. Wraps to 0 (new day).
+var _time_of_day: int = 0
+
 ## Forge fragments — accumulated via the Forge gacha, consumed to tier-up
 ## equipped items. 5 fragments per tier-up, max tier 5.
 ## See design/quick-specs/forge-gacha.md.
@@ -211,6 +216,7 @@ func _initialize_defaults() -> void:
 	_companion_epithets = {}
 	_oracle_pulls_this_week = 0
 	_week_start_unix = 0
+	_time_of_day = 0
 	_forge_fragments = 0
 	_weapon_tier = 0
 	_amulet_tier = 0
@@ -726,6 +732,33 @@ func set_week_start_unix(value: int) -> void:
 	_week_start_unix = value
 	_mark_dirty()
 
+## Time of day constants matching the locations.json config.
+const TIME_MORNING: int = 0
+const TIME_AFTERNOON: int = 1
+const TIME_EVENING: int = 2
+const TIME_NIGHT: int = 3
+const TIME_NAMES: Array[String] = ["morning", "afternoon", "evening", "night"]
+
+## Returns the current time of day (0-3).
+func get_time_of_day() -> int:
+	return _time_of_day
+
+## Returns the time period name string (for locations.json NPC schedule lookup).
+func get_time_of_day_name() -> String:
+	return TIME_NAMES[clampi(_time_of_day, 0, 3)]
+
+## Advances time by one period. Wraps night (3) → morning (0) for a new day.
+func advance_time() -> void:
+	_time_of_day = (_time_of_day + 1) % 4
+	_mark_dirty()
+	state_changed.emit("time_of_day")
+
+## Sets time directly (used by story events and save/load).
+func set_time_of_day(value: int) -> void:
+	_time_of_day = clampi(value, 0, 3)
+	_mark_dirty()
+	state_changed.emit("time_of_day")
+
 ## Returns the current forge fragment balance.
 func get_forge_fragments() -> int:
 	return _forge_fragments
@@ -874,6 +907,7 @@ func to_dict() -> Dictionary:
 		"companion_epithets": _companion_epithets.duplicate(),
 		"oracle_pulls_this_week": _oracle_pulls_this_week,
 		"week_start_unix": _week_start_unix,
+		"time_of_day": _time_of_day,
 		"forge_fragments": _forge_fragments,
 		"weapon_tier": _weapon_tier,
 		"amulet_tier": _amulet_tier,
@@ -974,6 +1008,7 @@ func from_dict(data: Dictionary) -> void:
 		_companion_epithets[str(key)] = int(raw_epithets[key])
 	_oracle_pulls_this_week = int(data.get("oracle_pulls_this_week", 0))
 	_week_start_unix = int(data.get("week_start_unix", 0))
+	_time_of_day = int(data.get("time_of_day", 0))
 	_forge_fragments = int(data.get("forge_fragments", 0))
 	_weapon_tier = int(data.get("weapon_tier", 0))
 	_amulet_tier = int(data.get("amulet_tier", 0))

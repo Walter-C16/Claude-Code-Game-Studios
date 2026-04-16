@@ -60,6 +60,17 @@
     },
 
     {
+      "id": "tavern_drunk",
+      "name_key": "ENEMY_TAVERN_DRUNK",
+      "hp": 50,
+      "score_threshold": 30,
+      "element": "Fire",
+      "type": "Normal",
+      "chapter": "chapter_1",
+      "context": "Rowdy patron at the Sardis tavern, picks a fight after too much mead",
+      "portrait_key": "tavern_drunk"
+    },
+    {
       "id": "cave_bat",
       "name_key": "ENEMY_CAVE_BAT",
       "hp": 65,
