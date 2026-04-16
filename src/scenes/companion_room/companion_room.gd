@@ -363,10 +363,19 @@ func _build_companion_grid() -> void:
 			continue
 		var profile: Dictionary = CompanionRegistry.get_profile(id)
 		var ctype: String = profile.get("type", "companion") as String
-		if ctype == "side" or ctype == "side_no_romance":
-			ally_ids.append(id)
-		elif ctype != "npc":
+		if ctype == "companion":
 			battle_ids.append(id)
+		elif ctype == "quest_companion":
+			# Quest companions show as battle companions after quest done,
+			# as allies while their quest is in progress.
+			var unlock_flag: String = profile.get("unlock_flag", id + "_quest_complete") as String
+			if GameStore.has_flag(unlock_flag):
+				battle_ids.append(id)
+			else:
+				ally_ids.append(id)
+		elif ctype == "side" or ctype == "side_no_romance":
+			ally_ids.append(id)
+		# npc type is excluded entirely
 
 	# Battle companions section.
 	if not battle_ids.is_empty():

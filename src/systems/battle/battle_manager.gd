@@ -127,14 +127,14 @@ func setup(party_ids: Array[String], enemy_ids: Array[String]) -> bool:
 		push_error("BattleManager.setup: empty roster after build")
 		return false
 
-	# Level scaling — apply per-level stat bonuses after the party-build loop
-	# above (which already inlined blessings). Blessings and level bonuses are
-	# both purely additive so the order is mathematically equivalent; this
-	# pass runs here for code clarity, not correctness. Protagonist scales
-	# the same way under id "protagonist".
+	# Level scaling — apply per-level stat bonuses + growth focus after the
+	# party-build loop. Growth focus gives each companion an extra stat
+	# boost per level based on their archetype (healer → +HP, mage → +ATK).
 	for combatant: Combatant in party:
 		var level: int = GameStore.get_companion_level(combatant.id)
-		CompanionLevel.apply_to_stats(combatant.stats, level)
+		var char_row: Dictionary = char_rows.get(combatant.id, {}) as Dictionary
+		var growth_focus: String = char_row.get("growth_focus", "") as String
+		CompanionLevel.apply_to_stats(combatant.stats, level, growth_focus)
 
 	# Epithet bonuses — II (energy regen), IV (crit chance), V (special
 	# +1 hit). Tier III is handled inline when blessings are applied, and

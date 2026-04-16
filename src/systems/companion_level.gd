@@ -126,8 +126,9 @@ static func crit_damage_bonus_for_level(level: int) -> float:
 ## Mutates [param stats] in place, stacking level bonuses onto the base
 ## values read from JSON. Snaps current_hp to the new max so a freshly-built
 ## combatant enters battle at full HP (same pattern as blessings).
+## [param growth_focus] adds extra bonuses on top of the base per-level gains.
 ## Safe to call with level 1 — all bonuses are 0 and nothing changes.
-static func apply_to_stats(stats: BattleStats, level: int) -> void:
+static func apply_to_stats(stats: BattleStats, level: int, growth_focus: String = "") -> void:
 	if stats == null:
 		return
 	var l: int = clampi(level, 1, LEVEL_CAP)
@@ -137,4 +138,23 @@ static func apply_to_stats(stats: BattleStats, level: int) -> void:
 	stats.agi += agi_bonus_for_level(l)
 	stats.crit_chance += crit_chance_bonus_for_level(l)
 	stats.crit_damage += crit_damage_bonus_for_level(l)
+
+	# Growth focus — extra stat per level based on the companion's archetype.
+	if not growth_focus.is_empty() and l > 1:
+		var lvls: int = l - 1
+		match growth_focus:
+			"hp":
+				stats.max_hp += lvls * 3
+			"atk":
+				stats.atk += lvls * 1
+			"def":
+				stats.def_stat += lvls * 1  # +1 every level (base is every 2)
+			"agi":
+				stats.agi += lvls / 3       # +1 every 3 (base is every 5)
+			"crit_chance":
+				stats.crit_chance += float(lvls) * 0.5
+			"hp_def":
+				stats.max_hp += lvls * 2
+				stats.def_stat += lvls / 1  # +1 every level
+
 	stats.current_hp = stats.max_hp

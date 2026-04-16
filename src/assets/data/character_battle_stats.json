@@ -15,6 +15,7 @@
       "agi": 14,
       "crit_chance": 5.0,
       "crit_damage": 150.0,
+      "growth_focus": "hp",
       "ult_charge_source": "any_action",
       "ult_charge_rate": 10
     },
@@ -26,6 +27,7 @@
       "agi": 20,
       "crit_chance": 10.0,
       "crit_damage": 170.0,
+      "growth_focus": "crit_chance",
       "ult_charge_source": "turns_passed",
       "ult_charge_rate": 20
     },
@@ -37,6 +39,7 @@
       "agi": 16,
       "crit_chance": 15.0,
       "crit_damage": 180.0,
+      "growth_focus": "atk",
       "ult_charge_source": "damage_dealt",
       "ult_charge_rate": 1
     },
@@ -48,6 +51,7 @@
       "agi": 12,
       "crit_chance": 8.0,
       "crit_damage": 160.0,
+      "growth_focus": "def",
       "ult_charge_source": "damage_taken",
       "ult_charge_rate": 2
     },
@@ -59,8 +63,94 @@
       "agi": 18,
       "crit_chance": 7.0,
       "crit_damage": 160.0,
+      "growth_focus": "agi",
       "ult_charge_source": "reactions",
       "ult_charge_rate": 25
+    },
+
+    "daphne": {
+      "element": "Earth",
+      "hp": 100,
+      "atk": 14,
+      "def": 12,
+      "agi": 11,
+      "crit_chance": 4.0,
+      "crit_damage": 140.0,
+      "growth_focus": "hp",
+      "ult_charge_source": "damage_taken",
+      "ult_charge_rate": 2
+    },
+    "circe": {
+      "element": "Lightning",
+      "hp": 85,
+      "atk": 25,
+      "def": 7,
+      "agi": 15,
+      "crit_chance": 11.0,
+      "crit_damage": 175.0,
+      "growth_focus": "atk",
+      "ult_charge_source": "damage_dealt",
+      "ult_charge_rate": 1
+    },
+    "thetis": {
+      "element": "Water",
+      "hp": 130,
+      "atk": 17,
+      "def": 17,
+      "agi": 10,
+      "crit_chance": 5.0,
+      "crit_damage": 150.0,
+      "growth_focus": "def",
+      "ult_charge_source": "damage_taken",
+      "ult_charge_rate": 2
+    },
+    "echo_bard": {
+      "element": "Neutral",
+      "hp": 90,
+      "atk": 16,
+      "def": 10,
+      "agi": 19,
+      "crit_chance": 8.0,
+      "crit_damage": 155.0,
+      "growth_focus": "agi",
+      "ult_charge_source": "turns_passed",
+      "ult_charge_rate": 15
+    },
+    "lyra": {
+      "element": "Fire",
+      "hp": 110,
+      "atk": 20,
+      "def": 11,
+      "agi": 13,
+      "crit_chance": 9.0,
+      "crit_damage": 165.0,
+      "growth_focus": "crit_chance",
+      "ult_charge_source": "any_action",
+      "ult_charge_rate": 10
+    },
+    "melina": {
+      "element": "Earth",
+      "hp": 95,
+      "atk": 15,
+      "def": 13,
+      "agi": 12,
+      "crit_chance": 6.0,
+      "crit_damage": 150.0,
+      "growth_focus": "hp",
+      "ult_charge_source": "turns_passed",
+      "ult_charge_rate": 15
+    },
+    "naida": {
+      "element": "Water",
+      "hp": 105,
+      "atk": 13,
+      "def": 14,
+      "agi": 14,
+      "crit_chance": 5.0,
+      "crit_damage": 145.0,
+      "growth_focus": "hp_def",
+      "ult_charge_source": "reactions",
+      "ult_charge_rate": 20
     }
   },
   "enemies": {

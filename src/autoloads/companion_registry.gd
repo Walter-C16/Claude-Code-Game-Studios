@@ -62,13 +62,19 @@ func meet_companion(id: String) -> void:
 	# companions start their progression at Awakening. Already-unlocked
 	# goddesses (via the gacha path) stay at whatever tier they reached.
 	var ctype: String = profile.get("type", "companion") as String
-	if ctype != "side" and ctype != "side_no_romance" and ctype != "npc":
+	var is_battle: bool = ctype == "companion"
+	# Quest companions become battle-ready only after their quest_complete flag.
+	if ctype == "quest_companion":
+		var unlock_flag: String = profile.get("unlock_flag", id + "_quest_complete") as String
+		is_battle = GameStore.has_flag(unlock_flag)
+
+	if is_battle:
 		if GameStore.get_companion_epithet(id) == 0:
 			GameStore.set_companion_epithet(id, 1)
 
 	# Auto-join the active party if there's room — ONLY for battle
-	# companions. Side characters and NPCs should never occupy a party slot.
-	if ctype != "side" and ctype != "side_no_romance" and ctype != "npc":
+	# companions (including quest_companions whose quest is done).
+	if is_battle:
 		if not GameStore.has_deck_companion(id):
 			var current: Array[String] = GameStore.get_deck_companions()
 			if current.size() < 4:
