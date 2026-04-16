@@ -218,9 +218,11 @@ func apply_result(
 		if current_tier == 1:
 			unlocked.append(goddess)
 
-	# Epithet VI refund path — surplus shards convert to gold.
+	# Epithet VI refund path — surplus shards convert to gold, capped at
+	# the single pull cost so legendaries on maxed goddesses can't generate
+	# infinite profit (5 shards × 15 = 75 gold, but pull costs 25 → capped).
 	if current_tier >= 6 and current_shards > 0:
-		refund = current_shards * epithet_vi_refund_gold
+		refund = mini(current_shards * epithet_vi_refund_gold, single_cost)
 		current_shards = 0
 
 	out_shards[goddess] = current_shards

@@ -489,9 +489,15 @@ func _apply_effect(actor: Combatant, target: Combatant, move: BattleMove) -> voi
 				shield_mag += float(scaling_flat) * 0.005
 				shield_mag = minf(shield_mag, 0.70)  # cap at 70%
 			for a: Combatant in allies:
+				# Stack-merge: if a shield already exists, keep the stronger
+				# magnitude and the longer duration. This prevents a weaker
+				# shield from overwriting a stronger one mid-fight.
+				var existing: Dictionary = a.stats.active_effects.get("shield", {}) as Dictionary
+				var old_mag: float = float(existing.get("magnitude", 0.0))
+				var old_turns: int = int(existing.get("turns_left", 0))
 				a.stats.active_effects["shield"] = {
-					"magnitude": shield_mag,
-					"turns_left": shield_turns,
+					"magnitude": maxf(shield_mag, old_mag),
+					"turns_left": maxi(shield_turns, old_turns),
 				}
 
 		"dodge_next_attack":

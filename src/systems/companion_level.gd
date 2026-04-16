@@ -155,6 +155,6 @@ static func apply_to_stats(stats: BattleStats, level: int, growth_focus: String 
 				stats.crit_chance += float(lvls) * 0.5
 			"hp_def":
 				stats.max_hp += lvls * 2
-				stats.def_stat += lvls / 1  # +1 every level
+				stats.def_stat += lvls / 2  # +1 every 2 levels (same as base rate — the HP is the real bonus)
 
 	stats.current_hp = stats.max_hp
