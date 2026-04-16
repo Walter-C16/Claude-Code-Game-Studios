@@ -18,10 +18,13 @@ var _location_cards: Dictionary = {}  # {location_id: Control}
 var _feedback_label: Label
 var _feedback_tween: Tween
 var _back_btn: Button
+var _day_label: Label
 var _time_label: Label
+var _gold_label: Label
 var _advance_time_btn: Button
 var _scroll: ScrollContainer
 var _card_list: VBoxContainer
+var _bg_rect: ColorRect
 
 # ── Lifecycle ────────────────────────────────────────────────────────────────
 
@@ -49,11 +52,10 @@ func _load_location_data() -> void:
 # ── Layout ───────────────────────────────────────────────────────────────────
 
 func _build_layout() -> void:
-	# Dark background.
-	var bg: ColorRect = ColorRect.new()
-	bg.color = Color(0.1, 0.09, 0.08, 1.0)
-	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(bg)
+	# Background — tinted by time of day for atmosphere.
+	_bg_rect = ColorRect.new()
+	_bg_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(_bg_rect)
 
 	var root_vbox: VBoxContainer = VBoxContainer.new()
 	root_vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -64,9 +66,9 @@ func _build_layout() -> void:
 	root_vbox.add_theme_constant_override("separation", 10)
 	add_child(root_vbox)
 
-	# Top bar — back + time display + advance button.
+	# Top bar — back + title + day + time + gold + advance button.
 	var top_row: HBoxContainer = HBoxContainer.new()
-	top_row.add_theme_constant_override("separation", 8)
+	top_row.add_theme_constant_override("separation", 6)
 	root_vbox.add_child(top_row)
 
 	_back_btn = Button.new()
@@ -76,38 +78,39 @@ func _build_layout() -> void:
 	top_row.add_child(_back_btn)
 
 	var title: Label = Label.new()
-	title.text = "Sardis"
+	title.text = Localization.get_text("LOCATION_AREA_SARDIS")
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
-	title.add_theme_font_size_override("font_size", 22)
+	title.add_theme_font_size_override("font_size", 20)
 	top_row.add_child(title)
 
-	var _day_label: Label = Label.new()
+	_gold_label = Label.new()
+	_gold_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+	_gold_label.add_theme_font_size_override("font_size", 14)
+	top_row.add_child(_gold_label)
+
+	# Second header row — day + time + wait button.
+	var time_row: HBoxContainer = HBoxContainer.new()
+	time_row.add_theme_constant_override("separation", 10)
+	root_vbox.add_child(time_row)
+
+	_day_label = Label.new()
 	_day_label.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
-	_day_label.add_theme_font_size_override("font_size", 13)
-	_day_label.text = Localization.get_text("LOCATION_DAY_LABEL") % GameStore.get_day_number()
-	top_row.add_child(_day_label)
+	_day_label.add_theme_font_size_override("font_size", 14)
+	time_row.add_child(_day_label)
 
 	_time_label = Label.new()
+	_time_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_time_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
 	_time_label.add_theme_font_size_override("font_size", 16)
-	top_row.add_child(_time_label)
+	time_row.add_child(_time_label)
 
 	_advance_time_btn = Button.new()
 	_advance_time_btn.text = Localization.get_text("LOCATION_ADVANCE_TIME")
-	_advance_time_btn.custom_minimum_size = Vector2(80.0, 44.0)
+	_advance_time_btn.custom_minimum_size = Vector2(90.0, 36.0)
 	_advance_time_btn.add_theme_font_size_override("font_size", 13)
 	_advance_time_btn.pressed.connect(_on_advance_time_pressed)
-	top_row.add_child(_advance_time_btn)
-
-	# Floating feedback label for talk/gift results.
-	_feedback_label = Label.new()
-	_feedback_label.visible = false
-	_feedback_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_feedback_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	_feedback_label.offset_top = -60.0
-	_feedback_label.add_theme_color_override("font_color", UIConstants.STATUS_SUCCESS)
-	_feedback_label.add_theme_font_size_override("font_size", 24)
+	time_row.add_child(_advance_time_btn)
 
 	# Scrollable location card list.
 	_scroll = ScrollContainer.new()
@@ -119,9 +122,14 @@ func _build_layout() -> void:
 	_card_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_scroll.add_child(_card_list)
 
-
-# ── Refresh ──────────────────────────────────────────────────────────────────
-
+	# Floating feedback label — on top of everything (added last to parent).
+	_feedback_label = Label.new()
+	_feedback_label.visible = false
+	_feedback_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_feedback_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	_feedback_label.offset_top = -60.0
+	_feedback_label.add_theme_color_override("font_color", UIConstants.STATUS_SUCCESS)
+	_feedback_label.add_theme_font_size_override("font_size", 24)
 	add_child(_feedback_label)
 
 
@@ -134,17 +142,28 @@ func _refresh_time_display() -> void:
 	var time_name: String = GameStore.get_time_of_day_name()
 	var time_key: String = "LOCATION_TIME_" + time_name.to_upper()
 	_time_label.text = Localization.get_text(time_key)
+	_day_label.text = Localization.get_text("LOCATION_DAY_LABEL") % GameStore.get_day_number()
+	_gold_label.text = "%d %s" % [GameStore.get_gold(), Localization.get_text("ORACLE_GOLD_LABEL")]
 
-	# Tint the time label to match the mood.
+	# Tint the time label + background to match the mood.
+	var time_color: Color = Color(1.0, 0.9, 0.6, 1.0)
+	var bg_color: Color = Color(0.12, 0.10, 0.08, 1.0)
 	match GameStore.get_time_of_day():
 		GameStore.TIME_MORNING:
-			_time_label.add_theme_color_override("font_color", Color(1.0, 0.9, 0.6, 1.0))
+			time_color = Color(1.0, 0.9, 0.6, 1.0)
+			bg_color = Color(0.12, 0.10, 0.08, 1.0)
 		GameStore.TIME_AFTERNOON:
-			_time_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.5, 1.0))
+			time_color = Color(1.0, 0.85, 0.5, 1.0)
+			bg_color = Color(0.11, 0.09, 0.07, 1.0)
 		GameStore.TIME_EVENING:
-			_time_label.add_theme_color_override("font_color", Color(0.9, 0.6, 0.4, 1.0))
+			time_color = Color(0.9, 0.6, 0.4, 1.0)
+			bg_color = Color(0.10, 0.07, 0.07, 1.0)
 		GameStore.TIME_NIGHT:
-			_time_label.add_theme_color_override("font_color", Color(0.5, 0.55, 0.85, 1.0))
+			time_color = Color(0.5, 0.55, 0.85, 1.0)
+			bg_color = Color(0.06, 0.06, 0.10, 1.0)
+	_time_label.add_theme_color_override("font_color", time_color)
+	if _bg_rect != null:
+		_bg_rect.color = bg_color
 
 
 func _rebuild_location_cards() -> void:
