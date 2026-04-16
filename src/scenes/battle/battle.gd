@@ -830,19 +830,14 @@ func _on_victory_continue() -> void:
 		)
 		return
 
-	if not _story_node.is_empty():
-		# Story combat → return to chapter detail view.
-		var parts: PackedStringArray = _story_node.split("_")
-		var chapter_id: String = parts[0] if parts.size() > 0 else ""
-		SceneManager.change_scene(
-			SceneManager.SceneId.CHAPTER_MAP,
-			SceneManager.TransitionType.FADE,
-			{"chapter_id": chapter_id} if not chapter_id.is_empty() else {}
-		)
-		return
-
-	# Fallback — back to Hub.
-	SceneManager.change_scene(SceneManager.SceneId.HUB)
+	# Return to the location list — both story combats and random encounters
+	# should drop the player back into free-roam exploration. Time advances
+	# after combat so the world feels like it moved.
+	GameStore.advance_time()
+	SceneManager.change_scene(
+		SceneManager.SceneId.LOCATION_LIST,
+		SceneManager.TransitionType.FADE
+	)
 
 
 func _on_defeat_retry() -> void:
@@ -858,7 +853,7 @@ func _on_defeat_retry() -> void:
 
 
 func _on_defeat_retreat() -> void:
-	SceneManager.change_scene(SceneManager.SceneId.HUB)
+	SceneManager.change_scene(SceneManager.SceneId.LOCATION_LIST)
 
 
 # ── Story reward helper (mirrors combat.gd) ──────────────────────────────────

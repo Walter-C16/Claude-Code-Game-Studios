@@ -15,6 +15,8 @@ extends Control
 
 var _locations_data: Dictionary = {}
 var _location_cards: Dictionary = {}  # {location_id: Control}
+var _feedback_label: Label
+var _feedback_tween: Tween
 var _back_btn: Button
 var _time_label: Label
 var _advance_time_btn: Button
@@ -35,6 +37,8 @@ func _ready() -> void:
 func _disconnect_autoload_signals() -> void:
 	if GameStore.state_changed.is_connected(_on_state_changed):
 		GameStore.state_changed.disconnect(_on_state_changed)
+	if _feedback_tween != null and _feedback_tween.is_valid():
+		_feedback_tween.kill()
 
 
 func _load_location_data() -> void:
@@ -90,6 +94,15 @@ func _build_layout() -> void:
 	_advance_time_btn.pressed.connect(_on_advance_time_pressed)
 	top_row.add_child(_advance_time_btn)
 
+	# Floating feedback label for talk/gift results.
+	_feedback_label = Label.new()
+	_feedback_label.visible = false
+	_feedback_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_feedback_label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	_feedback_label.offset_top = -60.0
+	_feedback_label.add_theme_color_override("font_color", UIConstants.STATUS_SUCCESS)
+	_feedback_label.add_theme_font_size_override("font_size", 24)
+
 	# Scrollable location card list.
 	_scroll = ScrollContainer.new()
 	_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -102,6 +115,9 @@ func _build_layout() -> void:
 
 
 # ── Refresh ──────────────────────────────────────────────────────────────────
+
+	add_child(_feedback_label)
+
 
 func _refresh_all() -> void:
 	_refresh_time_display()
@@ -184,18 +200,48 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 	desc_label.add_theme_font_size_override("font_size", 11)
 	vbox.add_child(desc_label)
 
-	# NPCs present at this time.
+	# NPCs present at this time — each gets a Talk button.
 	var npcs: Array = loc.get("npcs", {}).get(time_name, []) as Array
 	if not npcs.is_empty():
-		var npc_names: Array[String] = []
+		var npc_header: Label = Label.new()
+		npc_header.text = Localization.get_text("LOCATION_NPCS_HERE")
+		npc_header.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+		npc_header.add_theme_font_size_override("font_size", 11)
+		vbox.add_child(npc_header)
+
 		for npc_id: Variant in npcs:
-			var profile: Dictionary = CompanionRegistry.get_profile(str(npc_id))
-			npc_names.append(profile.get("display_name", str(npc_id).capitalize()) as String)
-		var npc_label: Label = Label.new()
-		npc_label.text = "%s: %s" % [Localization.get_text("LOCATION_NPCS_HERE"), ", ".join(npc_names)]
-		npc_label.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
-		npc_label.add_theme_font_size_override("font_size", 12)
-		vbox.add_child(npc_label)
+			var nid: String = str(npc_id)
+			var profile: Dictionary = CompanionRegistry.get_profile(nid)
+			var display: String = profile.get("display_name", nid.capitalize()) as String
+			var npc_row: HBoxContainer = HBoxContainer.new()
+			npc_row.add_theme_constant_override("separation", 6)
+			vbox.add_child(npc_row)
+
+			var npc_name: Label = Label.new()
+			npc_name.text = display
+			npc_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			npc_name.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+			npc_name.add_theme_font_size_override("font_size", 13)
+			npc_row.add_child(npc_name)
+
+			# Talk button — uses RomanceSocial.do_talk, same as Camp.
+			var talk_btn: Button = Button.new()
+			talk_btn.text = Localization.get_text("CAMP_TALK_BTN")
+			talk_btn.custom_minimum_size = Vector2(60.0, 30.0)
+			talk_btn.add_theme_font_size_override("font_size", 11)
+			var has_tokens: bool = GameStore.get_daily_tokens() > 0
+			talk_btn.disabled = not has_tokens
+			talk_btn.pressed.connect(_on_npc_talk_pressed.bind(nid))
+			npc_row.add_child(talk_btn)
+
+			# Gift button.
+			var gift_btn: Button = Button.new()
+			gift_btn.text = Localization.get_text("CAMP_GIFT_BTN")
+			gift_btn.custom_minimum_size = Vector2(60.0, 30.0)
+			gift_btn.add_theme_font_size_override("font_size", 11)
+			gift_btn.disabled = not has_tokens
+			gift_btn.pressed.connect(_on_npc_gift_pressed.bind(nid))
+			npc_row.add_child(gift_btn)
 	else:
 		var empty_label: Label = Label.new()
 		empty_label.text = Localization.get_text("LOCATION_NO_NPCS")
@@ -203,18 +249,63 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 		empty_label.add_theme_font_size_override("font_size", 11)
 		vbox.add_child(empty_label)
 
-	# Visit button.
-	var visit_btn: Button = Button.new()
-	visit_btn.text = Localization.get_text("LOCATION_VISIT")
-	visit_btn.custom_minimum_size = Vector2(0.0, 36.0)
-	visit_btn.add_theme_font_size_override("font_size", 13)
-	visit_btn.pressed.connect(_on_visit_pressed.bind(loc_id))
-	vbox.add_child(visit_btn)
+	# Action buttons row — Explore (triggers encounters/story) + Visit (just passes time).
+	var btn_row: HBoxContainer = HBoxContainer.new()
+	btn_row.add_theme_constant_override("separation", 8)
+	vbox.add_child(btn_row)
+
+	var explore_btn: Button = Button.new()
+	explore_btn.text = Localization.get_text("LOCATION_EXPLORE")
+	explore_btn.custom_minimum_size = Vector2(0.0, 36.0)
+	explore_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	explore_btn.add_theme_font_size_override("font_size", 13)
+	explore_btn.pressed.connect(_on_visit_pressed.bind(loc_id))
+	btn_row.add_child(explore_btn)
 
 	return card
 
 
 # ── Actions ──────────────────────────────────────────────────────────────────
+
+func _on_npc_talk_pressed(npc_id: String) -> void:
+	if GameStore.get_daily_tokens() <= 0:
+		_show_feedback(Localization.get_text("CAMP_FEEDBACK_NO_TOKENS"))
+		return
+	# Ensure the NPC is "met" before talking (auto-meet side characters
+	# on first interaction so the relationship system works).
+	var state: Dictionary = GameStore.get_companion_state(npc_id)
+	if not state.get("met", false):
+		CompanionRegistry.meet_companion(npc_id)
+	var result: Dictionary = RomanceSocial.do_talk(npc_id)
+	if result.get("success", false):
+		var rl: int = result.get("rl_gained", 0)
+		_show_feedback("+%d RL" % rl)
+	else:
+		_show_feedback(Localization.get_text("CAMP_FEEDBACK_NO_TOKENS"))
+	_rebuild_location_cards()
+
+
+func _on_npc_gift_pressed(npc_id: String) -> void:
+	# For now, gift interactions redirect to the Companion Room where the
+	# full gift modal lives. In a future pass this could be an inline
+	# gift picker at the location.
+	var state: Dictionary = GameStore.get_companion_state(npc_id)
+	if not state.get("met", false):
+		CompanionRegistry.meet_companion(npc_id)
+	SceneManager.change_scene(SceneManager.SceneId.COMPANION_ROOM)
+
+
+func _show_feedback(text: String) -> void:
+	_feedback_label.text = text
+	_feedback_label.visible = true
+	_feedback_label.modulate.a = 1.0
+	if _feedback_tween != null and _feedback_tween.is_valid():
+		_feedback_tween.kill()
+	_feedback_tween = create_tween()
+	_feedback_tween.tween_interval(1.0)
+	_feedback_tween.tween_property(_feedback_label, "modulate:a", 0.0, 0.4)
+	_feedback_tween.tween_callback(func() -> void: _feedback_label.visible = false)
+
 
 func _on_visit_pressed(loc_id: String) -> void:
 	var loc: Dictionary = _locations_data.get(loc_id, {}) as Dictionary
