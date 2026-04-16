@@ -140,14 +140,14 @@ func _on_dialogue_ended(_sequence_id: String) -> void:
 		CompanionRegistry.meet_companion("artemis")
 		SceneManager.change_scene(SceneManager.SceneId.HUB)
 		return
-	# For all other dialogues, go back to the chapter detail view.
-	var return_ctx: Dictionary = {}
-	if not _chapter_id.is_empty():
-		return_ctx["chapter_id"] = _chapter_id
+	# Advance time — a dialogue scene costs one time period in the game
+	# world, so NPCs shift and the day progresses.
+	GameStore.advance_time()
+
+	# Return to the location-based free-roam screen.
 	SceneManager.change_scene(
-		SceneManager.SceneId.CHAPTER_MAP,
-		SceneManager.TransitionType.FADE,
-		return_ctx
+		SceneManager.SceneId.LOCATION_LIST,
+		SceneManager.TransitionType.FADE
 	)
 
 

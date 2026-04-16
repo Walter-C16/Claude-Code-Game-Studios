@@ -29,7 +29,7 @@
       "name_key": "LOCATION_MAGICAL_FOREST",
       "description_key": "LOCATION_MAGICAL_FOREST_DESC",
       "area": "sardis",
-      "discover_flag": null,
+      "discover_flag": "ch01_exposition_done",
       "npcs": {
         "morning": [],
         "afternoon": ["artemis"],
@@ -40,7 +40,7 @@
         {"enemy_id": "forest_monster", "chance": 0.3, "time": ["morning", "afternoon", "evening"]},
         {"enemy_id": "forest_monster", "chance": 0.5, "time": ["night"]}
       ],
-      "story_nodes": ["ch01_n00"]
+      "story_nodes": []
     },
 
     "tavern": {
@@ -90,7 +90,7 @@
         {"enemy_id": "mountain_beast", "chance": 0.4, "time": ["morning", "afternoon", "evening"]},
         {"enemy_id": "mountain_beast", "chance": 0.6, "time": ["night"]}
       ],
-      "story_nodes": ["ch01_n04", "ch01_n05"]
+      "story_nodes": ["ch01_n04", "ch01_n05", "ch01_n09"]
     },
 
     "village_square": {
@@ -146,7 +146,7 @@
       "name_key": "LOCATION_CRASHED_SHIP",
       "description_key": "LOCATION_CRASHED_SHIP_DESC",
       "area": "sardis",
-      "discover_flag": null,
+      "discover_flag": "ch01_exposition_done",
       "npcs": {
         "morning": [],
         "afternoon": [],

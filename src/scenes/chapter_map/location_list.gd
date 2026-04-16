@@ -162,6 +162,17 @@ func _rebuild_location_cards() -> void:
 		_card_list.add_child(card)
 		_location_cards[loc_id] = card
 
+	# Empty state — no locations yet (story hasn't started or just began).
+	if _location_cards.is_empty():
+		var hint: Label = Label.new()
+		hint.text = Localization.get_text("LOCATION_EMPTY_HINT")
+		hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		hint.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+		hint.add_theme_font_size_override("font_size", 14)
+		hint.custom_minimum_size = Vector2(0.0, 80.0)
+		_card_list.add_child(hint)
+
 	# Entrance animation.
 	await get_tree().process_frame
 	Fx.stagger_children(_card_list, 0.04, 15.0)
@@ -171,7 +182,18 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 	var card: PanelContainer = PanelContainer.new()
 	card.custom_minimum_size = Vector2(0.0, 100.0)
 	var style: StyleBoxFlat = StyleBoxFlat.new()
-	style.bg_color = UIConstants.BG_SECONDARY
+	# Tint card background by time of day for atmosphere.
+	var time_bg: Color = UIConstants.BG_SECONDARY
+	match GameStore.get_time_of_day():
+		GameStore.TIME_MORNING:
+			time_bg = Color(0.18, 0.15, 0.10, 1.0)
+		GameStore.TIME_AFTERNOON:
+			time_bg = Color(0.17, 0.14, 0.10, 1.0)
+		GameStore.TIME_EVENING:
+			time_bg = Color(0.16, 0.11, 0.10, 1.0)
+		GameStore.TIME_NIGHT:
+			time_bg = Color(0.10, 0.10, 0.16, 1.0)
+	style.bg_color = time_bg
 	style.border_color = UIConstants.ACCENT_GOLD_DARK
 	style.set_border_width_all(1)
 	style.set_corner_radius_all(8)
@@ -248,6 +270,11 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 		empty_label.add_theme_color_override("font_color", Color(0.5, 0.45, 0.4, 1.0))
 		empty_label.add_theme_font_size_override("font_size", 11)
 		vbox.add_child(empty_label)
+
+	# Thin separator between NPCs and action buttons.
+	var sep: HSeparator = HSeparator.new()
+	sep.add_theme_constant_override("separation", 4)
+	vbox.add_child(sep)
 
 	# Action buttons row — Explore (triggers encounters/story) + Visit (just passes time).
 	var btn_row: HBoxContainer = HBoxContainer.new()

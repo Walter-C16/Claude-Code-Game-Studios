@@ -1317,6 +1317,7 @@
   "LOCATION_TALK_TO": "Talk to %s",
   "LOCATION_ADVANCE_TIME": "Wait...",
   "LOCATION_LOCKED": "You haven't discovered this place yet",
+  "LOCATION_EMPTY_HINT": "Continue the story to discover places in Sardis.",
   "GIFT_WILDFLOWERS": "Wildflowers",
   "GIFT_TRAINING_SWORD": "Training Sword",
   "GIFT_WOVEN_BLANKET": "Woven Blanket",
