@@ -185,7 +185,18 @@ func _process(delta: float) -> void:
 		return
 	_turn_timer.tick(delta)
 	if _timer_bar != null and _battle.turn_time_limit > 0:
-		_timer_bar.value = _turn_timer.time_remaining / float(_battle.turn_time_limit)
+		var fraction: float = _turn_timer.time_remaining / float(_battle.turn_time_limit)
+		_timer_bar.value = fraction
+		# Urgency: tint red + subtle pulse when below 25%.
+		if fraction < 0.25:
+			var fill: StyleBoxFlat = _timer_bar.get_theme_stylebox("fill") as StyleBoxFlat
+			if fill != null:
+				fill.bg_color = UIConstants.STATUS_DANGER
+			# Subtle scale pulse on the timer container.
+			var bar_parent: Node = _timer_bar.get_parent()
+			if bar_parent is Control and not bar_parent.has_meta("_pulsing"):
+				bar_parent.set_meta("_pulsing", true)
+				Fx.pulse(bar_parent as Control, 1.04, 0.4)
 
 
 # ── Setup helpers ────────────────────────────────────────────────────────────
@@ -358,6 +369,40 @@ func _refresh_unit_slot(slot: Control) -> void:
 		hp_lbl.text = "%d / %d" % [c.stats.current_hp, c.stats.max_hp]
 	slot.modulate.a = 1.0 if c.is_alive() else 0.3
 
+	# Dead units get a grey desaturated border.
+	var style: StyleBoxFlat = slot.get_theme_stylebox("panel") as StyleBoxFlat
+	if style != null and not c.is_alive():
+		style.border_color = Color(0.3, 0.3, 0.3, 1.0)
+
+
+## Highlights the active combatant's slot with a gold border and resets
+## the previous actor's border to its element color. Gives a clear visual
+## cue for whose turn it is beyond just the text banner.
+func _highlight_active_slot(actor: Combatant) -> void:
+	# Reset all slots to their element border.
+	for slot: Control in _party_slots + _enemy_slots:
+		var c: Combatant = slot.get_meta("combatant", null) as Combatant
+		if c == null:
+			continue
+		var style: StyleBoxFlat = slot.get_theme_stylebox("panel") as StyleBoxFlat
+		if style == null:
+			continue
+		if not c.is_alive():
+			style.border_color = Color(0.3, 0.3, 0.3, 1.0)
+			style.border_width_bottom = 2
+		else:
+			var is_enemy: bool = c.is_enemy
+			style.border_color = _element_color(c.stats.element) if not is_enemy else UIConstants.STATUS_DANGER
+			style.border_width_bottom = 2
+
+	# Gold highlight on the active actor's slot.
+	var active_slot: Control = _find_slot_for(actor)
+	if active_slot != null:
+		var active_style: StyleBoxFlat = active_slot.get_theme_stylebox("panel") as StyleBoxFlat
+		if active_style != null:
+			active_style.border_color = UIConstants.ACCENT_GOLD_BRIGHT
+			active_style.border_width_bottom = 4
+
 
 func _refresh_actor_hud() -> void:
 	var actor: Combatant = _battle.current_combatant()
@@ -445,6 +490,14 @@ func _on_turn_started(combatant: Combatant) -> void:
 	_refresh_all()
 	_is_picking_target = false
 	_set_target_picking(false)
+
+	# Turn banner slide-in — drops from above with a pulse so the player
+	# notices whose turn it is without having to read the text.
+	Fx.slide_in(turn_banner, Vector2(0.0, -20.0), 0.3)
+	Fx.pulse(turn_banner, 1.08, 0.25)
+
+	# Highlight the active combatant's unit slot with a gold border.
+	_highlight_active_slot(combatant)
 
 	# Turn timer: arm on player turns, hide and reset on enemy turns.
 	if _turn_timer != null:
@@ -682,10 +735,26 @@ func _on_battle_ended(victory: bool) -> void:
 	if victory:
 		_grant_victory_xp()
 		_try_equipment_drop()
+		# Celebration VFX: gold flash → shake → pop overlay with shimmer.
+		Fx.flash(arena, UIConstants.ACCENT_GOLD_BRIGHT, 0.25)
+		Fx.shake(arena, 3.0, 0.3)
 		victory_overlay.visible = true
-		Fx.pop_scale(victory_overlay.get_child(0) as Control, 1.2, 0.6)
+		var victory_panel: Control = victory_overlay.get_child(0) as Control
+		Fx.pop_scale(victory_panel, 1.3, 0.7)
+		# Gold shimmer on the victory title (first Label child).
+		for child: Node in victory_panel.get_children():
+			if child is Label:
+				Fx.gold_shimmer(child as Control, 1.5)
+				break
 	else:
+		# Defeat VFX: heavy shake → dim arena → fade-in overlay.
+		Fx.shake(arena, 8.0, 0.5)
+		Fx.dim(arena, 0.4, 0.8)
+		defeat_overlay.modulate.a = 0.0
 		defeat_overlay.visible = true
+		var fade_tween: Tween = defeat_overlay.create_tween()
+		fade_tween.tween_property(defeat_overlay, "modulate:a", 1.0, 0.5) \
+			.set_ease(Tween.EASE_IN)
 
 
 ## Post-victory XP distribution. Every party member that was still standing
