@@ -172,8 +172,8 @@ func _make_pull_button(text: String) -> Button:
 	btn.text = text
 	btn.custom_minimum_size = Vector2(0.0, 56.0)
 	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
 	btn.add_theme_font_size_override("font_size", 16)
+	UIConstants.style_button(btn, true)
 	return btn
 
 

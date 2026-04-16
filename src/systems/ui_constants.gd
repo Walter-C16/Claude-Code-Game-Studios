@@ -93,3 +93,56 @@ const ELEM_LIGHTNING_FG := Color("#CCaa33")
 
 ## Lightning element background — badge / chip fill (#3a3010).
 const ELEM_LIGHTNING_BG := Color("#3a3010")
+
+# ── Time of Day Tints ───────────────────────────────────────────────────────
+
+## Background tints for the location list, applied per time period.
+const TIME_BG_MORNING := Color(0.12, 0.10, 0.08, 1.0)
+const TIME_BG_AFTERNOON := Color(0.11, 0.09, 0.07, 1.0)
+const TIME_BG_EVENING := Color(0.10, 0.07, 0.07, 1.0)
+const TIME_BG_NIGHT := Color(0.06, 0.06, 0.10, 1.0)
+
+## Card background tints (slightly lighter than screen BG).
+const TIME_CARD_MORNING := Color(0.18, 0.15, 0.10, 1.0)
+const TIME_CARD_AFTERNOON := Color(0.17, 0.14, 0.10, 1.0)
+const TIME_CARD_EVENING := Color(0.16, 0.11, 0.10, 1.0)
+const TIME_CARD_NIGHT := Color(0.10, 0.10, 0.16, 1.0)
+
+## Time label text colors.
+const TIME_TEXT_MORNING := Color(1.0, 0.9, 0.6, 1.0)
+const TIME_TEXT_AFTERNOON := Color(1.0, 0.85, 0.5, 1.0)
+const TIME_TEXT_EVENING := Color(0.9, 0.6, 0.4, 1.0)
+const TIME_TEXT_NIGHT := Color(0.5, 0.55, 0.85, 1.0)
+
+# ── Button Styling ──────────────────────────────────────────────────────────
+
+## Applies the game's dark brown + gold accent theme to a Button so it
+## doesn't render as default engine grey. Call this on any dynamically
+## created button that should match the game's visual language.
+## [param btn] — the Button node to style.
+## [param prominent] — if true, uses a gold border + slightly lighter bg
+##   for primary actions (pull buttons, level up). Default is subtle.
+static func style_button(btn: Button, prominent: bool = false) -> void:
+	var style_normal: StyleBoxFlat = StyleBoxFlat.new()
+	style_normal.bg_color = BG_TERTIARY if not prominent else Color("#3a2a18")
+	style_normal.border_color = ACCENT_GOLD_DARK if not prominent else ACCENT_GOLD
+	style_normal.set_border_width_all(1 if not prominent else 2)
+	style_normal.set_corner_radius_all(8)
+	style_normal.content_margin_left = 12.0
+	style_normal.content_margin_right = 12.0
+	style_normal.content_margin_top = 8.0
+	style_normal.content_margin_bottom = 8.0
+	btn.add_theme_stylebox_override("normal", style_normal)
+
+	var style_pressed: StyleBoxFlat = style_normal.duplicate()
+	style_pressed.bg_color = Color("#4a3a28")
+	btn.add_theme_stylebox_override("pressed", style_pressed)
+
+	var style_disabled: StyleBoxFlat = style_normal.duplicate()
+	style_disabled.bg_color = BG_SECONDARY
+	style_disabled.border_color = Color("#4a4030")
+	btn.add_theme_stylebox_override("disabled", style_disabled)
+
+	btn.add_theme_color_override("font_color", TEXT_PRIMARY)
+	btn.add_theme_color_override("font_pressed_color", ACCENT_GOLD_BRIGHT)
+	btn.add_theme_color_override("font_disabled_color", TEXT_DISABLED)

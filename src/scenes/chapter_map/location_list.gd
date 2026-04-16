@@ -119,8 +119,9 @@ func _build_layout() -> void:
 
 	_advance_time_btn = Button.new()
 	_advance_time_btn.text = Localization.get_text("LOCATION_ADVANCE_TIME")
-	_advance_time_btn.custom_minimum_size = Vector2(90.0, 36.0)
+	_advance_time_btn.custom_minimum_size = Vector2(90.0, 44.0)
 	_advance_time_btn.add_theme_font_size_override("font_size", 13)
+	UIConstants.style_button(_advance_time_btn)
 	_advance_time_btn.pressed.connect(_on_advance_time_pressed)
 	time_row.add_child(_advance_time_btn)
 
@@ -160,21 +161,21 @@ func _refresh_time_display() -> void:
 	_token_label.visible = false
 
 	# Tint the time label + background to match the mood.
-	var time_color: Color = Color(1.0, 0.9, 0.6, 1.0)
-	var bg_color: Color = Color(0.12, 0.10, 0.08, 1.0)
+	var time_color: Color = UIConstants.TIME_TEXT_MORNING
+	var bg_color: Color = UIConstants.TIME_BG_MORNING
 	match GameStore.get_time_of_day():
 		GameStore.TIME_MORNING:
-			time_color = Color(1.0, 0.9, 0.6, 1.0)
-			bg_color = Color(0.12, 0.10, 0.08, 1.0)
+			time_color = UIConstants.TIME_TEXT_MORNING
+			bg_color = UIConstants.TIME_BG_MORNING
 		GameStore.TIME_AFTERNOON:
-			time_color = Color(1.0, 0.85, 0.5, 1.0)
-			bg_color = Color(0.11, 0.09, 0.07, 1.0)
+			time_color = UIConstants.TIME_TEXT_AFTERNOON
+			bg_color = UIConstants.TIME_BG_AFTERNOON
 		GameStore.TIME_EVENING:
-			time_color = Color(0.9, 0.6, 0.4, 1.0)
-			bg_color = Color(0.10, 0.07, 0.07, 1.0)
+			time_color = UIConstants.TIME_TEXT_EVENING
+			bg_color = UIConstants.TIME_BG_EVENING
 		GameStore.TIME_NIGHT:
-			time_color = Color(0.5, 0.55, 0.85, 1.0)
-			bg_color = Color(0.06, 0.06, 0.10, 1.0)
+			time_color = UIConstants.TIME_TEXT_NIGHT
+			bg_color = UIConstants.TIME_BG_NIGHT
 	_time_label.add_theme_color_override("font_color", time_color)
 	if _bg_rect != null:
 		_bg_rect.color = bg_color
@@ -225,13 +226,13 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 	var time_bg: Color = UIConstants.BG_SECONDARY
 	match GameStore.get_time_of_day():
 		GameStore.TIME_MORNING:
-			time_bg = Color(0.18, 0.15, 0.10, 1.0)
+			time_bg = UIConstants.TIME_CARD_MORNING
 		GameStore.TIME_AFTERNOON:
-			time_bg = Color(0.17, 0.14, 0.10, 1.0)
+			time_bg = UIConstants.TIME_CARD_AFTERNOON
 		GameStore.TIME_EVENING:
-			time_bg = Color(0.16, 0.11, 0.10, 1.0)
+			time_bg = UIConstants.TIME_CARD_EVENING
 		GameStore.TIME_NIGHT:
-			time_bg = Color(0.10, 0.10, 0.16, 1.0)
+			time_bg = UIConstants.TIME_CARD_NIGHT
 	style.bg_color = time_bg
 	style.border_color = UIConstants.ACCENT_GOLD_DARK
 	style.set_border_width_all(1)
@@ -316,22 +317,24 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 			# Talk button — uses RomanceSocial.do_talk.
 			var talk_btn: Button = Button.new()
 			talk_btn.text = Localization.get_text("CAMP_TALK_BTN")
-			talk_btn.custom_minimum_size = Vector2(60.0, 30.0)
-			talk_btn.add_theme_font_size_override("font_size", 11)
+			talk_btn.custom_minimum_size = Vector2(64.0, 44.0)
+			talk_btn.add_theme_font_size_override("font_size", 12)
+			UIConstants.style_button(talk_btn)
 			talk_btn.pressed.connect(_on_npc_talk_pressed.bind(nid))
 			npc_row.add_child(talk_btn)
 
 			# Gift button.
 			var gift_btn: Button = Button.new()
 			gift_btn.text = Localization.get_text("CAMP_GIFT_BTN")
-			gift_btn.custom_minimum_size = Vector2(60.0, 30.0)
-			gift_btn.add_theme_font_size_override("font_size", 11)
+			gift_btn.custom_minimum_size = Vector2(64.0, 44.0)
+			gift_btn.add_theme_font_size_override("font_size", 12)
+			UIConstants.style_button(gift_btn)
 			gift_btn.pressed.connect(_on_npc_gift_pressed.bind(nid))
 			npc_row.add_child(gift_btn)
 	else:
 		var empty_label: Label = Label.new()
 		empty_label.text = Localization.get_text("LOCATION_NO_NPCS")
-		empty_label.add_theme_color_override("font_color", Color(0.5, 0.45, 0.4, 1.0))
+		empty_label.add_theme_color_override("font_color", UIConstants.TEXT_DISABLED)
 		empty_label.add_theme_font_size_override("font_size", 11)
 		vbox.add_child(empty_label)
 
@@ -354,9 +357,10 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 		explore_btn.add_theme_color_override("font_color", UIConstants.STATUS_WARNING)
 	else:
 		explore_btn.text = Localization.get_text("LOCATION_EXPLORE")
-	explore_btn.custom_minimum_size = Vector2(0.0, 36.0)
+	explore_btn.custom_minimum_size = Vector2(0.0, 48.0)
 	explore_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	explore_btn.add_theme_font_size_override("font_size", 13)
+	explore_btn.add_theme_font_size_override("font_size", 14)
+	UIConstants.style_button(explore_btn, has_story)  # prominent if story available
 	explore_btn.pressed.connect(_on_visit_pressed.bind(loc_id))
 	btn_row.add_child(explore_btn)
 
