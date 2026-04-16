@@ -96,10 +96,19 @@ Every companion's silhouette must be distinguishable at 120x160px as a flat blac
 |-----------|-------------------|-----------------|
 | **Artemis** (Earth) | Bow extending beyond body outline | Vertical, lean, asymmetric. Most elongated. |
 | **Hipolita** (Fire) | Broad muscular shoulders, wild hair volume | Widest, heaviest. Mass over elegance. |
-| **Atenea** (Lightning) | Helmet/staff with geometric edges | Structured, angular. Architecturally complex. |
+| **Atenea** (Lightning) | Staff with geometric edges, sharp posture | Structured, angular. Architecturally complex. |
 | **Nyx** (Water) | Flowing cape/veil extending below figure | Longest fabric lines. Fluid, dissolving edges. |
+| **Daphne** (Earth) | Basket of herbs, leaves in hair | Soft, rounded, organic curves. Smallest. |
+| **Circe** (Lightning) | Crystal staff, billowing robes | Triangular — wide at robes, narrow at crown. |
+| **Thetis** (Water) | Water-dress merging with ground line | No hard edges — body dissolves into flow. |
+| **Echo** (Neutral) | Broken column behind, hair covering face | Asymmetric negative space. Haunting gap. |
+| **Lyra** (Fire) | Apron, hands on hips, mug nearby | Compact, grounded, wide stance. Approachable. |
+| **Melina** (Earth) | Journal and quill, braids | Small, bookish silhouette. Proportionally young. |
+| **Naida** (Water) | Emerging from water line, pearl necklace | Half-visible — body fades below waist. |
 
 **Mood variant rule**: All 6 mood variants maintain the same silhouette identity. Mood is expressed through face, posture, and color temperature — not costume or prop changes.
+
+**LoRA training anchors**: Each character should have 3-5 visual anchors that stay consistent across all images for LoRA training. These are the features the model needs to learn as invariant: hairstyle + color, key prop (bow, staff, basket), costume signature (color + material), face structure (eye color, freckles, scars), and elemental accent (glow color, particle type).
 
 ### Card Visual Language
 
@@ -192,14 +201,31 @@ WCAG 2.1 AA: TEXT_PRIMARY on BG_PRIMARY tests at ~7.8:1 (above 4.5:1 minimum).
 | Hipolita | Warm 2800K | Deep red #6A1A0A | Amber-orange #E87A30 | Warm earth — rust, raw leather |
 | Atenea | Neutral-cool 4000K | Platinum #D8D8E8 | Blue-silver #8A9AB8 | Grey-slate with geometric gold |
 | Nyx | Cool 2200K | Near-black #1A1520 | Violet-white #C0A8E0 | Near-black with luminous edges |
+| Daphne | Warm 3000K | Spring green #5A8A3A | Light green #A8D480 | Earth tones — linen, sage, brown |
+| Circe | Cool-warm 3500K | Dark brown-black #2A1A18 | Purple tint #6A4A80 | Deep purple with gold symbols |
+| Thetis | Cold 2000K | Silver-blue #8AABB8 | White-iridescent #D0E8F0 | Liquid blue — fluid, shimmering |
+| Echo | Cool-pale 3800K | Near-black #1A1A20 | Silver-pale #B0B0C0 | White shift — minimal, torn |
+| Lyra | Warm 2800K | Auburn #8A4020 | Golden-copper #D09040 | Cream apron over russet — tavern warm |
+| Melina | Warm-neutral 3200K | Chestnut brown #5A3A28 | Honey #C8A860 | Olive green — bookish, modest |
+| Naida | Cold-ethereal 1800K | Blue-green #3A7A7A | Cyan shimmer #80D8D0 | Translucent water — barely visible |
 
-Detail density: Artemis medium (clean, functional), Hipolita low-medium (broad strokes, battle-scarred), Atenea high (geometric patterns, intricate helmet), Nyx high-but-diffuse (detail dissolves into fabric, micro-star patterns).
+Detail density: Artemis medium (clean, functional), Hipolita low-medium (broad strokes, battle-scarred), Atenea high (geometric patterns, sharp edges), Nyx high-but-diffuse (detail dissolves into fabric, micro-star patterns), Daphne low (simple, organic), Circe high (arcane symbols, intricate robes), Thetis medium-fluid (shimmering, no hard edges), Echo low-haunting (minimal, negative space), Lyra low-warm (simple working clothes, tactile), Melina low (modest, readable at small size), Naida medium-ethereal (translucent skin, water effects).
 
 ### NPC: The Priestess
 - Same canvas (512x768), same framing rules.
 - Off-palette by design: warm-gold hair (#C8A840), temple white costume (#E8E0D0), gold-hazel eyes.
 - 3 expression variants only: Receptive (default), Earnest (direct gaze), Transcendent (eyes upcast).
 - Strict rule: never aggressive, afraid, or intimate. She is numinous.
+
+### NPC: Thalos (Village Leader)
+- Same canvas, same framing. White beard (#E0D8D0), cream robe, bronze clasp, carved staff.
+- 4 expression variants: Thoughtful (default), Concerned, Commanding, Warm.
+- Skin: warm 2600K, deeply aged and weathered. Kind eyes.
+
+### NPC: Old Kostas (Fisherman)
+- Same canvas, same framing. Grey beard, patched hat, leather vest, fishing rod.
+- 4 expression variants: Squinting (default), Laughing, Wistful, Surprised.
+- Skin: warm 2400K, deeply tanned and sun-wrinkled. Missing front tooth.
 
 ### Enemy Portraits
 - Canvas: 384x512px (smaller than companions — visual hierarchy).

@@ -148,6 +148,217 @@ dark painterly style
 - `surprised`: leaves scatter, eyes wide
 - `seductive`: ***NOT NEEDED*** (she's a non-romanceable NPC, just skip or reuse neutral)
 
+### 1.6 Daphne — Herbalist Nymph (Quest Companion, Earth, B rank)
+
+**Core description:**
+Green-haired forest nymph, late teens, gentle and shy. Wearing a simple earth-toned linen dress with floral embroidery. Carries a woven basket of herbs. Bare feet, leaves woven into her hair. Subtle earthy glow. Freckles across her nose.
+
+**Prompt base:**
+```
+portrait of young forest nymph herbalist, green hair with leaves woven in,
+gentle brown-green eyes, freckles, simple linen dress with floral embroidery,
+woven basket of herbs, bare feet, shy expression, forest garden background,
+soft earthy green glow, dark painterly style
+```
+
+**Mood variations:**
+- `neutral`: shy half-smile, clutching basket protectively
+- `happy`: beaming, holding up a blooming flower
+- `sad`: wilting flower in hand, looking away
+- `angry`: rare — eyes fierce, thorns growing from the ground around her
+- `surprised`: basket dropped, hands to mouth
+- `seductive`: flower crown, bare shoulders, moonlit garden
+
+**LoRA training notes:** Distinguishing features for consistency — green hair with leaves, freckles, woven basket, bare feet, floral embroidery dress.
+
+### 1.7 Circe — Sorceress of Thebes (Quest Companion, Lightning, S rank)
+
+**Core description:**
+Dark-haired enchantress, early 30s, stunning and dangerous. Deep purple robes with golden arcane symbols. Golden circlet with a violet gemstone. Mesmerizing amber eyes with an otherworldly glow. Staff with a crystal orb. Magical energy crackling around her fingers.
+
+**Prompt base:**
+```
+portrait of powerful greek sorceress enchantress, long dark hair,
+amber glowing eyes, early 30s beautiful dangerous woman,
+deep purple robes with golden arcane symbols, golden circlet violet gem,
+crystal staff, lightning magic crackling around fingers,
+dark mysterious chamber background, dark painterly style
+```
+
+**Mood variations:**
+- `neutral`: knowing smirk, one eyebrow raised
+- `happy`: rare genuine laugh, magic sparks playfully
+- `sad`: staring into crystal, reflective
+- `angry`: lightning arcs from her staff, eyes blazing
+- `surprised`: crystal cracks, genuinely caught off guard
+- `seductive`: robes parted, candlelit, leaning forward
+
+**LoRA training notes:** Purple robes with gold symbols, golden circlet with violet gem, amber glowing eyes, crystal staff, lightning sparks.
+
+### 1.8 Thetis — Sea Nymph (Quest Companion, Water, A rank)
+
+**Core description:**
+Silver-blue haired sea goddess, ageless beauty, melancholic. Iridescent skin that shimmers like fish scales in light. Flowing dress that looks like liquid water. Pearl jewelry in her hair and on her wrists. Deep ocean-blue eyes.
+
+**Prompt base:**
+```
+portrait of ancient sea nymph goddess, silver-blue hair flowing like water,
+deep ocean blue eyes, iridescent shimmering skin, ageless ethereal beauty,
+flowing dress made of liquid water and foam, pearl jewelry in hair and wrists,
+underwater grotto with bioluminescent light, dark painterly style
+```
+
+**Mood variations:**
+- `neutral`: distant gaze, pearl necklace clasped
+- `happy`: rare warmth, ocean mist sparkles around her
+- `sad`: tears that become pearls, looking into distance
+- `angry`: tidal wave forming behind her, commanding presence
+- `surprised`: water splashes, eyes wide, pearls scatter
+- `seductive`: emerging from water, moonlit, wet skin glistening
+
+**LoRA training notes:** Silver-blue hair, iridescent skin, water-dress, pearl jewelry, ocean-blue eyes, bioluminescent lighting.
+
+### 1.9 Echo — Cursed Bard (Quest Companion, Neutral, B rank)
+
+**Core description:**
+Pale-skinned nymph, early 20s, hauntingly beautiful. Long dark hair, nearly black. Simple white shift dress, torn at the edges. Always near broken stone columns. No instrument initially — after quest, carries a lyre. Faint silver mist around her.
+
+**Prompt base:**
+```
+portrait of haunting greek nymph cursed bard, long dark nearly black hair,
+pale luminous skin, melancholic beautiful young woman,
+simple white shift dress torn edges, standing near broken marble columns,
+faint silver mist surrounding her, forest ruins with moonlight,
+dark painterly style
+```
+
+**Mood variations:**
+- `neutral`: mouth slightly open as if about to sing, distant eyes
+- `happy`: rare — genuine smile, silver light brightens, holding a lyre
+- `sad`: kneeling among ruins, hair covering face
+- `angry`: mist darkens, columns crack, silent scream
+- `surprised`: mist scatters, hand reaching out
+- `seductive`: white shift slipping off shoulder, ruins at sunset, warm light
+
+**LoRA training notes:** Very pale skin, dark hair, white shift dress, broken marble columns, silver mist, no color (Neutral element = desaturated).
+
+### 1.10 Lyra — Tavern Keeper (Quest Companion, Fire, B rank)
+
+**Core description:**
+Auburn-haired young woman, mid 20s, warm and inviting. Hair in a messy bun. Wearing a cream-colored tavern apron over a russet blouse with rolled-up sleeves. Strong hands, warm brown eyes. Ruddy cheeks from the fire. Always near mugs or bottles.
+
+**Prompt base:**
+```
+portrait of young greek tavern keeper barmaid, auburn hair in messy bun,
+warm brown eyes, ruddy cheeks, cream apron over russet blouse,
+rolled up sleeves showing strong forearms, warm inviting smile,
+tavern interior with firelight and wooden beams, dark painterly style
+```
+
+**Mood variations:**
+- `neutral`: hands on hips, friendly grin, mug nearby
+- `happy`: laughing, holding up two mugs of mead
+- `sad`: wiping counter alone, empty tavern
+- `angry`: broken mug, pointing at the door
+- `surprised`: mead spilling, eyes wide, catching a falling tray
+- `seductive`: untied apron, candlelit back room, beckoning smile
+
+**LoRA training notes:** Auburn messy bun, cream apron, russet blouse, rolled sleeves, ruddy cheeks, tavern setting.
+
+### 1.11 Melina — Village Leader's Daughter (Quest Companion, Earth, B rank)
+
+**Core description:**
+Brown-haired girl, late teens, sheltered but curious. Hair in twin braids. Wearing a modest olive-green dress. Always carrying a leather journal and quill. Brown doe eyes, soft round face. Simple sandals.
+
+**Prompt base:**
+```
+portrait of young greek village girl scholar, brown hair in twin braids,
+large brown doe eyes, soft round face, modest olive green dress,
+carrying leather journal and quill, simple sandals,
+village square with ancient tree in background, dark painterly style
+```
+
+**Mood variations:**
+- `neutral`: reading journal, one hand turning a page
+- `happy`: showing an open book excitedly, bright eyes
+- `sad`: journal closed, hugging it to chest, looking at locked gate
+- `angry`: rare — journal slammed shut, defiant stance
+- `surprised`: quill dropped, gasping, pages flying
+- `seductive`: dress loosened, reading by candlelight in the hidden library
+
+**LoRA training notes:** Brown twin braids, olive dress, leather journal, doe eyes, round face, scholarly posture.
+
+### 1.12 Old Kostas — Fisherman (Side NPC, no combat)
+
+**Core description:**
+Weathered old fisherman, 60s, grey beard, deeply tanned and sun-wrinkled. Wearing a patched wide-brimmed hat, sleeveless rough linen shirt, leather vest. Wooden fishing rod always in hand or nearby. Missing a front tooth.
+
+**Prompt base:**
+```
+portrait of old greek fisherman, grey beard, deeply tanned wrinkled face,
+patched wide brimmed hat, sleeveless rough linen shirt, leather vest,
+wooden fishing rod in hand, missing front tooth, kind crinkled eyes,
+river bank with reeds and morning mist, dark painterly style
+```
+
+**Mood variations:**
+- `neutral`: squinting at the water, rod over shoulder
+- `happy`: belly laugh, holding up a fish proudly
+- `sad`: staring at the river, empty line
+- `angry`: rare — shaking fist at the sky
+- `surprised`: rod bending, something big on the line
+- `seductive`: ***NOT NEEDED*** (side_no_romance NPC)
+
+**LoRA training notes:** Grey beard, patched hat, missing tooth, fishing rod, leather vest, river setting.
+
+### 1.13 Naida — River Nymph (Quest Companion, Water, A rank)
+
+**Core description:**
+Translucent blue-green skinned water nymph, ageless (looks early 20s). Hair that flows like water. Iridescent eyes. No shoes. Wearing a simple wrap that looks like flowing river water. A single pearl on a thin chain around her neck. Shy, often partially submerged.
+
+**Prompt base:**
+```
+portrait of shy river water nymph, translucent blue-green skin,
+hair flowing like liquid water, iridescent eyes, ageless young beauty,
+simple wrap of flowing river water, single pearl necklace,
+bare feet, partially emerging from river, reeds and twilight,
+dark painterly style
+```
+
+**Mood variations:**
+- `neutral`: half-submerged, peeking from behind reeds
+- `happy`: emerging from water, water droplets catching light, genuine smile
+- `sad`: sitting on riverbank, hair flat and still
+- `angry`: river churns, eyes glow, water rises around her
+- `surprised`: splashing, ripples spreading
+- `seductive`: fully emerged, wet skin glistening, twilight river, pearl glowing
+
+**LoRA training notes:** Translucent blue-green skin, water-hair, single pearl necklace, bare feet, river/reed setting, iridescent eyes.
+
+### 1.14 Thalos — Village Leader (Side NPC, no combat)
+
+**Core description:**
+Wise elderly man, 70s, long white beard, kind but tired eyes. Wearing a cream linen robe with a bronze clasp. Walking staff carved from the great tree's wood. Thin gold circlet marking his status. Stooped posture but dignified bearing.
+
+**Prompt base:**
+```
+portrait of wise old greek village elder, long white beard,
+kind tired eyes, cream linen robe with bronze clasp,
+carved wooden walking staff, thin gold circlet,
+stooped but dignified, village square with great tree behind,
+dark painterly style
+```
+
+**Mood variations:**
+- `neutral`: leaning on staff, thoughtful gaze
+- `happy`: warm grandfatherly smile, eyes crinkling
+- `sad`: head bowed, staff supporting his weight
+- `angry`: rare — standing tall, staff raised, commanding
+- `surprised`: staff clutched, eyes wide
+- `seductive`: ***NOT NEEDED*** (side_no_romance NPC)
+
+**LoRA training notes:** White beard, cream robe with bronze clasp, carved staff, gold circlet, great tree background.
+
 ---
 
 ## 2. Enemy Portraits
