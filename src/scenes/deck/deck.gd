@@ -476,6 +476,11 @@ func _on_companion_selected(id: String) -> void:
 ## party is already at MAX_PARTY_SIZE, shows a picker popup so the player
 ## can choose which member to replace.
 func _on_party_action_pressed() -> void:
+	# Guard against a stale press: the party button is only interactive in
+	# detail view, but a rapid back-and-forth between views could land this
+	# handler after the view already switched to grid.
+	if _view_state != VIEW_DETAIL:
+		return
 	if _selected_id.is_empty():
 		return
 

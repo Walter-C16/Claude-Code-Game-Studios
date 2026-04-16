@@ -30,7 +30,7 @@ Expand the roster to 16 combatants (5 existing + 10 new + 1 fix) covering all fo
 | `mountain_beast` | Earth | 120 | 20 | 10 | 10 | 5 | berserker | 45 | — |
 | `magma_hound` | Fire | 130 | 22 | 11 | 14 | 8 | berserker | 30 | **pierce_def** (special) |
 | `river_drake` | Water | 135 | 19 | 13 | 13 | 7 | tactical | 45 | — |
-| `amazon_challenger` | Fire | 160 | 24 | 14 | 15 | 12 | tactical | 30 | — |
+| `amazon_challenger` | Fire | 160 | 24 | 14 | 15 | 12 | tactical | 30 | — (Chapter 2+ — combat stats shipped ahead of encounter wiring) |
 | `obsidian_guardian` | Earth | 170 | 18 | 18 | 10 | 4 | defensive | 45 | **party_shield_30_percent** (special) |
 
 ### Elites (duel-tier mid-bosses)

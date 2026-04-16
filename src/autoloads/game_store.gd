@@ -309,8 +309,12 @@ func set_node_state(node_id: String, state: String) -> void:
 func get_xp() -> int:
 	return _player_xp
 
-## Adds `amount` to player XP and marks state dirty.
+## Adds `amount` to player XP and marks state dirty. Rejects non-positive
+## amounts — XP is monotonic. Use a dedicated spend_xp API (not yet
+## implemented) if deductions are ever needed.
 func add_xp(amount: int) -> void:
+	if amount <= 0:
+		return
 	_player_xp += amount
 	_mark_dirty()
 	state_changed.emit("xp")
@@ -319,8 +323,12 @@ func add_xp(amount: int) -> void:
 func get_gold() -> int:
 	return _player_gold
 
-## Adds `amount` to player gold and marks state dirty.
+## Adds `amount` to player gold and marks state dirty. Rejects non-positive
+## amounts — deductions must go through `spend_gold`, which fails safely
+## when the player can't afford the charge.
 func add_gold(amount: int) -> void:
+	if amount <= 0:
+		return
 	_player_gold += amount
 	_mark_dirty()
 	state_changed.emit("gold")
@@ -624,7 +632,11 @@ func get_counter(counter_name: String) -> int:
 
 ## Increments the named counter by [param amount] (default 1) and marks dirty.
 ## Creates the counter at 0 before incrementing if it does not yet exist.
+## Rejects non-positive amounts — counters are one-way (achievements,
+## lifetime stats). Use `set_counter` if you need to reset or adjust.
 func increment_counter(counter_name: String, amount: int = 1) -> void:
+	if amount <= 0:
+		return
 	var current: int = int(_counters.get(counter_name, 0))
 	_counters[counter_name] = current + amount
 	_mark_dirty()

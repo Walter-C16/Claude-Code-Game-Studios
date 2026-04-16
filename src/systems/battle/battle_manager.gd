@@ -457,8 +457,10 @@ func _apply_effect(actor: Combatant, target: Combatant, move: BattleMove) -> voi
 
 		"party_shield_30_percent":
 			# Atenea special — all allies absorb 30% incoming damage for 2 turns.
-			var is_ally: bool = not actor.is_enemy
-			var allies: Array[Combatant] = live_party() if is_ally else live_enemies()
+			# Ally dispatch: a player caster's "allies" are the party, an enemy
+			# caster's "allies" are the enemies. The obsidian_guardian enemy
+			# relies on this branch to buff its fellow enemies in the encounter.
+			var allies: Array[Combatant] = live_enemies() if actor.is_enemy else live_party()
 			for a: Combatant in allies:
 				a.stats.active_effects["shield"] = {
 					"magnitude": 0.30,
@@ -483,9 +485,11 @@ func _apply_effect(actor: Combatant, target: Combatant, move: BattleMove) -> voi
 						e.stats.active_effects.erase(key)
 
 		"corrupted_bloom":
-			# Gaia boss ult — DoT on every live ally of the target's side.
+			# Gaia boss ult — DoT on every enemy of the caster. Actor-side
+			# dispatch mirrors dispel_enemy_buffs above so the two effects
+			# read the same way.
 			var poison_dmg: float = float(actor.stats.atk) * 0.25
-			var victims: Array[Combatant] = live_party() if target == null or not target.is_enemy else live_enemies()
+			var victims: Array[Combatant] = live_party() if actor.is_enemy else live_enemies()
 			for v: Combatant in victims:
 				v.stats.active_effects["corrupted_bloom"] = {
 					"magnitude": poison_dmg,

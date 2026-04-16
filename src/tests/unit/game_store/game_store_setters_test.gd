@@ -156,6 +156,53 @@ func test_game_store_add_gold_sets_dirty() -> void:
 	store.add_gold(10)
 	assert_bool(store._dirty).is_true()
 
+
+# ---------------------------------------------------------------------------
+# Phase I audit — monotonic guards: add_gold / add_xp / increment_counter
+# must reject non-positive amounts so code can't accidentally deduct via
+# the "add" contract. Deductions go through spend_gold.
+# ---------------------------------------------------------------------------
+
+func test_game_store_add_gold_rejects_negative_amount() -> void:
+	# Arrange
+	var store = _make_store()
+	store.add_gold(100)
+	store._dirty = false  # clear so we can check the negative path didn't dirty
+
+	# Act
+	store.add_gold(-50)
+
+	# Assert — no change, no dirty flag
+	assert_int(store.get_gold()).is_equal(100)
+	assert_bool(store._dirty).is_false()
+
+
+func test_game_store_add_gold_rejects_zero_amount() -> void:
+	var store = _make_store()
+	store.add_gold(100)
+	store._dirty = false
+	store.add_gold(0)
+	assert_int(store.get_gold()).is_equal(100)
+	assert_bool(store._dirty).is_false()
+
+
+func test_game_store_add_xp_rejects_negative_amount() -> void:
+	var store = _make_store()
+	store.add_xp(200)
+	store._dirty = false
+	store.add_xp(-50)
+	assert_int(store.get_xp()).is_equal(200)
+	assert_bool(store._dirty).is_false()
+
+
+func test_game_store_increment_counter_rejects_negative_amount() -> void:
+	var store = _make_store()
+	store.increment_counter("victories", 5)
+	store._dirty = false
+	store.increment_counter("victories", -3)
+	assert_int(store.get_counter("victories")).is_equal(5)
+	assert_bool(store._dirty).is_false()
+
 func test_game_store_spend_gold_success_sets_dirty() -> void:
 	var store = _make_store()
 	store.add_gold(50)
