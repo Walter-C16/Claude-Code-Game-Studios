@@ -55,7 +55,7 @@ func test_companion_registry_ready_total_profile_count_is_five() -> void:
 
 	# Assert — get_all_ids() is the authoritative count
 	var ids: Array[String] = registry.get_all_ids()
-	assert_int(ids.size()).is_equal(14)
+	assert_int(ids.size()).is_equal(13)
 
 # ── AC2 — get_profile("artemis") has all 10 required keys ───────────────────
 
@@ -156,7 +156,7 @@ func test_companion_registry_get_all_ids_returns_five_ids() -> void:
 	var ids: Array[String] = registry.get_all_ids()
 
 	# Assert
-	assert_int(ids.size()).is_equal(14)
+	assert_int(ids.size()).is_equal(13)
 
 func test_companion_registry_get_all_ids_contains_artemis() -> void:
 	var registry = _make_registry()

@@ -156,12 +156,8 @@ func _refresh_time_display() -> void:
 	_time_label.text = Localization.get_text(time_key)
 	_day_label.text = Localization.get_text("LOCATION_DAY_LABEL") % GameStore.get_day_number()
 	_gold_label.text = "%d %s" % [GameStore.get_gold(), Localization.get_text("ORACLE_GOLD_LABEL")]
-	var tokens: int = GameStore.get_daily_tokens()
-	_token_label.text = Localization.get_text("LOCATION_TOKENS_LEFT") % tokens
-	_token_label.add_theme_color_override(
-		"font_color",
-		UIConstants.TEXT_PRIMARY if tokens > 0 else UIConstants.STATUS_DANGER
-	)
+	_token_label.text = ""
+	_token_label.visible = false
 
 	# Tint the time label + background to match the mood.
 	var time_color: Color = Color(1.0, 0.9, 0.6, 1.0)
@@ -317,13 +313,11 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 			npc_name.add_theme_font_size_override("font_size", 12)
 			npc_row.add_child(npc_name)
 
-			# Talk button — uses RomanceSocial.do_talk, same as Camp.
+			# Talk button — uses RomanceSocial.do_talk.
 			var talk_btn: Button = Button.new()
 			talk_btn.text = Localization.get_text("CAMP_TALK_BTN")
 			talk_btn.custom_minimum_size = Vector2(60.0, 30.0)
 			talk_btn.add_theme_font_size_override("font_size", 11)
-			var has_tokens: bool = GameStore.get_daily_tokens() > 0
-			talk_btn.disabled = not has_tokens
 			talk_btn.pressed.connect(_on_npc_talk_pressed.bind(nid))
 			npc_row.add_child(talk_btn)
 
@@ -332,7 +326,6 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 			gift_btn.text = Localization.get_text("CAMP_GIFT_BTN")
 			gift_btn.custom_minimum_size = Vector2(60.0, 30.0)
 			gift_btn.add_theme_font_size_override("font_size", 11)
-			gift_btn.disabled = not has_tokens
 			gift_btn.pressed.connect(_on_npc_gift_pressed.bind(nid))
 			npc_row.add_child(gift_btn)
 	else:
@@ -373,9 +366,6 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 # ── Actions ──────────────────────────────────────────────────────────────────
 
 func _on_npc_talk_pressed(npc_id: String) -> void:
-	if GameStore.get_daily_tokens() <= 0:
-		_show_feedback(Localization.get_text("CAMP_FEEDBACK_NO_TOKENS"))
-		return
 	# Ensure the NPC is "met" before talking (auto-meet side characters
 	# on first interaction so the relationship system works).
 	var state: Dictionary = GameStore.get_companion_state(npc_id)
@@ -385,8 +375,6 @@ func _on_npc_talk_pressed(npc_id: String) -> void:
 	if result.get("success", false):
 		var rl: int = result.get("rl_gained", 0)
 		_show_feedback("+%d RL" % rl)
-	else:
-		_show_feedback(Localization.get_text("CAMP_FEEDBACK_NO_TOKENS"))
 	_rebuild_location_cards()
 
 

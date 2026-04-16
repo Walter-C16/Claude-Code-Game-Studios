@@ -52,7 +52,7 @@
         "morning": ["lyra"],
         "afternoon": ["lyra"],
         "evening": ["lyra", "village_leader"],
-        "night": ["lyra", "village_leader", "megara"]
+        "night": ["lyra", "village_leader"]
       },
       "encounters": [
         {"enemy_id": "tavern_drunk", "chance": 0.2, "time": ["night"], "label_key": "ENCOUNTER_TAVERN_DRUNK"},

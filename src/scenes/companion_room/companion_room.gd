@@ -479,12 +479,19 @@ func _refresh_detail_panel() -> void:
 	if ResourceLoader.exists(portrait_path):
 		_detail_portrait.texture = load(portrait_path)
 
-	# Labels.
+	# Labels — name + rank + element badge.
 	var element: String = profile.get("element", "") as String
-	var element_tag: String = ""
+	var rank: String = profile.get("rank", "") as String
+	var badges: Array[String] = []
+	if not rank.is_empty():
+		badges.append("Rank %s" % rank)
 	if not element.is_empty() and element != "null":
-		element_tag = " · %s" % element
-	_detail_name_label.text = profile.get("display_name", _selected_id.capitalize()) + element_tag
+		badges.append(element)
+	var badge_text: String = " · ".join(badges) if not badges.is_empty() else ""
+	var name_text: String = profile.get("display_name", _selected_id.capitalize()) as String
+	if not badge_text.is_empty():
+		name_text += " · " + badge_text
+	_detail_name_label.text = name_text
 	_detail_role_label.text = profile.get("role", "")
 	var stage_name: String = STAGE_NAMES[clampi(stage, 0, STAGE_NAMES.size() - 1)]
 	_detail_stage_label.text = Localization.get_text("CAMP_STAGE_LABEL") % [stage, stage_name]
@@ -540,14 +547,9 @@ func _refresh_detail_panel() -> void:
 		_detail_level_up_btn.visible = true
 		_detail_level_up_btn.disabled = not GameStore.can_level_up(_selected_id)
 
-	# Button availability — grey out if no tokens, with a tooltip so the
-	# player understands why the button is unresponsive.
-	var has_tokens: bool = GameStore.get_daily_tokens() > 0
-	var no_tokens_tooltip: String = Localization.get_text("COMPANION_ROOM_NO_TOKENS")
-	_talk_btn.disabled = not has_tokens
-	_talk_btn.tooltip_text = "" if has_tokens else no_tokens_tooltip
-	_gift_open_btn.disabled = not has_tokens
-	_gift_open_btn.tooltip_text = "" if has_tokens else no_tokens_tooltip
+	# Buttons always enabled — no token restriction.
+	_talk_btn.disabled = false
+	_gift_open_btn.disabled = false
 
 
 ## Hides the detail panel.

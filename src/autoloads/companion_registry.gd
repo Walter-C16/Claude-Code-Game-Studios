@@ -61,15 +61,19 @@ func meet_companion(id: String) -> void:
 	# Oracle gacha — bump Epithet 0 → 1 on first meet so story-unlocked
 	# companions start their progression at Awakening. Already-unlocked
 	# goddesses (via the gacha path) stay at whatever tier they reached.
-	if GameStore.get_companion_epithet(id) == 0:
-		GameStore.set_companion_epithet(id, 1)
+	var ctype: String = profile.get("type", "companion") as String
+	if ctype != "side" and ctype != "side_no_romance" and ctype != "npc":
+		if GameStore.get_companion_epithet(id) == 0:
+			GameStore.set_companion_epithet(id, 1)
 
-	# Auto-join the active party if there's room and they aren't already in.
-	if not GameStore.has_deck_companion(id):
-		var current: Array[String] = GameStore.get_deck_companions()
-		if current.size() < 4:
-			var card_value: int = int(profile.get("card_value", 0))
-			GameStore.add_deck_companion(id, card_value)
+	# Auto-join the active party if there's room — ONLY for battle
+	# companions. Side characters and NPCs should never occupy a party slot.
+	if ctype != "side" and ctype != "side_no_romance" and ctype != "npc":
+		if not GameStore.has_deck_companion(id):
+			var current: Array[String] = GameStore.get_deck_companions()
+			if current.size() < 4:
+				var card_value: int = int(profile.get("card_value", 0))
+				GameStore.add_deck_companion(id, card_value)
 
 
 ## Returns a defensive copy of the profile dictionary for [param id].
