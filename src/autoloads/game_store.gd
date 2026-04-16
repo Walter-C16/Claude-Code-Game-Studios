@@ -626,26 +626,37 @@ func add_companion_xp(companion_id: String, amount: int) -> void:
 func get_companion_level(companion_id: String) -> int:
 	return int(_companion_levels.get(companion_id, 1))
 
+## Returns the rank-specific level cap for [param companion_id]. Reads the
+## companion's rank from CompanionRegistry and maps it through
+## CompanionLevel.RANK_CAPS (B=60, A=70, S=90, SS=110).
+func get_companion_level_cap(companion_id: String) -> int:
+	var profile: Dictionary = CompanionRegistry.get_profile(companion_id)
+	var rank: String = profile.get("rank", "B") as String
+	return CompanionLevel.level_cap_for_rank(rank)
+
 ## Returns the XP cost to buy the next level for [param companion_id], or 0
-## if already at the cap. Matches CompanionLevel.xp_needed_for_next so the
-## curve stays authoritative in one place.
+## if already at the rank cap.
 func get_level_up_xp_cost(companion_id: String) -> int:
 	var level: int = get_companion_level(companion_id)
+	var cap: int = get_companion_level_cap(companion_id)
+	if level >= cap:
+		return 0
 	return CompanionLevel.xp_needed_for_next(level)
 
 ## Returns the gold cost to buy the next level. Linear: 25 × current_level.
-## Total across levels 1→20 is ~5000 gold per companion.
 func get_level_up_gold_cost(companion_id: String) -> int:
 	var level: int = get_companion_level(companion_id)
-	if level >= CompanionLevel.LEVEL_CAP:
+	var cap: int = get_companion_level_cap(companion_id)
+	if level >= cap:
 		return 0
 	return 25 * level
 
 ## True if the player can afford the next level-up right now — enough XP
-## banked, enough gold on hand, and not yet at the level cap.
+## banked, enough gold on hand, and not yet at the rank cap.
 func can_level_up(companion_id: String) -> bool:
 	var level: int = get_companion_level(companion_id)
-	if level >= CompanionLevel.LEVEL_CAP:
+	var cap: int = get_companion_level_cap(companion_id)
+	if level >= cap:
 		return false
 	var xp: int = get_companion_xp(companion_id)
 	if xp < get_level_up_xp_cost(companion_id):

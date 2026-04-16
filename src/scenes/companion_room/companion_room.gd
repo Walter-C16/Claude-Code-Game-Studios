@@ -515,16 +515,17 @@ func _refresh_detail_panel() -> void:
 	# RL bar.
 	_detail_rl_bar.value = float(rl)
 
-	# Combat level + XP. XP is spent on level-up, so the bar shows
-	# "banked XP / XP needed for next level". "MAX" replaces the fraction at cap.
+	# Combat level + XP. Shows rank cap so the player knows the ceiling.
 	var level: int = GameStore.get_companion_level(_selected_id)
+	var level_cap: int = GameStore.get_companion_level_cap(_selected_id)
 	var banked_xp: int = GameStore.get_companion_xp(_selected_id)
 	var xp_cost: int = GameStore.get_level_up_xp_cost(_selected_id)
 	var gold_cost: int = GameStore.get_level_up_gold_cost(_selected_id)
 	if xp_cost <= 0:
-		_detail_level_label.text = "%s %d · %s" % [
+		_detail_level_label.text = "%s %d/%d · %s" % [
 			Localization.get_text("COMPANION_LEVEL_LABEL"),
 			level,
+			level_cap,
 			Localization.get_text("COMPANION_LEVEL_MAX"),
 		]
 		_detail_xp_bar.value = 1.0
@@ -532,9 +533,10 @@ func _refresh_detail_panel() -> void:
 		_detail_level_up_btn.disabled = true
 		_detail_level_up_btn.visible = false
 	else:
-		_detail_level_label.text = "%s %d · %d / %d XP" % [
+		_detail_level_label.text = "%s %d/%d · %d / %d XP" % [
 			Localization.get_text("COMPANION_LEVEL_LABEL"),
 			level,
+			level_cap,
 			banked_xp,
 			xp_cost,
 		]

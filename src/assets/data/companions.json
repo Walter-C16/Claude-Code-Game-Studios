@@ -20,7 +20,7 @@
     "rank": "A",
     "AGI": 18,
     "card_value": 12,
-    "starting_location": "amazon_camp",
+    "starting_location": "mountains",
     "portrait_path_base": "res://assets/images/companions/hipolita/hipolita",
     "likes": ["bronze_bracer", "honey_mead"],
     "dislikes": ["ancient_scroll"]
@@ -43,7 +43,7 @@
     "display_name": "Nyx",
     "role": "Primordial Goddess of Night",
     "element": "Water",
-    "rank": "A",
+    "rank": "S",
     "AGI": 8,
     "card_value": 11,
     "starting_location": "underworld",

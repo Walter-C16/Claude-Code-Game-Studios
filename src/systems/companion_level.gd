@@ -15,9 +15,24 @@ extends RefCounted
 
 # ── Constants ────────────────────────────────────────────────────────────────
 
-## Hard ceiling. XP past the level 20 threshold plateaus — the counter keeps
-## accumulating but the level stops climbing.
-const LEVEL_CAP: int = 20
+## Global hard ceiling (SS rank max). Individual companions are capped
+## lower based on their rank via level_cap_for_rank().
+const LEVEL_CAP: int = 110
+
+## Rank → level cap mapping. Ranks can be upgraded via duplicate pulls
+## or special items (future feature). The cap determines the maximum
+## level a companion can reach at their current rank.
+const RANK_CAPS: Dictionary = {
+	"B": 60,
+	"A": 70,
+	"S": 90,
+	"SS": 110,
+}
+
+## Returns the level cap for a given rank string. Unknown ranks default
+## to 60 (B tier) so new characters are playable but not overpowered.
+static func level_cap_for_rank(rank: String) -> int:
+	return int(RANK_CAPS.get(rank, 60))
 
 ## Coefficient for the XP curve `xp_total_for_level(L) = XP_COEFFICIENT * L * (L - 1)`.
 ## Delta between two adjacent levels is `2 * XP_COEFFICIENT * L`.
