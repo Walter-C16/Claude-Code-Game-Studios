@@ -1,0 +1,44 @@
+{
+  "quest_id": "naida",
+  "display_name_key": "QUEST_NAIDA_TITLE",
+  "character_id": "naida",
+  "nodes": [
+    {
+      "id": "naida_01",
+      "title_key": "QUEST_NAIDA_01_TITLE",
+      "description_key": "QUEST_NAIDA_01_DESC",
+      "type": "dialogue",
+      "prereqs": ["kostas_01_done"],
+      "rewards": {"rl_companion": "naida", "rl_amount": 10, "flags": ["naida_01_done"]},
+      "sequence": "naida_the_fish_speaks"
+    },
+    {
+      "id": "naida_02",
+      "title_key": "QUEST_NAIDA_02_TITLE",
+      "description_key": "QUEST_NAIDA_02_DESC",
+      "type": "combat",
+      "enemy_id": "cave_bat",
+      "prereqs": ["naida_01_done"],
+      "rewards": {"rl_companion": "naida", "rl_amount": 15, "flags": ["naida_02_done"]},
+      "sequence": "naida_stolen_pearl"
+    },
+    {
+      "id": "naida_03",
+      "title_key": "QUEST_NAIDA_03_TITLE",
+      "description_key": "QUEST_NAIDA_03_DESC",
+      "type": "dialogue",
+      "prereqs": ["naida_02_done", "kostas_quest_complete"],
+      "rewards": {"rl_companion": "naida", "rl_amount": 20, "flags": ["naida_03_done"]},
+      "sequence": "naida_reveal"
+    },
+    {
+      "id": "naida_04",
+      "title_key": "QUEST_NAIDA_04_TITLE",
+      "description_key": "QUEST_NAIDA_04_DESC",
+      "type": "dialogue",
+      "prereqs": ["naida_03_done"],
+      "rewards": {"rl_companion": "naida", "rl_amount": 15, "flags": ["naida_quest_complete"]},
+      "sequence": "naida_twilight_river"
+    }
+  ]
+}

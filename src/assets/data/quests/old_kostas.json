@@ -1,0 +1,36 @@
+{
+  "quest_id": "old_kostas",
+  "display_name_key": "QUEST_KOSTAS_TITLE",
+  "character_id": "old_kostas",
+  "nodes": [
+    {
+      "id": "kostas_01",
+      "title_key": "QUEST_KOSTAS_01_TITLE",
+      "description_key": "QUEST_KOSTAS_01_DESC",
+      "type": "dialogue",
+      "prereqs": ["ch01_exposition_done"],
+      "rewards": {"rl_companion": "old_kostas", "rl_amount": 10, "flags": ["kostas_01_done"]},
+      "sequence": "kostas_dying_river"
+    },
+    {
+      "id": "kostas_02",
+      "title_key": "QUEST_KOSTAS_02_TITLE",
+      "description_key": "QUEST_KOSTAS_02_DESC",
+      "type": "combat",
+      "enemy_id": "cave_bat",
+      "prereqs": ["kostas_01_done"],
+      "rewards": {"rl_companion": "old_kostas", "rl_amount": 15, "gold": 10, "flags": ["kostas_02_done"]},
+      "sequence": "kostas_legendary_catch"
+    },
+    {
+      "id": "kostas_03",
+      "title_key": "QUEST_KOSTAS_03_TITLE",
+      "description_key": "QUEST_KOSTAS_03_DESC",
+      "type": "combat",
+      "enemy_id": "forest_monster",
+      "prereqs": ["kostas_02_done"],
+      "rewards": {"rl_companion": "old_kostas", "rl_amount": 15, "flags": ["kostas_quest_complete"]},
+      "sequence": "kostas_rescue_boat"
+    }
+  ]
+}

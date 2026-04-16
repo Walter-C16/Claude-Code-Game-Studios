@@ -1,0 +1,53 @@
+{
+  "quest_id": "circe",
+  "display_name_key": "QUEST_CIRCE_TITLE",
+  "character_id": "circe",
+  "nodes": [
+    {
+      "id": "circe_01",
+      "title_key": "QUEST_CIRCE_01_TITLE",
+      "description_key": "QUEST_CIRCE_01_DESC",
+      "type": "dialogue",
+      "prereqs": ["ch01_complete"],
+      "rewards": {"rl_companion": "circe", "rl_amount": 10, "flags": ["circe_01_done"]},
+      "sequence": "circe_test"
+    },
+    {
+      "id": "circe_02",
+      "title_key": "QUEST_CIRCE_02_TITLE",
+      "description_key": "QUEST_CIRCE_02_DESC",
+      "type": "combat",
+      "enemy_id": "obsidian_guardian",
+      "prereqs": ["circe_01_done"],
+      "rewards": {"rl_companion": "circe", "rl_amount": 15, "flags": ["circe_02_done"]},
+      "sequence": "circe_titans_blood"
+    },
+    {
+      "id": "circe_03",
+      "title_key": "QUEST_CIRCE_03_TITLE",
+      "description_key": "QUEST_CIRCE_03_DESC",
+      "type": "dialogue",
+      "prereqs": ["circe_02_done"],
+      "rewards": {"rl_companion": "circe", "rl_amount": 20, "flags": ["circe_03_done"]},
+      "sequence": "circe_spy"
+    },
+    {
+      "id": "circe_04",
+      "title_key": "QUEST_CIRCE_04_TITLE",
+      "description_key": "QUEST_CIRCE_04_DESC",
+      "type": "dialogue",
+      "prereqs": ["circe_03_done"],
+      "rewards": {"rl_companion": "circe", "rl_amount": 15, "flags": ["circe_quest_complete"]},
+      "sequence": "circe_trust"
+    },
+    {
+      "id": "circe_05",
+      "title_key": "QUEST_CIRCE_05_TITLE",
+      "description_key": "QUEST_CIRCE_05_DESC",
+      "type": "dialogue",
+      "prereqs": ["circe_quest_complete"],
+      "rewards": {"rl_companion": "circe", "rl_amount": 10, "flags": ["ch02_gaia_fragment"]},
+      "sequence": "circe_fragment"
+    }
+  ]
+}

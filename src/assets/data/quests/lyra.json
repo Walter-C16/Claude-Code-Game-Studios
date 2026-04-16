@@ -1,0 +1,44 @@
+{
+  "quest_id": "lyra",
+  "display_name_key": "QUEST_LYRA_TITLE",
+  "character_id": "lyra",
+  "nodes": [
+    {
+      "id": "lyra_01",
+      "title_key": "QUEST_LYRA_01_TITLE",
+      "description_key": "QUEST_LYRA_01_DESC",
+      "type": "combat",
+      "enemy_id": "forest_monster",
+      "prereqs": ["ch01_tavern_done"],
+      "rewards": {"rl_companion": "lyra", "rl_amount": 10, "flags": ["lyra_01_done"]},
+      "sequence": "lyra_stolen_shipment"
+    },
+    {
+      "id": "lyra_02",
+      "title_key": "QUEST_LYRA_02_TITLE",
+      "description_key": "QUEST_LYRA_02_DESC",
+      "type": "dialogue",
+      "prereqs": ["lyra_01_done"],
+      "rewards": {"rl_companion": "lyra", "rl_amount": 15, "gold": 15, "flags": ["lyra_02_done"]},
+      "sequence": "lyra_village_festival"
+    },
+    {
+      "id": "lyra_03",
+      "title_key": "QUEST_LYRA_03_TITLE",
+      "description_key": "QUEST_LYRA_03_DESC",
+      "type": "dialogue",
+      "prereqs": ["lyra_02_done"],
+      "rewards": {"rl_companion": "lyra", "rl_amount": 20, "flags": ["lyra_03_done"]},
+      "sequence": "lyra_cursed_trader"
+    },
+    {
+      "id": "lyra_04",
+      "title_key": "QUEST_LYRA_04_TITLE",
+      "description_key": "QUEST_LYRA_04_DESC",
+      "type": "dialogue",
+      "prereqs": ["lyra_03_done"],
+      "rewards": {"rl_companion": "lyra", "rl_amount": 15, "flags": ["lyra_quest_complete"]},
+      "sequence": "lyra_closing_time"
+    }
+  ]
+}

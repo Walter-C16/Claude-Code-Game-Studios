@@ -1,0 +1,44 @@
+{
+  "quest_id": "daphne",
+  "display_name_key": "QUEST_DAPHNE_TITLE",
+  "character_id": "daphne",
+  "nodes": [
+    {
+      "id": "daphne_01",
+      "title_key": "QUEST_DAPHNE_01_TITLE",
+      "description_key": "QUEST_DAPHNE_01_DESC",
+      "type": "dialogue",
+      "prereqs": ["ch01_exposition_done"],
+      "rewards": {"rl_companion": "daphne", "rl_amount": 10, "flags": ["daphne_01_done"]},
+      "sequence": "daphne_wilting_garden"
+    },
+    {
+      "id": "daphne_02",
+      "title_key": "QUEST_DAPHNE_02_TITLE",
+      "description_key": "QUEST_DAPHNE_02_DESC",
+      "type": "combat",
+      "enemy_id": "cave_bat",
+      "prereqs": ["daphne_01_done"],
+      "rewards": {"rl_companion": "daphne", "rl_amount": 15, "flags": ["daphne_02_done"]},
+      "sequence": "daphne_moonlit_waters"
+    },
+    {
+      "id": "daphne_03",
+      "title_key": "QUEST_DAPHNE_03_TITLE",
+      "description_key": "QUEST_DAPHNE_03_DESC",
+      "type": "dialogue",
+      "prereqs": ["daphne_02_done"],
+      "rewards": {"rl_companion": "daphne", "rl_amount": 20, "flags": ["daphne_03_done"]},
+      "sequence": "daphne_seed_of_memory"
+    },
+    {
+      "id": "daphne_04",
+      "title_key": "QUEST_DAPHNE_04_TITLE",
+      "description_key": "QUEST_DAPHNE_04_DESC",
+      "type": "dialogue",
+      "prereqs": ["daphne_03_done"],
+      "rewards": {"rl_companion": "daphne", "rl_amount": 10, "flags": ["daphne_quest_complete"]},
+      "sequence": "daphne_garden_bloom"
+    }
+  ]
+}
