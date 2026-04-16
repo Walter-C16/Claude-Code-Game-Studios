@@ -55,7 +55,8 @@
         "night": ["lyra", "village_leader", "megara"]
       },
       "encounters": [
-        {"enemy_id": "tavern_drunk", "chance": 0.2, "time": ["night"], "label_key": "ENCOUNTER_TAVERN_DRUNK"}
+        {"enemy_id": "tavern_drunk", "chance": 0.2, "time": ["night"], "label_key": "ENCOUNTER_TAVERN_DRUNK"},
+        {"enemy_id": "amazon_challenger", "chance": 0.1, "time": ["evening"], "label_key": "ENCOUNTER_BAR_BRAWL"}
       ],
       "story_nodes": ["ch01_n03"]
     },
@@ -104,7 +105,9 @@
         "evening": ["melina"],
         "night": []
       },
-      "encounters": [],
+      "encounters": [
+        {"enemy_id": "forest_monster", "chance": 0.1, "time": ["night"], "label_key": "ENCOUNTER_NIGHT_RAID"}
+      ],
       "story_nodes": ["ch01_n06", "ch01_n07", "ch01_n08"]
     },
 
@@ -137,6 +140,7 @@
         "night": ["echo_bard"]
       },
       "encounters": [
+        {"enemy_id": "thunder_imp", "chance": 0.15, "time": ["afternoon"]},
         {"enemy_id": "forest_monster", "chance": 0.2, "time": ["night"]}
       ],
       "story_nodes": []

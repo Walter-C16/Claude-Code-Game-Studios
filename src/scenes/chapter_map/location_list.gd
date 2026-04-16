@@ -82,6 +82,12 @@ func _build_layout() -> void:
 	title.add_theme_font_size_override("font_size", 22)
 	top_row.add_child(title)
 
+	var _day_label: Label = Label.new()
+	_day_label.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+	_day_label.add_theme_font_size_override("font_size", 13)
+	_day_label.text = Localization.get_text("LOCATION_DAY_LABEL") % GameStore.get_day_number()
+	top_row.add_child(_day_label)
+
 	_time_label = Label.new()
 	_time_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
 	_time_label.add_theme_font_size_override("font_size", 16)
@@ -221,6 +227,26 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 	desc_label.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
 	desc_label.add_theme_font_size_override("font_size", 11)
 	vbox.add_child(desc_label)
+
+	# Indicators row — story badge + danger warning.
+	var has_story: bool = _location_has_available_story(loc)
+	var has_danger: bool = _location_has_encounters_now(loc, time_name)
+	if has_story or has_danger:
+		var indicator_row: HBoxContainer = HBoxContainer.new()
+		indicator_row.add_theme_constant_override("separation", 12)
+		vbox.add_child(indicator_row)
+		if has_story:
+			var story_badge: Label = Label.new()
+			story_badge.text = Localization.get_text("LOCATION_STORY_AVAILABLE")
+			story_badge.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+			story_badge.add_theme_font_size_override("font_size", 13)
+			indicator_row.add_child(story_badge)
+		if has_danger:
+			var danger_badge: Label = Label.new()
+			danger_badge.text = Localization.get_text("LOCATION_DANGER_WARNING")
+			danger_badge.add_theme_color_override("font_color", UIConstants.STATUS_DANGER)
+			danger_badge.add_theme_font_size_override("font_size", 12)
+			indicator_row.add_child(danger_badge)
 
 	# NPCs present at this time — each gets a Talk button.
 	var npcs: Array = loc.get("npcs", {}).get(time_name, []) as Array
@@ -386,6 +412,27 @@ func _on_state_changed(_key: String) -> void:
 
 
 # ── Story node helpers ───────────────────────────────────────────────────────
+
+## Returns true if any story node at this location is available right now.
+func _location_has_available_story(loc: Dictionary) -> bool:
+	var story_nodes: Array = loc.get("story_nodes", []) as Array
+	for node_id: Variant in story_nodes:
+		if _is_story_node_available(str(node_id)):
+			return true
+	return false
+
+
+## Returns true if the location has non-zero encounter chance at the
+## current time period.
+func _location_has_encounters_now(loc: Dictionary, time_name: String) -> bool:
+	var encounters: Array = loc.get("encounters", []) as Array
+	for enc: Variant in encounters:
+		var enc_dict: Dictionary = enc as Dictionary
+		var times: Array = enc_dict.get("time", []) as Array
+		if times.has(time_name) and float(enc_dict.get("chance", 0.0)) > 0.0:
+			return true
+	return false
+
 
 ## Checks if a story node from ch01.json is available (prereqs met, not
 ## already completed). Loads the chapter data on first call and caches it.

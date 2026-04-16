@@ -151,6 +151,9 @@ var _week_start_unix: int = 0
 ## 0 = morning, 1 = afternoon, 2 = evening, 3 = night. Wraps to 0 (new day).
 var _time_of_day: int = 0
 
+## Day counter — starts at 1, increments each time night wraps to morning.
+var _day_number: int = 1
+
 ## Forge fragments — accumulated via the Forge gacha, consumed to tier-up
 ## equipped items. 5 fragments per tier-up, max tier 5.
 ## See design/quick-specs/forge-gacha.md.
@@ -217,6 +220,7 @@ func _initialize_defaults() -> void:
 	_oracle_pulls_this_week = 0
 	_week_start_unix = 0
 	_time_of_day = 0
+	_day_number = 1
 	_forge_fragments = 0
 	_weapon_tier = 0
 	_amulet_tier = 0
@@ -747,9 +751,16 @@ func get_time_of_day() -> int:
 func get_time_of_day_name() -> String:
 	return TIME_NAMES[clampi(_time_of_day, 0, 3)]
 
-## Advances time by one period. Wraps night (3) → morning (0) for a new day.
+## Returns the current day number (starts at 1).
+func get_day_number() -> int:
+	return _day_number
+
+## Advances time by one period. Wraps night (3) → morning (0) and
+## increments the day counter so the player feels time passing.
 func advance_time() -> void:
 	_time_of_day = (_time_of_day + 1) % 4
+	if _time_of_day == TIME_MORNING:
+		_day_number += 1
 	_mark_dirty()
 	state_changed.emit("time_of_day")
 
@@ -908,6 +919,7 @@ func to_dict() -> Dictionary:
 		"oracle_pulls_this_week": _oracle_pulls_this_week,
 		"week_start_unix": _week_start_unix,
 		"time_of_day": _time_of_day,
+		"day_number": _day_number,
 		"forge_fragments": _forge_fragments,
 		"weapon_tier": _weapon_tier,
 		"amulet_tier": _amulet_tier,
@@ -1009,6 +1021,7 @@ func from_dict(data: Dictionary) -> void:
 	_oracle_pulls_this_week = int(data.get("oracle_pulls_this_week", 0))
 	_week_start_unix = int(data.get("week_start_unix", 0))
 	_time_of_day = int(data.get("time_of_day", 0))
+	_day_number = int(data.get("day_number", 1))
 	_forge_fragments = int(data.get("forge_fragments", 0))
 	_weapon_tier = int(data.get("weapon_tier", 0))
 	_amulet_tier = int(data.get("amulet_tier", 0))

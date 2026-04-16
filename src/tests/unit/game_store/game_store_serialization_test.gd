@@ -161,8 +161,8 @@ func test_game_store_serialization_to_dict_has_exactly_eleven_top_level_keys() -
 	# "oracle_pulls_this_week", "week_start_unix" for the Oracle gacha.
 	# Phase I.e added "forge_fragments" for the Forge gacha.
 	# Equipment tier-up added "weapon_tier" and "amulet_tier".
-	# Location system added "time_of_day".
-	assert_int(data.size()).is_equal(28)
+	# Location system added "time_of_day" and "day_number".
+	assert_int(data.size()).is_equal(29)
 
 # ---------------------------------------------------------------------------
 # AC2 — from_dict() with missing "player_xp" → get_xp() returns 0 (default)
