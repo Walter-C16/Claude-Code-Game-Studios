@@ -19,7 +19,7 @@ var _equip_sys: EquipmentSystem
 
 func _ready() -> void:
 	_equip_sys = EquipmentSystem.new()
-	title_label.text = "EQUIPMENT"
+	title_label.text = Localization.get_text("EQUIP_TITLE")
 
 	for child: Node in slot_list.get_children():
 		child.queue_free()
@@ -76,7 +76,7 @@ func _build_slot_section(slot: String, label_text: String) -> void:
 	item_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 	if equipped.is_empty():
-		item_btn.text = "[ Empty Slot ]"
+		item_btn.text = Localization.get_text("EQUIP_EMPTY_SLOT")
 		item_btn.add_theme_color_override("font_color", UIConstants.TEXT_DISABLED)
 		item_btn.disabled = true
 	else:
@@ -148,7 +148,7 @@ func _build_pending_section() -> void:
 		return
 
 	var header: Label = Label.new()
-	header.text = "Pending Items (%d/5)" % pending_ids.size()
+	header.text = Localization.get_text("EQUIP_PENDING_HEADER") % pending_ids.size()
 	header.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
 	header.add_theme_font_size_override("font_size", 16)
 	header.custom_minimum_size = Vector2(0.0, 40.0)

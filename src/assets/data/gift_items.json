@@ -34,5 +34,35 @@
     "name_key": "GIFT_ANCIENT_SCROLL",
     "category": "scholarly",
     "gold_cost": 25
+  },
+  {
+    "id": "wildflowers",
+    "name_key": "GIFT_WILDFLOWERS",
+    "category": "romantic",
+    "gold_cost": 10
+  },
+  {
+    "id": "training_sword",
+    "name_key": "GIFT_TRAINING_SWORD",
+    "category": "active",
+    "gold_cost": 15
+  },
+  {
+    "id": "woven_blanket",
+    "name_key": "GIFT_WOVEN_BLANKET",
+    "category": "domestic",
+    "gold_cost": 10
+  },
+  {
+    "id": "explorers_map",
+    "name_key": "GIFT_EXPLORERS_MAP",
+    "category": "adventure",
+    "gold_cost": 15
+  },
+  {
+    "id": "painted_stone",
+    "name_key": "GIFT_PAINTED_STONE",
+    "category": "artistic",
+    "gold_cost": 20
   }
 ]

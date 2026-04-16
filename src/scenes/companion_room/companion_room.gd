@@ -96,7 +96,7 @@ func _build_top_bar_labels() -> void:
 			child.queue_free()
 
 	_title_label = Label.new()
-	_title_label.text = "CAMP"
+	_title_label.text = Localization.get_text("CAMP_TITLE")
 	_title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_title_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
 	_title_label.add_theme_font_size_override("font_size", 20)
@@ -276,12 +276,12 @@ func _build_detail_panel() -> void:
 	btn_row.add_theme_constant_override("separation", 12)
 	vbox.add_child(btn_row)
 
-	_talk_btn = _make_action_button("Talk")
+	_talk_btn = _make_action_button(Localization.get_text("CAMP_TALK_BTN"))
 	_talk_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	btn_row.add_child(_talk_btn)
 	_talk_btn.pressed.connect(_on_talk_pressed)
 
-	_gift_open_btn = _make_action_button("Gift")
+	_gift_open_btn = _make_action_button(Localization.get_text("CAMP_GIFT_BTN"))
 	_gift_open_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	btn_row.add_child(_gift_open_btn)
 	_gift_open_btn.pressed.connect(_on_gift_btn_pressed)
@@ -584,7 +584,7 @@ func _refresh_top_bar() -> void:
 	var multiplier: float = RomanceSocial.get_streak_multiplier()
 	var gold: int = GameStore.get_gold()
 
-	_token_label.text = "Tokens: %d" % tokens
+	_token_label.text = Localization.get_text("CAMP_TOKENS_LABEL") % tokens
 	_streak_label.text = "x%.1f" % multiplier
 	_gold_label.text = "%d gold" % gold
 
@@ -697,7 +697,7 @@ func _on_talk_pressed() -> void:
 	else:
 		var error: String = result.get("error", "")
 		if error == "no_tokens":
-			_show_feedback("No tokens left!")
+			_show_feedback(Localization.get_text("CAMP_FEEDBACK_NO_TOKENS"))
 		_refresh_detail_panel()
 
 
@@ -712,7 +712,7 @@ func _on_level_up_pressed() -> void:
 		return
 	if not GameStore.level_up_companion(_selected_id):
 		return
-	_show_feedback("Level Up!")
+	_show_feedback(Localization.get_text("CAMP_FEEDBACK_LEVEL_UP"))
 	_refresh_detail_panel()
 	_refresh_top_bar()
 	Fx.pulse(_detail_level_label)
@@ -729,7 +729,7 @@ func _on_gift_item_selected(item_id: String) -> void:
 
 	var gold: int = GameStore.get_gold()
 	if not GiftItems.can_afford(item_id, gold):
-		_show_feedback("Can't afford!")
+		_show_feedback(Localization.get_text("CAMP_FEEDBACK_CANT_AFFORD"))
 		return
 
 	GameStore.spend_gold(cost)
@@ -747,7 +747,7 @@ func _on_gift_item_selected(item_id: String) -> void:
 	else:
 		var error: String = result.get("error", "")
 		if error == "no_tokens":
-			_show_feedback("No tokens left!")
+			_show_feedback(Localization.get_text("CAMP_FEEDBACK_NO_TOKENS"))
 		_refresh_detail_panel()
 
 
