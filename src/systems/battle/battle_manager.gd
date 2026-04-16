@@ -801,11 +801,19 @@ func _apply_equipment_bonuses() -> void:
 	var weapon_chips: int = equip.get_weapon_chip_bonus()
 	var amulet_mult: float = equip.get_amulet_mult_bonus()
 
+	# Tier multiplier: 1.0 at tier 0, scaling to 3.5 at tier 5.
+	var weapon_tier_mult: float = GameStore.equipment_tier_multiplier(
+		GameStore.get_equipment_tier("weapon")
+	)
+	var amulet_tier_mult: float = GameStore.equipment_tier_multiplier(
+		GameStore.get_equipment_tier("amulet")
+	)
+
 	if weapon_chips > 0:
-		proto.stats.atk += weapon_chips / 2
+		proto.stats.atk += int(float(weapon_chips / 2) * weapon_tier_mult)
 	if amulet_mult > 0.0:
-		proto.stats.def_stat += int(amulet_mult * 3.0)
-		proto.stats.max_hp += int(amulet_mult * 5.0)
+		proto.stats.def_stat += int(amulet_mult * 3.0 * amulet_tier_mult)
+		proto.stats.max_hp += int(amulet_mult * 5.0 * amulet_tier_mult)
 		proto.stats.current_hp = proto.stats.max_hp
 
 

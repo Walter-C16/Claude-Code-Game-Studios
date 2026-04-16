@@ -134,6 +134,41 @@ func _install_extra_controls() -> void:
 	)
 	_insert_before_close(vbox, _combat_timers_checkbox)
 
+	# Save / Load section — manual save triggers an immediate flush to disk;
+	# load reloads the last flush (which is also the auto-save checkpoint).
+	var save_spacer: Control = Control.new()
+	save_spacer.custom_minimum_size = Vector2(0.0, 12.0)
+	_insert_before_close(vbox, save_spacer)
+
+	var save_header: Label = Label.new()
+	save_header.text = Localization.get_text("SETTINGS_DATA_HEADER")
+	save_header.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
+	save_header.add_theme_font_size_override("font_size", 15)
+	_insert_before_close(vbox, save_header)
+
+	var save_btn_row: HBoxContainer = HBoxContainer.new()
+	save_btn_row.add_theme_constant_override("separation", 12)
+	_insert_before_close(vbox, save_btn_row)
+
+	var save_btn: Button = Button.new()
+	save_btn.text = Localization.get_text("SETTINGS_SAVE")
+	save_btn.custom_minimum_size = Vector2(0.0, 44.0)
+	save_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	save_btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	save_btn.add_theme_font_size_override("font_size", 14)
+	save_btn.pressed.connect(_on_save_pressed)
+	save_btn_row.add_child(save_btn)
+
+	var load_btn: Button = Button.new()
+	load_btn.text = Localization.get_text("SETTINGS_LOAD")
+	load_btn.custom_minimum_size = Vector2(0.0, 44.0)
+	load_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	load_btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	load_btn.add_theme_font_size_override("font_size", 14)
+	load_btn.disabled = not SaveManager.has_save()
+	load_btn.pressed.connect(_on_load_pressed)
+	save_btn_row.add_child(load_btn)
+
 
 ## Inserts [param node] right above CloseBtn in the VBox. Keeps the close
 ## button as the last child so the layout remains stable.
@@ -145,6 +180,19 @@ func _insert_before_close(vbox: VBoxContainer, node: Control) -> void:
 
 func _on_close() -> void:
 	close_requested.emit()
+
+
+func _on_save_pressed() -> void:
+	SaveManager.save_game()
+
+
+func _on_load_pressed() -> void:
+	if not SaveManager.has_save():
+		return
+	SaveManager.load_game()
+	# Reload the current scene so the UI refreshes from the restored state.
+	close_requested.emit()
+	SceneManager.change_scene(SceneManager.SceneId.HUB)
 
 
 func _set_label_text(node_path: String, key: String) -> void:

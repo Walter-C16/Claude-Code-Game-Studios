@@ -36,9 +36,24 @@ func _on_back_pressed() -> void:
 # ── UI Construction ────────────────────────────────────────────────────────────
 
 func _build_ui() -> void:
-	_build_slot_section("weapon", "Weapon — Chip Bonus")
-	_build_slot_section("amulet", "Amulet — Mult Bonus")
+	_build_fragment_counter()
+	_build_slot_section("weapon", Localization.get_text("EQUIP_WEAPON_HEADER"))
+	_build_slot_section("amulet", Localization.get_text("EQUIP_AMULET_HEADER"))
 	_build_pending_section()
+
+
+## Shows the player's forge fragment balance at the top so they know
+## whether they can afford a tier-up.
+func _build_fragment_counter() -> void:
+	var frag_label: Label = Label.new()
+	frag_label.text = "%s: %d" % [
+		Localization.get_text("EQUIP_FORGE_FRAGMENTS"),
+		GameStore.get_forge_fragments(),
+	]
+	frag_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	frag_label.add_theme_color_override("font_color", Color(1.0, 0.65, 0.3, 1.0))
+	frag_label.add_theme_font_size_override("font_size", 16)
+	slot_list.add_child(frag_label)
 
 
 ## Builds a slot display: current item + unequip button.
@@ -67,12 +82,14 @@ func _build_slot_section(slot: String, label_text: String) -> void:
 	else:
 		var name_key: String = equipped.get("name_key", equipped.get("id", ""))
 		var rarity: String = equipped.get("rarity", "common")
+		var tier: int = GameStore.get_equipment_tier(slot)
+		var tier_tag: String = " T%d" % tier if tier > 0 else ""
 		var bonus_text: String = ""
 		if slot == "weapon":
 			bonus_text = "+%d chips" % int(equipped.get("chip_bonus", 0))
 		else:
 			bonus_text = "+%.2f mult" % float(equipped.get("mult_bonus", 0.0))
-		item_btn.text = "%s  [%s]  %s" % [Localization.get_text(name_key), rarity.capitalize(), bonus_text]
+		item_btn.text = "%s%s  [%s]  %s" % [Localization.get_text(name_key), tier_tag, rarity.capitalize(), bonus_text]
 		item_btn.add_theme_color_override("font_color", _rarity_color(rarity))
 		item_btn.pressed.connect(func() -> void:
 			_equip_sys.unequip(slot)
@@ -93,6 +110,35 @@ func _build_slot_section(slot: String, label_text: String) -> void:
 	item_btn.add_theme_stylebox_override("normal", style)
 	item_btn.add_theme_font_size_override("font_size", 14)
 	section.add_child(item_btn)
+
+	# Upgrade button — costs 5 forge fragments per tier, max tier 5.
+	if not equipped.is_empty():
+		var tier: int = GameStore.get_equipment_tier(slot)
+		if tier < GameStore.MAX_EQUIPMENT_TIER:
+			var cost: int = GameStore.TIER_UP_FRAGMENT_COST
+			var can_afford: bool = GameStore.get_forge_fragments() >= cost
+			var upgrade_btn: Button = Button.new()
+			upgrade_btn.text = "%s (%d %s)" % [
+				Localization.get_text("EQUIP_UPGRADE"),
+				cost,
+				Localization.get_text("EQUIP_FORGE_FRAGMENTS"),
+			]
+			upgrade_btn.custom_minimum_size = Vector2(0.0, 40.0)
+			upgrade_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			upgrade_btn.add_theme_color_override("font_color", Color(1.0, 0.65, 0.3, 1.0))
+			upgrade_btn.add_theme_font_size_override("font_size", 13)
+			upgrade_btn.disabled = not can_afford
+			upgrade_btn.pressed.connect(func() -> void:
+				if GameStore.upgrade_equipment_tier(slot):
+					_rebuild()
+			)
+			section.add_child(upgrade_btn)
+		else:
+			var max_label: Label = Label.new()
+			max_label.text = Localization.get_text("EQUIP_TIER_MAX")
+			max_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+			max_label.add_theme_font_size_override("font_size", 12)
+			section.add_child(max_label)
 
 
 ## Builds the pending items queue section.

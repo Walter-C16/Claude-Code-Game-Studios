@@ -147,9 +147,14 @@ var _oracle_pulls_this_week: int = 0
 var _week_start_unix: int = 0
 
 ## Forge fragments — accumulated via the Forge gacha, consumed to tier-up
-## equipment once the Equipment GDD ships. In v1 they accumulate but can't
-## be spent yet. See design/quick-specs/forge-gacha.md.
+## equipped items. 5 fragments per tier-up, max tier 5.
+## See design/quick-specs/forge-gacha.md.
 var _forge_fragments: int = 0
+
+## Equipped item tier (0-5). Resets to 0 when a new item is equipped.
+## Linear scaling: stat_bonus *= 1 + tier * 0.5
+var _weapon_tier: int = 0
+var _amulet_tier: int = 0
 
 # ---------------------------------------------------------------------------
 # Private State — Persistence (GS-003 will add deferred flush)
@@ -207,6 +212,8 @@ func _initialize_defaults() -> void:
 	_oracle_pulls_this_week = 0
 	_week_start_unix = 0
 	_forge_fragments = 0
+	_weapon_tier = 0
+	_amulet_tier = 0
 	_counters = {}
 	_tavern_last_played = {}
 
@@ -515,8 +522,11 @@ func get_equipped_weapon() -> String:
 	return _equipped_weapon
 
 ## Sets the equipped weapon by item ID. Pass "" to clear the slot.
+## Resets the weapon tier to 0 on every equip change so the player must
+## re-invest fragments on the new item.
 func set_equipped_weapon(item_id: String) -> void:
 	_equipped_weapon = item_id
+	_weapon_tier = 0
 	_mark_dirty()
 	state_changed.emit("equipment")
 
@@ -525,8 +535,10 @@ func get_equipped_amulet() -> String:
 	return _equipped_amulet
 
 ## Sets the equipped amulet by item ID. Pass "" to clear the slot.
+## Resets the amulet tier to 0 on every equip change.
 func set_equipped_amulet(item_id: String) -> void:
 	_equipped_amulet = item_id
+	_amulet_tier = 0
 	_mark_dirty()
 	state_changed.emit("equipment")
 
@@ -726,6 +738,56 @@ func add_forge_fragments(amount: int) -> void:
 	_mark_dirty()
 	state_changed.emit("forge_fragments")
 
+## Returns the current tier (0-5) for the equipped weapon or amulet.
+func get_equipment_tier(slot: String) -> int:
+	if slot == "weapon":
+		return _weapon_tier
+	elif slot == "amulet":
+		return _amulet_tier
+	return 0
+
+## Resets the tier for [param slot] to 0. Called when a new item is
+## equipped so the player has to re-invest fragments.
+func reset_equipment_tier(slot: String) -> void:
+	if slot == "weapon":
+		_weapon_tier = 0
+	elif slot == "amulet":
+		_amulet_tier = 0
+	_mark_dirty()
+	state_changed.emit("equipment_tier")
+
+## Spends 5 forge fragments to increase the equipped item's tier by 1.
+## Returns true on success. Fails if: no item equipped, already at max
+## tier (5), or not enough fragments.
+const TIER_UP_FRAGMENT_COST: int = 5
+const MAX_EQUIPMENT_TIER: int = 5
+
+func upgrade_equipment_tier(slot: String) -> bool:
+	var current_tier: int = get_equipment_tier(slot)
+	if current_tier >= MAX_EQUIPMENT_TIER:
+		return false
+	if _forge_fragments < TIER_UP_FRAGMENT_COST:
+		return false
+	# Check that something is actually equipped.
+	if slot == "weapon" and _equipped_weapon.is_empty():
+		return false
+	if slot == "amulet" and _equipped_amulet.is_empty():
+		return false
+	_forge_fragments -= TIER_UP_FRAGMENT_COST
+	if slot == "weapon":
+		_weapon_tier += 1
+	elif slot == "amulet":
+		_amulet_tier += 1
+	_mark_dirty()
+	state_changed.emit("forge_fragments")
+	state_changed.emit("equipment_tier")
+	return true
+
+## Returns the stat multiplier for a given tier. Linear: 1 + tier * 0.5.
+## Tier 0 = 1.0x (base), tier 5 = 3.5x.
+static func equipment_tier_multiplier(tier: int) -> float:
+	return 1.0 + float(clampi(tier, 0, MAX_EQUIPMENT_TIER)) * 0.5
+
 ## Weekly reset tick — invoked by the Hub on entry and by the Oracle scene
 ## on open. If the current system time is more than one week past
 ## `_week_start_unix`, the counter resets and the anchor advances to now.
@@ -813,6 +875,8 @@ func to_dict() -> Dictionary:
 		"oracle_pulls_this_week": _oracle_pulls_this_week,
 		"week_start_unix": _week_start_unix,
 		"forge_fragments": _forge_fragments,
+		"weapon_tier": _weapon_tier,
+		"amulet_tier": _amulet_tier,
 		"counters": _counters.duplicate(),
 	}
 
@@ -911,6 +975,8 @@ func from_dict(data: Dictionary) -> void:
 	_oracle_pulls_this_week = int(data.get("oracle_pulls_this_week", 0))
 	_week_start_unix = int(data.get("week_start_unix", 0))
 	_forge_fragments = int(data.get("forge_fragments", 0))
+	_weapon_tier = int(data.get("weapon_tier", 0))
+	_amulet_tier = int(data.get("amulet_tier", 0))
 
 	# Active exploration missions. Same write-without-read bug as companion_xp
 	# had pre-Phase H — to_dict serializes this dict but from_dict never read
