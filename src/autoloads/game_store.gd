@@ -126,6 +126,26 @@ var _companion_xp: Dictionary = {}
 ## to 1. See design/quick-specs/companion-leveling.md.
 var _companion_levels: Dictionary = {}
 
+## Per-companion Bond Shard balance (gacha currency). Shards accumulate
+## toward the next Epithet threshold and are consumed on each unlock.
+## See design/quick-specs/oracle-gacha.md.
+var _companion_shards: Dictionary = {}
+
+## Per-companion highest-unlocked Epithet. 0 = not yet met via the Oracle,
+## 1..6 = stacking passive upgrades. Unset entries default to 0; the story
+## `meet` effect bumps a 0 → 1 at first unlock.
+var _companion_epithets: Dictionary = {}
+
+## Number of Oracle + Forge pulls the player has spent this week. Shared
+## across both gachas (the weekly cap is 30 combined). Resets when
+## `Time.get_unix_time_from_system()` crosses `_week_start_unix + 604800`.
+var _oracle_pulls_this_week: int = 0
+
+## Unix timestamp anchoring the current weekly pull window. Set to the
+## system time on the first pull of each cycle, then cycles forward by
+## 7 days (604800s) on reset.
+var _week_start_unix: int = 0
+
 # ---------------------------------------------------------------------------
 # Private State — Persistence (GS-003 will add deferred flush)
 # ---------------------------------------------------------------------------
@@ -177,6 +197,10 @@ func _initialize_defaults() -> void:
 	_exploration_state = {}
 	_companion_xp = {}
 	_companion_levels = {}
+	_companion_shards = {}
+	_companion_epithets = {}
+	_oracle_pulls_this_week = 0
+	_week_start_unix = 0
 	_counters = {}
 	_tavern_last_played = {}
 
@@ -622,6 +646,88 @@ func level_up_companion(companion_id: String) -> bool:
 	return true
 
 # ---------------------------------------------------------------------------
+# Public Getters / Setters — Oracle Gacha (Bond Shards + Epithets)
+# See design/quick-specs/oracle-gacha.md for the full system design.
+# ---------------------------------------------------------------------------
+
+## Returns the current Bond Shard balance for [param companion_id]. Default 0.
+func get_companion_shards(companion_id: String) -> int:
+	return int(_companion_shards.get(companion_id, 0))
+
+## Overwrites the shard balance. Callers should normally use `add_shards`;
+## this setter exists for the Oracle's level-up-style consumption path and
+## for save restoration.
+func set_companion_shards(companion_id: String, value: int) -> void:
+	_companion_shards[companion_id] = maxi(0, value)
+	_mark_dirty()
+	state_changed.emit("companion_shards")
+
+## Adds to the shard balance. Rejects non-positive amounts to keep shards
+## monotonic-on-add (the Oracle's roll path always grants a positive count).
+func add_companion_shards(companion_id: String, amount: int) -> void:
+	if amount <= 0:
+		return
+	var current: int = int(_companion_shards.get(companion_id, 0))
+	_companion_shards[companion_id] = current + amount
+	_mark_dirty()
+	state_changed.emit("companion_shards")
+
+## Returns the current Epithet tier for [param companion_id]. 0 = not met,
+## 1..6 = unlocked tiers.
+func get_companion_epithet(companion_id: String) -> int:
+	return int(_companion_epithets.get(companion_id, 0))
+
+## Sets the Epithet tier explicitly. Used by the Oracle unlock loop and by
+## story `meet` effects that bump 0 → 1 when the goddess joins via dialogue.
+func set_companion_epithet(companion_id: String, tier: int) -> void:
+	_companion_epithets[companion_id] = clampi(tier, 0, 6)
+	_mark_dirty()
+	state_changed.emit("companion_epithet")
+
+## Returns how many pulls the player has spent this week (shared between
+## Oracle and Forge gachas).
+func get_oracle_pulls_this_week() -> int:
+	return _oracle_pulls_this_week
+
+## Charges [param count] pulls against the weekly counter. No clamping —
+## the Oracle validates the budget upstream via can_afford helpers.
+func add_oracle_pulls(count: int) -> void:
+	if count <= 0:
+		return
+	_oracle_pulls_this_week += count
+	_mark_dirty()
+	state_changed.emit("oracle_pulls")
+
+## Returns the unix timestamp anchoring the current weekly reset window.
+func get_week_start_unix() -> int:
+	return _week_start_unix
+
+## Sets the window anchor. The Oracle calls this on the first pull of each
+## cycle to record when the window began.
+func set_week_start_unix(value: int) -> void:
+	_week_start_unix = value
+	_mark_dirty()
+
+## Weekly reset tick — invoked by the Hub on entry and by the Oracle scene
+## on open. If the current system time is more than one week past
+## `_week_start_unix`, the counter resets and the anchor advances to now.
+## Called for its side effect; returns true if a reset actually happened.
+func tick_oracle_weekly_reset() -> bool:
+	var now: int = int(Time.get_unix_time_from_system())
+	if _week_start_unix == 0:
+		# First-ever tick — seed the window without clearing the counter.
+		_week_start_unix = now
+		_mark_dirty()
+		return false
+	if now - _week_start_unix < 604800:
+		return false
+	_oracle_pulls_this_week = 0
+	_week_start_unix = now
+	_mark_dirty()
+	state_changed.emit("oracle_pulls")
+	return true
+
+# ---------------------------------------------------------------------------
 # Public Getters — Counters (Achievements / Lifetime Stats)
 # ---------------------------------------------------------------------------
 
@@ -684,6 +790,10 @@ func to_dict() -> Dictionary:
 		"exploration_state": _exploration_state.duplicate(),
 		"companion_xp": _companion_xp.duplicate(),
 		"companion_levels": _companion_levels.duplicate(),
+		"companion_shards": _companion_shards.duplicate(),
+		"companion_epithets": _companion_epithets.duplicate(),
+		"oracle_pulls_this_week": _oracle_pulls_this_week,
+		"week_start_unix": _week_start_unix,
 		"counters": _counters.duplicate(),
 	}
 
@@ -767,6 +877,20 @@ func from_dict(data: Dictionary) -> void:
 	var raw_levels: Dictionary = data.get("companion_levels", {})
 	for key: Variant in raw_levels:
 		_companion_levels[str(key)] = int(raw_levels[key])
+
+	# Oracle gacha — shards, epithets, and the shared weekly pull counter.
+	# Pre-Phase I saves have none of these fields; defaults are empty dicts
+	# and zero counters, which matches "player hasn't pulled yet".
+	_companion_shards = {}
+	var raw_shards: Dictionary = data.get("companion_shards", {})
+	for key: Variant in raw_shards:
+		_companion_shards[str(key)] = int(raw_shards[key])
+	_companion_epithets = {}
+	var raw_epithets: Dictionary = data.get("companion_epithets", {})
+	for key: Variant in raw_epithets:
+		_companion_epithets[str(key)] = int(raw_epithets[key])
+	_oracle_pulls_this_week = int(data.get("oracle_pulls_this_week", 0))
+	_week_start_unix = int(data.get("week_start_unix", 0))
 
 	# Active exploration missions. Same write-without-read bug as companion_xp
 	# had pre-Phase H — to_dict serializes this dict but from_dict never read

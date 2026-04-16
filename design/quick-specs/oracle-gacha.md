@@ -139,7 +139,7 @@ These names are surfaced in the Oracle reveal animation ("Artemis Agrotera answe
     "weekly_cap": 30,
     "epithet_vi_refund_gold": 15
   },
-  "epithet_costs": [5, 8, 13, 20, 30, 45],
+  "epithet_costs": [5, 3, 5, 7, 10, 15],
   "weights_by_epithet": [4, 3, 3, 2, 2, 1, 0.25],
   "outcome_table": [
     {"prob": 0.60, "shards": 1, "player_pick": false},
@@ -239,7 +239,7 @@ Single pull (25g):
 | `single_cost` | 25 | 15–40 | Per-pull friction. Higher = slower acquisition. |
 | `ten_cost` | 220 | 150–360 | Bulk discount. Default is 12% off. |
 | `weekly_cap` | 30 | 20–50 | Hardest dial. Lower = longer tail on progression. |
-| `epithet_costs[6]` | [5,8,13,20,30,45] | bands of ±20% | Per-Epithet shard gates. |
+| `epithet_costs[6]` | [5,3,5,7,10,15] (deltas; cumulative 5/8/13/20/30/45) | bands of ±20% | Per-Epithet shard gates. Stored as deltas in JSON for a simpler unlock loop. |
 | `weights_by_epithet[7]` | [4,3,3,2,2,1,0.25] | each within [0.1, 5] | Pity strength. |
 | `outcome_table` | 60/30/9/1 | sum to 1 | Distribution of shard counts per pull. |
 | `epithet_vi_refund_gold` | 15 | 5–30 | Surplus shard refund rate. |

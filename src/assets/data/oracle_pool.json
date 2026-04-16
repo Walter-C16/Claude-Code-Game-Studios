@@ -1,0 +1,24 @@
+{
+  "config": {
+    "single_cost": 25,
+    "ten_cost": 220,
+    "weekly_cap": 30,
+    "epithet_vi_refund_gold": 15,
+    "week_seconds": 604800
+  },
+  "epithet_costs": [5, 3, 5, 7, 10, 15],
+  "weights_by_epithet": [4.0, 3.0, 3.0, 2.0, 2.0, 1.0, 0.25],
+  "outcome_table": [
+    {"prob": 0.60, "shards": 1, "player_pick": false},
+    {"prob": 0.30, "shards": 2, "player_pick": false},
+    {"prob": 0.09, "shards": 3, "player_pick": false},
+    {"prob": 0.01, "shards": 5, "player_pick": true}
+  ],
+  "goddess_ids": ["artemis", "hipolita", "atenea", "nyx"],
+  "epithet_names": {
+    "artemis": ["Phoebe", "Agrotera", "Locheia", "Potnia Theron", "Cynthia", "Phosphoros"],
+    "hipolita": ["Andromache", "Alkis", "Areia", "Athanasia", "Nikephoros", "Pyromachos"],
+    "atenea": ["Polias", "Promachos", "Ergane", "Pronoia", "Hygieia", "Pallas"],
+    "nyx": ["Aithra", "Mormo", "Skotia", "Lamia", "Erebos", "Eteria"]
+  }
+}

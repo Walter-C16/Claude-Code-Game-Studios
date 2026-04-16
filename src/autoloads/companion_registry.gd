@@ -58,6 +58,12 @@ func meet_companion(id: String) -> void:
 	var dislikes: Array = profile.get("dislikes", []) as Array
 	GameStore.seed_companion_preferences(id, likes, dislikes)
 
+	# Oracle gacha — bump Epithet 0 → 1 on first meet so story-unlocked
+	# companions start their progression at Awakening. Already-unlocked
+	# goddesses (via the gacha path) stay at whatever tier they reached.
+	if GameStore.get_companion_epithet(id) == 0:
+		GameStore.set_companion_epithet(id, 1)
+
 	# Auto-join the active party if there's room and they aren't already in.
 	if not GameStore.has_deck_companion(id):
 		var current: Array[String] = GameStore.get_deck_companions()

@@ -157,7 +157,9 @@ func test_game_store_serialization_to_dict_has_exactly_eleven_top_level_keys() -
 	# Assert — expected top-level keys (grows as systems are added;
 	# count reflects the current shipping schema).
 	# Phase H added "companion_levels" for the manual level-up system.
-	assert_int(data.size()).is_equal(20)
+	# Phase I.a added "companion_shards", "companion_epithets",
+	# "oracle_pulls_this_week", "week_start_unix" for the Oracle gacha.
+	assert_int(data.size()).is_equal(24)
 
 # ---------------------------------------------------------------------------
 # AC2 — from_dict() with missing "player_xp" → get_xp() returns 0 (default)
