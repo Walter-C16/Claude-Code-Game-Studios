@@ -136,6 +136,13 @@ func setup(party_ids: Array[String], enemy_ids: Array[String]) -> bool:
 		var level: int = GameStore.get_companion_level(combatant.id)
 		CompanionLevel.apply_to_stats(combatant.stats, level)
 
+	# Epithet bonuses — II (energy regen), IV (crit chance), V (special
+	# +1 hit). Tier III is handled inline when blessings are applied, and
+	# tier VI is handled inline when move effects apply (see _apply_effect).
+	# See design/quick-specs/oracle-gacha.md.
+	for combatant: Combatant in party:
+		_apply_epithet_bonuses(combatant)
+
 	# Gun element — the protagonist's gun fires whichever element the first
 	# companion in the party supplies. Slot 0 is always the protagonist, so the
 	# first non-proto ally at slot 1 is the source. If the party is proto-only
@@ -446,15 +453,17 @@ func _apply_effect(actor: Combatant, target: Combatant, move: BattleMove) -> voi
 
 		"apply_hunter_mark_2_turns":
 			# Artemis ult — mark target; next hits against them do +50%.
+			# Epithet VI (Eternal) adds +1 turn to the mark duration.
 			target.stats.active_effects["hunter_mark"] = {
 				"magnitude": 0.5,
-				"turns_left": 2,
+				"turns_left": _turns_with_epithet_vi(actor, 2),
 			}
 
 		"guaranteed_crit_3_turns":
 			# Hippolyta ult — self-buff; all outgoing hits auto-crit for 3 turns.
+			# Epithet VI extends the stance by 1 turn.
 			actor.stats.active_effects["forced_crit"] = {
-				"turns_left": 3,
+				"turns_left": _turns_with_epithet_vi(actor, 3),
 			}
 
 		"party_shield_30_percent":
@@ -463,14 +472,17 @@ func _apply_effect(actor: Combatant, target: Combatant, move: BattleMove) -> voi
 			# caster's "allies" are the enemies. The obsidian_guardian enemy
 			# relies on this branch to buff its fellow enemies in the encounter.
 			var allies: Array[Combatant] = live_enemies() if actor.is_enemy else live_party()
+			var shield_turns: int = _turns_with_epithet_vi(actor, 2)
 			for a: Combatant in allies:
 				a.stats.active_effects["shield"] = {
 					"magnitude": 0.30,
-					"turns_left": 2,
+					"turns_left": shield_turns,
 				}
 
 		"dodge_next_attack":
 			# Nyx special — self-buff that dodges the next incoming hit.
+			# One-shot effect with no turns_left counter; Epithet VI is a
+			# no-op here since there's nothing to extend.
 			actor.stats.active_effects["dodge_next"] = {
 				"magnitude": 1.0,
 			}
@@ -492,10 +504,11 @@ func _apply_effect(actor: Combatant, target: Combatant, move: BattleMove) -> voi
 			# read the same way.
 			var poison_dmg: float = float(actor.stats.atk) * 0.25
 			var victims: Array[Combatant] = live_party() if actor.is_enemy else live_enemies()
+			var bloom_turns: int = _turns_with_epithet_vi(actor, 3)
 			for v: Combatant in victims:
 				v.stats.active_effects["corrupted_bloom"] = {
 					"magnitude": poison_dmg,
-					"turns_left": 3,
+					"turns_left": bloom_turns,
 				}
 
 		_:
@@ -589,10 +602,12 @@ func _end_turn() -> void:
 	# Advance to next living combatant in the queue.
 	_advance_turn_pointer()
 
-	# Regen energy for the unit whose turn is starting.
+	# Regen energy for the unit whose turn is starting. The per-combatant
+	# bonus_energy_regen comes from Epithet II — "Devotion" — which is set
+	# during setup() once per battle.
 	var next: Combatant = current_combatant()
 	if next != null and next.is_alive():
-		next.stats.add_energy(_energy_regen_per_turn)
+		next.stats.add_energy(_energy_regen_per_turn + next.stats.bonus_energy_regen)
 
 	_set_state(State.AWAIT_ACTION)
 	if next != null:
@@ -645,7 +660,13 @@ func _set_state(new_state: int) -> void:
 func _apply_blessings_to(combatant: Combatant, all_blessings: Array) -> Array[Dictionary]:
 	var applied: Array[Dictionary] = []
 	var stage: int = CompanionState.get_romance_stage(combatant.id)
+	var epithet: int = GameStore.get_companion_epithet(combatant.id)
 	var max_slot: int = _max_slot_for_stage(stage)
+	# Epithet III (Vigil) forcibly unlocks blessing slot 4 regardless of
+	# romance stage. Higher tiers give no further slot — slot 5 stays
+	# gated by romance stage 4.
+	if epithet >= 3:
+		max_slot = maxi(max_slot, 4)
 	if max_slot == 0:
 		return applied
 
@@ -696,6 +717,54 @@ func _max_slot_for_stage(stage: int) -> int:
 		3: return 4
 		4: return 5
 		_: return 0
+
+
+# ── Epithet bonuses (Phase I.d) ──────────────────────────────────────────────
+
+## Applies the stat-side Epithet bonuses for a single party member. Epithet
+## I is the "joined the party" milestone and needs no bonus here. Epithet
+## III is handled inline during blessings. Epithet VI is handled inline
+## inside _apply_effect. This pass handles II, IV, and V.
+##
+## See design/quick-specs/oracle-gacha.md for the tier table.
+func _apply_epithet_bonuses(combatant: Combatant) -> void:
+	if combatant == null or combatant.stats == null:
+		return
+	var tier: int = GameStore.get_companion_epithet(combatant.id)
+	if tier < 2:
+		return
+
+	# Epithet II — Devotion. +1 energy regen per turn (stacks with global).
+	if tier >= 2:
+		combatant.stats.bonus_energy_regen += 1
+
+	# Epithet IV — Apotheosis. +5% base crit chance.
+	if tier >= 4:
+		combatant.stats.crit_chance += 5.0
+
+	# Epithet V — Communion. Special move gains +1 hit. Mutates the move
+	# object on this Combatant — safe because Combatant.build creates a
+	# fresh BattleMove per battle, so the mutation doesn't leak across
+	# encounters.
+	if tier >= 5:
+		var special: BattleMove = combatant.get_move("special")
+		if special != null:
+			special.hits += 1
+
+	# Epithet VI — Eternal. Handled in _apply_effect for the turns_left
+	# field of any effect the actor applies (forced_crit, shield, DoTs).
+	# No setup-time mutation needed here.
+
+
+## Returns [param base_turns] plus 1 when [param actor]'s Epithet tier is
+## VI or higher, otherwise the base value. Called from _apply_effect so
+## Epithet VI self-buffs and debuff applications last one extra turn.
+func _turns_with_epithet_vi(actor: Combatant, base_turns: int) -> int:
+	if actor == null:
+		return base_turns
+	if GameStore.get_companion_epithet(actor.id) >= 6:
+		return base_turns + 1
+	return base_turns
 
 
 # ── Gun element ──────────────────────────────────────────────────────────────

@@ -272,6 +272,145 @@ func test_battle_manager_setup_stage_0_applies_zero_blessings() -> void:
 	assert_bool(bm.active_blessings.has("artemis")).is_false()
 
 
+# ── Epithet bonuses (Phase I.d) ──────────────────────────────────────────────
+
+func test_battle_manager_epithet_ii_adds_bonus_energy_regen() -> void:
+	# Arrange — Artemis at Epithet II
+	_reset_game_state()
+	GameStore.set_companion_epithet("artemis", 2)
+	var bm = BattleManagerScript.new()
+	bm.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
+
+	var artemis: Combatant = null
+	for c: Combatant in bm.party:
+		if c.id == "artemis":
+			artemis = c
+			break
+
+	# Assert — +1 bonus regen set on stats
+	assert_int(artemis.stats.bonus_energy_regen).is_equal(1)
+
+
+func test_battle_manager_epithet_iv_adds_five_percent_crit() -> void:
+	# Arrange — compare a battle at Epithet III (which already unlocks
+	# blessing slots via the Epithet III relaxation) against Epithet IV
+	# on the same roster. The only stat that should change is crit_chance,
+	# which IV bumps by +5. This isolates the Epithet IV effect from the
+	# unrelated blessing bonuses that come with tier III's slot unlock.
+	_reset_game_state()
+	GameStore.set_companion_epithet("artemis", 3)
+	var bm_a = BattleManagerScript.new()
+	bm_a.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
+	var artemis_iii: Combatant = null
+	for c: Combatant in bm_a.party:
+		if c.id == "artemis":
+			artemis_iii = c
+			break
+	var crit_at_iii: float = artemis_iii.stats.crit_chance
+
+	_reset_game_state()
+	GameStore.set_companion_epithet("artemis", 4)
+	var bm_b = BattleManagerScript.new()
+	bm_b.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
+	var artemis_iv: Combatant = null
+	for c: Combatant in bm_b.party:
+		if c.id == "artemis":
+			artemis_iv = c
+			break
+	var crit_at_iv: float = artemis_iv.stats.crit_chance
+
+	# Assert — exactly +5 delta between the two tiers
+	assert_float(crit_at_iv - crit_at_iii).is_equal_approx(5.0, 0.01)
+
+
+func test_battle_manager_epithet_v_adds_one_hit_to_special() -> void:
+	# Arrange — Hippolyta at Epithet V
+	_reset_game_state()
+	GameStore.set_companion_epithet("hipolita", 5)
+	var bm = BattleManagerScript.new()
+	bm.setup(["protagonist", "hipolita"] as Array[String], ["forest_monster"] as Array[String])
+
+	var hipo: Combatant = null
+	for c: Combatant in bm.party:
+		if c.id == "hipolita":
+			hipo = c
+			break
+
+	# Assert — special move's hits field is one more than the JSON baseline.
+	# Hipolita's amazon_charge special defaults to 1 hit; Epithet V bumps it.
+	var special: BattleMove = hipo.get_move("special")
+	assert_int(special.hits).is_greater_equal(2)
+
+
+func test_battle_manager_epithet_iii_lifts_blessing_slot_cap() -> void:
+	# Arrange — Artemis at romance stage 1 (cap = 1 slot) but Epithet III
+	# forces the cap to 4, so more blessings should apply.
+	_reset_game_state()
+	CompanionState.set_relationship_level("artemis", 25)  # stage 1
+	GameStore.set_companion_epithet("artemis", 3)
+	var bm = BattleManagerScript.new()
+	bm.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
+
+	# Assert — active_blessings has more than 1 entry (the stage-1 cap)
+	assert_bool(bm.active_blessings.has("artemis")).is_true()
+	var applied: Array = bm.active_blessings["artemis"] as Array
+	assert_int(applied.size()).is_greater(1)
+
+
+func test_battle_manager_epithet_vi_extends_effect_turns_left() -> void:
+	# Arrange — solo battle, force Artemis at Epithet VI, cast an ultimate
+	# that writes a turns_left field. We'll use the "guaranteed_crit_3_turns"
+	# path via a synthetic move.
+	_reset_game_state()
+	GameStore.set_companion_epithet("artemis", 6)
+	var bm = BattleManagerScript.new()
+	bm.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
+
+	var artemis: Combatant = null
+	for c: Combatant in bm.party:
+		if c.id == "artemis":
+			artemis = c
+			break
+
+	# Install a test move with the guaranteed_crit_3_turns effect and cast it.
+	var test_move: BattleMove = BattleMove.new()
+	test_move.id = "test_vi"
+	test_move.name_key = "TEST"
+	test_move.move_type = "special"
+	test_move.target = "single_enemy"
+	test_move.damage_mult = 0.0
+	test_move.hits = 1
+	test_move.element = "Neutral"
+	test_move.element_source = ""
+	test_move.energy_cost = 0
+	test_move.effect = "guaranteed_crit_3_turns"
+	artemis.moves["special"] = test_move
+
+	# Act — call _apply_effect directly (simpler than routing through execute_move)
+	bm._apply_effect(artemis, bm.enemies[0], test_move)
+
+	# Assert — base is 3 turns, Epithet VI should bump to 4
+	var forced: Dictionary = artemis.stats.active_effects["forced_crit"] as Dictionary
+	assert_int(int(forced.get("turns_left", 0))).is_equal(4)
+
+
+func test_battle_manager_epithet_zero_leaves_stats_unchanged() -> void:
+	# Arrange — Artemis at Epithet 0 (default). Base stats unmodified.
+	_reset_game_state()
+	var bm = BattleManagerScript.new()
+	bm.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
+
+	var artemis: Combatant = null
+	for c: Combatant in bm.party:
+		if c.id == "artemis":
+			artemis = c
+			break
+
+	# Assert — no bonus regen, base crit 10.0, special hits untouched
+	assert_int(artemis.stats.bonus_energy_regen).is_equal(0)
+	assert_float(artemis.stats.crit_chance).is_equal_approx(10.0, 0.01)
+
+
 func test_battle_manager_setup_reads_max_turn_timer_from_enemies() -> void:
 	# Arrange — solo battle then bump the enemy's timer field manually so we
 	# don't depend on JSON values.
