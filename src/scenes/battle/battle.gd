@@ -86,6 +86,8 @@ func _ready() -> void:
 	_story_node = ctx.get("story_node", "") as String
 	_enemy_ids = _resolve_enemy_ids(ctx)
 
+	tree_exiting.connect(_disconnect_battle_signals)
+
 	var party_ids: Array[String] = _build_party_ids()
 	_battle = BattleManager.new()
 	_battle.turn_started.connect(_on_turn_started)
@@ -197,6 +199,23 @@ func _process(delta: float) -> void:
 			if bar_parent is Control and not bar_parent.has_meta("_pulsing"):
 				bar_parent.set_meta("_pulsing", true)
 				Fx.pulse(bar_parent as Control, 1.04, 0.4)
+
+
+## Disconnects BattleManager signals and kills any in-flight tweens on
+## scene exit. Without this, callbacks fire on freed nodes after the
+## player leaves via victory/defeat/retreat.
+func _disconnect_battle_signals() -> void:
+	if _battle != null:
+		if _battle.turn_started.is_connected(_on_turn_started):
+			_battle.turn_started.disconnect(_on_turn_started)
+		if _battle.move_executed.is_connected(_on_move_executed):
+			_battle.move_executed.disconnect(_on_move_executed)
+		if _battle.reaction_triggered.is_connected(_on_reaction_triggered):
+			_battle.reaction_triggered.disconnect(_on_reaction_triggered)
+		if _battle.battle_ended.is_connected(_on_battle_ended):
+			_battle.battle_ended.disconnect(_on_battle_ended)
+	if _turn_timer != null and _turn_timer.expired.is_connected(_on_turn_timer_expired):
+		_turn_timer.expired.disconnect(_on_turn_timer_expired)
 
 
 # ── Setup helpers ────────────────────────────────────────────────────────────

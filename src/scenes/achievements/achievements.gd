@@ -8,7 +8,7 @@ extends Control
 
 func _ready() -> void:
 	back_btn.pressed.connect(_on_back)
-	title_label.text = "ACHIEVEMENTS"
+	title_label.text = Localization.get_text("ACHIEVEMENTS_TITLE")
 	title_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
 	title_label.add_theme_font_size_override("font_size", 22)
 

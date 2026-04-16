@@ -23,7 +23,7 @@ var _content: VBoxContainer
 # ── Built-in Virtual Methods ───────────────────────────────────────────────────
 
 func _ready() -> void:
-	title_label.text = "THE ABYSS"
+	title_label.text = Localization.get_text("ABYSS_TITLE")
 	enter_btn.visible = false
 	AudioManager.play_bgm("res://assets/audio/bgm/abyss.ogg")
 
@@ -80,7 +80,7 @@ func _show_lobby() -> void:
 	_content.add_child(best)
 
 	# Start button.
-	var start_btn: Button = _make_button("Begin Descent")
+	var start_btn: Button = _make_button(Localization.get_text("ABYSS_BEGIN_DESCENT"))
 	start_btn.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
 	start_btn.pressed.connect(_on_start_run)
 	_content.add_child(start_btn)
@@ -174,7 +174,7 @@ func _show_summary() -> void:
 	depth_label.text = "Run Complete!"
 
 	var title_lbl: Label = Label.new()
-	title_lbl.text = "ABYSS CONQUERED"
+	title_lbl.text = Localization.get_text("ABYSS_CONQUERED")
 	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_lbl.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
 	title_lbl.add_theme_font_size_override("font_size", 24)
@@ -191,7 +191,7 @@ func _show_summary() -> void:
 	# Award persistent gold.
 	GameStore.add_gold(_run.total_gold_earned)
 
-	var exit_btn: Button = _make_button("Return to Hub")
+	var exit_btn: Button = _make_button(Localization.get_text("ABYSS_RETURN_HUB"))
 	exit_btn.pressed.connect(func() -> void:
 		SceneManager.change_scene(SceneManager.SceneId.HUB)
 	)
@@ -204,7 +204,7 @@ func _show_defeat() -> void:
 	depth_label.text = "Defeated at Ante %d" % _run.ante_current
 
 	var title_lbl: Label = Label.new()
-	title_lbl.text = "THE ABYSS CLAIMS YOU"
+	title_lbl.text = Localization.get_text("ABYSS_DEFEAT")
 	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title_lbl.add_theme_color_override("font_color", UIConstants.STATUS_DANGER)
 	title_lbl.add_theme_font_size_override("font_size", 20)
@@ -217,7 +217,7 @@ func _show_defeat() -> void:
 	gold_lbl.add_theme_font_size_override("font_size", 14)
 	_content.add_child(gold_lbl)
 
-	var exit_btn: Button = _make_button("Return to Hub")
+	var exit_btn: Button = _make_button(Localization.get_text("ABYSS_RETURN_HUB"))
 	exit_btn.pressed.connect(func() -> void:
 		SceneManager.change_scene(SceneManager.SceneId.HUB)
 	)

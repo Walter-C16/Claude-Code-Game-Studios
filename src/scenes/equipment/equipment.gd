@@ -129,7 +129,7 @@ func _build_slot_section(slot: String, label_text: String) -> void:
 				cost,
 				Localization.get_text("EQUIP_FORGE_FRAGMENTS"),
 			]
-			upgrade_btn.custom_minimum_size = Vector2(0.0, 40.0)
+			upgrade_btn.custom_minimum_size = Vector2(0.0, 44.0)
 			upgrade_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			upgrade_btn.add_theme_color_override("font_color", Color(1.0, 0.65, 0.3, 1.0))
 			upgrade_btn.add_theme_font_size_override("font_size", 13)

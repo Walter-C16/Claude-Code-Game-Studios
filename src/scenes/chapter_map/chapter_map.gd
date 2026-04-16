@@ -83,7 +83,7 @@ func _load_chapter_file(file_name: String) -> Dictionary:
 func _show_chapter_list() -> void:
 	_active_chapter = {}
 	_kill_tweens()
-	title_label.text = "STORY"
+	title_label.text = Localization.get_text("CHAPTER_MAP_TITLE")
 
 	for child: Node in chapter_list.get_children():
 		child.queue_free()
@@ -108,7 +108,7 @@ func _make_chapter_card(data: Dictionary) -> Button:
 	var subtitle_key: String = data.get("subtitle_key", "")
 	var title_text: String = Localization.get_text(title_key)
 	if title_text == title_key:
-		title_text = chapter_id.replace("ch", "Chapter ").capitalize()
+		title_text = chapter_id.replace("ch", Localization.get_text("CHAPTER_PREFIX")).capitalize()
 	var subtitle_text: String = Localization.get_text(subtitle_key)
 	if subtitle_text == subtitle_key:
 		subtitle_text = ""

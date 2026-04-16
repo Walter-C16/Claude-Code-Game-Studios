@@ -265,7 +265,7 @@ func _build_detail_panel() -> void:
 
 	_detail_level_up_btn = Button.new()
 	_detail_level_up_btn.text = Localization.get_text("COMPANION_LEVEL_UP_BUTTON")
-	_detail_level_up_btn.custom_minimum_size = Vector2(0.0, 40.0)
+	_detail_level_up_btn.custom_minimum_size = Vector2(0.0, 44.0)
 	_detail_level_up_btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
 	_detail_level_up_btn.add_theme_font_size_override("font_size", 14)
 	_detail_level_up_btn.pressed.connect(_on_level_up_pressed)
