@@ -249,9 +249,9 @@ func _on_single_pressed() -> void:
 	Fx.pop_scale(_single_btn, 1.08, 0.25)
 	GameStore.spend_gold(_forge.single_cost)
 	GameStore.add_oracle_pulls(1)
-	var fragments: int = _forge.roll_single()
-	GameStore.add_forge_fragments(fragments)
-	_show_reveal(fragments)
+	var result: Dictionary = _forge.roll_single()
+	_apply_forge_result(result)
+	_show_reveal_from_results([result])
 
 
 func _on_ten_pressed() -> void:
@@ -263,16 +263,45 @@ func _on_ten_pressed() -> void:
 	Fx.pop_scale(_ten_btn, 1.08, 0.25)
 	GameStore.spend_gold(_forge.ten_cost)
 	GameStore.add_oracle_pulls(10)
-	var fragments: int = _forge.roll_ten()
-	GameStore.add_forge_fragments(fragments)
-	_show_reveal(fragments)
+	var results: Array[Dictionary] = _forge.roll_ten()
+	for r: Dictionary in results:
+		_apply_forge_result(r)
+	_show_reveal_from_results(results)
 
 
-func _show_reveal(fragments: int) -> void:
-	_reveal_text.text = Localization.get_text("FORGE_REVEAL_RESULT") % fragments
+func _apply_forge_result(result: Dictionary) -> void:
+	var rtype: String = result.get("type", "fragments") as String
+	if rtype == "fragments":
+		GameStore.add_forge_fragments(int(result.get("fragments", 0)))
+	elif rtype == "equipment":
+		var item: Dictionary = result.get("item", {}) as Dictionary
+		var item_id: String = item.get("id", "") as String
+		if not item_id.is_empty():
+			GameStore.add_pending_equipment(item_id)
+
+
+func _show_reveal_from_results(results: Array) -> void:
+	var total_fragments: int = 0
+	var equipment_names: Array[String] = []
+	for r: Variant in results:
+		var rd: Dictionary = r as Dictionary
+		if (rd.get("type", "") as String) == "fragments":
+			total_fragments += int(rd.get("fragments", 0))
+		elif (rd.get("type", "") as String) == "equipment":
+			var item: Dictionary = rd.get("item", {}) as Dictionary
+			var name_key: String = item.get("name_key", "") as String
+			var display: String = Localization.get_text(name_key) if not name_key.is_empty() else (item.get("id", "???") as String)
+			equipment_names.append(display)
+
+	var lines: Array[String] = []
+	if total_fragments > 0:
+		lines.append(Localization.get_text("FORGE_REVEAL_RESULT") % total_fragments)
+	for ename: String in equipment_names:
+		lines.append("[%s] %s" % [Localization.get_text("FORGE_REVEAL_EQUIPMENT"), ename])
+
+	_reveal_text.text = "\n".join(lines) if not lines.is_empty() else "..."
 	_reveal_root.visible = true
 
-	# Pop entrance — same pattern as Oracle.
 	if _reveal_panel != null:
 		_reveal_panel.pivot_offset = _reveal_panel.size * 0.5
 		_reveal_panel.scale = Vector2(0.85, 0.85)

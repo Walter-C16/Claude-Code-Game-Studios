@@ -143,6 +143,12 @@ func setup(party_ids: Array[String], enemy_ids: Array[String]) -> bool:
 	for combatant: Combatant in party:
 		_apply_epithet_bonuses(combatant)
 
+	# Equipment bonuses — party-wide (one weapon + one amulet apply to the
+	# protagonist). Poker uses chips_bonus / mult_bonus; action combat
+	# converts them to ATK / DEF / HP via a scaling factor so equipment
+	# items designed for poker scores map to a sane action-combat range.
+	_apply_equipment_bonuses()
+
 	# Gun element — the protagonist's gun fires whichever element the first
 	# companion in the party supplies. Slot 0 is always the protagonist, so the
 	# first non-proto ally at slot 1 is the source. If the party is proto-only
@@ -765,6 +771,42 @@ func _turns_with_epithet_vi(actor: Combatant, base_turns: int) -> int:
 	if GameStore.get_companion_epithet(actor.id) >= 6:
 		return base_turns + 1
 	return base_turns
+
+
+# ── Equipment bonuses ────────────────────────────────────────────────────────
+
+## Applies the equipped weapon and amulet bonuses to the protagonist's
+## stats. Equipment is party-wide (single weapon + single amulet), so only
+## slot 0 (protagonist) receives the stat bump.
+##
+## Conversion from poker values to action-combat values:
+##   Weapon chips_bonus → ATK:  atk += chips_bonus / 2
+##   Amulet mult_bonus  → DEF:  def += int(mult_bonus * 3)
+##                        HP:   max_hp += int(mult_bonus * 5)
+##
+## These divisors keep the numbers in the action-combat band (ATK 18-50,
+## DEF 8-30) despite poker chips ranging up to 35 and mult up to 5.0.
+func _apply_equipment_bonuses() -> void:
+	if party.is_empty():
+		return
+	var proto: Combatant = null
+	for c: Combatant in party:
+		if c.is_protagonist:
+			proto = c
+			break
+	if proto == null:
+		return
+
+	var equip: EquipmentSystem = EquipmentSystem.new()
+	var weapon_chips: int = equip.get_weapon_chip_bonus()
+	var amulet_mult: float = equip.get_amulet_mult_bonus()
+
+	if weapon_chips > 0:
+		proto.stats.atk += weapon_chips / 2
+	if amulet_mult > 0.0:
+		proto.stats.def_stat += int(amulet_mult * 3.0)
+		proto.stats.max_hp += int(amulet_mult * 5.0)
+		proto.stats.current_hp = proto.stats.max_hp
 
 
 # ── Gun element ──────────────────────────────────────────────────────────────

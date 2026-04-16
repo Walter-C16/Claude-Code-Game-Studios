@@ -1311,6 +1311,7 @@
   "FORGE_FRAGMENTS_HINT": "Fragments will be used to upgrade equipment once the forge masters return.",
   "FORGE_REVEAL_TITLE": "The Hammer Falls",
   "FORGE_REVEAL_RESULT": "+%d Forge Fragments",
+  "FORGE_REVEAL_EQUIPMENT": "NEW ITEM",
   "FORGE_REVEAL_CONTINUE": "Continue",
   "ORACLE_CODEX_TITLE": "Epithets of %s",
   "ORACLE_CODEX_CURRENT": "Currently at Epithet %d",

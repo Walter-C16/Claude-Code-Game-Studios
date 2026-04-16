@@ -673,6 +673,7 @@ func _on_battle_ended(victory: bool) -> void:
 	_set_target_picking(false)
 	if victory:
 		_grant_victory_xp()
+		_try_equipment_drop()
 		victory_overlay.visible = true
 		Fx.pop_scale(victory_overlay.get_child(0) as Control, 1.2, 0.6)
 	else:
@@ -690,6 +691,30 @@ func _grant_victory_xp() -> void:
 	for member: Combatant in _battle.party:
 		var amount: int = COMBAT_VICTORY_XP_ALIVE if member.is_alive() else COMBAT_VICTORY_XP_FALLEN
 		GameStore.add_companion_xp(member.id, amount)
+
+
+## Post-victory equipment drop. Boss encounters are guaranteed; regular
+## fights have a 20% chance. Drops go into the pending queue (max 5).
+## See design/gdd/equipment.md Rule 5 and the 20% DROP_RATE_STANDARD.
+const EQUIPMENT_DROP_RATE: float = 0.20
+
+func _try_equipment_drop() -> void:
+	var is_boss: bool = false
+	for e: Combatant in _battle.enemies:
+		if e.stats.turn_timer_seconds >= 60:
+			is_boss = true
+			break
+	var should_drop: bool = is_boss or randf() < EQUIPMENT_DROP_RATE
+	if not should_drop:
+		return
+	var equip_sys: EquipmentSystem = EquipmentSystem.new()
+	var drop: Dictionary = equip_sys.generate_drop(is_boss)
+	if drop.is_empty():
+		return
+	var item_id: String = drop.get("id", "") as String
+	if item_id.is_empty():
+		return
+	GameStore.add_pending_equipment(item_id)
 
 
 # ── Player actions ───────────────────────────────────────────────────────────
