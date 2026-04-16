@@ -707,10 +707,13 @@ func from_dict(data: Dictionary) -> void:
 
 	_node_states = data.get("node_states", {}).duplicate()
 	_current_chapter = data.get("current_chapter", "ch01")
-	_player_gold = data.get("player_gold", 0)
-	_player_xp = data.get("player_xp", 0)
-	_daily_tokens_remaining = data.get("daily_tokens_remaining", 3)
-	_current_streak = data.get("current_streak", 0)
+	# JSON numbers deserialize as floats — explicit int() casts keep these
+	# fields truthfully typed so downstream code (array indexing, threshold
+	# comparisons) can't get surprised by a 10.0 where 10 is expected.
+	_player_gold = int(data.get("player_gold", 0))
+	_player_xp = int(data.get("player_xp", 0))
+	_daily_tokens_remaining = int(data.get("daily_tokens_remaining", 3))
+	_current_streak = int(data.get("current_streak", 0))
 	_last_interaction_date = data.get("last_interaction_date", "")
 	_active_combat_buff = data.get("active_combat_buff", {}).duplicate()
 	_last_captain_id = data.get("last_captain_id", "")
@@ -752,6 +755,26 @@ func from_dict(data: Dictionary) -> void:
 	var raw_levels: Dictionary = data.get("companion_levels", {})
 	for key: Variant in raw_levels:
 		_companion_levels[str(key)] = int(raw_levels[key])
+
+	# Active exploration missions. Same write-without-read bug as companion_xp
+	# had pre-Phase H — to_dict serializes this dict but from_dict never read
+	# it back, so mid-mission state was lost on save/load. Fields inside are
+	# {companion_id, start_utc, duration_seconds, mission_id, ...}.
+	_exploration_state = {}
+	var raw_explore: Dictionary = data.get("exploration_state", {})
+	for key: Variant in raw_explore:
+		var entry: Variant = raw_explore[key]
+		if entry is Dictionary:
+			var inner: Dictionary = (entry as Dictionary).duplicate()
+			# JSON numbers deserialize as floats — cast the two known int
+			# fields so callers can treat them as ints without surprises.
+			if inner.has("start_utc"):
+				inner["start_utc"] = int(inner["start_utc"])
+			if inner.has("duration_seconds"):
+				inner["duration_seconds"] = int(inner["duration_seconds"])
+			_exploration_state[str(key)] = inner
+		else:
+			_exploration_state[str(key)] = entry
 
 	# Explicitly clear both flags — loading is not a mutation and must not
 	# trigger a save flush even if the store had prior dirty state (AC5).

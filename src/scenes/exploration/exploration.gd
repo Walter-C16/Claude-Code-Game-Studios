@@ -194,6 +194,10 @@ func _on_collect_pressed() -> void:
 		_timer_label.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
 		Fx.pop_scale(_timer_label)
 	await get_tree().create_timer(1.5).timeout
+	# Scene may have exited mid-await (player navigated away). Touching
+	# @onready nodes on a freed scene throws — skip the rebuild in that case.
+	if not is_inside_tree():
+		return
 	_rebuild()
 
 

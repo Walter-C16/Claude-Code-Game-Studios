@@ -414,6 +414,58 @@ func test_game_store_serialization_round_trip_node_states_match() -> void:
 	assert_str(store2.get_node_state("intro_scene")).is_equal("completed")
 	assert_str(store2.get_node_state("market_npc")).is_equal("greeted")
 
+## Regression — the exploration_state field was previously written to
+## to_dict but never read back in from_dict. Saving mid-mission would
+## silently lose the state on load. Guard it here so we don't regress.
+func test_game_store_serialization_round_trip_exploration_state_survives() -> void:
+	# Arrange — set an in-flight mission dict on the store
+	var store = _make_store()
+	store.set_exploration_state({
+		"companion_id": "artemis",
+		"mission_id": "forest_hunt",
+		"start_utc": 1713158400,
+		"duration_seconds": 3600,
+	})
+
+	# Act
+	var data: Dictionary = store.to_dict()
+	var store2 = _make_store()
+	store2.from_dict(data)
+
+	# Assert — every field survives the trip
+	var restored: Dictionary = store2.get_exploration_state()
+	assert_bool(restored.is_empty()).is_false()
+	assert_str(restored.get("companion_id", "") as String).is_equal("artemis")
+	assert_str(restored.get("mission_id", "") as String).is_equal("forest_hunt")
+	assert_int(int(restored.get("start_utc", 0))).is_equal(1713158400)
+	assert_int(int(restored.get("duration_seconds", 0))).is_equal(3600)
+
+
+## Regression — Phase I audit caught that from_dict was assigning raw
+## data.get("player_gold", 0) without int() casting. JSON deserializes
+## numbers as floats, so _player_gold would silently become a float.
+## This test pokes a float into the save dict and verifies it survives
+## as an int on load.
+func test_game_store_serialization_int_cast_on_load_from_float_json() -> void:
+	# Arrange — hand-craft a save dict with explicit floats
+	var store = _make_store()
+	var data: Dictionary = store.to_dict()
+	data["player_gold"] = 150.0
+	data["player_xp"] = 275.0
+	data["daily_tokens_remaining"] = 2.0
+	data["current_streak"] = 4.0
+
+	# Act
+	var store2 = _make_store()
+	store2.from_dict(data)
+
+	# Assert — values are typed as ints, not floats
+	assert_int(store2.get_gold()).is_equal(150)
+	assert_int(store2.get_xp()).is_equal(275)
+	assert_int(store2.get_daily_tokens()).is_equal(2)
+	assert_int(store2.get_streak()).is_equal(4)
+
+
 func test_game_store_serialization_round_trip_combat_buff_matches() -> void:
 	# Arrange
 	var store = _make_store()

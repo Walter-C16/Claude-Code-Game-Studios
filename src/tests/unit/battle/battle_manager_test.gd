@@ -126,6 +126,27 @@ func test_battle_manager_execute_move_reduces_target_hp() -> void:
 	assert_int(enemy.stats.current_hp).is_less(hp_before)
 
 
+func test_battle_manager_execute_move_rejects_empty_target_list() -> void:
+	# Arrange — regression for Phase I audit. An empty target array must not
+	# waste the player's turn or consume ultimate/energy.
+	var bm = _make_solo_battle()
+	var proto = bm.party[0]
+	proto.stats.current_ultimate = proto.stats.max_ultimate
+	var ult_before: int = proto.stats.current_ultimate
+	var energy_before: int = proto.stats.current_energy
+	var state_before: int = bm.state
+
+	# Act — fire ultimate at an empty list
+	var result: Dictionary = bm.execute_move("ultimate", [] as Array[Combatant])
+
+	# Assert — rejected with no_targets, no resource consumption, no state move
+	assert_bool(result.get("success", false)).is_false()
+	assert_str(result.get("error", "")).is_equal("no_targets")
+	assert_int(proto.stats.current_ultimate).is_equal(ult_before)
+	assert_int(proto.stats.current_energy).is_equal(energy_before)
+	assert_int(bm.state).is_equal(state_before)
+
+
 func test_battle_manager_execute_move_rejects_when_not_in_await_action() -> void:
 	# Arrange
 	var bm = _make_solo_battle()

@@ -296,6 +296,14 @@ func _fade_in() -> void:
 ## a scene transition.
 func _on_settings_closed() -> void:
 	if _settings_layer != null:
+		# Walk to the settings scene (first child of the CanvasLayer) and
+		# disconnect close_requested first. Without this, a double-close or
+		# a rapid reopen could either double-wire the signal or fire the
+		# callback on a freed node.
+		for child: Node in _settings_layer.get_children():
+			if child.has_signal("close_requested") \
+					and child.close_requested.is_connected(_on_settings_closed):
+				child.close_requested.disconnect(_on_settings_closed)
 		_settings_layer.queue_free()
 		_settings_layer = null
 	_state = TransitionState.IDLE

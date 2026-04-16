@@ -209,6 +209,14 @@ func execute_move(move_type_tag: String, targets: Array[Combatant]) -> Dictionar
 	if not actor.can_cast(move_type_tag):
 		return {"success": false, "error": "insufficient_resource"}
 
+	# An empty target list would waste the turn AND consume resources
+	# (ultimate / energy are spent below). Reject early so the caller can
+	# pick a valid target and try again — this previously caused an
+	# invisible turn skip when BattleAi handed back [] for a degenerate
+	# encounter.
+	if targets.is_empty():
+		return {"success": false, "error": "no_targets"}
+
 	_set_state(State.RESOLVING)
 
 	# Spend resources up front.

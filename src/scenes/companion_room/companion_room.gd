@@ -53,6 +53,7 @@ var _selected_id: String = ""
 
 ## Feedback hide timer tween — killed if a new feedback fires before it expires.
 var _feedback_tween: Tween
+var _gift_modal_backdrop: ColorRect
 
 # ── Built-in Virtual Methods ───────────────────────────────────────────────────
 
@@ -286,8 +287,19 @@ func _build_detail_panel() -> void:
 	_gift_open_btn.pressed.connect(_on_gift_btn_pressed)
 
 
-## Builds the centered gift picker modal (hidden by default).
+## Builds the centered gift picker modal (hidden by default). Ships with a
+## full-screen backdrop that dismisses the modal on tap — otherwise the
+## player's only exit is the Cancel button, which is easy to miss.
 func _build_gift_modal() -> void:
+	_gift_modal_backdrop = ColorRect.new()
+	_gift_modal_backdrop.name = "GiftModalBackdrop"
+	_gift_modal_backdrop.visible = false
+	_gift_modal_backdrop.color = Color(0.0, 0.0, 0.0, 0.55)
+	_gift_modal_backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_gift_modal_backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	_gift_modal_backdrop.gui_input.connect(_on_gift_modal_backdrop_input)
+	add_child(_gift_modal_backdrop)
+
 	_gift_modal = PanelContainer.new()
 	_gift_modal.visible = false
 	_gift_modal.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
@@ -494,11 +506,34 @@ func _hide_detail() -> void:
 
 # ── Gift Modal ─────────────────────────────────────────────────────────────────
 
-## Populates and shows the gift picker modal.
+## Populates and shows the gift picker modal (with its dismiss backdrop).
 func _show_gift_modal() -> void:
 	_populate_gift_list()
+	if _gift_modal_backdrop != null:
+		_gift_modal_backdrop.visible = true
 	_gift_modal.visible = true
 	Fx.slide_in(_gift_modal, Vector2(0.0, 20.0), 0.25)
+
+
+## Closes the gift modal and hides the backdrop. Shared cancel path used
+## by the Cancel button, the backdrop tap, and item-selected flows.
+func _hide_gift_modal() -> void:
+	_gift_modal.visible = false
+	if _gift_modal_backdrop != null:
+		_gift_modal_backdrop.visible = false
+
+
+## Tap-outside-to-close for the gift modal. Only closes on LMB press events
+## so drags / motion events don't dismiss accidentally.
+func _on_gift_modal_backdrop_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mb: InputEventMouseButton = event as InputEventMouseButton
+		if mb.pressed and mb.button_index == MOUSE_BUTTON_LEFT:
+			_hide_gift_modal()
+	elif event is InputEventScreenTouch:
+		var st: InputEventScreenTouch = event as InputEventScreenTouch
+		if st.pressed:
+			_hide_gift_modal()
 
 
 ## Rebuilds the gift item list buttons based on current gold.
@@ -680,7 +715,7 @@ func _on_level_up_pressed() -> void:
 
 
 func _on_gift_item_selected(item_id: String) -> void:
-	_gift_modal.visible = false
+	_hide_gift_modal()
 	if _selected_id.is_empty():
 		return
 
@@ -713,7 +748,7 @@ func _on_gift_item_selected(item_id: String) -> void:
 
 
 func _on_gift_modal_cancel() -> void:
-	_gift_modal.visible = false
+	_hide_gift_modal()
 
 
 func _on_state_changed(_key: String) -> void:
@@ -722,7 +757,10 @@ func _on_state_changed(_key: String) -> void:
 		_refresh_detail_panel()
 
 
-## Disconnects persistent autoload signals on scene exit.
+## Disconnects persistent autoload signals on scene exit and kills any
+## in-flight tweens that might otherwise animate a freed label.
 func _disconnect_autoload_signals() -> void:
 	if GameStore.state_changed.is_connected(_on_state_changed):
 		GameStore.state_changed.disconnect(_on_state_changed)
+	if _feedback_tween != null and _feedback_tween.is_valid():
+		_feedback_tween.kill()
