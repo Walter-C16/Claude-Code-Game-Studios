@@ -14,7 +14,7 @@
       "name_key": "LOCATION_ARTEMIS_HOUSE",
       "description_key": "LOCATION_ARTEMIS_HOUSE_DESC",
       "area": "sardis",
-      "discover_flag": "ch01_exposition_done",
+      "discover_flag": "ch01_tutorial_done",
       "npcs": {
         "morning": ["artemis"],
         "afternoon": [],
@@ -29,7 +29,7 @@
       "name_key": "LOCATION_MAGICAL_FOREST",
       "description_key": "LOCATION_MAGICAL_FOREST_DESC",
       "area": "sardis",
-      "discover_flag": "ch01_exposition_done",
+      "discover_flag": "ch01_tutorial_done",
       "npcs": {
         "morning": [],
         "afternoon": ["artemis"],
@@ -150,7 +150,7 @@
       "name_key": "LOCATION_CRASHED_SHIP",
       "description_key": "LOCATION_CRASHED_SHIP_DESC",
       "area": "sardis",
-      "discover_flag": "ch01_exposition_done",
+      "discover_flag": "ch01_tutorial_done",
       "npcs": {
         "morning": [],
         "afternoon": [],

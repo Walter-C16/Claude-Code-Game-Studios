@@ -53,10 +53,19 @@ func _ready() -> void:
 	close_btn.custom_minimum_size = Vector2(0.0, 48.0)
 	close_btn.pressed.connect(_on_close)
 
-	# Localize the existing volume labels from the .tscn.
-	_set_label_text("Panel/VBox/MasterLabel", "SETTINGS_MASTER_VOL")
-	_set_label_text("Panel/VBox/SfxLabel", "SETTINGS_SFX_VOL")
-	_set_label_text("Panel/VBox/MusicLabel", "SETTINGS_MUSIC_VOL")
+	# Localize the existing volume labels from the .tscn. After the
+	# ScrollContainer reparent above, VBox is no longer at Panel/VBox —
+	# use the captured `vbox` variable instead of a path.
+	if vbox != null:
+		var master_lbl: Node = vbox.get_node_or_null("MasterLabel")
+		if master_lbl is Label:
+			(master_lbl as Label).text = Localization.get_text("SETTINGS_MASTER_VOL")
+		var sfx_lbl: Node = vbox.get_node_or_null("SfxLabel")
+		if sfx_lbl is Label:
+			(sfx_lbl as Label).text = Localization.get_text("SETTINGS_SFX_VOL")
+		var music_lbl: Node = vbox.get_node_or_null("MusicLabel")
+		if music_lbl is Label:
+			(music_lbl as Label).text = Localization.get_text("SETTINGS_MUSIC_VOL")
 
 	# Volume sliders — state from SettingsStore.
 	master_slider.value = SettingsStore.get_master_volume() * 100.0
@@ -87,9 +96,9 @@ func _ready() -> void:
 
 	# Style every plain label in the panel so section headers and slider
 	# labels share a common look.
-	var vbox: Node = get_node_or_null("Panel/VBox")
-	if vbox != null:
-		for child: Node in vbox.get_children():
+	var style_vbox: Node = vbox  # reuse the captured reference (may be reparented)
+	if style_vbox != null:
+		for child: Node in style_vbox.get_children():
 			if child is Label and child != title_label:
 				(child as Label).add_theme_color_override(
 					"font_color", UIConstants.TEXT_SECONDARY
