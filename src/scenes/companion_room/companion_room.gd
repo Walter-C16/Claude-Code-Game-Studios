@@ -165,7 +165,7 @@ func _build_detail_panel() -> void:
 	close_spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	close_row.add_child(close_spacer)
 	var close_btn: Button = Button.new()
-	close_btn.text = "X"
+	close_btn.text = Localization.get_text("CAMP_CLOSE_BTN")
 	close_btn.custom_minimum_size = Vector2(44.0, 44.0)
 	close_btn.pressed.connect(_hide_detail)
 	close_row.add_child(close_btn)
@@ -348,18 +348,47 @@ func _build_feedback_label() -> void:
 
 # ── Companion Grid ─────────────────────────────────────────────────────────────
 
-## Populates the grid with all met companions.
+## Populates the grid with met companions, split into Battle Companions
+## and Allies (side characters) sections for clarity.
 func _build_companion_grid() -> void:
 	for child: Node in _companion_grid.get_children():
 		child.queue_free()
 
+	var battle_ids: Array[String] = []
+	var ally_ids: Array[String] = []
 	var ids: Array[String] = CompanionRegistry.get_all_ids()
 	for id: String in ids:
 		var state: Dictionary = GameStore.get_companion_state(id)
 		if not state.get("met", false):
 			continue
-		var cell: Control = _make_companion_cell(id)
-		_companion_grid.add_child(cell)
+		var profile: Dictionary = CompanionRegistry.get_profile(id)
+		var ctype: String = profile.get("type", "companion") as String
+		if ctype == "side" or ctype == "side_no_romance":
+			ally_ids.append(id)
+		elif ctype != "npc":
+			battle_ids.append(id)
+
+	# Battle companions section.
+	if not battle_ids.is_empty():
+		var header: Label = Label.new()
+		header.text = Localization.get_text("CAMP_SECTION_COMPANIONS")
+		header.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
+		header.add_theme_font_size_override("font_size", 14)
+		_companion_grid.add_child(header)
+		for id: String in battle_ids:
+			_companion_grid.add_child(_make_companion_cell(id))
+
+	# Side characters / allies section.
+	if not ally_ids.is_empty():
+		var header: Label = Label.new()
+		header.text = Localization.get_text("CAMP_SECTION_ALLIES")
+		header.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD)
+		header.add_theme_font_size_override("font_size", 14)
+		header.custom_minimum_size = Vector2(0.0, 30.0)
+		header.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+		_companion_grid.add_child(header)
+		for id: String in ally_ids:
+			_companion_grid.add_child(_make_companion_cell(id))
 
 
 ## Creates a single tappable companion cell for the grid.
@@ -451,11 +480,30 @@ func _refresh_detail_panel() -> void:
 		_detail_portrait.texture = load(portrait_path)
 
 	# Labels.
-	_detail_name_label.text = profile.get("display_name", _selected_id.capitalize())
+	var element: String = profile.get("element", "") as String
+	var element_tag: String = ""
+	if not element.is_empty() and element != "null":
+		element_tag = " · %s" % element
+	_detail_name_label.text = profile.get("display_name", _selected_id.capitalize()) + element_tag
 	_detail_role_label.text = profile.get("role", "")
 	var stage_name: String = STAGE_NAMES[clampi(stage, 0, STAGE_NAMES.size() - 1)]
-	_detail_stage_label.text = "Stage %d - %s" % [stage, stage_name]
-	_detail_mood_label.text = "Mood: %s" % MOOD_NAMES[clampi(mood_int, 0, MOOD_NAMES.size() - 1)]
+	_detail_stage_label.text = Localization.get_text("CAMP_STAGE_LABEL") % [stage, stage_name]
+	_detail_mood_label.text = Localization.get_text("CAMP_MOOD_LABEL") % MOOD_NAMES[clampi(mood_int, 0, MOOD_NAMES.size() - 1)]
+
+	# Quest progress for side characters.
+	var ctype: String = profile.get("type", "companion") as String
+	if ctype == "side" or ctype == "side_no_romance":
+		var quest_done: bool = GameStore.has_flag(_selected_id + "_quest_complete")
+		if quest_done:
+			_detail_mood_label.text += "  · " + Localization.get_text("CAMP_QUEST_COMPLETE")
+		else:
+			# Count how many quest nodes are done.
+			var done_count: int = 0
+			for i: int in range(1, 6):
+				if GameStore.has_flag(_selected_id + ("_%02d_done" % i)):
+					done_count += 1
+			if done_count > 0:
+				_detail_mood_label.text += "  · " + Localization.get_text("CAMP_QUEST_PROGRESS") % done_count
 
 	# RL bar.
 	_detail_rl_bar.value = float(rl)

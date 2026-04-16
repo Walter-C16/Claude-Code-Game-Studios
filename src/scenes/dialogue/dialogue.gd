@@ -207,11 +207,20 @@ func _display_line(line_data: Dictionary) -> void:
 	var speaker_changed: bool = (speaker != _last_speaker)
 	_last_speaker = speaker
 
-	# Speaker label — blank for narrator.
+	# Speaker label — blank for narrator, localized for named characters.
 	if speaker == "narrator":
 		speaker_label.text = ""
+	elif speaker == "protagonist" or speaker == "hero":
+		speaker_label.text = Localization.get_text("CHARACTER_PROTAGONIST")
 	else:
-		speaker_label.text = speaker.capitalize()
+		# Try CHARACTER_X key first; fall back to CompanionRegistry display name.
+		var char_key: String = "CHARACTER_" + speaker.to_upper()
+		var localized: String = Localization.get_text(char_key)
+		if localized != char_key and not localized.is_empty():
+			speaker_label.text = localized
+		else:
+			var profile: Dictionary = CompanionRegistry.get_profile(speaker)
+			speaker_label.text = profile.get("display_name", speaker.capitalize()) as String
 
 	# Portrait — companions and named characters only; narrator/priestess have none.
 	var mood: String = line_data.get("mood", "neutral") if line_data.get("mood") else "neutral"
