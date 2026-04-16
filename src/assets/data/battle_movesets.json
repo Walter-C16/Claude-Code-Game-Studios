@@ -43,7 +43,8 @@
       "element": "Earth",
       "damage_mult": 0.6,
       "hits": 3,
-      "energy_cost": 50
+      "energy_cost": 50,
+      "bonus_scaling": {"stat": "agi", "ratio": 0.15}
     },
     "ultimate": {
       "id": "artemis_divine_hunt",
@@ -52,7 +53,8 @@
       "element": "Earth",
       "damage_mult": 2.0,
       "energy_cost": 0,
-      "effect": "apply_hunter_mark_2_turns"
+      "effect": "apply_hunter_mark_2_turns",
+      "bonus_scaling": {"stat": "atk", "ratio": 0.10}
     }
   },
   "hipolita": {
@@ -71,7 +73,8 @@
       "element": "Fire",
       "damage_mult": 1.5,
       "energy_cost": 40,
-      "effect": "repeat_on_crit"
+      "effect": "repeat_on_crit",
+      "bonus_scaling": {"stat": "atk", "ratio": 0.12}
     },
     "ultimate": {
       "id": "hipolita_ares_fury",
@@ -99,7 +102,8 @@
       "element": "Lightning",
       "damage_mult": 0.0,
       "energy_cost": 45,
-      "effect": "party_shield_30_percent"
+      "effect": "party_shield_30_percent",
+      "bonus_scaling": {"stat": "atk", "ratio": 0.10}
     },
     "ultimate": {
       "id": "atenea_judgment",
@@ -108,7 +112,8 @@
       "element": "Lightning",
       "damage_mult": 5.0,
       "energy_cost": 0,
-      "effect": "ignore_defense"
+      "effect": "ignore_defense",
+      "bonus_scaling": {"stat": "atk", "ratio": 0.20}
     }
   },
   "nyx": {
@@ -136,7 +141,8 @@
       "element": "Water",
       "damage_mult": 2.5,
       "energy_cost": 0,
-      "effect": "dispel_enemy_buffs"
+      "effect": "dispel_enemy_buffs",
+      "bonus_scaling": {"stat": "atk", "ratio": 0.15}
     }
   },
   "daphne": {
@@ -187,7 +193,8 @@
       "element": "Lightning",
       "damage_mult": 0.85,
       "hits": 1,
-      "energy_cost": 40
+      "energy_cost": 40,
+      "bonus_scaling": {"stat": "atk", "ratio": 0.12}
     },
     "ultimate": {
       "id": "circe_hex_of_ruin",
@@ -197,7 +204,8 @@
       "damage_mult": 2.5,
       "hits": 1,
       "energy_cost": 0,
-      "effect": "ignore_defense"
+      "effect": "ignore_defense",
+      "bonus_scaling": {"stat": "atk", "ratio": 0.20}
     }
   },
   "thetis": {
@@ -218,7 +226,8 @@
       "damage_mult": 0.0,
       "hits": 1,
       "energy_cost": 30,
-      "effect": "party_shield_30_percent"
+      "effect": "party_shield_30_percent",
+      "bonus_scaling": {"stat": "max_hp", "ratio": 0.03}
     },
     "ultimate": {
       "id": "thetis_abyssal_grasp",
@@ -341,7 +350,8 @@
       "damage_mult": 0.0,
       "hits": 1,
       "energy_cost": 30,
-      "effect": "party_shield_30_percent"
+      "effect": "party_shield_30_percent",
+      "bonus_scaling": {"stat": "def", "ratio": 0.08}
     },
     "ultimate": {
       "id": "naida_river_blessing",

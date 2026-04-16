@@ -45,15 +45,15 @@
     },
     "atenea": {
       "element": "Lightning",
-      "hp": 110,
-      "atk": 20,
-      "def": 16,
-      "agi": 12,
-      "crit_chance": 8.0,
-      "crit_damage": 160.0,
-      "growth_focus": "def",
-      "ult_charge_source": "damage_taken",
-      "ult_charge_rate": 2
+      "hp": 95,
+      "atk": 24,
+      "def": 9,
+      "agi": 16,
+      "crit_chance": 9.0,
+      "crit_damage": 170.0,
+      "growth_focus": "atk",
+      "ult_charge_source": "damage_dealt",
+      "ult_charge_rate": 1
     },
     "nyx": {
       "element": "Water",

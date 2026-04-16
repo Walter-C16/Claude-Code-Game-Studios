@@ -44,6 +44,12 @@ var energy_cost: int = 0
 ## Examples: "pierce_def", "guaranteed_crit_3_turns", "party_shield_30_percent".
 var effect: String = ""
 
+## Stat scaling bonus. If set, the move gains extra damage/effect magnitude
+## proportional to one of the caster's stats. Only S/SS rank companions
+## (and some A) have scaling on their skills.
+## Format: {"stat": "max_hp", "ratio": 0.05} → adds 5% of max_hp to damage/effect.
+var bonus_scaling: Dictionary = {}
+
 
 # ── Construction ──────────────────────────────────────────────────────────────
 
@@ -60,6 +66,9 @@ static func from_dict(data: Dictionary, move_type_tag: String) -> BattleMove:
 	move.element_source = data.get("element_source", "") as String
 	move.energy_cost = int(data.get("energy_cost", 0))
 	move.effect = data.get("effect", "") as String
+	var scaling: Variant = data.get("bonus_scaling", {})
+	if scaling is Dictionary:
+		move.bonus_scaling = scaling as Dictionary
 	return move
 
 

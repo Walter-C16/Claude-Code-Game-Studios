@@ -377,6 +377,10 @@ func _resolve_hit(actor: Combatant, target: Combatant, move: BattleMove) -> Dict
 	elif not move_element.is_empty() and move_element != "Neutral":
 		target.stats.elemental_charge = move_element
 
+	# Bonus scaling — S/SS rank companions have skills that scale with a stat.
+	# Adds a flat bonus to the base damage proportional to the caster's stat.
+	base_dmg += _calc_scaling_bonus(actor, move)
+
 	# Apply damage to the target.
 	var actual: int = target.stats.take_damage(base_dmg)
 	result["damage"] = actual
@@ -473,15 +477,20 @@ func _apply_effect(actor: Combatant, target: Combatant, move: BattleMove) -> voi
 			}
 
 		"party_shield_30_percent":
-			# Atenea special — all allies absorb 30% incoming damage for 2 turns.
-			# Ally dispatch: a player caster's "allies" are the party, an enemy
-			# caster's "allies" are the enemies. The obsidian_guardian enemy
-			# relies on this branch to buff its fellow enemies in the encounter.
+			# Ally shield — base 30% absorption + bonus from stat scaling.
+			# Companions with scaling on this move increase the shield strength
+			# (e.g. Daphne scales with max_hp, Naida with def, Thetis with max_hp).
 			var allies: Array[Combatant] = live_enemies() if actor.is_enemy else live_party()
 			var shield_turns: int = _turns_with_epithet_vi(actor, 2)
+			var shield_mag: float = 0.30
+			var scaling_flat: int = _calc_scaling_bonus(actor, move)
+			if scaling_flat > 0:
+				# Convert flat bonus to a percentage bump (every 10 pts = +5% shield).
+				shield_mag += float(scaling_flat) * 0.005
+				shield_mag = minf(shield_mag, 0.70)  # cap at 70%
 			for a: Combatant in allies:
 				a.stats.active_effects["shield"] = {
-					"magnitude": 0.30,
+					"magnitude": shield_mag,
 					"turns_left": shield_turns,
 				}
 
@@ -760,6 +769,33 @@ func _apply_epithet_bonuses(combatant: Combatant) -> void:
 	# Epithet VI — Eternal. Handled in _apply_effect for the turns_left
 	# field of any effect the actor applies (forced_crit, shield, DoTs).
 	# No setup-time mutation needed here.
+
+
+## Calculates the flat bonus damage/effect from a move's bonus_scaling field.
+## Reads the named stat from the actor and multiplies by the ratio.
+## Returns 0 if the move has no scaling or the stat doesn't exist.
+func _calc_scaling_bonus(actor: Combatant, move: BattleMove) -> int:
+	if move.bonus_scaling.is_empty():
+		return 0
+	var stat_name: String = move.bonus_scaling.get("stat", "") as String
+	var ratio: float = float(move.bonus_scaling.get("ratio", 0.0))
+	if stat_name.is_empty() or ratio <= 0.0:
+		return 0
+	var stat_value: float = 0.0
+	match stat_name:
+		"max_hp":
+			stat_value = float(actor.stats.max_hp)
+		"atk":
+			stat_value = float(actor.stats.atk)
+		"def":
+			stat_value = float(actor.stats.def_stat)
+		"agi":
+			stat_value = float(actor.stats.agi)
+		"crit_chance":
+			stat_value = actor.stats.crit_chance
+		"crit_damage":
+			stat_value = actor.stats.crit_damage
+	return maxi(0, int(stat_value * ratio))
 
 
 ## Returns [param base_turns] plus 1 when [param actor]'s Epithet tier is
