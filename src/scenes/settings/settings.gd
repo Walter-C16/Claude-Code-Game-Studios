@@ -150,6 +150,14 @@ func _install_extra_controls() -> void:
 	save_btn_row.add_theme_constant_override("separation", 12)
 	_insert_before_close(vbox, save_btn_row)
 
+	# Version label at the very bottom.
+	var version_label: Label = Label.new()
+	version_label.text = "Dark Olympus v0.1.0"
+	version_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	version_label.add_theme_color_override("font_color", Color(0.4, 0.38, 0.35, 1.0))
+	version_label.add_theme_font_size_override("font_size", 10)
+	_insert_before_close(vbox, version_label)
+
 	var save_btn: Button = Button.new()
 	save_btn.text = Localization.get_text("SETTINGS_SAVE")
 	save_btn.custom_minimum_size = Vector2(0.0, 44.0)
@@ -183,16 +191,37 @@ func _on_close() -> void:
 
 
 func _on_save_pressed() -> void:
-	SaveManager.save_game()
+	var ok: bool = SaveManager.save_game()
+	if ok:
+		_show_save_feedback(Localization.get_text("SETTINGS_SAVE_OK"))
+	else:
+		_show_save_feedback(Localization.get_text("SETTINGS_SAVE_FAIL"))
 
 
 func _on_load_pressed() -> void:
 	if not SaveManager.has_save():
 		return
 	SaveManager.load_game()
-	# Reload the current scene so the UI refreshes from the restored state.
 	close_requested.emit()
 	SceneManager.change_scene(SceneManager.SceneId.HUB)
+
+
+## Brief feedback toast after save. Creates a temporary label that fades.
+func _show_save_feedback(text: String) -> void:
+	var vbox: Node = get_node_or_null("Panel/VBox")
+	if vbox == null:
+		return
+	var lbl: Label = Label.new()
+	lbl.text = text
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.add_theme_color_override("font_color", UIConstants.STATUS_SUCCESS)
+	lbl.add_theme_font_size_override("font_size", 16)
+	vbox.add_child(lbl)
+	# Fade out after 1.5s and remove.
+	var tween: Tween = lbl.create_tween()
+	tween.tween_interval(1.5)
+	tween.tween_property(lbl, "modulate:a", 0.0, 0.4)
+	tween.tween_callback(lbl.queue_free)
 
 
 func _set_label_text(node_path: String, key: String) -> void:

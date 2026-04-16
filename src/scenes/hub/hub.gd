@@ -34,6 +34,7 @@ var _welcome_popup: PanelContainer
 func _ready() -> void:
 	_update_companion_display()
 	_update_currency()
+	_install_hub_info_label()
 	_start_breathing_animation()
 
 	AudioManager.play_bgm("res://assets/audio/bgm/camp.ogg")
@@ -84,6 +85,34 @@ func _update_companion_display() -> void:
 	var path: String = CompanionRegistry.get_portrait_path(id, "neutral")
 	if ResourceLoader.exists(path):
 		portrait.texture = load(path)
+
+
+## Adds a small info label under the gold display showing day + time + chapter.
+## The gold label lives in the .tscn; this injects a sibling label at runtime.
+func _install_hub_info_label() -> void:
+	var parent: Node = gold_label.get_parent()
+	if parent == null:
+		return
+	var info: Label = Label.new()
+	info.name = "HubInfoLabel"
+	var time_key: String = "LOCATION_TIME_" + GameStore.get_time_of_day_name().to_upper()
+	info.text = "%s %d · %s · %s 1" % [
+		Localization.get_text("LOCATION_DAY_LABEL").replace("%d", str(GameStore.get_day_number())),
+		GameStore.get_day_number(),
+		Localization.get_text(time_key),
+		Localization.get_text("HUB_CHAPTER_LABEL"),
+	]
+	# Simpler approach — just show "Day X · Time · Ch1"
+	var time_name: String = Localization.get_text(time_key)
+	info.text = "%s · %s" % [
+		Localization.get_text("LOCATION_DAY_LABEL") % GameStore.get_day_number(),
+		time_name,
+	]
+	info.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+	info.add_theme_font_size_override("font_size", 11)
+	info.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	parent.add_child(info)
+	parent.move_child(info, gold_label.get_index() + 1)
 
 
 ## Syncs the gold label text directly (no animation — used on first load).
@@ -165,10 +194,23 @@ func _apply_progressive_unlock() -> void:
 	elif has_expo:
 		tier = 1
 
-	# Rename Arena → Tavern once tier 2 is reached.
-	var arena_btn: Node = get_node_or_null("BottomTabs/ArenaBtn")
-	if arena_btn is Button:
-		(arena_btn as Button).text = "TAVERN" if tier >= 2 else "ARENA"
+	# Localize .tscn button labels at runtime. The .tscn ships with English
+	# placeholders; this pass overwrites them so translations work.
+	var button_labels: Dictionary = {
+		"StoryBtn": Localization.get_text("HUB_TAB_STORY"),
+		"SettingsBtn": "⚙",
+		"CampBtn": Localization.get_text("HUB_TAB_CAMP"),
+		"DeckBtn": Localization.get_text("HUB_TAB_PARTY"),
+		"ArenaBtn": Localization.get_text("HUB_TAB_TAVERN") if tier >= 2 else Localization.get_text("HUB_TAB_ARENA"),
+		"ExploreBtn": Localization.get_text("HUB_TAB_EXPLORE"),
+		"AbyssBtn": Localization.get_text("HUB_TAB_ABYSS"),
+		"EquipBtn": Localization.get_text("HUB_TAB_EQUIP"),
+	}
+
+	# Track which buttons were previously locked so we can pulse new unlocks.
+	var prev_unlocked: Dictionary = {}
+	if GameStore.has_flag("_hub_prev_tier"):
+		prev_unlocked = GameStore.get_companion_state("_hub_tab_state")
 
 	var bottom_tabs: Node = get_node_or_null("BottomTabs")
 	var more_tabs: Node = get_node_or_null("MoreTabs")
@@ -181,9 +223,12 @@ func _apply_progressive_unlock() -> void:
 				var btn: Button = child as Button
 				var required: int = unlock_map.get(btn.name, 99)
 				var is_placeholder: bool = btn.name in placeholder_buttons
+
+				# Apply localized label.
+				if button_labels.has(btn.name):
+					btn.text = button_labels[btn.name] as String
+
 				if tier >= required:
-					# Placeholder buttons stay disabled so the player sees the
-					# slot but can't interact — implementation lands in v2.
 					btn.disabled = is_placeholder
 					btn.modulate.a = 0.55 if is_placeholder else 1.0
 				else:
