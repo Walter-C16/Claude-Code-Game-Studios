@@ -22,6 +22,7 @@ var _day_label: Label
 var _time_label: Label
 var _gold_label: Label
 var _advance_time_btn: Button
+var _token_label: Label
 var _scroll: ScrollContainer
 var _card_list: VBoxContainer
 var _bg_rect: ColorRect
@@ -105,6 +106,11 @@ func _build_layout() -> void:
 	_time_label.add_theme_font_size_override("font_size", 16)
 	time_row.add_child(_time_label)
 
+	_token_label = Label.new()
+	_token_label.add_theme_color_override("font_color", UIConstants.TEXT_SECONDARY)
+	_token_label.add_theme_font_size_override("font_size", 12)
+	time_row.add_child(_token_label)
+
 	_advance_time_btn = Button.new()
 	_advance_time_btn.text = Localization.get_text("LOCATION_ADVANCE_TIME")
 	_advance_time_btn.custom_minimum_size = Vector2(90.0, 36.0)
@@ -144,6 +150,12 @@ func _refresh_time_display() -> void:
 	_time_label.text = Localization.get_text(time_key)
 	_day_label.text = Localization.get_text("LOCATION_DAY_LABEL") % GameStore.get_day_number()
 	_gold_label.text = "%d %s" % [GameStore.get_gold(), Localization.get_text("ORACLE_GOLD_LABEL")]
+	var tokens: int = GameStore.get_daily_tokens()
+	_token_label.text = Localization.get_text("LOCATION_TOKENS_LEFT") % tokens
+	_token_label.add_theme_color_override(
+		"font_color",
+		UIConstants.TEXT_PRIMARY if tokens > 0 else UIConstants.STATUS_DANGER
+	)
 
 	# Tint the time label + background to match the mood.
 	var time_color: Color = Color(1.0, 0.9, 0.6, 1.0)
@@ -247,9 +259,13 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 	desc_label.add_theme_font_size_override("font_size", 11)
 	vbox.add_child(desc_label)
 
-	# Indicators row — story badge + danger warning.
+	# Highlight cards with available story nodes — gold border instead of
+	# the default dark gold so the player's eye is drawn immediately.
 	var has_story: bool = _location_has_available_story(loc)
 	var has_danger: bool = _location_has_encounters_now(loc, time_name)
+	if has_story:
+		style.border_color = UIConstants.ACCENT_GOLD_BRIGHT
+		style.set_border_width_all(2)
 	if has_story or has_danger:
 		var indicator_row: HBoxContainer = HBoxContainer.new()
 		indicator_row.add_theme_constant_override("separation", 12)
@@ -280,15 +296,19 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 			var nid: String = str(npc_id)
 			var profile: Dictionary = CompanionRegistry.get_profile(nid)
 			var display: String = profile.get("display_name", nid.capitalize()) as String
+			var role: String = profile.get("role", "") as String
 			var npc_row: HBoxContainer = HBoxContainer.new()
 			npc_row.add_theme_constant_override("separation", 6)
 			vbox.add_child(npc_row)
 
 			var npc_name: Label = Label.new()
-			npc_name.text = display
+			if not role.is_empty():
+				npc_name.text = "%s — %s" % [display, role]
+			else:
+				npc_name.text = display
 			npc_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			npc_name.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
-			npc_name.add_theme_font_size_override("font_size", 13)
+			npc_name.add_theme_font_size_override("font_size", 12)
 			npc_row.add_child(npc_name)
 
 			# Talk button — uses RomanceSocial.do_talk, same as Camp.
@@ -327,7 +347,14 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 	vbox.add_child(btn_row)
 
 	var explore_btn: Button = Button.new()
-	explore_btn.text = Localization.get_text("LOCATION_EXPLORE")
+	if has_story:
+		explore_btn.text = Localization.get_text("LOCATION_CONTINUE_STORY")
+		explore_btn.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+	elif has_danger:
+		explore_btn.text = Localization.get_text("LOCATION_EXPLORE_DANGER")
+		explore_btn.add_theme_color_override("font_color", UIConstants.STATUS_WARNING)
+	else:
+		explore_btn.text = Localization.get_text("LOCATION_EXPLORE")
 	explore_btn.custom_minimum_size = Vector2(0.0, 36.0)
 	explore_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	explore_btn.add_theme_font_size_override("font_size", 13)
