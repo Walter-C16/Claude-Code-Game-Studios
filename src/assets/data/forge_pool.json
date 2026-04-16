@@ -1,0 +1,14 @@
+{
+  "config": {
+    "single_cost": 30,
+    "ten_cost": 270,
+    "fragment_drop_min": 3,
+    "fragment_drop_max": 5,
+    "tier_up_fragments": 5
+  },
+  "outcome_table": [
+    {"prob": 0.70, "type": "fragments"},
+    {"prob": 0.25, "type": "fragments", "note": "v1 placeholder — equipment drops land in v2"},
+    {"prob": 0.05, "type": "fragments", "note": "v1 placeholder — rare equipment drops land in v2"}
+  ]
+}

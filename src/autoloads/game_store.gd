@@ -146,6 +146,11 @@ var _oracle_pulls_this_week: int = 0
 ## 7 days (604800s) on reset.
 var _week_start_unix: int = 0
 
+## Forge fragments — accumulated via the Forge gacha, consumed to tier-up
+## equipment once the Equipment GDD ships. In v1 they accumulate but can't
+## be spent yet. See design/quick-specs/forge-gacha.md.
+var _forge_fragments: int = 0
+
 # ---------------------------------------------------------------------------
 # Private State — Persistence (GS-003 will add deferred flush)
 # ---------------------------------------------------------------------------
@@ -201,6 +206,7 @@ func _initialize_defaults() -> void:
 	_companion_epithets = {}
 	_oracle_pulls_this_week = 0
 	_week_start_unix = 0
+	_forge_fragments = 0
 	_counters = {}
 	_tavern_last_played = {}
 
@@ -708,6 +714,18 @@ func set_week_start_unix(value: int) -> void:
 	_week_start_unix = value
 	_mark_dirty()
 
+## Returns the current forge fragment balance.
+func get_forge_fragments() -> int:
+	return _forge_fragments
+
+## Adds [param amount] forge fragments. Rejects non-positive amounts.
+func add_forge_fragments(amount: int) -> void:
+	if amount <= 0:
+		return
+	_forge_fragments += amount
+	_mark_dirty()
+	state_changed.emit("forge_fragments")
+
 ## Weekly reset tick — invoked by the Hub on entry and by the Oracle scene
 ## on open. If the current system time is more than one week past
 ## `_week_start_unix`, the counter resets and the anchor advances to now.
@@ -794,6 +812,7 @@ func to_dict() -> Dictionary:
 		"companion_epithets": _companion_epithets.duplicate(),
 		"oracle_pulls_this_week": _oracle_pulls_this_week,
 		"week_start_unix": _week_start_unix,
+		"forge_fragments": _forge_fragments,
 		"counters": _counters.duplicate(),
 	}
 
@@ -891,6 +910,7 @@ func from_dict(data: Dictionary) -> void:
 		_companion_epithets[str(key)] = int(raw_epithets[key])
 	_oracle_pulls_this_week = int(data.get("oracle_pulls_this_week", 0))
 	_week_start_unix = int(data.get("week_start_unix", 0))
+	_forge_fragments = int(data.get("forge_fragments", 0))
 
 	# Active exploration missions. Same write-without-read bug as companion_xp
 	# had pre-Phase H — to_dict serializes this dict but from_dict never read
