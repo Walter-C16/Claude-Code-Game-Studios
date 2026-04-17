@@ -108,7 +108,7 @@ The **recurve bow arc** rising above her right shoulder. Even at 64px, the bow's
 - **Hair**: Silver-white with a cool blue sheen, long single braid thrown over left shoulder, loose strands framing face
 - **Eyes**: Sharp, almond-shaped, gold-green iris with a faint inner glow like sunlight through leaves
 - **Expression baseline**: Watchful, slightly furrowed brow — she's always tracking something
-- **Distinguishing mark**: Thin diagonal scar across her left cheekbone (from the fall of Olympus)
+- **Distinguishing mark**: Faint freckles across her nose and cheeks
 - **Skin**: Sun-kissed, warm olive tone with a faint silver moonlight glow on exposed surfaces
 
 #### Element Expression
@@ -120,7 +120,7 @@ Earth motes: tiny floating leaves and pollen particles drift around her hair and
 ```
 portrait of Artemis greek goddess of the hunt, silver-white hair in a
 long braid over left shoulder with loose strands, gold-green glowing
-almond eyes, thin scar on left cheekbone, athletic olive-skinned young
+almond eyes, faint freckles, athletic olive-skinned young
 woman early 20s, short dark forest green hunting chiton with one bare
 right shoulder, hammered silver crescent moon clasp on left shoulder,
 crossed leather chest straps worn and scarred, dark leather quiver with
@@ -142,7 +142,7 @@ with filtered golden light
 
 #### LoRA Training Anchors
 
-`darkolympus_artemis` — silver braid, gold-green eyes, cheekbone scar, crescent clasp, forest green chiton, recurve bow, leather quiver, floating leaf motes
+`darkolympus_artemis` — platinum-blonde twin braids, yellow eyes, freckles, worn leather archer outfit, battered quiver, scuffed arm guards, weathered boots, green mystic arm symbols, green particles
 
 ---
 
@@ -166,7 +166,7 @@ Hippolyta is **war made beautiful**. Every mark on her body is a victory. Her de
 
 #### Signature Silhouette
 
-The **iron spear** held diagonally across her body, and her **wild lion-mane hair** creating a massive, untamed shape. At 64px, the spear diagonal + hair volume are unmistakable.
+The **iron spear** held diagonally across her body, and her **flowing crimson hair**. At 64px, the spear diagonal + crimson hair are unmistakable.
 
 #### Wardrobe Breakdown
 
@@ -194,7 +194,7 @@ Ember motes: tiny glowing fire particles drift from her hair and around the spea
 
 ```
 portrait of Hippolyta Amazon warrior queen, wild untamed crimson
-lion-mane hair past shoulders, fierce amber eyes with orange ring,
+long flowing crimson hair past shoulders, fierce amber eyes with orange ring,
 muscular battle-scarred bronze-olive woman mid 20s, hammered bronze
 breastplate over bare midriff showing battle scars, crimson leather
 wraps and battle skirt with bronze studs, heavy bronze arm band on
