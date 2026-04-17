@@ -99,11 +99,14 @@ func to_dict() -> Dictionary:
 	}
 
 func from_dict(data: Dictionary) -> void:
+	# Clamp on load — a corrupted save (or a value produced by an older build
+	# using different ranges) must not bypass the setter's bounds. Out-of-range
+	# values would otherwise leak into AudioManager volumes and text pacing.
 	_locale = data.get("locale", "en")
-	_master_volume = data.get("master_volume", 1.0)
-	_sfx_volume = data.get("sfx_volume", 1.0)
-	_music_volume = data.get("music_volume", 1.0)
-	_text_speed = data.get("text_speed", 1.0)
-	combat_disable_timers = data.get("combat_disable_timers", false)
+	_master_volume = clampf(float(data.get("master_volume", 1.0)), 0.0, 1.0)
+	_sfx_volume = clampf(float(data.get("sfx_volume", 1.0)), 0.0, 1.0)
+	_music_volume = clampf(float(data.get("music_volume", 1.0)), 0.0, 1.0)
+	_text_speed = clampf(float(data.get("text_speed", 1.0)), 0.1, 3.0)
+	combat_disable_timers = bool(data.get("combat_disable_timers", false))
 	_dirty = false
 	_save_pending = false

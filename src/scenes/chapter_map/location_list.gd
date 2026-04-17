@@ -317,7 +317,7 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 			# Talk button — uses RomanceSocial.do_talk.
 			var talk_btn: Button = Button.new()
 			talk_btn.text = Localization.get_text("CAMP_TALK_BTN")
-			talk_btn.custom_minimum_size = Vector2(64.0, 44.0)
+			talk_btn.custom_minimum_size = Vector2(72.0, 48.0)
 			talk_btn.add_theme_font_size_override("font_size", 12)
 			UIConstants.style_button(talk_btn)
 			talk_btn.pressed.connect(_on_npc_talk_pressed.bind(nid))
@@ -326,7 +326,7 @@ func _build_location_card(loc_id: String, loc: Dictionary, time_name: String) ->
 			# Gift button.
 			var gift_btn: Button = Button.new()
 			gift_btn.text = Localization.get_text("CAMP_GIFT_BTN")
-			gift_btn.custom_minimum_size = Vector2(64.0, 44.0)
+			gift_btn.custom_minimum_size = Vector2(72.0, 48.0)
 			gift_btn.add_theme_font_size_override("font_size", 12)
 			UIConstants.style_button(gift_btn)
 			gift_btn.pressed.connect(_on_npc_gift_pressed.bind(nid))

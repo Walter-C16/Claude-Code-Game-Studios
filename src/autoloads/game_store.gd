@@ -1047,12 +1047,13 @@ func from_dict(data: Dictionary) -> void:
 		var entry: Variant = raw_explore[key]
 		if entry is Dictionary:
 			var inner: Dictionary = (entry as Dictionary).duplicate()
-			# JSON numbers deserialize as floats — cast the two known int
-			# fields so callers can treat them as ints without surprises.
+			# JSON numbers deserialize as floats — normalize the int field so
+			# callers get an int, and keep duration as float to preserve the
+			# fractional seconds produced by ExplorationSystem._compute_duration.
 			if inner.has("start_utc"):
 				inner["start_utc"] = int(inner["start_utc"])
 			if inner.has("duration_seconds"):
-				inner["duration_seconds"] = int(inner["duration_seconds"])
+				inner["duration_seconds"] = float(inner["duration_seconds"])
 			_exploration_state[str(key)] = inner
 		else:
 			_exploration_state[str(key)] = entry

@@ -63,6 +63,10 @@ var _turn_timer: BattleTurnTimer = null
 var _timer_bar: ProgressBar = null
 var _timer_label: Label = null
 
+## Ultimate charge progress bar — sits next to the ult text label. Built at
+## runtime so the .tscn doesn't need editing. Filled via _refresh_actor_hud.
+var _ult_bar: ProgressBar = null
+
 ## Arrival context — captured in _ready, used in victory handler.
 var _story_node: String = ""
 var _enemy_ids: Array[String] = []
@@ -103,6 +107,7 @@ func _ready() -> void:
 	_apply_tutorial_safety_net()
 	_build_unit_slots()
 	_install_turn_timer()
+	_install_ult_bar()
 	_refresh_all()
 
 	# Kick off the first turn — the signal fires inside setup(), but we missed
@@ -165,6 +170,38 @@ func _install_turn_timer() -> void:
 		hud_inner.move_child(bar_box, 0)
 	else:
 		hud_panel.add_child(bar_box)
+
+
+## Builds the ultimate charge bar next to the ult text label. The bar is a
+## thin ProgressBar placed after ult_label in the same container.
+func _install_ult_bar() -> void:
+	_ult_bar = ProgressBar.new()
+	_ult_bar.custom_minimum_size = Vector2(0.0, 8.0)
+	_ult_bar.max_value = 1.0
+	_ult_bar.step = 0.01
+	_ult_bar.value = 0.0
+	_ult_bar.show_percentage = false
+	_ult_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var fill: StyleBoxFlat = StyleBoxFlat.new()
+	fill.bg_color = Color(0.65, 0.45, 1.0, 1.0)  # purple-ish for ult charge
+	fill.corner_radius_top_left = 3
+	fill.corner_radius_top_right = 3
+	fill.corner_radius_bottom_left = 3
+	fill.corner_radius_bottom_right = 3
+	_ult_bar.add_theme_stylebox_override("fill", fill)
+	var bg: StyleBoxFlat = StyleBoxFlat.new()
+	bg.bg_color = Color(0.1, 0.1, 0.12, 0.9)
+	bg.corner_radius_top_left = 3
+	bg.corner_radius_top_right = 3
+	bg.corner_radius_bottom_left = 3
+	bg.corner_radius_bottom_right = 3
+	_ult_bar.add_theme_stylebox_override("background", bg)
+	# Slot the bar right after the ult label in its parent container.
+	var parent: Node = ult_label.get_parent()
+	if parent != null:
+		var idx: int = ult_label.get_index() + 1
+		parent.add_child(_ult_bar)
+		parent.move_child(_ult_bar, idx)
 
 
 func _on_turn_timer_expired() -> void:
@@ -354,6 +391,13 @@ func _make_unit_slot(combatant: Combatant, is_enemy: bool) -> Control:
 	vbox.add_child(hp_lbl)
 	root.set_meta("hp_label", hp_lbl)
 
+	# Status effect badges — tiny emoji row showing active buffs/debuffs.
+	var status_lbl: Label = Label.new()
+	status_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	status_lbl.add_theme_font_size_override("font_size", 10)
+	vbox.add_child(status_lbl)
+	root.set_meta("status_label", status_lbl)
+
 	# Overlay button for target picking — initially transparent and disabled.
 	var pick_btn: Button = Button.new()
 	pick_btn.flat = true
@@ -387,6 +431,24 @@ func _refresh_unit_slot(slot: Control) -> void:
 	if hp_lbl != null:
 		hp_lbl.text = "%d / %d" % [c.stats.current_hp, c.stats.max_hp]
 	slot.modulate.a = 1.0 if c.is_alive() else 0.3
+
+	# Status effect badges — show tiny labels for active buffs/debuffs.
+	var status_lbl: Label = slot.get_meta("status_label", null) as Label
+	if status_lbl != null:
+		var badges: Array[String] = []
+		if c.stats.active_effects.has("shield"):
+			badges.append("🛡")
+		if c.stats.active_effects.has("forced_crit"):
+			badges.append("⚔")
+		if c.stats.active_effects.has("dodge_next"):
+			badges.append("💨")
+		if c.stats.active_effects.has("hunter_mark"):
+			badges.append("🎯")
+		if c.stats.active_effects.has("dot_burn"):
+			badges.append("🔥")
+		if c.stats.active_effects.has("corrupted_bloom"):
+			badges.append("☠")
+		status_lbl.text = " ".join(badges)
 
 	# Dead units get a grey desaturated border.
 	var style: StyleBoxFlat = slot.get_theme_stylebox("panel") as StyleBoxFlat
@@ -461,6 +523,12 @@ func _refresh_actor_hud() -> void:
 	)
 	energy_label.add_theme_font_size_override("font_size", 18)
 	ult_label.text = "ULT %d / %d" % [actor.stats.current_ultimate, actor.stats.max_ultimate]
+	if _ult_bar != null:
+		_ult_bar.value = actor.stats.ultimate_fraction()
+		# Glow purple-bright when ult is ready.
+		var fill_sb: StyleBoxFlat = _ult_bar.get_theme_stylebox("fill") as StyleBoxFlat
+		if fill_sb != null:
+			fill_sb.bg_color = Color(0.9, 0.7, 1.0, 1.0) if actor.stats.has_full_ultimate() else Color(0.65, 0.45, 1.0, 1.0)
 
 	# Action buttons are only interactable on player turns.
 	var is_player_turn: bool = not actor.is_enemy
@@ -492,6 +560,7 @@ func _refresh_actor_hud() -> void:
 func _set_move_button(btn: Button, move: BattleMove, fallback_key: String) -> void:
 	if move == null:
 		btn.text = Localization.get_text(fallback_key)
+		btn.tooltip_text = ""
 		return
 	var name_key: String = move.name_key
 	var move_name: String = Localization.get_text(name_key) if not name_key.is_empty() else Localization.get_text(fallback_key)
@@ -501,6 +570,40 @@ func _set_move_button(btn: Button, move: BattleMove, fallback_key: String) -> vo
 		btn.text = "%s\n★ ULT" % move_name
 	else:
 		btn.text = move_name
+	# Tooltip — shows target, damage, hits, and effect so the player
+	# understands what the move does before committing.
+	btn.tooltip_text = _build_move_tooltip(move)
+
+
+func _build_move_tooltip(move: BattleMove) -> String:
+	var parts: Array[String] = []
+	# Target scope.
+	match move.target:
+		"single_enemy": parts.append(Localization.get_text("TOOLTIP_TARGET_SINGLE"))
+		"all_enemies": parts.append(Localization.get_text("TOOLTIP_TARGET_ALL_ENEMIES"))
+		"all_allies": parts.append(Localization.get_text("TOOLTIP_TARGET_ALL_ALLIES"))
+		"self": parts.append(Localization.get_text("TOOLTIP_TARGET_SELF"))
+	# Damage.
+	if move.damage_mult > 0.0:
+		var pct: int = int(move.damage_mult * 100.0)
+		parts.append("%d%% ATK" % pct)
+	if move.hits > 1:
+		parts.append("%dx hits" % move.hits)
+	# Effect.
+	if not move.effect.is_empty():
+		var effect_key: String = "TOOLTIP_EFFECT_" + move.effect.to_upper()
+		var effect_text: String = Localization.get_text(effect_key)
+		if effect_text != effect_key:
+			parts.append(effect_text)
+		else:
+			parts.append(move.effect.replace("_", " ").capitalize())
+	# Scaling.
+	if not move.bonus_scaling.is_empty():
+		var stat: String = move.bonus_scaling.get("stat", "") as String
+		var ratio: float = float(move.bonus_scaling.get("ratio", 0.0))
+		if not stat.is_empty() and ratio > 0.0:
+			parts.append("+%d%% %s" % [int(ratio * 100.0), stat.to_upper()])
+	return " · ".join(parts)
 
 
 # ── Signal callbacks from BattleManager ──────────────────────────────────────
@@ -765,6 +868,8 @@ func _on_battle_ended(victory: bool) -> void:
 			if child is Label:
 				Fx.gold_shimmer(child as Control, 1.5)
 				break
+		# Inject rewards summary so the player sees what they earned.
+		_inject_victory_rewards(victory_panel)
 	else:
 		# Defeat VFX: heavy shake → dim arena → fade-in overlay.
 		Fx.shake(arena, 8.0, 0.5)
@@ -774,6 +879,44 @@ func _on_battle_ended(victory: bool) -> void:
 		var fade_tween: Tween = defeat_overlay.create_tween()
 		fade_tween.tween_property(defeat_overlay, "modulate:a", 1.0, 0.5) \
 			.set_ease(Tween.EASE_IN)
+
+
+## Injects a rewards summary label into the victory overlay so the player
+## sees XP earned, gold from story, and any equipment drops at a glance.
+func _inject_victory_rewards(panel: Control) -> void:
+	if panel == null:
+		return
+	# Remove any previous rewards label (in case of re-display).
+	var old: Node = panel.get_node_or_null("RewardsSummary")
+	if old != null:
+		old.queue_free()
+
+	var lines: Array[String] = []
+	# XP.
+	var alive_count: int = 0
+	var dead_count: int = 0
+	for m: Combatant in _battle.party:
+		if m.is_alive():
+			alive_count += 1
+		else:
+			dead_count += 1
+	var total_xp: int = alive_count * COMBAT_VICTORY_XP_ALIVE + dead_count * COMBAT_VICTORY_XP_FALLEN
+	lines.append("+%d XP" % total_xp)
+	# Gold from story node.
+	if not _story_node.is_empty():
+		lines.append(Localization.get_text("BATTLE_REWARD_STORY"))
+
+	var summary: Label = Label.new()
+	summary.name = "RewardsSummary"
+	summary.text = " · ".join(lines)
+	summary.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	summary.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+	summary.add_theme_font_size_override("font_size", 14)
+	# Insert before the continue button (last child of the panel).
+	panel.add_child(summary)
+	var btn_idx: int = panel.get_child_count() - 1
+	if btn_idx > 0:
+		panel.move_child(summary, btn_idx - 1)
 
 
 ## Post-victory XP distribution. Every party member that was still standing
