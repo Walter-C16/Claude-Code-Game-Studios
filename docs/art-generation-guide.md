@@ -92,21 +92,23 @@ Artemis rejected divine luxury for the wild. Her design is **practical elegance*
 
 #### Signature Silhouette
 
-The **recurve bow arc** rising above her right shoulder. Even at 64px, the bow's curve is unmistakable. Her silver braid sweeps left, creating asymmetry against the bow line.
+The **recurve bow arc** rising above her right shoulder. Even at 64px, the bow's curve is unmistakable. Her twin platinum braids frame her face, creating a distinct silhouette even against cluttered backgrounds.
 
 #### Wardrobe Breakdown
 
-- **Top**: Short dark-green hunting chiton, one shoulder bare (right), the other secured with a hammered silver clasp shaped like a crescent moon
-- **Strapping**: Crossed leather chest straps holding quiver to her back; the leather is worn and scarred from use
-- **Lower**: Chiton cuts above the knee, asymmetric hem — shorter on the right for running mobility
-- **Legs**: Leather-wrapped greaves from knee to mid-calf, bare feet with earth stains (she feels the ground)
-- **Circlet**: Thin silver band with a single moonstone at the temple — not a crown, a practical way to keep hair from her eyes
-- **Quiver**: Dark leather, holds 7 arrows (not full — she never wastes shots)
+- **Undershirt**: Dark forest-green long-sleeve linen shirt — practical, covers arms from wrist to neck
+- **Vest**: Fitted worn leather huntress vest over the shirt, secured with three bronze buckles down the front, hits at the waist
+- **Lower**: Dark leather trousers, fitted but not tight, tucked into her boots for silent movement through undergrowth
+- **Boots**: Knee-high weathered leather boots, worn soft and soundless, laced up the sides
+- **Arm guards**: Scuffed leather bracers over her sleeves from wrist to mid-forearm, protect against bowstring snap
+- **Belt + knife**: Leather belt at the waist with a hunting knife in a worn sheath on her left hip
+- **Cloak**: Dark green hooded cloak thrown back over shoulders, frays at the hem from catching on branches
+- **Quiver**: Dark leather on her back, holds 7 arrows (not full — she never wastes shots)
 
 #### Hair & Face
 
-- **Hair**: Silver-white with a cool blue sheen, long single braid thrown over left shoulder, loose strands framing face
-- **Eyes**: Sharp, almond-shaped, gold-green iris with a faint inner glow like sunlight through leaves
+- **Hair**: Platinum-blonde, worn in twin braids framing her face, loose strands at the temples
+- **Eyes**: Sharp, almond-shaped, bright yellow iris with a faint inner glow like sunlight through leaves
 - **Expression baseline**: Watchful, slightly furrowed brow — she's always tracking something
 - **Distinguishing mark**: Faint freckles across her nose and cheeks
 - **Skin**: Sun-kissed, warm olive tone with a faint silver moonlight glow on exposed surfaces
@@ -118,31 +120,32 @@ Earth motes: tiny floating leaves and pollen particles drift around her hair and
 #### Prompt Base
 
 ```
-portrait of Artemis greek goddess of the hunt, silver-white hair in a
-long braid over left shoulder with loose strands, gold-green glowing
-almond eyes, faint freckles, athletic olive-skinned young
-woman early 20s, short dark forest green hunting chiton with one bare
-right shoulder, hammered silver crescent moon clasp on left shoulder,
-crossed leather chest straps worn and scarred, dark leather quiver with
-7 arrows on her back, silver recurve bow rising above right shoulder,
-thin silver circlet with moonstone at temple, leather-wrapped greaves
-bare feet with earth stains, floating leaf and pollen motes around her,
-faint silver moonlight glow on skin, dense forest canopy background
-with filtered golden light
+Smooth skinned fallen huntress goddess Artemis with twin braids
+platinum-blonde hair, yellow eyes, wearing a dark forest-green
+long-sleeve linen shirt under a fitted worn leather huntress vest with
+bronze buckles, dark leather trousers tucked into knee-high weathered
+leather boots, battered quiver on back, scuffed leather arm guards over
+her sleeves, leather belt with hunting knife sheath, dark green hooded
+cloak thrown back. Her body features: big breasts, fading green mystic
+symbols on the backs of her hands and forearms, dim green magical
+particles drift around her. She has faint freckles.
+(smile:0.3), melancholic eyes, looking at viewer, cowboy shot,
+white background,
+masterpiece, best quality, highest quality, intricate details
 ```
 
 #### Mood Variations
 
 - `neutral`: Watchful, bow at rest across back, slight frown of focus, scanning the treeline
 - `happy`: Soft asymmetric smile (left corner higher), relaxed shoulders, one hand resting on bow
-- `sad`: Bow lowered to ground, looking down at the scar on her hand, braid fallen forward
-- `angry`: Teeth bared, bow drawn to full extension, gold-green eyes blazing, earth motes swirling fast
+- `sad`: Bow lowered to ground, looking down at her empty hands, braids fallen forward
+- `angry`: Teeth bared, bow drawn to full extension, yellow eyes blazing, earth motes swirling fast
 - `surprised`: Wide eyes, lips parted, hand snap-reaching for an arrow, braid swinging
 - `seductive`: Half-lidded direct gaze, chin tilted down, one strap slipped from shoulder, moonlit clearing
 
 #### LoRA Training Anchors
 
-`darkolympus_artemis` — platinum-blonde twin braids, yellow eyes, freckles, worn leather archer outfit, battered quiver, scuffed arm guards, weathered boots, green mystic arm symbols, green particles
+`darkolympus_artemis` — platinum-blonde twin braids, yellow eyes, freckles, forest-green long-sleeve shirt under leather huntress vest with bronze buckles, dark leather trousers, knee-high leather boots, leather arm guards, battered quiver, hunting knife, green mystic hand symbols, green particles
 
 ---
 
@@ -1093,7 +1096,7 @@ mythology, dramatic chiaroscuro lighting, tasteful, cinematic composition,
 
 ### 5.1 Artemis CGs
 1. **intimate_1** — Sitting together by a forest campfire at night, her head resting on your shoulder, bow set aside, moonlight and fire mixing on their faces
-2. **intimate_2** — Moonlit pool, she's washing her hair (silver braid undone for the first time), looking back at you with a rare unguarded soft smile
+2. **intimate_2** — Moonlit pool, she's washing her hair (platinum braids undone for the first time, hair loose to mid-back), looking back at you with a rare unguarded soft smile
 3. **intimate_3** — Standing on a cliff at dawn, embracing, silver moonlight fading into gold sunrise on both of them
 
 ### 5.2 Hippolyta CGs
