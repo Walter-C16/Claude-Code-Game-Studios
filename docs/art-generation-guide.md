@@ -96,13 +96,13 @@ The **recurve bow arc** rising above her right shoulder. Even at 64px, the bow's
 
 #### Wardrobe Breakdown
 
-- **Undershirt**: Dark forest-green long-sleeve linen shirt — practical, covers arms from wrist to neck
-- **Vest**: Fitted worn leather huntress vest over the shirt, secured with three bronze buckles down the front, hits at the waist
-- **Lower**: Dark leather trousers, fitted but not tight, tucked into her boots for silent movement through undergrowth
-- **Boots**: Knee-high weathered leather boots, worn soft and soundless, laced up the sides
-- **Arm guards**: Scuffed leather bracers over her sleeves from wrist to mid-forearm, protect against bowstring snap
-- **Belt + knife**: Leather belt at the waist with a hunting knife in a worn sheath on her left hip
-- **Cloak**: Dark green hooded cloak thrown back over shoulders, frays at the hem from catching on branches
+- **Tunic**: Dark forest-green long-sleeve linen tunic reaching mid-thigh, belted at the waist with a braided leather cord
+- **Chest piece**: Worn leather chest piece over the tunic, laced up the front with rawhide cord (no metal buckles — keeps the look Bronze Age, not modern)
+- **Forearm wraps**: Leather forearm wraps wound from wrist to elbow, protect against bowstring snap
+- **Leg wraps**: Leather leg wraps wound around her calves, down to laced soft-leather mid-calf sandal-boots (no tailored trousers — period-accurate)
+- **Belt + knife**: Small hunting knife in a worn leather sheath hanging from the waist cord on her left hip
+- **Quiver strap**: Single leather strap across her chest diagonally, holding the quiver on her back
+- **Cape**: Simple dark-green wool cape pinned at her left shoulder with a small bronze pin — no hood, frayed at the hem from branches
 - **Quiver**: Dark leather on her back, holds 7 arrows (not full — she never wastes shots)
 
 #### Hair & Face
@@ -122,13 +122,16 @@ Earth motes: tiny floating leaves and pollen particles drift around her hair and
 ```
 Smooth skinned fallen huntress goddess Artemis with twin braids
 platinum-blonde hair, yellow eyes, wearing a dark forest-green
-long-sleeve linen shirt under a fitted worn leather huntress vest with
-bronze buckles, dark leather trousers tucked into knee-high weathered
-leather boots, battered quiver on back, scuffed leather arm guards over
-her sleeves, leather belt with hunting knife sheath, dark green hooded
-cloak thrown back. Her body features: big breasts, fading green mystic
-symbols on the backs of her hands and forearms, dim green magical
-particles drift around her. She has faint freckles.
+long-sleeve linen tunic belted with a braided leather cord at the
+waist, worn leather chest piece laced up the front with rawhide cord
+over the tunic, leather forearm wraps from wrist to elbow, leather
+leg wraps wound around her calves down to laced soft-leather mid-calf
+sandal-boots, battered quiver on back held by a single leather strap
+across her chest, small hunting knife at her hip, simple dark-green
+wool cape pinned at her left shoulder with a small bronze pin. Her
+body features: big breasts, fading green mystic symbols on the backs
+of her hands, dim green magical particles drift around her. She has
+faint freckles.
 (smile:0.3), melancholic eyes, looking at viewer, cowboy shot,
 white background,
 masterpiece, best quality, highest quality, intricate details
@@ -145,7 +148,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### LoRA Training Anchors
 
-`darkolympus_artemis` — platinum-blonde twin braids, yellow eyes, freckles, forest-green long-sleeve shirt under leather huntress vest with bronze buckles, dark leather trousers, knee-high leather boots, leather arm guards, battered quiver, hunting knife, green mystic hand symbols, green particles
+`darkolympus_artemis` — platinum-blonde twin braids, yellow eyes, freckles, forest-green long-sleeve linen tunic, rawhide-laced leather chest piece, leather forearm wraps, leather leg wraps, soft-leather sandal-boots, braided cord belt, battered quiver, wool cape pinned at left shoulder, green mystic hand symbols, green particles
 
 ---
 

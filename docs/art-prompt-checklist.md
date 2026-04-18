@@ -29,12 +29,14 @@ Moods: `neutral`, `happy`, `sad`, `angry`, `surprised`, `seductive`
 
 ```
 Smooth skinned fallen huntress goddess with twin braids platinum-blonde
-hair, yellow eyes, wearing a dark forest-green long-sleeve linen shirt
-under a fitted worn leather huntress vest with bronze buckles, dark
-leather trousers tucked into knee-high weathered leather boots, battered
-quiver on back, scuffed leather arm guards over her sleeves, leather
-belt with a hunting knife sheath. Her body features: big breasts,
-fading green mystic symbols along her arms, dim green magical particles
+hair, yellow eyes, wearing a dark forest-green long-sleeve linen tunic
+belted with a braided leather cord at the waist, worn leather chest
+piece laced up the front with rawhide cord over the tunic, leather
+forearm wraps from wrist to elbow, leather leg wraps wound around her
+calves down to laced soft-leather mid-calf sandal-boots, battered
+quiver on back held by a single leather strap across her chest, small
+hunting knife at her hip. Her body features: big breasts, fading green
+mystic symbols on the backs of her hands, dim green magical particles
 drift around her. She has faint freckles.
 (smile:0.3), melancholic eyes, looking at viewer, cowboy shot,
 white background,
@@ -446,15 +448,16 @@ Path: `assets/images/companions/{id}/{id}_full.png`
 
 ```
 Smooth skinned fallen huntress goddess with twin braids platinum-blonde
-hair, yellow eyes, wearing a dark forest-green long-sleeve linen shirt
-under a fitted worn leather huntress vest with bronze buckles, dark
-leather trousers tucked into knee-high weathered leather boots with
-worn soles, battered quiver on back, scuffed leather arm guards over
-her sleeves, leather belt with a hunting knife sheath, dark green
-hooded cloak thrown back behind her shoulders. Her body features: big
-breasts, fading green mystic symbols on the backs of her hands and
-forearms, dim green magical particles drift around her. She has faint
-freckles.
+hair, yellow eyes, wearing a dark forest-green long-sleeve linen tunic
+reaching to mid-thigh belted with a braided leather cord at the waist,
+worn leather chest piece laced up the front with rawhide cord over the
+tunic, leather forearm wraps from wrist to elbow, leather leg wraps
+wound around her calves down to laced soft-leather mid-calf sandal-boots,
+battered quiver on back held by a single leather strap across her
+chest, small hunting knife at her hip, simple dark green wool cape
+pinned at her left shoulder with a small bronze pin. Her body features:
+big breasts, fading green mystic symbols on the backs of her hands,
+dim green magical particles drift around her. She has faint freckles.
 (smile:0.3), melancholic eyes, looking at viewer, full body shot,
 standing pose, feet visible,
 white background,
@@ -816,7 +819,7 @@ masterpiece, best quality, highest quality, intricate details
 
 | # | Prompt |
 |---|--------|
-| 1 | `Artemis (platinum-blonde twin braids, yellow eyes, forest-green shirt under leather huntress vest, leather trousers, knee-high boots) and protagonist sitting by a forest campfire at night, her head on his shoulder, bow set aside, moonlight and firelight on faces` |
+| 1 | `Artemis (platinum-blonde twin braids, yellow eyes, forest-green linen tunic with rawhide-laced leather chest piece, leg wraps and sandal-boots) and protagonist sitting by a forest campfire at night, her head on his shoulder, bow set aside, moonlight and firelight on faces` |
 | 2 | `Artemis (platinum-blonde hair unbraided loose, yellow eyes, bare shoulders) at a moonlit forest pool, looking back with rare unguarded soft smile` |
 | 3 | `Artemis and protagonist embracing on a cliff at dawn, silver moonlight fading into gold sunrise, wind in platinum-blonde hair` |
 
