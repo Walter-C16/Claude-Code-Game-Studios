@@ -766,7 +766,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### Design DNA
 
-Lyra is **warmth incarnate** — the hearth you come home to. She's the most "normal" person in a cast of gods and nymphs, and that's exactly her power. Her design is cozy, inviting, and grounded: practical tavern wear, strong hands, a smile that makes you feel safe. She's not glamorous, she's real, and that's why she matters.
+Lyra is **warmth incarnate** — the hearth you come home to, and the barmaid everyone in Sardis secretly hopes will sit down with them. She's the most "normal" person in a cast of gods and nymphs, and that's exactly her power. Her design is cozy, inviting, and grounded — but turned up: a low-cut laced blouse pushed off the shoulders, a skirt hiked above the knees, apron cinched tight to show her hourglass. She's not glamorous like the goddesses, she's **approachable and voluptuous**, and that's why half the village is in love with her.
 
 #### Color Triangle
 
@@ -782,20 +782,21 @@ The **messy bun** and the **cream apron** over russet. At 64px, the warm round s
 
 #### Wardrobe Breakdown
 
-- **Blouse**: Russet-brown linen with rolled-up sleeves showing strong forearms — she carries kegs
-- **Apron**: Cream-colored, well-worn, slightly stained with wine and grease, tied at the waist with a double knot
-- **Skirt**: Simple dark brown, practical length (mid-calf), with deep pockets
-- **Shoes**: Sturdy leather shoes with scuffs — she's on her feet all day
-- **Accessories**: A small bronze key on a leather cord around her neck (the tavern cellar key — it was her mother's)
+- **Blouse**: Low-cut russet-brown linen with a wide plunging neckline showing deep cleavage, laced up the front with a leather cord that's always half-undone, puffy sleeves pushed off both shoulders revealing collarbones
+- **Apron**: Cream-colored, well-worn, wine and grease stained, cinched tight at the waist with a leather sash that emphasizes her hourglass figure
+- **Skirt**: Short dark-brown wool skirt hiked above the knees showing her thighs, with deep pockets
+- **Shoes**: Sturdy scuffed leather ankle boots — she's on her feet all day
+- **Accessories**: Small bronze key on a leather cord nestled between her breasts (the tavern cellar key — it was her mother's)
 - **Hands**: Strong, calloused, warm — always carrying something (mug, bottle, towel)
 
 #### Hair & Face
 
-- **Hair**: Auburn-copper, always in a messy bun held with a wooden pin. Strands constantly escape and frame her face
-- **Eyes**: Warm honey-brown, crinkled at the corners from constant smiling
-- **Expression baseline**: Open friendly grin, head slightly tilted, as if inviting you to sit down
-- **Distinguishing mark**: Ruddy permanently-flushed cheeks and nose (from years beside the hearth fire)
+- **Hair**: Auburn-copper, loose messy bun held with a wooden pin, strands falling seductively around her face and neck
+- **Eyes**: Warm honey-brown, crinkled at the corners — her smile is the reason half the village drinks at her tavern
+- **Expression baseline**: Sultry knowing grin, head slightly tilted, inviting you to sit close
+- **Distinguishing mark**: Ruddy permanently-flushed cheeks and nose (hearth fire), light sheen of sweat across her chest from the tavern heat
 - **Skin**: Warm tan with permanent flush, a few faint freckles on the nose bridge
+- **Body**: Voluptuous curvy build, huge breasts with deep cleavage, wide womanly hips, thick thighs
 
 #### Element Expression
 
@@ -804,15 +805,23 @@ Hearth glow: a warm amber light seems to emanate from around her, especially her
 #### Prompt Base
 
 ```
-portrait of warm greek tavern keeper barmaid, auburn-copper messy bun
-with wooden pin and escaped strands, warm honey-brown crinkled eyes,
-ruddy permanently flushed cheeks and nose, warm tan skin with faint
-freckles, strong friendly young woman mid 20s, russet brown linen blouse
-with rolled up sleeves showing strong forearms, cream well-worn stained
-apron tied at waist, small bronze key on leather cord necklace, sturdy
-scuffed leather shoes, holding a ceramic mug of mead, open welcoming
-grin, warm amber hearth glow around her, tavern interior with firelight
-wooden beams hanging oil lamps background
+Smooth skinned warm greek tavern keeper barmaid, auburn-copper loose
+messy bun with wooden pin and strands falling seductively around face
+and neck, warm honey-brown crinkled eyes, ruddy flushed cheeks and
+nose, warm tan skin with faint freckles and light sheen of sweat,
+voluptuous young woman mid 20s, low-cut russet-brown linen blouse with
+plunging neckline deep cleavage laced up the front with a half-undone
+leather cord, sleeves pushed off both shoulders showing collarbones,
+cream well-worn stained apron cinched tight at waist with leather sash
+emphasizing hourglass figure, short dark-brown skirt hiked above the
+knees, sturdy scuffed leather ankle boots, small bronze key nestled
+between her breasts on leather cord, huge breasts with deep cleavage,
+wide hips, thick thighs, fading orange-amber mystic hearth-flame
+symbols on forearms and chest, warm amber hearth-glow particles.
+(sultry knowing grin:0.5), warm inviting half-lidded eyes, looking at
+viewer, cowboy shot,
+white background,
+masterpiece, best quality, highest quality, intricate details
 ```
 
 #### Mood Variations
@@ -826,7 +835,7 @@ wooden beams hanging oil lamps background
 
 #### LoRA Training Anchors
 
-`darkolympus_lyra` — auburn messy bun with wooden pin, honey-brown eyes, ruddy cheeks, russet blouse, cream stained apron, bronze key necklace, strong forearms, hearth glow
+`darkolympus_lyra` — auburn loose messy bun with wooden pin, honey-brown crinkled eyes, ruddy flushed cheeks, freckles, voluptuous curvy body, huge breasts with deep cleavage, low-cut laced russet blouse off-shoulder, cream cinched apron, short hiked skirt, thick thighs, leather ankle boots, bronze key between breasts, hearth glow
 
 ---
 
@@ -838,7 +847,7 @@ wooden beams hanging oil lamps background
 
 #### Design DNA
 
-Melina is **curiosity caged**. She's the sheltered daughter of Thalos, the village leader, and everything about her screams "I want to be anywhere but here." Her design is modest village clothing that she's subtly personalized — ink stains on her cuffs, a journal she never puts down, sandals worn thin from sneaking to the restricted section of the library. She's the youngest in the cast and the most human.
+Melina is **curiosity caged**. She's the sheltered adult daughter of Thalos, the village leader, and everything about her screams "I want to be anywhere but here." Her design is modest village clothing that she's subtly personalized — ink stains on her cuffs, a journal she never puts down, sandals worn thin from sneaking to the restricted section of the library. She's a young adult woman with a full feminine figure hidden under her father-approved modest dress — the contrast between the modest wardrobe and what's underneath is part of her quiet rebellion.
 
 #### Color Triangle
 
@@ -868,7 +877,8 @@ Melina is **curiosity caged**. She's the sheltered daughter of Thalos, the villa
 - **Eyes**: Large, round, warm brown — "doe eyes" that make everyone underestimate her
 - **Expression baseline**: Curious, slightly defiant, chin angled up despite being short
 - **Distinguishing mark**: Perpetual ink smudge on her right cheek (she rests her face on her writing hand)
-- **Skin**: Warm olive, soft, youthful — she hasn't spent years in the sun like Lyra or Hippolyta
+- **Skin**: Warm olive, soft — she hasn't spent years in the sun like Lyra or Hippolyta
+- **Body**: Mature feminine build, big breasts, wide hips, long shapely legs — hidden beneath the modest ankle-length dress
 
 #### Element Expression
 
@@ -877,15 +887,20 @@ Very subtle. Pressed flowers in her journal occasionally glow faintly with green
 #### Prompt Base
 
 ```
-portrait of young greek village scholar girl, warm chestnut brown twin
-braids to mid-chest with flyaway hairs, large warm brown doe eyes,
-ink smudge on right cheek, warm olive youthful skin, curious defiant
-late teens girl, modest olive green ankle-length linen dress with
-rolled up sleeves revealing ink-stained forearms, cream undershirt at
-collar, worn brown leather journal clutched to chest bulging with
-pressed flowers and bookmarks, quill tucked behind right ear, worn-thin
-leather sandals, braided grass ring on left pinky, village square with
-ancient library columns background
+Smooth skinned greek village scholar adult young woman, warm chestnut
+brown twin braids to mid-chest with flyaway hairs, large warm brown
+doe eyes, ink smudge on right cheek, warm olive skin, curious defiant
+expression, mature feminine build big breasts wide hips, modest olive
+green ankle-length linen dress with rolled up sleeves revealing
+ink-stained forearms, cream undershirt at collar, worn brown leather
+journal clutched to chest bulging with pressed flowers and bookmarks,
+quill tucked behind right ear, worn-thin leather sandals, braided
+grass ring on left pinky, fading earth-gold mystic script symbols on
+forearms, dim golden-green motes near journal.
+(curious defiant expression:0.4), bright intelligent doe eyes, looking
+at viewer, cowboy shot,
+white background,
+masterpiece, best quality, highest quality, intricate details
 ```
 
 #### Mood Variations
@@ -899,7 +914,7 @@ ancient library columns background
 
 #### LoRA Training Anchors
 
-`darkolympus_melina` — chestnut twin braids, doe eyes, ink smudge on right cheek, olive green dress, ink-stained forearms, leather journal, quill behind ear, grass ring on pinky
+`darkolympus_melina` — chestnut twin braids, doe eyes, ink smudge on right cheek, adult young woman mature feminine figure, big breasts wide hips, modest olive-green ankle dress, cream undershirt collar, ink-stained forearms, leather journal clutched to chest, quill behind right ear, grass ring on left pinky
 
 ---
 
@@ -927,12 +942,14 @@ Naida is **shyness as a defense mechanism**. A river nymph who lost her river, s
 
 #### Wardrobe Breakdown
 
-- **Wrap**: A simple wrap that appears to be made of flowing river water — translucent, shifting, revealing and concealing in ripples. No seams, no edges — it just... is
-- **Skin**: Translucent blue-green tinted, with a faint scale-like shimmer on the shoulders and ribs
-- **Necklace**: A single freshwater pearl on a thread-thin silver chain — the only solid object she owns
+- **Dress**: Pale seafoam-blue sleeveless linen dress that ties at both shoulders, modest neckline, falls to mid-calf — simple nymph attire she made herself from offerings left at the riverbank
+- **Water veil**: Translucent water-veil wrap layered over the dress, flows like river water in slow ripples over the fabric (the water is hers, the dress is mortal — the two together)
+- **Belt**: Simple silver cord tied loosely at her waist
+- **Skin**: Translucent blue-green tinted, with a faint scale-like shimmer on the shoulders (less visible now that the dress covers her ribs)
+- **Necklace**: A single freshwater pearl on a thread-thin silver chain
 - **Feet**: Bare, with slightly webbed toes. Puddles form around her feet involuntarily
 - **Hands**: Slender, fingers slightly elongated, translucent at the fingertips
-- **Ears**: Slightly pointed, barely visible through her water-hair — hints at her inhuman nature
+- **Ears**: Slightly pointed, barely visible through her water-hair
 
 #### Hair & Face
 
@@ -949,15 +966,21 @@ Water: puddles appear at her feet spontaneously. Her wrap ripples with invisible
 #### Prompt Base
 
 ```
-portrait of shy river water nymph, blue-green hair flowing like liquid
-water even dry with light reflections, iridescent shifting aqua-silver
-eyes, translucent blue-green skin with scale shimmer on shoulders, pale
-ethereal ageless beauty looking early 20s, simple wrap made of flowing
-river water translucent and rippling, single freshwater pearl on thin
-silver chain necklace, bare feet with slight webbing and puddles forming,
-slender elongated translucent fingertips, slightly pointed ears, shy
-expression partially hidden behind hair, scattered floating water
-droplets, river bank with reeds and twilight mist background
+Smooth skinned shy river water nymph, blue-green hair flowing like
+liquid water even dry with light reflections, iridescent shifting
+aqua-silver eyes, translucent blue-green skin with scale shimmer on
+shoulders, pale ethereal ageless beauty looking early 20s, pale
+seafoam-blue sleeveless linen dress tied at both shoulders modest
+neckline, translucent water-veil wrap layered over the dress flowing
+like river water over the fabric, silver cord belt, single freshwater
+pearl on thin silver chain necklace, bare feet with slight webbing and
+puddles forming, slender elongated translucent fingertips, slightly
+pointed ears, fading aqua-teal mystic water-current symbols on
+forearms and collarbones, scattered floating water droplets.
+(shy tentative expression:0.3), iridescent shifting nervous eyes,
+looking at viewer, cowboy shot,
+white background,
+masterpiece, best quality, highest quality, intricate details
 ```
 
 #### Mood Variations
@@ -971,7 +994,7 @@ droplets, river bank with reeds and twilight mist background
 
 #### LoRA Training Anchors
 
-`darkolympus_naida` — liquid blue-green water-hair, iridescent eyes, translucent blue-green skin, water-wrap, single pearl necklace, webbed toes, puddle feet, reed setting
+`darkolympus_naida` — liquid blue-green water-hair, iridescent aqua-silver eyes, translucent blue-green skin, pale seafoam-blue sleeveless linen dress tied at shoulders, translucent water-veil over dress, silver cord belt, single pearl necklace, webbed toes, puddle feet, pointed ears
 
 ---
 

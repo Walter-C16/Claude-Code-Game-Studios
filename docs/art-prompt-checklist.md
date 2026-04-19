@@ -310,17 +310,21 @@ masterpiece, best quality, highest quality, intricate details
 
 ```
 Smooth skinned warm greek tavern keeper barmaid with auburn-copper hair
-in a messy bun held with a wooden pin with strands escaping to frame
-her face, warm honey-brown eyes crinkled at the corners, wearing a
-russet-brown linen blouse with rolled-up sleeves showing strong
-forearms, cream well-worn stained apron tied at waist. Her body
-features: strong curvy build, big breasts, calloused warm hands, a
-small bronze key on a leather cord around her neck, fading warm
-orange-amber mystic hearth-flame symbols along her forearms, dim warm
-amber hearth-glow particles softly emanate around her hands. She has
-ruddy permanently flushed cheeks and nose, faint freckles on nose
-bridge, warm tan skin.
-(open friendly grin:0.5), warm welcoming crinkled eyes, looking at
+in a loose messy bun held with a wooden pin with strands falling
+seductively around her face and neck, warm honey-brown eyes crinkled
+at the corners, wearing a low-cut russet-brown linen blouse with a
+wide plunging neckline showing deep cleavage and laced up the front
+with a leather cord half-undone, puffy sleeves pushed off both
+shoulders revealing collarbones, cream well-worn stained apron cinched
+tight at her waist with a leather sash emphasizing her hourglass
+figure. Her body features: voluptuous curvy build, huge breasts with
+deep visible cleavage, wide womanly hips, small bronze key on a leather
+cord nestled between her breasts, fading warm orange-amber mystic
+hearth-flame symbols along her forearms and across her chest, dim warm
+amber hearth-glow particles softly emanate around her. She has ruddy
+flushed cheeks and nose, faint freckles on nose bridge, warm tan skin
+with a light sheen of sweat from the tavern heat.
+(sultry knowing grin:0.5), warm inviting half-lidded eyes, looking at
 viewer, cowboy shot,
 white background,
 masterpiece, best quality, highest quality, intricate details
@@ -340,17 +344,17 @@ masterpiece, best quality, highest quality, intricate details
 ### Melina — Cowboy Shot (6 images)
 
 ```
-Smooth skinned young greek village scholar girl with warm chestnut-brown
-hair in twin braids reaching mid-chest with flyaway hairs, large warm
-brown doe eyes, wearing a modest olive-green ankle-length linen dress
-with rolled-up sleeves revealing ink-stained forearms, cream undershirt
-visible at the collar. Her body features: petite youthful build, small
-breasts, ink-stained fingertips, a worn brown leather journal clutched
-to her chest, quill tucked behind her right ear, fading soft earth-gold
-mystic script symbols along her forearms mixed with ink stains, dim
-golden-green mote particles drift faintly near her journal. She has an
-ink smudge on her right cheek, warm olive youthful skin, a braided
-grass ring on her left pinky.
+Smooth skinned greek village scholar adult young woman with warm
+chestnut-brown hair in twin braids reaching mid-chest with flyaway
+hairs, large warm brown doe eyes, wearing a modest olive-green
+ankle-length linen dress with rolled-up sleeves revealing ink-stained
+forearms, cream undershirt visible at the collar. Her body features:
+mature feminine build, big breasts, wide hips, ink-stained fingertips,
+a worn brown leather journal clutched to her chest, quill tucked behind
+her right ear, fading soft earth-gold mystic script symbols along her
+forearms mixed with ink stains, dim golden-green mote particles drift
+faintly near her journal. She has an ink smudge on her right cheek,
+warm olive skin, a braided grass ring on her left pinky.
 (curious defiant expression:0.4), bright intelligent doe eyes, looking
 at viewer, cowboy shot,
 white background,
@@ -373,13 +377,15 @@ masterpiece, best quality, highest quality, intricate details
 ```
 Smooth skinned shy river water nymph with blue-green hair that flows
 like liquid water even when dry with light reflections rippling through
-it, iridescent shifting aqua-silver eyes, wearing a simple wrap that
-appears made of flowing translucent river water that ripples and shifts,
+it, iridescent shifting aqua-silver eyes, wearing a pale seafoam-blue
+sleeveless linen dress with a modest neckline that ties at both
+shoulders, layered over with a translucent water-veil wrap that flows
+like river water over the dress, simple silver cord belt at her waist,
 single freshwater pearl on a thin silver chain necklace. Her body
 features: slender ethereal build, medium breasts, translucent blue-green
-tinted skin with scattered iridescent scale patches on shoulders and
-ribs, slender elongated slightly translucent fingertips, fading
-aqua-teal mystic water-current symbols flowing along her arms and ribs,
+tinted skin with scattered iridescent scale patches on shoulders,
+slender elongated slightly translucent fingertips, fading aqua-teal
+mystic water-current symbols flowing along her forearms and collarbones,
 dim floating water droplet particles orbit slowly around her hair. She
 has slightly pointed ears barely visible through her water-hair.
 (shy tentative expression:0.3), iridescent shifting nervous eyes,
@@ -649,17 +655,22 @@ masterpiece, best quality, highest quality, intricate details
 
 ```
 Smooth skinned warm greek tavern keeper barmaid with auburn-copper hair
-in a messy bun held with a wooden pin with strands escaping to frame
-her face, warm honey-brown eyes crinkled at the corners, wearing a
-russet-brown linen blouse with rolled-up sleeves showing strong
-forearms, cream well-worn stained apron tied at waist, simple dark
-brown skirt to mid-calf, sturdy scuffed leather shoes. Her body
-features: strong curvy build, big breasts, calloused warm hands, a
-small bronze key on a leather cord around her neck, fading warm
-orange-amber mystic hearth-flame symbols along her forearms, dim warm
-amber hearth-glow particles softly emanate around her hands. She has
-ruddy permanently flushed cheeks and nose, faint freckles on nose
-bridge, warm tan skin.
+in a loose messy bun held with a wooden pin with strands falling
+seductively around her face and neck, warm honey-brown eyes crinkled
+at the corners, wearing a low-cut russet-brown linen blouse with a
+wide plunging neckline showing deep cleavage and laced up the front
+with a leather cord half-undone, puffy sleeves pushed off both
+shoulders revealing collarbones, cream well-worn stained apron cinched
+tight at her waist with a leather sash emphasizing her hourglass
+figure, short dark-brown wool skirt hiked up above her knees showing
+her thighs, sturdy scuffed leather ankle boots. Her body features:
+voluptuous curvy build, huge breasts with deep visible cleavage, wide
+womanly hips, thick thighs, small bronze key on a leather cord nestled
+between her breasts, fading warm orange-amber mystic hearth-flame
+symbols along her forearms and across her chest, dim warm amber
+hearth-glow particles softly emanate around her. She has ruddy flushed
+cheeks and nose, faint freckles, warm tan skin with a light sheen of
+sweat.
 (open friendly grin:0.5), warm welcoming crinkled eyes, looking at
 viewer, full body shot, standing pose, feet visible,
 white background,
@@ -669,17 +680,18 @@ masterpiece, best quality, highest quality, intricate details
 ### Melina — Full Body
 
 ```
-Smooth skinned young greek village scholar girl with warm chestnut-brown
-hair in twin braids reaching mid-chest with flyaway hairs, large warm
-brown doe eyes, wearing a modest olive-green ankle-length linen dress
-with rolled-up sleeves revealing ink-stained forearms, cream undershirt
-visible at the collar, worn-thin leather sandals with soles nearly
-worn through. Her body features: petite youthful build, small breasts,
-ink-stained fingertips, a worn brown leather journal clutched to her
-chest, quill tucked behind her right ear, fading soft earth-gold mystic
-script symbols along her forearms, dim golden-green mote particles
-drift faintly near her journal. She has an ink smudge on her right
-cheek, warm olive youthful skin, a braided grass ring on her left pinky.
+Smooth skinned greek village scholar adult young woman with warm
+chestnut-brown hair in twin braids reaching mid-chest with flyaway
+hairs, large warm brown doe eyes, wearing a modest olive-green
+ankle-length linen dress with rolled-up sleeves revealing ink-stained
+forearms, cream undershirt visible at the collar, worn-thin leather
+sandals with soles nearly worn through. Her body features: mature
+feminine build, big breasts, wide hips, long shapely legs, ink-stained
+fingertips, a worn brown leather journal clutched to her chest, quill
+tucked behind her right ear, fading soft earth-gold mystic script
+symbols along her forearms, dim golden-green mote particles drift
+faintly near her journal. She has an ink smudge on her right cheek,
+warm olive skin, a braided grass ring on her left pinky.
 (curious defiant expression:0.4), bright intelligent doe eyes, looking
 at viewer, full body shot, standing pose, feet visible,
 white background,
@@ -691,16 +703,18 @@ masterpiece, best quality, highest quality, intricate details
 ```
 Smooth skinned shy river water nymph with blue-green hair that flows
 like liquid water even when dry with light reflections rippling through
-it, iridescent shifting aqua-silver eyes, wearing a simple wrap that
-appears made of flowing translucent river water that ripples and shifts,
+it, iridescent shifting aqua-silver eyes, wearing a pale seafoam-blue
+sleeveless linen dress that ties at both shoulders and reaches to
+mid-calf, layered over with a translucent water-veil wrap that flows
+like river water over the dress, simple silver cord belt at her waist,
 single freshwater pearl on a thin silver chain necklace, bare feet with
 slight webbing between toes and small puddles forming around them. Her
 body features: slender ethereal build, medium breasts, translucent
 blue-green tinted skin with scattered iridescent scale patches on
-shoulders and ribs, slender elongated slightly translucent fingertips,
-fading aqua-teal mystic water-current symbols flowing along her arms
-and ribs, dim floating water droplet particles orbit slowly around her
-hair. She has slightly pointed ears.
+shoulders, slender elongated slightly translucent fingertips, fading
+aqua-teal mystic water-current symbols flowing along her forearms and
+collarbones, dim floating water droplet particles orbit slowly around
+her hair. She has slightly pointed ears.
 (shy tentative expression:0.3), iridescent shifting nervous eyes,
 looking at viewer, full body shot, standing pose, bare webbed feet
 visible,
