@@ -145,14 +145,19 @@ masterpiece, best quality, highest quality, intricate details
 ### Priestess — Cowboy Shot (5 images — no seductive)
 
 ```
-Smooth skinned ethereal priestess of Gaia with long emerald-green hair
-flowing like living vines, glowing bioluminescent green eyes, wearing
-a robe woven from living leaves and silver thread that still seems to
-grow, vine crown with small white flowers blooming, bark-textured
-hands. Her body features: semi-translucent skin with green veins
-visible beneath, slender ethereal build, fading emerald mystic nature
-symbols along her arms and neck, dim green bioluminescent particles
-float gently around her. She has a serene ageless face.
+Smooth skinned ethereal priestess of Gaia goddess with long emerald-green
+hair flowing like living vines, glowing bioluminescent green eyes,
+wearing a flowing emerald-green divine robe that opens at the front from
+neck to waist revealing deep cleavage and bare stomach, robe split at
+the hips showing bare skin, trimmed with delicate golden thread and
+living leaves along the edges, long draped sleeves, vine crown with
+small white flowers blooming on her head, living vines wrapping around
+her forearms. Her body features: voluptuous divine figure, huge breasts
+with deep cleavage visible through the open robe, wide womanly hips,
+semi-translucent fair skin with green veins visible beneath, glowing
+emerald mystic nature symbols across her chest and stomach and arms,
+dim green bioluminescent particles float gently around her. She has a
+serene ageless face, golden divine aura.
 (serene peaceful expression:0.3), softly glowing wise eyes, looking at
 viewer, cowboy shot,
 white background,
@@ -524,15 +529,24 @@ masterpiece, best quality, highest quality, intricate details
 ### Priestess — Full Body
 
 ```
-Smooth skinned ethereal priestess of Gaia with long emerald-green hair
-flowing like living vines, glowing bioluminescent green eyes, wearing
-a robe woven from living leaves and silver thread that still seems to
-grow reaching to the ground, vine crown with small white flowers
-blooming, bark-textured hands, roots extending from her bare feet into
-the ground. Her body features: semi-translucent skin with green veins
-visible beneath, slender ethereal build, fading emerald mystic nature
-symbols along her arms and neck, dim green bioluminescent particles
-float gently around her.
+Smooth skinned ethereal priestess of Gaia goddess with long emerald-green
+hair flowing like living vines to her waist, glowing bioluminescent
+green eyes, wearing a flowing emerald-green divine robe that opens
+dramatically at the front from neck all the way down revealing her
+entire torso bare cleavage stomach and navel, robe parts open at both
+hips with side-slits up to the waist showing bare thighs, trimmed with
+delicate golden thread and living leaves along the edges, long draped
+sleeves flowing to her wrists, thin golden cord belt loosely tied at
+the waist holding the robe panels in place, vine crown with small white
+flowers blooming on her head, living vines wrapping around her forearms
+and one thigh, bare feet with roots extending into the ground. Her
+body features: tall voluptuous divine figure like a goddess, huge
+breasts with deep cleavage visible through the open robe, wide womanly
+hips and big ass, long curvy legs, semi-translucent fair skin with
+green veins visible beneath, glowing emerald mystic nature symbols
+across her chest stomach hips arms and thighs, dim green bioluminescent
+particles float gently around her. She has a serene ageless face,
+golden divine aura radiating from her.
 (serene peaceful expression:0.3), softly glowing wise eyes, looking at
 viewer, full body shot, standing pose, bare feet visible with roots,
 white background,

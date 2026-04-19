@@ -373,58 +373,78 @@ cosmic void background with distant nebula
 
 ### 3.5 Priestess — Gaia Fragment (NPC)
 
-> *"What remains when a goddess chooses to become a garden."*
+> *"The garden remembers it was a goddess — and dresses the part."*
 
 **Role**: Quest Giver / Oracle | **Element**: None (Gaia) | **Type**: NPC (no combat)
 
 #### Design DNA
 
-The Priestess is **nature remembering it was once divine**. She is partially translucent, woven from plant matter and light, existing at the boundary between woman and ecosystem. Her design should feel reverent and slightly unreal — not a person wearing leaves, but leaves that remember being a person.
+The Priestess is **divine femininity made plant**. She is a fertility goddess-fragment — voluptuous, exposed, unashamed of her body because she predates shame. Her design is inspired by Marika from Elden Ring: a flowing open-front robe that reveals her divine form, trimmed with gold thread and living leaves instead of Marika's pure gold. She is Gaia wearing a woman's shape.
 
 #### Color Triangle
 
 | Role | Color | Hex | Where |
 |------|-------|-----|-------|
-| Dominant | Living emerald | `#2E7D4F` | Hair, robe leaves, aura |
-| Complement | Silver bark | `#A8A89C` | Thread in robe, vine crown |
-| Accent | Bioluminescent green | `#7CFC00` | Eye glow, aura pulses |
+| Dominant | Living emerald | `#2E7D4F` | Hair, robe fabric, aura |
+| Complement | Divine gold | `#D4A843` | Robe trim, cord belt, aura glow |
+| Accent | Bioluminescent green | `#7CFC00` | Eye glow, body symbols, particles |
 
 #### Signature Silhouette
 
-**Vine crown** with upward-reaching tendrils, framing her head like a small tree. At 64px, the green glow + crown shape reads clearly.
+**Open-front divine robe** with dramatic cleavage, plus the **vine crown** and voluptuous curves. At 64px, the open emerald V-shape of the robe front against her pale torso is unmistakable — instantly reads "divine goddess."
 
 #### Wardrobe Breakdown
 
-- **Robe**: Woven from living leaves and silver thread — the leaves are still growing, still slightly moving
-- **Crown**: Living vine crown that sprouts small white flowers that bloom and wilt on a slow cycle
-- **Hands**: Clasped in prayer or extended in blessing. Bark-like texture on the backs of her hands
-- **Skin**: Semi-translucent, with green bioluminescent veins visible beneath
-- **Feet**: Bare, with roots extending into the ground (she is literally rooted when standing still)
+- **Robe**: Flowing emerald-green divine robe, open at the front from neck to waist (cleavage + stomach exposed), split at both hips with side-slits up to the waist. Long draped sleeves flow to her wrists
+- **Trim**: Delicate golden thread embroidery and small living leaves along every edge of the robe
+- **Belt**: Thin golden cord loosely tied at the waist, holding the robe panels in place without fully closing them
+- **Crown**: Living vine crown with small white flowers that bloom and wilt on a slow cycle
+- **Vine wraps**: Living vines wrap around her forearms and one thigh (organic jewelry)
+- **Feet**: Bare, with roots extending into the ground when she stands still
+
+#### Body
+
+- Tall voluptuous divine figure (goddess build)
+- Huge breasts with deep cleavage visible through the open robe
+- Wide womanly hips, big ass, long curvy legs
+- Semi-translucent fair skin with green bioluminescent veins visible beneath
+- Glowing emerald mystic nature symbols traced across her chest, stomach, hips, arms, and thighs (more skin visible = more symbols visible)
 
 #### Prompt Base
 
 ```
-portrait of ancient priestess of Gaia earth mother, long emerald green
-hair flowing like vines, glowing bioluminescent green eyes, ethereal
-semi-translucent woman with green veins visible, robe woven from living
-leaves and silver thread still growing, vine crown with small white
-flowers blooming, bark-textured hands clasped in prayer, roots extending
-from bare feet, soft green bioluminescent aura, ancient tree roots and
-temple columns behind her
+Smooth skinned ethereal priestess of Gaia goddess with long emerald-green
+hair flowing like living vines, glowing bioluminescent green eyes,
+wearing a flowing emerald-green divine robe that opens dramatically at
+the front from neck to waist revealing deep cleavage and bare stomach,
+robe split at both hips with side-slits showing bare thighs, trimmed
+with delicate golden thread and living leaves along the edges, long
+draped sleeves, thin golden cord belt loosely tied at the waist, vine
+crown with small white flowers blooming, living vines wrapping around
+her forearms. Her body features: tall voluptuous divine figure, huge
+breasts with deep cleavage, wide womanly hips and big ass, long curvy
+legs, semi-translucent fair skin with green veins beneath, glowing
+emerald mystic nature symbols across her chest stomach hips arms and
+thighs, dim green bioluminescent particles float around her. She has
+a serene ageless face, golden divine aura.
+(serene peaceful expression:0.3), softly glowing wise eyes, looking at
+viewer, cowboy shot,
+white background,
+masterpiece, best quality, highest quality, intricate details
 ```
 
 #### Mood Variations
 
-- `neutral`: Serene, hands clasped, eyes softly glowing, small flowers blooming
-- `happy`: Benevolent smile, leaves rustle and new buds appear, aura brightens
+- `neutral`: Serene, hands clasped in blessing gesture, small flowers blooming, robe draping beautifully
+- `happy`: Benevolent smile, leaves rustle and new buds appear, golden aura brightens, robe shimmers
 - `sad`: Flowers wilting in crown, head bowed, leaves curling, glow dimming
-- `angry`: Thorns sprout from vines, stern green-blazing eyes, roots cracking stone
-- `surprised`: Leaves scatter, eyes wide, flowers burst into sudden bloom
+- `angry`: Thorns sprout from vines, stern green-blazing eyes, roots cracking stone, aura flaring
+- `surprised`: Leaves scatter, eyes wide, flowers burst into sudden bloom, robe flaring
 - `seductive`: NOT NEEDED (NPC, reuse neutral)
 
 #### LoRA Training Anchors
 
-`darkolympus_priestess` — emerald hair-vines, glowing green eyes, leaf-and-silver robe, vine crown with white flowers, semi-translucent skin, root-feet
+`darkolympus_priestess` — emerald hair-vines, glowing green eyes, open-front divine robe with golden trim, vine crown with white flowers, voluptuous goddess body, huge breasts, big ass, visible cleavage and stomach, green symbols on exposed skin, golden cord belt, root-feet
 
 ---
 
