@@ -786,7 +786,7 @@ The **messy bun** and the **cream apron** over russet. At 64px, the warm round s
 - **Apron**: Cream-colored, well-worn, wine and grease stained, cinched tight at the waist with a leather sash that emphasizes her hourglass figure
 - **Skirt**: Short dark-brown wool skirt hiked above the knees showing her thighs, with deep pockets
 - **Shoes**: Sturdy scuffed leather ankle boots — she's on her feet all day
-- **Accessories**: Small bronze key on a leather cord nestled between her breasts (the tavern cellar key — it was her mother's)
+- **Accessories**: None — she keeps the tavern cellar key (her mother's) tucked into her apron pocket, not worn visibly
 - **Hands**: Strong, calloused, warm — always carrying something (mug, bottle, towel)
 
 #### Hair & Face
@@ -814,8 +814,7 @@ plunging neckline deep cleavage laced up the front with a half-undone
 leather cord, sleeves pushed off both shoulders showing collarbones,
 cream well-worn stained apron cinched tight at waist with leather sash
 emphasizing hourglass figure, short dark-brown skirt hiked above the
-knees, sturdy scuffed leather ankle boots, small bronze key nestled
-between her breasts on leather cord, huge breasts with deep cleavage,
+knees, sturdy scuffed leather ankle boots, huge breasts with deep cleavage,
 wide hips, thick thighs, fading orange-amber mystic hearth-flame
 symbols on forearms and chest, warm amber hearth-glow particles.
 (sultry knowing grin:0.5), warm inviting half-lidded eyes, looking at
@@ -835,7 +834,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### LoRA Training Anchors
 
-`darkolympus_lyra` — auburn loose messy bun with wooden pin, honey-brown crinkled eyes, ruddy flushed cheeks, freckles, voluptuous curvy body, huge breasts with deep cleavage, low-cut laced russet blouse off-shoulder, cream cinched apron, short hiked skirt, thick thighs, leather ankle boots, bronze key between breasts, hearth glow
+`darkolympus_lyra` — auburn loose messy bun with wooden pin, honey-brown crinkled eyes, ruddy flushed cheeks, freckles, voluptuous curvy body, huge breasts with deep cleavage, low-cut laced russet blouse off-shoulder, cream cinched apron, short hiked skirt, thick thighs, leather ankle boots, hearth glow
 
 ---
 

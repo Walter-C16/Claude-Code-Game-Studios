@@ -318,8 +318,7 @@ with a leather cord half-undone, puffy sleeves pushed off both
 shoulders revealing collarbones, cream well-worn stained apron cinched
 tight at her waist with a leather sash emphasizing her hourglass
 figure. Her body features: voluptuous curvy build, huge breasts with
-deep visible cleavage, wide womanly hips, small bronze key on a leather
-cord nestled between her breasts, fading warm orange-amber mystic
+deep visible cleavage, wide womanly hips, fading warm orange-amber mystic
 hearth-flame symbols along her forearms and across her chest, dim warm
 amber hearth-glow particles softly emanate around her. She has ruddy
 flushed cheeks and nose, faint freckles on nose bridge, warm tan skin
@@ -665,8 +664,7 @@ tight at her waist with a leather sash emphasizing her hourglass
 figure, short dark-brown wool skirt hiked up above her knees showing
 her thighs, sturdy scuffed leather ankle boots. Her body features:
 voluptuous curvy build, huge breasts with deep visible cleavage, wide
-womanly hips, thick thighs, small bronze key on a leather cord nestled
-between her breasts, fading warm orange-amber mystic hearth-flame
+womanly hips, thick thighs, fading warm orange-amber mystic hearth-flame
 symbols along her forearms and across her chest, dim warm amber
 hearth-glow particles softly emanate around her. She has ruddy flushed
 cheeks and nose, faint freckles, warm tan skin with a light sheen of
