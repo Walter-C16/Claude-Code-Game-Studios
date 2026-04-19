@@ -177,13 +177,14 @@ masterpiece, best quality, highest quality, intricate details
 ### Daphne — Cowboy Shot (6 images)
 
 ```
-Smooth skinned shy young forest nymph herbalist with soft green
-shoulder-length wavy hair with small leaves and a white flower tangled
-in it, warm moss-gold eyes, wearing simple cream linen dress with
-hand-embroidered wildflower patterns at the hem, sage-green herb-stained
-apron with oversized pockets. Her body features: petite gentle build,
-small breasts, dirt under her nails and herb-stained green fingertips,
-fading soft green mystic leaf symbols along her forearms, dim golden
+Smooth skinned shy forest nymph herbalist adult young woman with soft
+green shoulder-length wavy hair with small leaves and a white flower
+tangled in it, warm moss-gold eyes, wearing a simple cream linen dress
+with hand-embroidered wildflower patterns at the neckline and hem,
+sage-green herb-stained apron with oversized pockets tied at her waist.
+Her body features: mature feminine build, big breasts, wide hips, dirt
+under her nails and herb-stained green fingertips, fading soft green
+mystic leaf symbols along her forearms and collarbones, dim golden
 pollen particles drift lazily around her. She has a spray of freckles
 across her nose and cheeks, pink-flushed fair skin.
 (shy half-smile:0.3), gentle downcast warm eyes, looking at viewer,
@@ -556,17 +557,19 @@ masterpiece, best quality, highest quality, intricate details
 ### Daphne — Full Body
 
 ```
-Smooth skinned shy young forest nymph herbalist with soft green
-shoulder-length wavy hair with small leaves and a white flower tangled
-in it, warm moss-gold eyes, wearing simple cream linen dress with
-hand-embroidered wildflower patterns at the hem reaching mid-calf,
-sage-green herb-stained apron with oversized pockets, woven wicker
-basket overflowing with herbs on left hip, bare feet with grass stains
-and earth between toes. Her body features: petite gentle build, small
-breasts, dirt under nails and herb-stained green fingertips, fading
-soft green mystic leaf symbols along her forearms, dim golden pollen
-particles drift lazily around her. She has a spray of freckles across
-her nose and cheeks, pink-flushed fair skin.
+Smooth skinned shy forest nymph herbalist adult young woman with soft
+green shoulder-length wavy hair with small leaves and a white flower
+tangled in it, warm moss-gold eyes, wearing a simple cream linen dress
+with hand-embroidered wildflower patterns at the hem reaching mid-calf
+and at the neckline, sage-green herb-stained apron with oversized
+pockets tied at her waist, woven wicker basket overflowing with herbs
+on her left hip, bare feet with grass stains and earth between toes.
+Her body features: mature feminine build, big breasts, wide hips, long
+shapely legs, dirt under nails and herb-stained green fingertips,
+fading soft green mystic leaf symbols along her forearms and
+collarbones, dim golden pollen particles drift lazily around her. She
+has a spray of freckles across her nose and cheeks, pink-flushed fair
+skin.
 (shy half-smile:0.3), gentle downcast warm eyes, looking at viewer,
 full body shot, standing pose, bare feet visible,
 white background,

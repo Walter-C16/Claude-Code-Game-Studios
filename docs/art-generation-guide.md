@@ -456,7 +456,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### Design DNA
 
-Daphne is **gentle wildness** — a forest nymph who'd rather tend her garden than talk to strangers. Her design is deliberately the most grounded and simple in the cast (B-rank = visual simplicity). She's approachable, warm, and a little messy — dirt under her nails, leaves in her hair, a shy smile that makes you want to protect her.
+Daphne is **gentle wildness** — an adult forest nymph who'd rather tend her garden than talk to strangers. Her design is deliberately the most grounded and simple in the cast (B-rank = visual simplicity). She's approachable, warm, and a little messy — dirt under her nails, leaves in her hair, a shy smile that's disarming precisely because it belongs to a grown woman, not a girl. Mature feminine figure, soft and curvy, but carried with the self-conscious posture of someone who still flinches at being noticed.
 
 #### Color Triangle
 
@@ -486,6 +486,7 @@ The **woven herb basket** on her left hip and the leaves tangled in her hair. At
 - **Expression baseline**: Gentle half-smile directed at the ground, avoiding direct eye contact
 - **Distinguishing mark**: A spray of freckles across her nose and cheeks, like scattered seeds
 - **Skin**: Fair with warm undertone, flushed pink at cheeks and nose tips
+- **Body**: Mature feminine build, big breasts, wide hips, long shapely legs — a grown woman's body carried with shy posture
 
 #### Element Expression
 
@@ -494,15 +495,21 @@ Pollen and seed motes drift lazily around her, especially concentrated near the 
 #### Prompt Base
 
 ```
-portrait of young shy forest nymph herbalist, soft green shoulder-length
-wavy hair with leaves and small white flower tangled in, large warm
-moss-gold eyes slightly downcast, spray of freckles across nose and
-cheeks, fair pink-flushed skin, gentle late teens girl, simple cream
-linen dress with hand-embroidered wildflower hem, sage green herb-stained
-apron with big pockets, woven wicker basket overflowing with fresh herbs
-on left hip, bare feet with grass stains and earth, dirt under nails,
-herb-stained green fingertips, lazy floating pollen motes, soft golden
-sunlit forest garden background
+Smooth skinned shy forest nymph herbalist adult young woman, soft green
+shoulder-length wavy hair with leaves and small white flower tangled
+in, large warm moss-gold eyes slightly downcast, spray of freckles
+across nose and cheeks, fair pink-flushed skin, simple cream linen
+dress with hand-embroidered wildflower neckline and hem, sage green
+herb-stained apron with big pockets tied at her waist, woven wicker
+basket overflowing with fresh herbs on left hip, bare feet with grass
+stains and earth, dirt under nails, herb-stained green fingertips,
+mature feminine build, big breasts, wide hips, long shapely legs,
+fading green mystic leaf symbols on forearms and collarbones, lazy
+floating pollen motes around her.
+(shy half-smile:0.3), gentle downcast warm eyes, looking at viewer,
+cowboy shot,
+white background,
+masterpiece, best quality, highest quality, intricate details
 ```
 
 #### Mood Variations
@@ -516,7 +523,7 @@ sunlit forest garden background
 
 #### LoRA Training Anchors
 
-`darkolympus_daphne` — soft green wavy hair with leaves, freckles, moss-gold eyes, cream dress with flower embroidery, sage apron, woven herb basket, bare grass-stained feet
+`darkolympus_daphne` — soft green wavy hair with leaves, freckles, moss-gold eyes, adult young woman, mature feminine figure, big breasts, wide hips, cream dress with flower embroidery, sage herb-stained apron, woven herb basket, bare grass-stained feet, green mystic forearm symbols
 
 ---
 
