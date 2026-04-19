@@ -680,6 +680,13 @@ underwater grotto with bioluminescent coral background
 
 **Role**: Buffer / Utility | **Element**: Neutral | **Rank**: B
 
+> ⚠️ **Generation warning**: Do NOT use the name "Echo" literally in the
+> positive prompt — anime checkpoints (Illustrious, Pony, etc.) interpret
+> it as the visual-effect concept of duplication/reflection and produce
+> doubled characters. Use `silenced bard` / `cursed nymph` in prompts
+> and reserve the name Echo for the LoRA trigger word only.
+> Add to negative: `2girls, duplicate, mirror image, reflection, twin`.
+
 #### Design DNA
 
 Echo is **silence made visible**. Cursed to only repeat others' words, her design is deliberately desaturated — she's the only character whose color palette is nearly monochrome. She exists in the gray space between. Her design tells her tragedy: the torn dress, the absence of an instrument (until her quest resolves), the silver mist that is her voice trying to escape.
@@ -720,16 +727,20 @@ Silver mist: the only Neutral-element character. Her ambient VFX is a faint silv
 #### Prompt Base
 
 ```
-portrait of haunting greek nymph cursed bard, very long near-black hair
-falling like a wet curtain partially covering right side of face, pale
-luminous silver-grey eyes too large for face, marble-pale skin with blue
-undertone, thin silver scar encircling her throat, hauntingly beautiful
-young woman early 20s, simple white linen shift dress torn at hem and
+Smooth skinned haunting silenced greek nymph young woman, solo, alone,
+single character, very long near-black straight hair falling partially
+over the right side of her face, pale luminous silver-grey eyes
+slightly too large for her face, marble-pale skin with blue undertone,
+thin silver scar encircling her throat, hauntingly beautiful young
+woman early 20s, simple white linen shift dress torn at hem and
 fraying, right shoulder slip revealing collarbone, bare dirty feet,
-mouth slightly open as if about to speak, hands reaching out empty,
-faint silver mist clinging to her feet, broken marble columns and
-forest ruins in moonlight background, desaturated nearly monochrome
-color palette
+mouth slightly open as if about to speak, faint silver mist clinging
+to her feet, fading silver sound-wave symbols on throat and collarbones,
+desaturated nearly monochrome color palette.
+(haunting silent expression:0.3), pleading luminous too-large eyes,
+looking at viewer, cowboy shot,
+white background,
+masterpiece, best quality, highest quality, intricate details
 ```
 
 #### Mood Variations
@@ -743,7 +754,7 @@ color palette
 
 #### LoRA Training Anchors
 
-`darkolympus_echo` — near-black hair curtain over right face, silver-grey eyes, throat scar ring, white torn shift, marble-pale skin, silver mist, broken columns, monochrome palette
+`darkolympus_silenced_bard` (NOT `darkolympus_echo` — avoid the word "echo" in the trigger since it causes duplicates in anime checkpoints) — near-black hair over right side of face, silver-grey luminous eyes, throat scar ring, white torn linen shift, marble-pale blue-undertone skin, silver mist at feet, silver sound-wave symbols on throat, solo single character, monochrome palette
 
 ---
 

@@ -11,8 +11,12 @@
 > ```
 > low quality, blurry, bad anatomy, extra limbs, text, watermark,
 > deformed eyes, flat eyes, dull eyes, poorly drawn eyes,
-> modern clothing, sci-fi
+> modern clothing, sci-fi,
+> 2girls, multiple people, duplicate, mirror image, reflection, twin,
+> cloned, double exposure
 > ```
+> The anti-duplicate tags are especially important for Echo (the
+> character name can trigger reflection/echo effects).
 
 ---
 
@@ -267,18 +271,24 @@ masterpiece, best quality, highest quality, intricate details
 
 ### Echo — Cowboy Shot (6 images)
 
+> **Negative additions for Echo**: `2girls, multiple people, duplicate,
+> mirror image, reflection, twin, cloned, double exposure, doppelganger`
+> — the character name "Echo" can trigger these concepts in anime
+> checkpoints. Trigger word in LoRA should be `darkolympus_silenced_bard`
+> to avoid the Echo -> duplicate interpretation.
+
 ```
-Smooth skinned haunting cursed greek nymph bard with very long
-near-black straight hair falling like a wet curtain partially covering
-the right side of her face, pale luminous silver-grey eyes that are
-slightly too large for her face, wearing a simple white linen shift
+Smooth skinned haunting silenced greek nymph young woman, solo, alone,
+single character, very long near-black straight hair falling partially
+over the right side of her face, pale luminous silver-grey eyes that
+are slightly too large for her face, wearing a simple white linen shift
 dress that is torn at the hem and fraying at the edges, one shoulder
-slipping revealing collarbone. Her body features: slender fragile
-build, small breasts, marble-pale skin with a blue undertone that is
-almost luminous, fading silver mystic sound-wave symbols faintly tracing
-along her throat and collarbones, dim silver mist particles cling
-around her feet. She has a thin silver scar encircling her throat,
-mouth slightly open as if about to speak.
+slipping revealing collarbone. Her body features: slender fragile build,
+small breasts, marble-pale skin with a blue undertone that is almost
+luminous, fading silver mystic sound-wave symbols faintly tracing along
+her throat and collarbones, dim silver mist particles cling around her
+feet. She has a thin silver scar encircling her throat, mouth slightly
+open as if about to speak.
 (haunting silent expression:0.3), pleading luminous too-large eyes,
 looking at viewer, cowboy shot,
 white background,
@@ -618,17 +628,17 @@ masterpiece, best quality, highest quality, intricate details
 ### Echo — Full Body
 
 ```
-Smooth skinned haunting cursed greek nymph bard with very long
-near-black straight hair falling like a wet curtain partially covering
-the right side of her face, pale luminous silver-grey eyes that are
-slightly too large for her face, wearing a simple white linen shift
+Smooth skinned haunting silenced greek nymph young woman, solo, alone,
+single character, very long near-black straight hair falling partially
+over the right side of her face, pale luminous silver-grey eyes that
+are slightly too large for her face, wearing a simple white linen shift
 dress that is torn at the hem and fraying at the edges reaching to
-mid-calf, one shoulder slipping revealing collarbone, bare dirty feet
-that leave no footprints. Her body features: slender fragile build,
-small breasts, marble-pale skin with a blue undertone, fading silver
-mystic sound-wave symbols faintly tracing along her throat and
-collarbones, dim silver mist particles cling around her feet. She has
-a thin silver scar encircling her throat.
+mid-calf, one shoulder slipping revealing collarbone, bare dirty feet.
+Her body features: slender fragile build, small breasts, marble-pale
+skin with a blue undertone, fading silver mystic sound-wave symbols
+faintly tracing along her throat and collarbones, dim silver mist
+particles cling around her feet. She has a thin silver scar encircling
+her throat.
 (haunting silent expression:0.3), pleading luminous too-large eyes,
 looking at viewer, full body shot, standing pose, bare feet visible,
 white background,
