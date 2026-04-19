@@ -41,7 +41,8 @@ calves down to laced soft-leather mid-calf sandal-boots, battered
 quiver on back held by a single leather strap across her chest, small
 hunting knife at her hip. Her body features: big breasts, fading green
 mystic symbols on the backs of her hands, dim green magical particles
-drift around her. She has faint freckles.
+drift around her. She has pale fair skin with faint freckles across
+her nose and cheeks.
 (smile:0.3), melancholic eyes, looking at viewer, cowboy shot,
 white background,
 masterpiece, best quality, highest quality, intricate details
@@ -478,7 +479,8 @@ battered quiver on back held by a single leather strap across her
 chest, small hunting knife at her hip, simple dark green wool cape
 pinned at her left shoulder with a small bronze pin. Her body features:
 big breasts, fading green mystic symbols on the backs of her hands,
-dim green magical particles drift around her. She has faint freckles.
+dim green magical particles drift around her. She has pale fair skin
+with faint freckles across her nose and cheeks.
 (smile:0.3), melancholic eyes, looking at viewer, full body shot,
 standing pose, feet visible,
 white background,

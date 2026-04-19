@@ -111,7 +111,7 @@ The **recurve bow arc** rising above her right shoulder. Even at 64px, the bow's
 - **Eyes**: Sharp, almond-shaped, bright yellow iris with a faint inner glow like sunlight through leaves
 - **Expression baseline**: Watchful, slightly furrowed brow — she's always tracking something
 - **Distinguishing mark**: Faint freckles across her nose and cheeks
-- **Skin**: Sun-kissed, warm olive tone with a faint silver moonlight glow on exposed surfaces
+- **Skin**: Pale, fair, moon-pale tone — she hunts at night and avoids the sun; faint silver moonlight glow on exposed surfaces
 
 #### Element Expression
 
@@ -131,7 +131,7 @@ across her chest, small hunting knife at her hip, simple dark-green
 wool cape pinned at her left shoulder with a small bronze pin. Her
 body features: big breasts, fading green mystic symbols on the backs
 of her hands, dim green magical particles drift around her. She has
-faint freckles.
+pale fair skin with faint freckles across her nose and cheeks.
 (smile:0.3), melancholic eyes, looking at viewer, cowboy shot,
 white background,
 masterpiece, best quality, highest quality, intricate details
@@ -148,7 +148,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### LoRA Training Anchors
 
-`darkolympus_artemis` — platinum-blonde twin braids, yellow eyes, freckles, forest-green long-sleeve linen tunic, rawhide-laced leather chest piece, leather forearm wraps, leather leg wraps, soft-leather sandal-boots, braided cord belt, battered quiver, wool cape pinned at left shoulder, green mystic hand symbols, green particles
+`darkolympus_artemis` — platinum-blonde twin braids, yellow eyes, pale fair skin, freckles, forest-green long-sleeve linen tunic, rawhide-laced leather chest piece, leather forearm wraps, leather leg wraps, soft-leather sandal-boots, braided cord belt, battered quiver, wool cape pinned at left shoulder, green mystic hand symbols, green particles
 
 ---
 
