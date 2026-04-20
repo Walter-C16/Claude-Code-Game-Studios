@@ -1016,71 +1016,47 @@ masterpiece, best quality, highest quality, intricate details
 
 ### 3.13 Kostas — Fisherwoman (Dialogue NPC, future romance)
 
-> *"Fish don't care about gods. That's why I like them — and why I'll out-fish you every time, kid."*
+> *"Fish don't care about gods. That's why I like them."*
 
-**Role**: Dialogue NPC, future romance via fishing minigame | **Type**: dialogue NPC
+**Role**: Dialogue NPC with future romance arc via fishing minigame | **Type**: dialogue NPC
 **Note**: Only cowboy shot needed — no full body (dialogue-only character).
 
 #### Design DNA
 
-Kostas is **the world before it broke**. A weathered fisherwoman who survived the fall of the gods by not caring about the gods, she's the realest person in the cast — no magic, no glow, no divine anything. Salt-wind chapped and sun-tanned, she's grounded, confident, and flirts by insulting your fishing technique. Her romance arc is earned the way she earns everything else: by beating her at the one thing she's good at. Think "tomboy sailor who can out-drink you and is hotter than you'd expect under the weathered exterior."
+Kostas is **the world before it broke**. A weathered fisherwoman who survived the fall of the gods by not caring about the gods. Her design is entirely mundane — no magic, no glow, no divine anything. She's the realest person in the game, and that grounds the entire cast. Future romance arc unlocks after beating her at fishing.
 
 #### Color Triangle
 
 | Role | Color | Hex | Where |
 |------|-------|-----|-------|
-| Dominant | Sea-blue linen | `#4A6580` | Tunic |
-| Complement | Sun-bleached honey | `#C8A060` | Hair, rope belt, flask |
-| Accent | Silver fish-hook | `#B0B8C0` | Earring, hook scar, fish-hook details |
-
-#### Wardrobe Breakdown
-
-- **Tunic**: Sleeveless sea-blue linen tunic with a low V-neckline (shows some cleavage), tied at the waist with a thick braided rope belt
-- **Trousers**: Rolled-up canvas trousers to mid-calf — practical, not flattering, but they hug her hips
-- **Earring**: Silver fish-hook earring in her left ear (made it herself from a broken hook)
-- **Flask**: Small brass flask clipped to her rope belt (she shares if she likes you)
-- **Scars**: Small silver fishing-hook scar on her right forearm
-- **Fishing rod**: Wooden rod slung over her shoulder when walking (prop, optional)
-
-#### Hair & Face
-
-- **Hair**: Sun-bleached honey-blonde in a practical low ponytail, loose strands falling around her face
-- **Eyes**: Sharp weathered hazel, crinkled at the corners from squinting at bright water
-- **Expression baseline**: Confident crooked grin, chin slightly raised, assessing you
-- **Distinguishing marks**: Spray of freckles across sun-tanned nose and cheeks, chapped lips from salt wind
-- **Skin**: Deeply sun-tanned, weathered but attractive
-- **Body**: Strong athletic build, big breasts with V-neck cleavage, toned muscular arms from hauling nets, functional not fragile
+| Dominant | Sun-bleached tan | `#B8A080` | Skin, hat, linen |
+| Complement | River-water grey | `#7A8088` | Vest, rod |
+| Accent | Brass warm | `#C0943C` | Buckle, flask, fish scales |
 
 #### Prompt Base
 
 ```
-Smooth skinned weathered greek fisherwoman adult woman, sun-bleached
-honey-blonde hair in practical low ponytail with loose strands around
-face, sharp weathered hazel eyes crinkled at the corners, sleeveless
-sea-blue linen tunic with low V-neckline tied at waist with thick rope
-belt, rolled-up canvas trousers to mid-calf, small silver fish-hook
-earring in left ear, strong athletic tanned build, big breasts with
-some visible cleavage, toned muscular arms, small silver fishing-hook
-scar on right forearm, small brass flask clipped to rope belt, spray
-of freckles across sun-tanned nose and cheeks, chapped lips.
-(confident crooked grin:0.4), sharp challenging eyes, looking at
-viewer, cowboy shot,
-white background,
-masterpiece, best quality, highest quality, intricate details
+Weathered fisherwoman, deeply tanned sun-wrinkled face, kind crinkled
+eyes, patched wide-brimmed straw hat with fishing hook stuck in brim,
+sleeveless rough linen shirt with sweat stains, worn leather vest with
+brass buckle, wooden fishing rod over right shoulder with dangling
+line, missing front tooth visible in easy grin, small brass hip flask,
+thick calloused hands with fishing scars, river bank with morning mist
+and reeds background
 ```
 
 #### Mood Variations
 
-- `neutral`: Confident crooked grin, challenging eyes, rod over shoulder
-- `happy`: Full laugh head tilted back, crinkled bright eyes
-- `sad`: Tight-lipped, staring at water, melancholy
-- `angry`: Sharp scowl, narrowed fierce eyes
-- `surprised`: Parted lips, wide startled eyes, eyebrows up
-- `seductive`: Slow teasing smirk, half-lidded knowing eyes (future romance unlock)
+- `neutral`: Squinting at the water, rod over shoulder, easy grin
+- `happy`: Belly laugh head thrown back, holding up a fish proudly, missing tooth on display
+- `sad`: Staring at the empty river, line slack, no grin
+- `angry`: Shaking fist at the sky, hat askew (she's yelling at a god)
+- `surprised`: Rod bending hard, both hands on it, eyes wide — something big
+- `seductive`: NOT NEEDED (current) — reserved for future romance arc
 
 #### LoRA Training Anchors
 
-`darkolympus_kostas` — sun-bleached honey-blonde low ponytail, weathered hazel eyes, freckles and sun-tan, sea-blue V-neck linen tunic, rope belt, rolled canvas trousers, silver fish-hook earring, strong athletic tanned body, big breasts V-neck cleavage, toned arms, fishing-hook forearm scar
+`darkolympus_kostas` — weathered fisherwoman, patched straw hat with hook, missing tooth, leather vest brass buckle, wooden fishing rod, river mist
 
 ---
 

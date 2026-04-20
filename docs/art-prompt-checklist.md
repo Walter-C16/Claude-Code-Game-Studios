@@ -418,41 +418,28 @@ masterpiece, best quality, highest quality, intricate details
 
 ---
 
-### Kostas — Cowboy Shot (6 images — dialogue + future romance)
-
-> **Role**: Dialogue NPC with future romance arc via fishing minigame.
-> Once the player beats her in fishing competitions, intimacy scenes
-> unlock. Confident tomboy sailor energy — she's grounded, salty, and
-> does not suffer fools.
+### Kostas — Cowboy Shot (5 images — dialogue-only NPC, future romance arc via fishing minigame)
 
 ```
-Smooth skinned weathered greek fisherwoman adult woman with
-sun-bleached honey-blonde hair in a practical low ponytail with loose
-strands falling around her face, sharp weathered hazel eyes crinkled
-at the corners from years of squinting at bright water, wearing a
-sleeveless sea-blue linen tunic with a low V-neckline tied at the
-waist with a thick rope belt, rolled-up canvas trousers to her
-mid-calves, small silver fish-hook earring in her left ear. Her body
-features: strong athletic tanned build, big breasts with some visible
-cleavage from the V-neck, toned muscular arms from hauling nets, small
-silver fishing-hook scar on her right forearm, deeply sun-tanned
-weathered skin, a small brass flask clipped to her rope belt. She has
-a spray of freckles across her sun-tanned nose and cheeks, chapped
-lips from salt wind, a confident knowing smirk.
-(confident crooked grin:0.4), sharp challenging eyes, looking at
-viewer, cowboy shot,
+Weathered fisherwoman, deeply tanned sun-wrinkled face, kind crinkled
+eyes, wearing a patched wide-brimmed straw hat with a fishing hook
+stuck in the brim, sleeveless rough linen shirt with sweat stains,
+worn leather vest with brass buckle, wooden fishing rod over right
+shoulder with dangling line. Her features: stocky weathered build,
+thick calloused hands with fishing scars, a small brass hip flask at
+her belt, missing front tooth.
+(easy grin:0.4), kind squinting eyes, looking at viewer, cowboy shot,
 white background,
 masterpiece, best quality, highest quality, intricate details
 ```
 
 | Mood | Replace expression line with |
 |------|------------------------------|
-| `neutral` | `(confident crooked grin:0.4), sharp challenging eyes, looking at viewer, cowboy shot,` |
-| `happy` | `(full laugh:0.7), crinkled bright eyes, head tilted back, cowboy shot,` |
-| `sad` | `(tight-lipped expression:0.3), distant melancholy eyes looking at water, cowboy shot,` |
-| `angry` | `(sharp scowl:0.6), fierce narrowed eyes, looking at viewer, cowboy shot,` |
-| `surprised` | `(parted lips:0.5), wide startled eyes, eyebrows raised, cowboy shot,` |
-| `seductive` | `(slow teasing smirk:0.5), half-lidded knowing eyes, looking at viewer, cowboy shot,` |
+| `neutral` | `(easy grin:0.4), kind squinting eyes, looking at viewer, cowboy shot,` |
+| `happy` | `(belly laugh:0.8), eyes squeezed shut head thrown back, cowboy shot,` |
+| `sad` | `(closed mouth:0.3), distant tired eyes looking at water, cowboy shot,` |
+| `angry` | `(grumpy scowl:0.5), fierce squinting eyes, looking up at sky, cowboy shot,` |
+| `surprised` | `(wide open mouth:0.6), shocked wide eyes, cowboy shot,` |
 
 ---
 
@@ -997,7 +984,7 @@ Path: `assets/vfx/{effect_id}.png` | **Total: 8 images**
 
 | Category | Count |
 |----------|-------|
-| Companion portraits — cowboy shot (moods) | 76 |
+| Companion portraits — cowboy shot (moods) | 75 |
 | Companion portraits — full body (12 chars, Kostas+Thalos excluded) | 12 |
 | LoRA training angles (7/char x 12) | 84 |
 | Enemy portraits | 6 |
@@ -1006,4 +993,4 @@ Path: `assets/vfx/{effect_id}.png` | **Total: 8 images**
 | UI icons | 13 |
 | Combat cards | 53 |
 | VFX sprites | 8 |
-| **TOTAL** | **289** |
+| **TOTAL** | **288** |
