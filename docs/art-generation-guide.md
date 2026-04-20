@@ -467,7 +467,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### Design DNA
 
-Daphne is **gentle wildness** — an adult forest nymph who'd rather tend her garden than talk to strangers. Her design is deliberately the most grounded and simple in the cast (B-rank = visual simplicity). She's approachable, warm, and a little messy — dirt under her nails, leaves in her hair, a shy smile that's disarming precisely because it belongs to a grown woman, not a girl. Mature feminine figure, soft and curvy, but carried with the self-conscious posture of someone who still flinches at being noticed.
+Daphne is **gentle wildness** — an adult forest nymph who'd rather tend her garden than talk to strangers. Her design is grounded and warm but quietly provocative: a low-cut sundress with thin straps slipping off one shoulder, a short apron tied high under her chest pushing her breasts up, a bare midriff between the apron and dress, bare feet in the grass. She doesn't dress this way to seduce anyone — she lives alone in the woods and the dress is comfortable and cool. She's approachable, warm, and a little messy — dirt under her nails, leaves in her hair, a shy smile that's disarming precisely because it belongs to a voluptuous grown woman who still flinches at being noticed.
 
 #### Color Triangle
 
@@ -483,12 +483,13 @@ The **woven herb basket** on her left hip and the leaves tangled in her hair. At
 
 #### Wardrobe Breakdown
 
-- **Dress**: Simple cream linen shift with hand-embroidered wildflower patterns at the hem — the embroidery is slightly uneven (she did it herself)
-- **Apron**: Loose sage-green apron with oversized pockets, stained with grass and herb juices
-- **Hair accessories**: 3-4 leaves and a small white flower naturally tangled in (not placed — they just accumulate as she works)
-- **Basket**: Woven wicker basket always at her left hip, overflowing with fresh herbs, tied with twine to an apron strap
+- **Dress**: Low-cut cream linen sundress with thin shoulder straps and a plunging neckline showing deep cleavage, hand-embroidered wildflower patterns at the low neckline and hem, hem hiked above the knees showing thick thighs. The right strap always slips off her shoulder
+- **Apron**: Short sage-green apron tied loosely just under her chest with a thin leather cord — it pushes her breasts up and leaves a bare midriff visible between the apron and dress waist
+- **Flower crown**: A small crown of wildflowers woven into her hair (she weaves them while she works)
+- **Hair accessories**: 3-4 leaves and a small white flower naturally tangled in (not placed — they just accumulate)
+- **Basket**: Woven wicker basket always at her left hip, overflowing with fresh herbs
 - **Feet**: Bare, with grass stains between the toes and earth around the nails
-- **Hands**: Small, gentle, with dirt under the nails and herb-stained fingertips (green-yellow)
+- **Hands**: Gentle, with dirt under the nails and herb-stained fingertips (green-yellow)
 
 #### Hair & Face
 
@@ -497,7 +498,7 @@ The **woven herb basket** on her left hip and the leaves tangled in her hair. At
 - **Expression baseline**: Gentle half-smile directed at the ground, avoiding direct eye contact
 - **Distinguishing mark**: A spray of freckles across her nose and cheeks, like scattered seeds
 - **Skin**: Fair with warm undertone, flushed pink at cheeks and nose tips
-- **Body**: Mature feminine build, big breasts, wide hips, long shapely legs — a grown woman's body carried with shy posture
+- **Body**: Mature feminine build, huge breasts with deep cleavage, wide womanly hips, soft curvy belly, thick shapely thighs — a grown woman's voluptuous body carried with shy posture
 
 #### Element Expression
 
@@ -508,15 +509,19 @@ Pollen and seed motes drift lazily around her, especially concentrated near the 
 ```
 Smooth skinned shy forest nymph herbalist adult young woman, soft green
 shoulder-length wavy hair with leaves and small white flower tangled
-in, large warm moss-gold eyes slightly downcast, spray of freckles
-across nose and cheeks, fair pink-flushed skin, simple cream linen
-dress with hand-embroidered wildflower neckline and hem, sage green
-herb-stained apron with big pockets tied at her waist, woven wicker
-basket overflowing with fresh herbs on left hip, bare feet with grass
-stains and earth, dirt under nails, herb-stained green fingertips,
-mature feminine build, big breasts, wide hips, long shapely legs,
-fading green mystic leaf symbols on forearms and collarbones, lazy
-floating pollen motes around her.
+in, small flower crown woven in her hair, large warm moss-gold eyes
+slightly downcast, spray of freckles across nose cheeks and
+collarbones, fair pink-flushed skin, low-cut cream linen sundress with
+thin shoulder straps and plunging neckline deep cleavage, dress
+slipping off right shoulder, hand-embroidered wildflower at neckline
+and hem, short sage-green herb-stained apron tied loosely just under
+her chest with thin leather cord pushing breasts up, bare midriff,
+woven wicker basket overflowing with fresh herbs on left hip, bare
+feet with grass stains and earth, dirt under nails herb-stained green
+fingertips, mature feminine build huge breasts deep cleavage wide
+hips soft belly thick shapely thighs, fading green mystic leaf symbols
+on forearms collarbones chest and stomach, lazy floating golden pollen
+motes around her.
 (shy half-smile:0.3), gentle downcast warm eyes, looking at viewer,
 cowboy shot,
 white background,
@@ -534,7 +539,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### LoRA Training Anchors
 
-`darkolympus_daphne` — soft green wavy hair with leaves, freckles, moss-gold eyes, adult young woman, mature feminine figure, big breasts, wide hips, cream dress with flower embroidery, sage herb-stained apron, woven herb basket, bare grass-stained feet, green mystic forearm symbols
+`darkolympus_daphne` — soft green wavy hair with leaves, small flower crown, freckles on nose cheeks and collarbones, moss-gold eyes, adult young woman, voluptuous mature figure (huge breasts deep cleavage, wide hips, soft belly, thick thighs), low-cut cream linen sundress with thin straps slipping off right shoulder, short sage herb-stained apron tied high under chest, bare midriff, woven herb basket at left hip, bare grass-stained feet, green mystic symbols on forearms collarbones chest and stomach, golden pollen motes
 
 ---
 
