@@ -151,6 +151,15 @@ func _make_tavern_card(tavern: Dictionary) -> Control:
 	diff_lbl.add_theme_font_size_override("font_size", 12)
 	info_row.add_child(diff_lbl)
 
+	# Rounds count — tournaments are 4 matches back-to-back.
+	var rounds_count: int = (tavern.get("rounds", []) as Array).size()
+	if rounds_count > 0:
+		var rounds_lbl: Label = Label.new()
+		rounds_lbl.text = "%d %s" % [rounds_count, Localization.get_text("TAVERN_ROUNDS_SUFFIX")]
+		rounds_lbl.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+		rounds_lbl.add_theme_font_size_override("font_size", 12)
+		info_row.add_child(rounds_lbl)
+
 	var elem_lbl: Label = Label.new()
 	elem_lbl.text = strong_element
 	elem_lbl.add_theme_color_override("font_color", _element_color(strong_element))
@@ -195,25 +204,52 @@ func _make_tavern_card(tavern: Dictionary) -> Control:
 # ── Tavern Launch ─────────────────────────────────────────────────────────────
 
 func _on_tavern_pressed(tavern: Dictionary) -> void:
-	var enemy_config: Dictionary = {
-		"name_key": tavern.get("name_key", "ENEMY_SARDIS_CARD_MASTER") as String,
-		"score_threshold": int(tavern.get("score_threshold", 70)),
-		"hands_allowed": int(tavern.get("hands_allowed", 4)),
-		"discards_allowed": int(tavern.get("discards_allowed", 4)),
-		"element": tavern.get("strong_element", "") as String,
-		"hp": int(tavern.get("score_threshold", 70)),
-	}
+	# Tournament: 4 rounds played back-to-back. The first round's enemy is
+	# pulled from rounds[0]; combat.gd handles advancing to round 2/3/4
+	# after each victory. A defeat in any round ends the tournament with
+	# no reward and marks the tavern as played for the day.
+	var rounds_raw: Array = tavern.get("rounds", []) as Array
+	if rounds_raw.is_empty():
+		push_warning("TavernMap: tavern %s has no rounds defined" % tavern.get("id", ""))
+		return
+	var rounds: Array[Dictionary] = []
+	for entry: Variant in rounds_raw:
+		if entry is Dictionary:
+			rounds.append(entry as Dictionary)
+
+	var first: Dictionary = rounds[0]
+	var enemy_config: Dictionary = _build_enemy_config(first)
+
 	var context: Dictionary = {
 		"enemy_config": enemy_config,
 		"captain_id": GameStore.get_last_captain_id(),
 		"tavern_id": tavern.get("id", "") as String,
 		"tavern_gold_reward": int(tavern.get("base_gold_reward", 0)),
+		"tavern_rounds": rounds,
+		"tavern_round_index": 0,
 	}
 	SceneManager.change_scene(
 		SceneManager.SceneId.COMBAT,
 		SceneManager.TransitionType.FADE,
 		context
 	)
+
+
+## Builds the per-round enemy config combat.gd expects. Looks up the
+## enemy's display name from EnemyRegistry so each round's portrait and
+## name reflect the actual opponent.
+func _build_enemy_config(round_data: Dictionary) -> Dictionary:
+	var enemy_id: String = round_data.get("enemy_id", "sardis_card_master") as String
+	var enemy_profile: Dictionary = EnemyRegistry.get_enemy(enemy_id)
+	var name_key: String = enemy_profile.get("name_key", "ENEMY_SARDIS_CARD_MASTER") as String
+	return {
+		"name_key": name_key,
+		"score_threshold": int(round_data.get("score_threshold", 70)),
+		"hands_allowed": int(round_data.get("hands_allowed", 4)),
+		"discards_allowed": int(round_data.get("discards_allowed", 4)),
+		"element": round_data.get("element", "") as String,
+		"hp": int(round_data.get("score_threshold", 70)),
+	}
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────

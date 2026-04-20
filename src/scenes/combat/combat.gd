@@ -88,7 +88,16 @@ var _enemy_config: Dictionary = {}
 var _tavern_id: String = ""
 
 ## Extra gold awarded on tournament victory (on top of VICTORY_GOLD_REWARD).
+## Only paid out after the FINAL round of the tournament is won.
 var _tavern_gold_reward: int = 0
+
+## Full list of round configs for this tournament. Each entry matches the
+## `rounds[]` schema from taverns.json. Empty for non-tournament combats.
+var _tavern_rounds: Array[Dictionary] = []
+
+## Zero-indexed current round within the tournament. 0 = first match,
+## size-1 = final. Ignored when _tavern_rounds is empty.
+var _tavern_round_index: int = 0
 
 ## Tracks the displayed score so the count-up animation knows its starting value.
 var _displayed_score: int = 0
@@ -122,6 +131,12 @@ func _ready() -> void:
 	# Tournament metadata — empty for non-tavern combats.
 	_tavern_id = ctx.get("tavern_id", "") as String
 	_tavern_gold_reward = int(ctx.get("tavern_gold_reward", 0))
+	_tavern_rounds = []
+	var rounds_raw: Array = ctx.get("tavern_rounds", []) as Array
+	for entry: Variant in rounds_raw:
+		if entry is Dictionary:
+			_tavern_rounds.append(entry as Dictionary)
+	_tavern_round_index = int(ctx.get("tavern_round_index", 0))
 
 	# Build enemy config — support both "enemy_config" dict and "enemy_id" string
 	if ctx.has("enemy_config"):
@@ -280,13 +295,20 @@ func _tween_hp_bar(target_value: float) -> void:
 	tween.tween_property(hp_bar, "value", target_value, HP_TWEEN_DURATION)
 
 
-## Updates the enemy name label from the arrival config.
+## Updates the enemy name label from the arrival config. During a tavern
+## tournament, prefixes the name with the current round indicator so the
+## player always knows how many matches are left.
 func _update_enemy_display() -> void:
 	var name_key: String = _enemy_config.get("name_key", "") as String
-	if name_key.is_empty():
-		enemy_name_label.text = "Enemy"
+	var base_name: String = "Enemy" if name_key.is_empty() else Localization.get_text(name_key)
+	if not _tavern_rounds.is_empty():
+		var round_prefix: String = Localization.get_text("TAVERN_ROUND_LABEL") % [
+			_tavern_round_index + 1,
+			_tavern_rounds.size(),
+		]
+		enemy_name_label.text = "%s  %s" % [round_prefix, base_name]
 	else:
-		enemy_name_label.text = Localization.get_text(name_key)
+		enemy_name_label.text = base_name
 
 
 ## Enables/disables PLAY and DISCARD buttons based on current selection and state.
@@ -448,8 +470,14 @@ func _on_victory_continue_pressed() -> void:
 	GameStore.add_gold(VICTORY_GOLD_REWARD)
 	GameStore.add_xp(VICTORY_XP_REWARD)
 
-	# Tournament combat — award extra daily gold and return to Tavern Map.
-	if not _tavern_id.is_empty():
+	# Tournament combat — either advance to the next round or, if this was
+	# the final round, award the tournament gold and return to Tavern Map.
+	if not _tavern_id.is_empty() and not _tavern_rounds.is_empty():
+		var next_index: int = _tavern_round_index + 1
+		if next_index < _tavern_rounds.size():
+			_launch_next_tavern_round(next_index)
+			return
+		# Final round cleared — full reward + daily lockout.
 		GameStore.add_gold(_tavern_gold_reward)
 		GameStore.mark_tavern_played(_tavern_id)
 		SceneManager.change_scene(SceneManager.SceneId.TAVERN_MAP)
@@ -538,7 +566,45 @@ func _on_defeat_retry_pressed() -> void:
 
 ## Called when the Defeat overlay's "Retreat" button is pressed.
 func _on_defeat_retreat_pressed() -> void:
+	# Forfeiting a tournament mid-tavern locks it for the day (no retries
+	# until tomorrow) and returns to the Tavern Map so the player can
+	# choose another tavern if one is unlocked.
+	if not _tavern_id.is_empty() and not _tavern_rounds.is_empty():
+		GameStore.mark_tavern_played(_tavern_id)
+		SceneManager.change_scene(SceneManager.SceneId.TAVERN_MAP)
+		return
 	SceneManager.change_scene(SceneManager.SceneId.HUB)
+
+
+## Relaunches the Combat scene with the next tournament round's enemy
+## config. Called from _on_victory_continue_pressed after a non-final
+## round is won. Keeps the same tavern metadata so the rewards accumulate
+## until the final round.
+func _launch_next_tavern_round(next_index: int) -> void:
+	var next_round: Dictionary = _tavern_rounds[next_index]
+	var enemy_id: String = next_round.get("enemy_id", "sardis_card_master") as String
+	var enemy_profile: Dictionary = EnemyRegistry.get_enemy(enemy_id)
+	var next_enemy_config: Dictionary = {
+		"name_key": enemy_profile.get("name_key", "ENEMY_SARDIS_CARD_MASTER") as String,
+		"score_threshold": int(next_round.get("score_threshold", 70)),
+		"hands_allowed": int(next_round.get("hands_allowed", 4)),
+		"discards_allowed": int(next_round.get("discards_allowed", 4)),
+		"element": next_round.get("element", "") as String,
+		"hp": int(next_round.get("score_threshold", 70)),
+	}
+	var context: Dictionary = {
+		"enemy_config": next_enemy_config,
+		"captain_id": GameStore.get_last_captain_id(),
+		"tavern_id": _tavern_id,
+		"tavern_gold_reward": _tavern_gold_reward,
+		"tavern_rounds": _tavern_rounds,
+		"tavern_round_index": next_index,
+	}
+	SceneManager.change_scene(
+		SceneManager.SceneId.COMBAT,
+		SceneManager.TransitionType.FADE,
+		context
+	)
 
 
 # ── CombatManager Signal Callbacks ────────────────────────────────────────────

@@ -9,11 +9,37 @@
       "unlock_flag": "ch01_tavern_done",
       "difficulty": 1,
       "strong_element": "Fire",
-      "score_threshold": 70,
-      "hands_allowed": 4,
-      "discards_allowed": 4,
       "base_gold_reward": 40,
-      "enemy_id": "sardis_card_master"
+      "rounds": [
+        {
+          "enemy_id": "tavern_drunk",
+          "score_threshold": 30,
+          "hands_allowed": 4,
+          "discards_allowed": 4,
+          "element": "Fire"
+        },
+        {
+          "enemy_id": "cave_bat",
+          "score_threshold": 40,
+          "hands_allowed": 4,
+          "discards_allowed": 3,
+          "element": "Water"
+        },
+        {
+          "enemy_id": "thunder_imp",
+          "score_threshold": 55,
+          "hands_allowed": 4,
+          "discards_allowed": 3,
+          "element": "Lightning"
+        },
+        {
+          "enemy_id": "sardis_card_master",
+          "score_threshold": 70,
+          "hands_allowed": 4,
+          "discards_allowed": 4,
+          "element": "Fire"
+        }
+      ]
     }
   ]
 }
