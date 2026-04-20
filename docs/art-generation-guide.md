@@ -306,7 +306,7 @@ library with storm-lit columns in background
 
 #### Design DNA
 
-Nyx is **the void given form**. She's the oldest being in the cast and it shows — her design is uncanny and otherworldly. Nothing about her is entirely solid: her hair floats independently, her robe dissolves into star-field at the edges, and her skin has a translucent quality as if she's projecting herself from somewhere else. She is hauntingly beautiful in a way that makes you uneasy.
+Nyx is **gothic cosmic seduction**. She's the oldest being in the cast, and over eons she's learned that mortal eyes respond to curves more readily than to incomprehensible divinity — so she wears a fitted star-field robe with a plunging front and high side-slits, opera gloves, a velvet choker, and violet-black lipstick. Underneath the gothic wardrobe is a voluptuous goddess body: huge breasts, impossibly wide hips, big round ass, thick thighs. She is hauntingly beautiful in a way that makes you uneasy AND drawn in. Think "gothic dominatrix primordial" — the void in black couture.
 
 #### Color Triangle
 
@@ -322,12 +322,14 @@ Nyx is **the void given form**. She's the oldest being in the cast and it shows 
 
 #### Wardrobe Breakdown
 
-- **Robe**: Floor-length black, but the fabric itself contains a moving star-field — tiny points of light drift across the surface like a planetarium projected on cloth. The hem dissolves into dark mist rather than ending cleanly
-- **Shoulders**: Bare, with faint blue-violet veins visible beneath translucent skin
+- **Robe**: Floor-length fitted black gothic robe with moving star-field fabric (tiny points of light drift across the surface). Opens at the front from neck to navel (deep cleavage + bare stomach). Split at both hips with high side-slits up to the waist showing thighs + big ass. Violet silk edge-trim. Long draped sleeves. Hem dissolves into dark mist
+- **Shoulders**: Bare and translucent, with faint blue-violet veins visible beneath
 - **Crown**: A crown of dark thorns (not metal — actual black crystallized thorns) nestled in her floating hair
-- **Hands**: Long pale fingers, slightly translucent, with dark-violet nail polish. A single black ring on her left index finger
-- **Feet**: Not visible — the robe pools into darkness at the ground. She may not have feet
-- **Jewelry**: None except the black ring. Nyx predates the concept of decoration
+- **Choker**: Black velvet choker with a small violet gem at her throat — gothic signature
+- **Gloves**: Lace-trimmed black opera gloves reaching above the elbows
+- **Hands**: Long pale fingers, slightly translucent, dark-violet nail polish, single black ring on left index finger
+- **Makeup**: Violet-black lipstick (gothic statement)
+- **Feet**: Bare but usually hidden by the mist at the robe's hem
 
 #### Hair & Face
 
@@ -336,6 +338,7 @@ Nyx is **the void given form**. She's the oldest being in the cast and it shows 
 - **Expression baseline**: Ancient unknowable calm — not cold, not warm, simply beyond mortal emotional register
 - **Distinguishing mark**: A single dark tear-track stain under her left eye, permanent, cosmic in color
 - **Skin**: Pale to the point of translucency, with a faint blue-silver luminescence. Veins visible on neck and collarbones
+- **Body**: Voluptuous gothic goddess figure — huge breasts with deep cleavage, impossibly wide curvy hips, big round ass, thick pale thighs, long curvy legs. The cosmic mystic symbols glow across chest, stomach, hips, thighs, and arms
 
 #### Element Expression
 
@@ -344,16 +347,24 @@ Star motes: dozens of tiny lights orbit her body slowly, congregating around her
 #### Prompt Base
 
 ```
-portrait of Nyx primordial goddess of night, midnight black to deep
-violet hair floating weightlessly in zero gravity with star points
-within it, galaxy eyes with no pupils just swirling violet cosmos,
-translucent pale luminescent skin with visible blue veins on neck,
-permanent dark cosmic tear track under left eye, ethereal ageless
-otherworldly woman, flowing black star-field robe with moving pinpoints
-of light on fabric, hem dissolving into dark mist, bare translucent
-shoulders, crown of black crystallized thorns in floating hair, single
-black ring on left index finger, orbiting star motes around body,
-cosmic void background with distant nebula
+Smooth skinned gothic primordial goddess of night, midnight black to
+deep violet hair floating weightlessly in zero gravity with star
+points within it, galaxy eyes with no pupils just swirling violet
+cosmos, translucent pale luminescent skin with visible blue veins,
+permanent dark cosmic tear track under left eye, violet-black
+lipstick, voluptuous gothic goddess figure huge breasts wide hips big
+round ass thick thighs, fitted flowing black star-field gothic robe
+open at the front from neck to navel revealing deep cleavage and
+stomach, split at both hips with high side-slits showing thighs and
+ass, violet silk edges, long draped sleeves, bare translucent
+shoulders, crown of black crystallized thorns, black velvet choker
+with violet gem, lace-trimmed black opera gloves above elbows, hem
+dissolving into dark mist, glowing violet cosmic mystic symbols across
+chest stomach hips thighs and arms, orbiting star motes.
+(distant enigmatic expression:0.3), ancient unknowable galaxy eyes,
+looking at viewer, cowboy shot,
+white background,
+masterpiece, best quality, highest quality, intricate details
 ```
 
 #### Mood Variations
@@ -367,7 +378,7 @@ cosmic void background with distant nebula
 
 #### LoRA Training Anchors
 
-`darkolympus_nyx` — floating black-violet hair, galaxy eyes, translucent pale skin, cosmic tear track, star-field robe, thorn crown, star motes, no feet visible
+`darkolympus_nyx` — floating black-violet hair, galaxy eyes, translucent pale skin, cosmic tear track, violet-black lipstick, voluptuous gothic goddess body (huge breasts, wide hips, big round ass, thick thighs), fitted star-field gothic robe open-front with high hip slits, black velvet choker with violet gem, black opera gloves, thorn crown, violet cosmic body symbols, star motes
 
 ---
 

@@ -119,17 +119,24 @@ masterpiece, best quality, highest quality, intricate details
 ### Nyx — Cowboy Shot (6 images)
 
 ```
-Smooth skinned ethereal primordial goddess of night with long flowing
+Smooth skinned gothic primordial goddess of night with long flowing
 midnight-black to deep-violet hair floating weightlessly, galaxy eyes
 with swirling violet cosmos and pinpoints of light instead of pupils,
-wearing flowing black star-field robe with tiny moving points of light
-on fabric, hem dissolving into dark mist, bare translucent shoulders,
-crown of black crystallized thorns in her floating hair. Her body
-features: ethereal otherworldly build, translucent pale luminescent skin
-with visible blue veins on neck and collarbones, fading deep violet
-cosmic mystic symbols along her arms, dim star-like particles orbit
-slowly around her. She has a permanent dark cosmic tear track under
-her left eye, single black ring on left index finger.
+wearing a fitted flowing black star-field gothic robe with tiny moving
+points of light on fabric that opens at the front from neck to navel
+revealing deep cleavage and pale stomach, trimmed with violet silk
+edges, long draped sleeves flowing to her wrists, bare translucent
+shoulders, crown of black crystallized thorns in her floating hair,
+black velvet choker with a small violet gem at her throat, lace-trimmed
+black opera gloves reaching above the elbows. Her body features:
+voluptuous gothic goddess figure, huge breasts with deep cleavage,
+impossibly wide curvy hips, big round ass emphasized by the fitted
+fabric, thick pale thighs, translucent pale luminescent skin with
+visible blue veins on neck and collarbones, glowing violet cosmic
+mystic symbols across her chest stomach and arms, dim star-like
+particles orbit slowly around her. She has a permanent dark cosmic
+tear track under her left eye, single black ring on left index finger,
+violet-black lipstick.
 (distant enigmatic expression:0.3), ancient unknowable galaxy eyes,
 looking at viewer, cowboy shot,
 white background,
@@ -527,17 +534,26 @@ masterpiece, best quality, highest quality, intricate details
 ### Nyx — Full Body
 
 ```
-Smooth skinned ethereal primordial goddess of night with long flowing
+Smooth skinned gothic primordial goddess of night with long flowing
 midnight-black to deep-violet hair floating weightlessly, galaxy eyes
 with swirling violet cosmos and pinpoints of light instead of pupils,
-wearing flowing black star-field robe with tiny moving points of light
-on fabric, hem dissolving into dark mist obscuring her feet, bare
-translucent shoulders, crown of black crystallized thorns in her
-floating hair. Her body features: ethereal otherworldly build,
-translucent pale luminescent skin with visible blue veins on neck and
-collarbones, fading deep violet cosmic mystic symbols along her arms,
-dim star-like particles orbit slowly around her. She has a permanent
-dark cosmic tear track under her left eye.
+wearing a fitted flowing black star-field gothic robe with tiny moving
+points of light on fabric that opens at the front from neck to navel
+revealing deep cleavage and pale stomach, robe split at both hips with
+high side-slits up to her waist showing her pale thighs and big round
+ass, trimmed with violet silk edges, long draped sleeves flowing to
+her wrists, bare translucent shoulders, crown of black crystallized
+thorns in her floating hair, black velvet choker with a small violet
+gem at her throat, lace-trimmed black opera gloves reaching above the
+elbows, hem dissolving into dark mist obscuring her bare feet. Her
+body features: voluptuous gothic goddess figure, huge breasts with
+deep cleavage, impossibly wide curvy hips, big round ass emphasized by
+the tight fabric, thick pale thighs, long curvy legs, translucent pale
+luminescent skin with visible blue veins on neck and collarbones,
+glowing violet cosmic mystic symbols across her chest stomach hips
+thighs and arms, dim star-like particles orbit slowly around her. She
+has a permanent dark cosmic tear track under her left eye,
+violet-black lipstick.
 (distant enigmatic expression:0.3), ancient unknowable galaxy eyes,
 looking at viewer, full body shot, standing floating pose,
 white background,
