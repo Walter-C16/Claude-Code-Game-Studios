@@ -13,10 +13,15 @@
 > deformed eyes, flat eyes, dull eyes, poorly drawn eyes,
 > modern clothing, sci-fi,
 > 2girls, multiple people, duplicate, mirror image, reflection, twin,
-> cloned, double exposure
+> cloned, double exposure,
+> wet, liquid drops, beer drops, mead drops, sweat drops,
+> wet body, wet breasts, wet skin, dripping liquid,
+> spilled drink, droplets on skin, water on body
 > ```
-> The anti-duplicate tags are especially important for Echo (the
-> character name can trigger reflection/echo effects).
+> - Anti-duplicate tags are especially important for Echo (the
+>   character name can trigger reflection/echo effects).
+> - Anti-wet tags are especially important for Lyra (tavern keywords
+>   can trigger beer drops on her body).
 
 ---
 
@@ -339,11 +344,11 @@ masterpiece, best quality, highest quality, intricate details
 
 ### Lyra — Cowboy Shot (6 images)
 
-> **Lyra negative additions**: `wet, liquid drops, beer drops, mead
-> drops, sweat drops, wet body, wet breasts, wet skin, dripping
-> liquid, spilled drink, droplets on skin, water on body` — tavern
-> keywords were triggering the AI to generate beer/mead drops on her
-> body. Skin should look warm and dry.
+> **Lyra-specific negative additions**: `necklace, chain, medallion,
+> pendant, jewelry, flame on chest, burning flame, fire on body,
+> fire in hand, floating fire` — the "hearth-flame symbols across
+> her chest" was generating literal flames or necklace-shapes on her.
+> Anti-wet tags are already in the global negative above.
 
 ```
 Smooth skinned warm greek tavern keeper barmaid with auburn-copper hair
@@ -356,9 +361,8 @@ shoulders revealing collarbones, cream well-worn apron with faint
 fabric stains cinched tight at her waist with a leather sash
 emphasizing her hourglass figure. Her body features: voluptuous curvy
 build, huge breasts with deep visible cleavage, wide womanly hips,
-fading warm orange-amber mystic hearth-flame symbols along her
-forearms and across her chest, dim warm amber hearth-glow particles
-softly emanate around her. She has ruddy flushed cheeks and nose,
+fading warm orange-amber mystic tattoo markings along her forearms
+only, subtle warm ambient amber glow around her hands. She has ruddy flushed cheeks and nose,
 faint freckles on nose bridge, warm tan matte dry skin, healthy warm
 complexion.
 (sultry knowing grin:0.5), warm inviting half-lidded eyes, looking at
@@ -730,9 +734,8 @@ emphasizing her hourglass figure, short dark-brown wool skirt hiked up
 above her knees showing her thighs, sturdy scuffed leather ankle
 boots. Her body features: voluptuous curvy build, huge breasts with
 deep visible cleavage, wide womanly hips, thick thighs, fading warm
-orange-amber mystic hearth-flame symbols along her forearms and across
-her chest, dim warm amber hearth-glow particles softly emanate around
-her. She has ruddy flushed cheeks and nose, faint freckles, warm tan
+orange-amber mystic tattoo markings along her forearms only, subtle
+warm ambient amber glow around her hands. She has ruddy flushed cheeks and nose, faint freckles, warm tan
 matte dry skin, healthy warm complexion.
 (open friendly grin:0.5), warm welcoming crinkled eyes, looking at
 viewer, full body shot, standing pose, feet visible,

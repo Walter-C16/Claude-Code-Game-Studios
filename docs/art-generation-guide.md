@@ -840,8 +840,8 @@ collarbones, cream well-worn apron with faint fabric stains cinched
 tight at waist with leather sash emphasizing hourglass figure, short
 dark-brown skirt hiked above the knees, sturdy scuffed leather ankle
 boots, huge breasts with deep cleavage, wide hips, thick thighs,
-fading orange-amber mystic hearth-flame symbols on forearms and chest,
-warm amber hearth-glow particles.
+fading orange-amber mystic tattoo markings on forearms only, subtle
+warm ambient amber glow around her hands.
 (sultry knowing grin:0.5), warm inviting half-lidded eyes, looking at
 viewer, cowboy shot,
 white background,
