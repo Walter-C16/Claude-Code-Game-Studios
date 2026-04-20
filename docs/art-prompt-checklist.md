@@ -20,7 +20,7 @@
 
 ---
 
-## 1. Companion Portraits — Cowboy Shot (768x1024, PNG)
+## 1. Companion Portraits — Cowboy Shot (832x1216, PNG)
 
 Path: `assets/images/companions/{id}/{id}_{mood}.png`
 Moods: `neutral`, `happy`, `sad`, `angry`, `surprised`, `seductive`
@@ -476,7 +476,7 @@ masterpiece, best quality, highest quality, intricate details
 
 ---
 
-## 2. Companion Portraits — Full Body (768x1024, PNG)
+## 2. Companion Portraits — Full Body (832x1216, PNG)
 
 Path: `assets/images/companions/{id}/{id}_full.png`
 
@@ -768,7 +768,7 @@ masterpiece, best quality, highest quality, intricate details
 
 ---
 
-## 3. LoRA Training Angles (768x1024, PNG, white background)
+## 3. LoRA Training Angles (832x1216, PNG, white background)
 
 Path: `assets/lora_training/{id}/{id}_{angle}.png`
 

@@ -65,7 +65,7 @@ S-rank characters have more visual complexity (floating elements, glow, elaborat
 
 ## 3. Companion Portraits
 
-**Dimensions**: 768x1024 (tall portrait, cropped to 430x600 display)
+**Dimensions**: 832x1216 (SDXL/Illustrious native portrait resolution, will be scaled to 430x600 display)
 **Format**: PNG with transparent background preferred
 **Output path**: `assets/images/companions/{id}/{id}_{mood}.png`
 **Moods per character**: `neutral`, `happy`, `sad`, `angry`, `surprised`, `seductive`
@@ -1393,7 +1393,7 @@ parchment background, painterly
 
 | Asset | Technique | Notes |
 |-------|-----------|-------|
-| Character sheet (1/companion) | Manual curation | Best of 20+ at 768x1024 |
+| Character sheet (1/companion) | Manual curation | Best of 20+ at 832x1216 |
 | Mood portraits (6/companion) | IPAdapter FaceID + img2img | Weight 0.8, denoise 0.4-0.55 on sheet |
 | Intimate CGs | Character LoRA + OpenPose ControlNet | Best outfit + face consistency |
 | Multi-character CGs | LoRA per char + Regional Prompter | One region per character |
