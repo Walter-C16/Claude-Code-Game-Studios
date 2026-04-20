@@ -862,7 +862,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### Design DNA
 
-Melina is **curiosity caged**. She's the sheltered adult daughter of Thalos, the village leader, and everything about her screams "I want to be anywhere but here." Her design is modest village clothing that she's subtly personalized — ink stains on her cuffs, a journal she never puts down, sandals worn thin from sneaking to the restricted section of the library. She's a young adult woman with a full feminine figure hidden under her father-approved modest dress — the contrast between the modest wardrobe and what's underneath is part of her quiet rebellion.
+Melina is **curiosity caged**. She's the sheltered adult daughter of Thalos, the village leader, and everything about her screams "I want to be anywhere but here." Her design is modest village clothing that she's subtly personalized — ink stains on her cuffs, a journal she never puts down, sandals worn thin from sneaking to the restricted section of the library. She's a slim adult woman with a bookish build — slender and delicate from years indoors with scrolls, not the voluptuous body of the goddesses. Her appeal is cerebral and quietly defiant, not physical.
 
 #### Color Triangle
 
@@ -893,7 +893,7 @@ Melina is **curiosity caged**. She's the sheltered adult daughter of Thalos, the
 - **Expression baseline**: Curious, slightly defiant, chin angled up despite being short
 - **Distinguishing mark**: Perpetual ink smudge on her right cheek (she rests her face on her writing hand)
 - **Skin**: Warm olive, soft — she hasn't spent years in the sun like Lyra or Hippolyta
-- **Body**: Mature feminine build, big breasts, wide hips, long shapely legs — hidden beneath the modest ankle-length dress
+- **Body**: Slim adult feminine build, small breasts, modest curves, slender figure, bookish posture — she's delicate, not voluptuous
 
 #### Element Expression
 
@@ -905,13 +905,14 @@ Very subtle. Pressed flowers in her journal occasionally glow faintly with green
 Smooth skinned greek village scholar adult young woman, warm chestnut
 brown twin braids to mid-chest with flyaway hairs, large warm brown
 doe eyes, ink smudge on right cheek, warm olive skin, curious defiant
-expression, mature feminine build big breasts wide hips, modest olive
-green ankle-length linen dress with rolled up sleeves revealing
-ink-stained forearms, cream undershirt at collar, worn brown leather
-journal clutched to chest bulging with pressed flowers and bookmarks,
-quill tucked behind right ear, worn-thin leather sandals, braided
-grass ring on left pinky, fading earth-gold mystic script symbols on
-forearms, dim golden-green motes near journal.
+expression, slim adult feminine build small breasts modest curves
+slender figure bookish posture, modest olive green ankle-length linen
+dress with rolled up sleeves revealing ink-stained forearms, cream
+undershirt at collar, worn brown leather journal clutched to chest
+bulging with pressed flowers and bookmarks, quill tucked behind right
+ear, worn-thin leather sandals, braided grass ring on left pinky,
+fading earth-gold mystic script symbols on forearms, dim golden-green
+motes near journal.
 (curious defiant expression:0.4), bright intelligent doe eyes, looking
 at viewer, cowboy shot,
 white background,
@@ -929,7 +930,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### LoRA Training Anchors
 
-`darkolympus_melina` — chestnut twin braids, doe eyes, ink smudge on right cheek, adult young woman mature feminine figure, big breasts wide hips, modest olive-green ankle dress, cream undershirt collar, ink-stained forearms, leather journal clutched to chest, quill behind right ear, grass ring on left pinky
+`darkolympus_melina` — chestnut twin braids, doe eyes, ink smudge on right cheek, slim adult young woman, small breasts, modest slender bookish figure, modest olive-green ankle dress, cream undershirt collar, ink-stained forearms, leather journal clutched to chest, quill behind right ear, grass ring on left pinky
 
 ---
 
@@ -1013,56 +1014,82 @@ masterpiece, best quality, highest quality, intricate details
 
 ---
 
-### 3.13 Old Kostas — Fisherman (Side NPC)
+### 3.13 Kostas — Fisherwoman (Dialogue NPC, future romance)
 
-> *"Fish don't care about gods. That's why I like them."*
+> *"Fish don't care about gods. That's why I like them — and why I'll out-fish you every time, kid."*
 
-**Role**: Side NPC (no combat, no romance) | **Type**: side_no_romance
+**Role**: Dialogue NPC, future romance via fishing minigame | **Type**: dialogue NPC
+**Note**: Only cowboy shot needed — no full body (dialogue-only character).
 
 #### Design DNA
 
-Kostas is **the world before it broke**. An old fisherman who survived the fall of the gods by not caring about the gods. His design is entirely mundane — no magic, no glow, no divine anything. He's the realest person in the game, and that grounds the entire cast.
+Kostas is **the world before it broke**. A weathered fisherwoman who survived the fall of the gods by not caring about the gods, she's the realest person in the cast — no magic, no glow, no divine anything. Salt-wind chapped and sun-tanned, she's grounded, confident, and flirts by insulting your fishing technique. Her romance arc is earned the way she earns everything else: by beating her at the one thing she's good at. Think "tomboy sailor who can out-drink you and is hotter than you'd expect under the weathered exterior."
 
 #### Color Triangle
 
 | Role | Color | Hex | Where |
 |------|-------|-----|-------|
-| Dominant | Sun-bleached tan | `#B8A080` | Skin, hat, linen |
-| Complement | River-water grey | `#7A8088` | Beard, vest, rod |
-| Accent | Brass warm | `#C0943C` | Buckle, flask, fish scales |
+| Dominant | Sea-blue linen | `#4A6580` | Tunic |
+| Complement | Sun-bleached honey | `#C8A060` | Hair, rope belt, flask |
+| Accent | Silver fish-hook | `#B0B8C0` | Earring, hook scar, fish-hook details |
+
+#### Wardrobe Breakdown
+
+- **Tunic**: Sleeveless sea-blue linen tunic with a low V-neckline (shows some cleavage), tied at the waist with a thick braided rope belt
+- **Trousers**: Rolled-up canvas trousers to mid-calf — practical, not flattering, but they hug her hips
+- **Earring**: Silver fish-hook earring in her left ear (made it herself from a broken hook)
+- **Flask**: Small brass flask clipped to her rope belt (she shares if she likes you)
+- **Scars**: Small silver fishing-hook scar on her right forearm
+- **Fishing rod**: Wooden rod slung over her shoulder when walking (prop, optional)
+
+#### Hair & Face
+
+- **Hair**: Sun-bleached honey-blonde in a practical low ponytail, loose strands falling around her face
+- **Eyes**: Sharp weathered hazel, crinkled at the corners from squinting at bright water
+- **Expression baseline**: Confident crooked grin, chin slightly raised, assessing you
+- **Distinguishing marks**: Spray of freckles across sun-tanned nose and cheeks, chapped lips from salt wind
+- **Skin**: Deeply sun-tanned, weathered but attractive
+- **Body**: Strong athletic build, big breasts with V-neck cleavage, toned muscular arms from hauling nets, functional not fragile
 
 #### Prompt Base
 
 ```
-portrait of old greek fisherman, bushy grey beard, deeply tanned and
-sun-wrinkled face with kind crinkled eyes, patched wide-brimmed straw
-hat with fishing hook stuck in brim, sleeveless rough linen shirt with
-sweat stains, worn leather vest with brass buckle, wooden fishing rod
-over right shoulder with dangling line, missing front tooth visible in
-easy grin, small brass hip flask, thick calloused hands with fishing
-scars, river bank with morning mist and reeds background
+Smooth skinned weathered greek fisherwoman adult woman, sun-bleached
+honey-blonde hair in practical low ponytail with loose strands around
+face, sharp weathered hazel eyes crinkled at the corners, sleeveless
+sea-blue linen tunic with low V-neckline tied at waist with thick rope
+belt, rolled-up canvas trousers to mid-calf, small silver fish-hook
+earring in left ear, strong athletic tanned build, big breasts with
+some visible cleavage, toned muscular arms, small silver fishing-hook
+scar on right forearm, small brass flask clipped to rope belt, spray
+of freckles across sun-tanned nose and cheeks, chapped lips.
+(confident crooked grin:0.4), sharp challenging eyes, looking at
+viewer, cowboy shot,
+white background,
+masterpiece, best quality, highest quality, intricate details
 ```
 
 #### Mood Variations
 
-- `neutral`: Squinting at the water, rod over shoulder, easy grin
-- `happy`: Belly laugh head thrown back, holding up a fish proudly, missing tooth on display
-- `sad`: Staring at the empty river, line slack, no grin
-- `angry`: Shaking fist at the sky, hat askew (he's yelling at a god)
-- `surprised`: Rod bending hard, both hands on it, eyes wide — something big
-- `seductive`: NOT NEEDED
+- `neutral`: Confident crooked grin, challenging eyes, rod over shoulder
+- `happy`: Full laugh head tilted back, crinkled bright eyes
+- `sad`: Tight-lipped, staring at water, melancholy
+- `angry`: Sharp scowl, narrowed fierce eyes
+- `surprised`: Parted lips, wide startled eyes, eyebrows up
+- `seductive`: Slow teasing smirk, half-lidded knowing eyes (future romance unlock)
 
 #### LoRA Training Anchors
 
-`darkolympus_kostas` — grey beard, patched straw hat with hook, missing tooth, leather vest brass buckle, wooden fishing rod, river mist
+`darkolympus_kostas` — sun-bleached honey-blonde low ponytail, weathered hazel eyes, freckles and sun-tan, sea-blue V-neck linen tunic, rope belt, rolled canvas trousers, silver fish-hook earring, strong athletic tanned body, big breasts V-neck cleavage, toned arms, fishing-hook forearm scar
 
 ---
 
-### 3.14 Thalos — Village Leader (Side NPC)
+### 3.14 Thalos — Village Leader (Dialogue NPC)
 
 > *"He carries the village the way the great tree carries its branches — silently, and for longer than anyone knows."*
 
 **Role**: Side NPC (no combat, no romance) | **Type**: side_no_romance
+**Note**: Only cowboy shot needed — no full body (dialogue-only character).
 
 #### Design DNA
 
