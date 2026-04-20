@@ -129,7 +129,7 @@
       "ult_charge_rate": 10
     },
     "melina": {
-      "element": "Earth",
+      "element": "Lightning",
       "hp": 95,
       "atk": 15,
       "def": 13,

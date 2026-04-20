@@ -865,21 +865,21 @@ masterpiece, best quality, highest quality, intricate details
 
 ### 3.11 Melina — Village Leader's Daughter
 
-> *"She reads about the world because they won't let her see it."*
+> *"I've read every forbidden book. Want me to show you my favorite pages?"*
 
-**Role**: Support / Healer | **Element**: Earth | **Rank**: B
+**Role**: Support / Healer | **Element**: Lightning | **Rank**: B
 
 #### Design DNA
 
-Melina is **curiosity caged**. She's the sheltered adult daughter of Thalos, the village leader, and everything about her screams "I want to be anywhere but here." Her design is modest village clothing that she's subtly personalized — ink stains on her cuffs, a journal she never puts down, sandals worn thin from sneaking to the restricted section of the library. She's a slim adult woman with a bookish build — slender and delicate from years indoors with scrolls, not the voluptuous body of the goddesses. Her appeal is cerebral and quietly defiant, not physical.
+Melina is **curiosity caged turned mischievous**. She's the sheltered adult daughter of Thalos, the village leader, and she's figured out that if she plays dumb and stays quiet she can get away with anything — including sneaking into the forbidden section of the library. Her design is modest village clothing that she's subtly personalized (ink stains, rolled sleeves, worn-thin sandals), but her **expression is playful and picara** — a sly smirk, raised eyebrow, sparkling eyes that suggest she knows things she shouldn't. She shares Atenea's Lightning element as a thematic pair — both scholars, but where Atenea is regal and crackling with power, Melina is bookish and hides subtle violet sparks in her ink. Her appeal is cerebral and flirtatiously mischievous.
 
 #### Color Triangle
 
 | Role | Color | Hex | Where |
 |------|-------|-----|-------|
-| Dominant | Olive green | `#6B7A4F` | Dress, ink tones |
+| Dominant | Olive green | `#6B7A4F` | Dress |
 | Complement | Parchment cream | `#E8D9C0` | Journal pages, undershirt |
-| Accent (element) | Earth warm brown | `#A0784C` | Eye color, leather journal, sandals |
+| Accent (element) | Electric violet | `#9B59D0` | Mystic script symbols, quill sparks, ink glow |
 
 #### Signature Silhouette
 
@@ -898,48 +898,48 @@ Melina is **curiosity caged**. She's the sheltered adult daughter of Thalos, the
 #### Hair & Face
 
 - **Hair**: Warm chestnut brown, in twin braids that reach mid-chest. Small flyaway hairs from impatient braiding
-- **Eyes**: Large, round, warm brown — "doe eyes" that make everyone underestimate her
-- **Expression baseline**: Curious, slightly defiant, chin angled up despite being short
+- **Eyes**: Large, round, warm brown — "doe eyes" that make everyone underestimate her (her best weapon — no one suspects the scholar's daughter)
+- **Expression baseline**: Mischievous playful smirk, sparkling teasing eyes, one eyebrow raised — picara energy, like she's about to show you something she shouldn't
 - **Distinguishing mark**: Perpetual ink smudge on her right cheek (she rests her face on her writing hand)
 - **Skin**: Warm olive, soft — she hasn't spent years in the sun like Lyra or Hippolyta
 - **Body**: Slim adult feminine build, small breasts, modest curves, slender figure, bookish posture — she's delicate, not voluptuous
 
 #### Element Expression
 
-Very subtle. Pressed flowers in her journal occasionally glow faintly with green light. When she heals allies, faint script (like her handwriting) appears briefly in the air before dissolving into golden-green motes.
+Subtle violet lightning. Tiny electric sparks crackle between her quill tip and fingertips when she writes — she discovered she could shock ink into the page, and now she hides runes in her marginalia. When she heals allies, faint violet script (her handwriting) appears briefly in the air before dissolving into tiny electric sparks. Her element shares Atenea's palette but is miniaturized — less "cosmic storm," more "stolen crackle."
 
 #### Prompt Base
 
 ```
 Smooth skinned greek village scholar adult young woman, warm chestnut
 brown twin braids to mid-chest with flyaway hairs, large warm brown
-doe eyes, ink smudge on right cheek, warm olive skin, curious defiant
-expression, slim adult feminine build small breasts modest curves
-slender figure bookish posture, modest olive green ankle-length linen
-dress with rolled up sleeves revealing ink-stained forearms, cream
-undershirt at collar, worn brown leather journal clutched to chest
-bulging with pressed flowers and bookmarks, quill tucked behind right
-ear, worn-thin leather sandals, braided grass ring on left pinky,
-fading earth-gold mystic script symbols on forearms, dim golden-green
-motes near journal.
-(curious defiant expression:0.4), bright intelligent doe eyes, looking
-at viewer, cowboy shot,
+doe eyes, ink smudge on right cheek, warm olive skin, slim adult
+feminine build small breasts modest curves slender figure bookish
+posture, modest olive green ankle-length linen dress with rolled up
+sleeves revealing ink-stained forearms, cream undershirt at collar,
+worn brown leather journal clutched to chest bulging with pressed
+flowers and bookmarks, quill tucked behind right ear, worn-thin
+leather sandals, braided grass ring on left pinky, fading violet
+electric mystic script symbols on forearms, dim violet lightning
+sparks crackle near her quill and fingertips.
+(mischievous playful smirk:0.5), sparkling teasing doe eyes, eyebrow
+slightly raised, looking at viewer with sly amusement, cowboy shot,
 white background,
 masterpiece, best quality, highest quality, intricate details
 ```
 
 #### Mood Variations
 
-- `neutral`: Reading journal, one hand turning a page, chin raised, curious expression
-- `happy`: Showing an open book excitedly with both hands, eyes bright, braids bouncing
-- `sad`: Journal closed and hugged tight to chest, looking at a locked gate, braids limp
-- `angry`: Journal slammed shut, defiant stance, ink-stained fists clenched, chin jutting
-- `surprised`: Quill dropped, gasping, loose pages flying from the journal, braids swinging wide
-- `seductive`: Dress loosened at the collar, reading by candlelight in the forbidden library, ink on her lips
+- `neutral`: Mischievous smirk, one eyebrow raised, journal half-open held casually against hip, violet sparks at fingertips
+- `happy`: Delighted mischievous grin, dancing eyes, showing a forbidden page to the viewer like a secret
+- `sad`: Pouting expression, journal closed and hugged to chest, looking down, sparks dimmed
+- `angry`: Sly provoking smirk (not shouting — planning revenge), chin jutting, violet sparks crackling visibly
+- `surprised`: Delighted gasp, wide sparkling eyes, hand to mouth to hide a grin
+- `seductive`: Teasing coy smirk, bedroom eyes with ink on her lips, reading by candlelight in the forbidden library with dress loosened at the collar
 
 #### LoRA Training Anchors
 
-`darkolympus_melina` — chestnut twin braids, doe eyes, ink smudge on right cheek, slim adult young woman, small breasts, modest slender bookish figure, modest olive-green ankle dress, cream undershirt collar, ink-stained forearms, leather journal clutched to chest, quill behind right ear, grass ring on left pinky
+`darkolympus_melina` — chestnut twin braids, doe eyes, mischievous playful smirk, ink smudge on right cheek, slim adult young woman, small breasts, modest slender bookish figure, modest olive-green ankle dress, cream undershirt collar, ink-stained forearms, leather journal clutched to chest, quill behind right ear, grass ring on left pinky, violet electric script symbols on forearms, violet lightning sparks at fingertips
 
 ---
 

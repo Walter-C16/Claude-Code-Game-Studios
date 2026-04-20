@@ -140,7 +140,7 @@
     "display_name": "Melina",
     "role": "Village Leader's Daughter",
     "type": "quest_companion",
-    "element": "Earth",
+    "element": "Lightning",
     "rank": "B",
     "card_value": 5,
     "unlock_flag": "melina_quest_complete",

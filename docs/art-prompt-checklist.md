@@ -392,25 +392,25 @@ ankle-length linen dress with rolled-up sleeves revealing ink-stained
 forearms, cream undershirt visible at the collar. Her body features:
 slim adult feminine build, small breasts, modest curves, bookish
 posture, ink-stained fingertips, a worn brown leather journal clutched
-to her chest, quill tucked behind her right ear, fading soft
-earth-gold mystic script symbols along her forearms mixed with ink
-stains, dim golden-green mote particles drift faintly near her
-journal. She has an ink smudge on her right cheek, warm olive skin,
-a braided grass ring on her left pinky.
-(curious defiant expression:0.4), bright intelligent doe eyes, looking
-at viewer, cowboy shot,
+to her chest, quill tucked behind her right ear, fading violet electric
+mystic script symbols along her forearms mixed with ink stains, dim
+violet lightning sparks crackle faintly near her quill and fingertips.
+She has an ink smudge on her right cheek, warm olive skin, a braided
+grass ring on her left pinky.
+(mischievous playful smirk:0.5), sparkling teasing doe eyes, eyebrow
+slightly raised, looking at viewer with sly amusement, cowboy shot,
 white background,
 masterpiece, best quality, highest quality, intricate details
 ```
 
 | Mood | Replace expression line with |
 |------|------------------------------|
-| `neutral` | `(curious defiant expression:0.4), bright intelligent doe eyes, looking at viewer, cowboy shot,` |
-| `happy` | `(excited beaming smile:0.7), sparkling bright eyes, looking at viewer, cowboy shot,` |
-| `sad` | `(tight worried expression:0.3), watery sad doe eyes, looking down, cowboy shot,` |
-| `angry` | `(defiant clenched jaw:0.5), fierce stubborn eyes, looking at viewer, cowboy shot,` |
-| `surprised` | `(gasping expression:0.5), wide shocked doe eyes, looking at viewer, cowboy shot,` |
-| `seductive` | `(shy inviting smile:0.4), warm direct eyes with ink on lips, looking at viewer, cowboy shot,` |
+| `neutral` | `(mischievous playful smirk:0.5), sparkling teasing doe eyes, eyebrow slightly raised, looking at viewer with sly amusement, cowboy shot,` |
+| `happy` | `(delighted mischievous grin:0.7), bright dancing eyes, looking at viewer, cowboy shot,` |
+| `sad` | `(pouting expression:0.3), watery sad doe eyes, looking down, cowboy shot,` |
+| `angry` | `(sly provoking smirk:0.5), fierce playful challenging eyes, looking at viewer, cowboy shot,` |
+| `surprised` | `(delighted gasp:0.5), wide sparkling doe eyes, playful shock, looking at viewer, cowboy shot,` |
+| `seductive` | `(teasing coy smirk:0.5), bedroom eyes with ink on lips, looking at viewer, cowboy shot,` |
 
 ---
 
@@ -754,13 +754,14 @@ forearms, cream undershirt visible at the collar, worn-thin leather
 sandals with soles nearly worn through. Her body features: slim adult
 feminine build, small breasts, modest curves, slender figure, bookish
 posture, ink-stained fingertips, a worn brown leather journal clutched
-to her chest, quill tucked behind her right ear, fading soft
-earth-gold mystic script symbols along her forearms, dim golden-green
-mote particles drift faintly near her journal. She has an ink smudge
-on her right cheek, warm olive skin, a braided grass ring on her left
-pinky.
-(curious defiant expression:0.4), bright intelligent doe eyes, looking
-at viewer, full body shot, standing pose, feet visible,
+to her chest, quill tucked behind her right ear, fading violet
+electric mystic script symbols along her forearms, dim violet
+lightning sparks crackle faintly near her quill and fingertips. She
+has an ink smudge on her right cheek, warm olive skin, a braided
+grass ring on her left pinky.
+(mischievous playful smirk:0.5), sparkling teasing doe eyes, eyebrow
+slightly raised, looking at viewer with sly amusement, full body shot,
+standing pose with one hip cocked, feet visible,
 white background,
 masterpiece, best quality, highest quality, intricate details
 ```
