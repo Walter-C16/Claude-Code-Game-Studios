@@ -69,6 +69,13 @@ func load_game() -> bool:
 		push_error("SaveManager: save data is not a Dictionary")
 		return false
 	var data: Dictionary = json.data as Dictionary
+	# Schema sanity — refuse to load an empty or partial save that would
+	# overwrite the player's in-memory state with blank defaults. A valid
+	# save must carry at least the "game" sub-dict (the authoritative
+	# GameStore snapshot).
+	if not data.has("game") or not (data["game"] is Dictionary):
+		push_error("SaveManager: save file missing 'game' payload — refusing to load")
+		return false
 	var save_version: int = data.get("version", 0)
 	if save_version < SAVE_VERSION:
 		data = _migrate(data, save_version)
@@ -111,12 +118,12 @@ func _migrate_v0_to_v1(data: Dictionary) -> Dictionary:
 
 ## Reconciles GameStore companion states against the authoritative companion
 ## IDs provided by CompanionRegistry. Called at the end of load_game() so
-## that saves written before a companion was added (or after one was removed)
-## are healed without corrupting fresh-game state.
-## Passes only the 4 playable companion IDs — the priestess NPC entry in
-## CompanionRegistry has no mutable state in GameStore and is excluded.
+## saves written before a companion was added (or after one was removed) are
+## healed without corrupting fresh-game state. Pulls the full roster from
+## CompanionRegistry so new quest companions (Daphne, Circe, Thetis, Echo,
+## Lyra, Melina, Naida) get default state entries on load.
 func _reconcile_companions() -> void:
-	var companion_ids: Array[String] = ["artemis", "hipolita", "atenea", "nyx"]
+	var companion_ids: Array[String] = CompanionRegistry.get_all_ids()
 	GameStore.reconcile_companion_states(companion_ids)
 
 ## Deletes the save file and resets stores to defaults.

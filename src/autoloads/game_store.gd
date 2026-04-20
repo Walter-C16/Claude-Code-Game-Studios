@@ -922,3 +922,15 @@ func _flush_save() -> void:
 	SaveManager.save_game()
 	_dirty = false
 	_save_pending = false
+
+
+## Window-close safety net: Godot does not guarantee that deferred calls run
+## before the window actually closes, so if the player quits mid-frame after
+## a setter fires, the pending save could be lost. This handler forces a
+## synchronous flush so progress is persisted on app exit.
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		if _dirty:
+			SaveManager.save_game()
+			_dirty = false
+			_save_pending = false

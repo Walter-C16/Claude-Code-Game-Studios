@@ -357,6 +357,15 @@ func _apply_effects(effects: Array) -> void:
 					"companion": companion_id,
 					"mood": mood,
 				})
+			"meet":
+				# The chapter-node scene handler also processes "meet" effects,
+				# but dialogue sequences can fire them mid-scene before the
+				# player exits — handle them here too so the behavior matches
+				# both call sites. Idempotent: set_met on an already-met
+				# companion is a no-op.
+				var companion_id: String = fx.get("companion", "")
+				if not companion_id.is_empty():
+					GameStore.set_met(companion_id, true)
 			_:
 				push_warning(
 					"[DialogueRunner] Unknown effect type '%s' — skipping." \
