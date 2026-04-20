@@ -14,10 +14,11 @@ extends RefCounted
 ## Rapid consecutive calls on the same node no longer stack — any in-flight
 ## pop_scale tween is killed before the new one starts.
 static func pop_scale(node: Control, target_scale: float = 1.15, duration: float = 0.3) -> void:
-	var prior: Variant = node.get_meta("_fx_pop_tween", null)
-	if prior is Tween and (prior as Tween).is_valid():
-		(prior as Tween).kill()
-		node.scale = Vector2.ONE
+	if node.has_meta("_fx_pop_tween"):
+		var prior: Variant = node.get_meta("_fx_pop_tween")
+		if prior is Tween and (prior as Tween).is_valid():
+			(prior as Tween).kill()
+			node.scale = Vector2.ONE
 	var tween: Tween = node.create_tween()
 	tween.tween_property(node, "scale", Vector2(target_scale, target_scale), duration * 0.3) \
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
@@ -91,12 +92,14 @@ static func gold_shimmer(target: Control, duration: float = 2.0) -> Tween:
 ## Overlapping shakes are coalesced — the new shake replaces the old one
 ## and restores the original position before starting.
 static func shake(node: Control, intensity: float = 6.0, duration: float = 0.3) -> void:
-	var prior: Variant = node.get_meta("_fx_shake_tween", null)
-	if prior is Tween and (prior as Tween).is_valid():
-		(prior as Tween).kill()
-		var orig: Variant = node.get_meta("_fx_shake_origin", null)
-		if orig is Vector2:
-			node.position = orig
+	if node.has_meta("_fx_shake_tween"):
+		var prior: Variant = node.get_meta("_fx_shake_tween")
+		if prior is Tween and (prior as Tween).is_valid():
+			(prior as Tween).kill()
+			if node.has_meta("_fx_shake_origin"):
+				var orig: Variant = node.get_meta("_fx_shake_origin")
+				if orig is Vector2:
+					node.position = orig
 	var original_pos: Vector2 = node.position
 	node.set_meta("_fx_shake_origin", original_pos)
 	var tween: Tween = node.create_tween()
@@ -116,10 +119,11 @@ static func shake(node: Control, intensity: float = 6.0, duration: float = 0.3) 
 ## Scale-pulse a node: 1.0 → peak → 1.0 (one shot, good for number reveals).
 ## Overlapping pulses are coalesced — the new pulse replaces any in-flight one.
 static func pulse(node: Control, peak: float = 1.2, duration: float = 0.4) -> void:
-	var prior: Variant = node.get_meta("_fx_pulse_tween", null)
-	if prior is Tween and (prior as Tween).is_valid():
-		(prior as Tween).kill()
-		node.scale = Vector2.ONE
+	if node.has_meta("_fx_pulse_tween"):
+		var prior: Variant = node.get_meta("_fx_pulse_tween")
+		if prior is Tween and (prior as Tween).is_valid():
+			(prior as Tween).kill()
+			node.scale = Vector2.ONE
 	var tween: Tween = node.create_tween()
 	node.set_meta("_fx_pulse_tween", tween)
 	tween.tween_property(node, "scale", Vector2(peak, peak), duration * 0.35) \
