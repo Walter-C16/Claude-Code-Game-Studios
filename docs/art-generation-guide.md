@@ -126,16 +126,24 @@ long-sleeve linen tunic belted with a braided leather cord at the
 waist, worn leather chest piece laced up the front with rawhide cord
 over the tunic, leather forearm wraps from wrist to elbow, leather
 leg wraps wound around her calves down to laced soft-leather mid-calf
-sandal-boots, battered quiver on back held by a single leather strap
-across her chest, small hunting knife at her hip, simple dark-green
-wool cape pinned at her left shoulder with a small bronze pin. Her
-body features: big breasts, fading green mystic symbols on the backs
-of her hands, dim green magical particles drift around her. She has
-pale fair skin with faint freckles across her nose and cheeks.
+sandal-boots, battered leather arrow quiver full of wooden arrows
+with feathered fletching sticking up visibly from the quiver on her
+back, quiver held by a single leather strap across her chest, curved
+wooden recurve bow in her left hand, small hunting knife at her hip,
+simple dark-green wool cape pinned at her left shoulder with a small
+bronze pin. Her body features: big breasts, fading green mystic
+symbols on the backs of her hands, dim green magical particles drift
+around her. She has pale fair skin with faint freckles across her
+nose and cheeks.
 (smile:0.3), melancholic eyes, looking at viewer, cowboy shot,
-white background,
+white background, holding bow, arrows in quiver, archer,
 masterpiece, best quality, highest quality, intricate details
 ```
+
+> **Artemis-specific negative**: `sword, sheath, scabbard, blade on
+> back, katana` — anime checkpoints often default to a sword on the
+> back when they see "leather strap across chest." The positive tags
+> `holding bow, arrows in quiver, archer` anchor the correct weapon.
 
 #### Mood Variations
 
@@ -148,7 +156,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### LoRA Training Anchors
 
-`darkolympus_artemis` — platinum-blonde twin braids, yellow eyes, pale fair skin, freckles, forest-green long-sleeve linen tunic, rawhide-laced leather chest piece, leather forearm wraps, leather leg wraps, soft-leather sandal-boots, braided cord belt, battered quiver, wool cape pinned at left shoulder, green mystic hand symbols, green particles
+`darkolympus_artemis` — platinum-blonde twin braids, yellow eyes, pale fair skin, freckles, forest-green long-sleeve linen tunic, rawhide-laced leather chest piece, leather forearm wraps, leather leg wraps, soft-leather sandal-boots, braided cord belt, battered leather arrow quiver full of wooden arrows with feathered fletching on back, curved wooden recurve bow in hand, archer, wool cape pinned at left shoulder, green mystic hand symbols, green particles
 
 ---
 

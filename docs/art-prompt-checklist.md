@@ -38,15 +38,23 @@ belted with a braided leather cord at the waist, worn leather chest
 piece laced up the front with rawhide cord over the tunic, leather
 forearm wraps from wrist to elbow, leather leg wraps wound around her
 calves down to laced soft-leather mid-calf sandal-boots, battered
-quiver on back held by a single leather strap across her chest, small
-hunting knife at her hip. Her body features: big breasts, fading green
-mystic symbols on the backs of her hands, dim green magical particles
-drift around her. She has pale fair skin with faint freckles across
-her nose and cheeks.
+leather arrow quiver full of wooden arrows with feathered fletching
+sticking up visibly from the quiver on her back, quiver held by a
+single leather strap across her chest, curved wooden recurve bow in
+her left hand, small hunting knife at her hip. Her body features: big
+breasts, fading green mystic symbols on the backs of her hands, dim
+green magical particles drift around her. She has pale fair skin with
+faint freckles across her nose and cheeks.
 (smile:0.3), melancholic eyes, looking at viewer, cowboy shot,
-white background,
+white background, holding bow, arrows in quiver, archer,
 masterpiece, best quality, highest quality, intricate details
 ```
+
+> **Artemis negative additions**: `sword, sheath, scabbard, blade on
+> back, katana, rifle, gun` — anime checkpoints often default to a
+> sword on the back when they see "leather strap across chest". Keep
+> the positive `holding bow, arrows in quiver, archer` tags to anchor
+> the correct weapon.
 
 | Mood | Replace expression line with |
 |------|------------------------------|
@@ -489,15 +497,18 @@ reaching to mid-thigh belted with a braided leather cord at the waist,
 worn leather chest piece laced up the front with rawhide cord over the
 tunic, leather forearm wraps from wrist to elbow, leather leg wraps
 wound around her calves down to laced soft-leather mid-calf sandal-boots,
-battered quiver on back held by a single leather strap across her
-chest, small hunting knife at her hip, simple dark green wool cape
-pinned at her left shoulder with a small bronze pin. Her body features:
-big breasts, fading green mystic symbols on the backs of her hands,
-dim green magical particles drift around her. She has pale fair skin
+battered leather arrow quiver full of wooden arrows with feathered
+fletching sticking up visibly from the quiver on her back, quiver held
+by a single leather strap across her chest, curved wooden recurve bow
+in her left hand, small hunting knife at her hip, simple dark green
+wool cape pinned at her left shoulder with a small bronze pin. Her
+body features: big breasts, fading green mystic symbols on the backs
+of her hands, dim green magical particles drift around her. She has
+pale fair skin
 with faint freckles across her nose and cheeks.
 (smile:0.3), melancholic eyes, looking at viewer, full body shot,
 standing pose, feet visible,
-white background,
+white background, holding bow, arrows in quiver, archer,
 masterpiece, best quality, highest quality, intricate details
 ```
 
