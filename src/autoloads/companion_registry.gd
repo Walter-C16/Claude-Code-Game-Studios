@@ -74,6 +74,24 @@ func meet_companion(id: String) -> void:
 				var card_value: int = int(profile.get("card_value", 0))
 				GameStore.add_deck_companion(id, card_value)
 
+	# Check if this meet completes the "all core goddesses met" milestone.
+	# Drives the `all_companions_met` achievement flag. Only the four main
+	# goddesses count toward the milestone; quest companions and NPCs don't.
+	_maybe_set_all_companions_met()
+
+
+## Sets the `all_companions_met` flag the first time every core goddess has
+## been met. Idempotent — the flag is write-once in GameStore so later calls
+## are a no-op.
+func _maybe_set_all_companions_met() -> void:
+	if GameStore.has_flag("all_companions_met"):
+		return
+	const CORE_IDS: Array[String] = ["artemis", "hipolita", "atenea", "nyx"]
+	for core_id: String in CORE_IDS:
+		if not GameStore.is_met(core_id):
+			return
+	GameStore.set_flag("all_companions_met")
+
 
 ## Returns a defensive copy of the profile dictionary for [param id].
 ## Returns an empty Dictionary if the ID is not registered (no crash, no error push).

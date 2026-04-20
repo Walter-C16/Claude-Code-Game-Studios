@@ -29,6 +29,11 @@ func _ready() -> void:
 	_scene_num = ctx.get("scene_num", 1) as int
 	_is_replay = ctx.get("gallery_replay", false)
 
+	# Ensure dialogue runner signal connections are cleaned up if the player
+	# exits via the back button or scene change before the dialogue ends —
+	# otherwise DialogueRunner keeps a callable pointing at a freed scene.
+	tree_exiting.connect(_cleanup_dialogue_signals)
+
 	AudioManager.play_bgm("res://assets/audio/bgm/intimacy.ogg")
 
 	if _companion_id.is_empty():
@@ -156,9 +161,18 @@ func _on_line_ready(line_data: Dictionary) -> void:
 
 
 func _on_dialogue_ended(_sequence_id: String) -> void:
-	DialogueRunner.line_ready.disconnect(_on_line_ready)
-	DialogueRunner.dialogue_ended.disconnect(_on_dialogue_ended)
+	_cleanup_dialogue_signals()
 	_finish_scene()
+
+
+## Safe-disconnect for DialogueRunner signals. Called from both the normal
+## dialogue_ended path and from tree_exiting (in case the scene is torn
+## down mid-dialogue via back button or scene change).
+func _cleanup_dialogue_signals() -> void:
+	if DialogueRunner.line_ready.is_connected(_on_line_ready):
+		DialogueRunner.line_ready.disconnect(_on_line_ready)
+	if DialogueRunner.dialogue_ended.is_connected(_on_dialogue_ended):
+		DialogueRunner.dialogue_ended.disconnect(_on_dialogue_ended)
 
 
 # ── Scene Completion ───────────────────────────────────────────────────────────
