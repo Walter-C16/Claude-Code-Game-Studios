@@ -255,6 +255,36 @@ func test_battle_manager_setup_applies_stage_1_blessing_to_artemis() -> void:
 	assert_int((bm.active_blessings["artemis"] as Array).size()).is_equal(1)
 
 
+func test_battle_manager_blessing_slot_4_requires_romance_stage_3() -> void:
+	# Regression: blessing slot 4 used to have a backdoor via Epithet III
+	# (level 20 companion). That path was removed; slot 4 now only unlocks
+	# at romance stage 3. A companion at stage 2 must NOT have slot 4
+	# applied even if they're at max level.
+	_reset_game_state()
+	CompanionState.set_relationship_level("artemis", 70)  # stage 2 (51-80)
+	GameStore.set_companion_level("artemis", 60)  # max level for a B rank, no longer matters
+	var bm = BattleManagerScript.new()
+	bm.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
+
+	# Assert — Artemis has at most 2 blessings (stage 2 cap), not 4.
+	assert_bool(bm.active_blessings.has("artemis")).is_true()
+	var applied: Array = bm.active_blessings["artemis"] as Array
+	assert_int(applied.size()).is_less_equal(2)
+
+
+func test_battle_manager_blessing_slot_4_unlocks_at_stage_3() -> void:
+	# Complement: slot 4 DOES unlock once Artemis hits stage 3.
+	_reset_game_state()
+	CompanionState.set_relationship_level("artemis", 85)  # stage 3 (81-99)
+	var bm = BattleManagerScript.new()
+	bm.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
+
+	# Assert — Artemis has more than 2 blessings applied (slot 4 reached).
+	assert_bool(bm.active_blessings.has("artemis")).is_true()
+	var applied: Array = bm.active_blessings["artemis"] as Array
+	assert_int(applied.size()).is_greater_equal(3)
+
+
 func test_battle_manager_setup_stage_0_applies_zero_blessings() -> void:
 	# Arrange — Artemis at romance stage 0 (RL 0) — no blessings unlocked
 	_reset_game_state()

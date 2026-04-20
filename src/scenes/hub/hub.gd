@@ -49,8 +49,13 @@ func _ready() -> void:
 	# Progressive tab unlock based on story progress.
 	_apply_progressive_unlock()
 
+	# End-of-demo CTA takes precedence over everything else — once the player
+	# reaches ch01_complete they deserve a clean "thanks for playing" screen
+	# and a clear Patreon / wishlist prompt. Shown exactly once.
+	if GameStore.has_flag("ch01_complete") and not GameStore.has_flag("demo_end_cta_shown"):
+		call_deferred("_show_demo_end_cta")
 	# Show welcome popup on first Hub visit (after prologue + tutorial combat).
-	if GameStore.has_flag("prologue_done") and not GameStore.has_flag("hub_welcomed"):
+	elif GameStore.has_flag("prologue_done") and not GameStore.has_flag("hub_welcomed"):
 		_show_welcome_popup()
 
 	# Show "Artemis joins your party" splash once — after the player wakes up
@@ -165,8 +170,11 @@ func _apply_progressive_unlock() -> void:
 		"EquipBtn": 3,
 	}
 
-	# No placeholder-only buttons in the current tab set.
-	var placeholder_buttons: Array[String] = []
+	# 0.0.1 DEMO SCOPE: Explore, Abyss, and Equipment screens exist in code
+	# but are not polished / wired into ch01 content. They appear visually at
+	# tier 3 so the player knows more is coming, but stay disabled until
+	# 0.0.2 removes them from this list.
+	var placeholder_buttons: Array[String] = ["ExploreBtn", "AbyssBtn", "EquipBtn"]
 
 	# Current player tier.
 	var tier: int = 0
@@ -214,6 +222,8 @@ func _apply_progressive_unlock() -> void:
 				if tier >= required:
 					btn.disabled = is_placeholder
 					btn.modulate.a = 0.55 if is_placeholder else 1.0
+					if is_placeholder:
+						btn.tooltip_text = Localization.get_text("HUB_TAB_DEMO_LOCKED")
 				else:
 					btn.disabled = true
 					btn.modulate.a = 0.35
@@ -345,6 +355,116 @@ func _show_companion_join_splash(companion_id: String) -> void:
 	var spring: Tween = create_tween()
 	spring.tween_property(panel, "scale", Vector2.ONE, 0.55) \
 		.set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+
+
+# ── End-of-Demo CTA ────────────────────────────────────────────────────────────
+
+## Shown exactly once when the player returns to the Hub with `ch01_complete`
+## set. This is the 0.0.1 itch.io demo's outro — a "thanks for playing" card
+## that points the player at Patreon and the itch.io wishlist before they
+## close the tab. Sets `demo_end_cta_shown` so subsequent Hub visits skip it.
+func _show_demo_end_cta() -> void:
+	var backdrop: ColorRect = ColorRect.new()
+	backdrop.name = "DemoEndBackdrop"
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop.color = Color(0.0, 0.0, 0.0, 0.0)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(backdrop)
+	var fade_in: Tween = create_tween()
+	fade_in.tween_property(backdrop, "color:a", 0.85, 0.5)
+
+	var panel: PanelContainer = PanelContainer.new()
+	panel.name = "DemoEndPanel"
+	panel.anchor_left = 0.5
+	panel.anchor_right = 0.5
+	panel.anchor_top = 0.5
+	panel.anchor_bottom = 0.5
+	panel.offset_left = -190.0
+	panel.offset_right = 190.0
+	panel.offset_top = -230.0
+	panel.offset_bottom = 230.0
+	var style: StyleBoxFlat = StyleBoxFlat.new()
+	style.bg_color = UIConstants.BG_SECONDARY
+	style.corner_radius_top_left = 14
+	style.corner_radius_top_right = 14
+	style.corner_radius_bottom_left = 14
+	style.corner_radius_bottom_right = 14
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
+	style.border_color = UIConstants.ACCENT_GOLD_BRIGHT
+	style.content_margin_left = 24.0
+	style.content_margin_right = 24.0
+	style.content_margin_top = 24.0
+	style.content_margin_bottom = 24.0
+	panel.add_theme_stylebox_override("panel", style)
+	add_child(panel)
+
+	var vbox: VBoxContainer = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 14)
+	panel.add_child(vbox)
+
+	var title_lbl: Label = Label.new()
+	title_lbl.text = Localization.get_text("DEMO_END_TITLE")
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_color_override("font_color", UIConstants.ACCENT_GOLD_BRIGHT)
+	title_lbl.add_theme_font_size_override("font_size", 22)
+	vbox.add_child(title_lbl)
+
+	var body_lbl: Label = Label.new()
+	body_lbl.text = Localization.get_text("DEMO_END_BODY")
+	body_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	body_lbl.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
+	body_lbl.add_theme_font_size_override("font_size", 14)
+	vbox.add_child(body_lbl)
+
+	# Links row — Patreon (primary) + itch.io wishlist (secondary).
+	var patreon_btn: Button = _make_cta_button("DEMO_END_PATREON_BTN", true)
+	patreon_btn.pressed.connect(func() -> void:
+		OS.shell_open("https://www.patreon.com/darkolympus"))
+	vbox.add_child(patreon_btn)
+
+	var wishlist_btn: Button = _make_cta_button("DEMO_END_WISHLIST_BTN", false)
+	wishlist_btn.pressed.connect(func() -> void:
+		OS.shell_open("https://darkolympus.itch.io/dark-olympus"))
+	vbox.add_child(wishlist_btn)
+
+	var continue_btn: Button = _make_cta_button("DEMO_END_CONTINUE_BTN", false)
+	continue_btn.pressed.connect(func() -> void:
+		GameStore.set_flag("demo_end_cta_shown")
+		backdrop.queue_free()
+		panel.queue_free())
+	vbox.add_child(continue_btn)
+
+	Fx.slide_in(panel, Vector2(0.0, 40.0), 0.45)
+	Fx.gold_shimmer(title_lbl, 3.0)
+
+
+## Helper — builds a CTA button with a consistent look. Gold when primary.
+func _make_cta_button(text_key: String, primary: bool) -> Button:
+	var btn: Button = Button.new()
+	btn.text = Localization.get_text(text_key)
+	btn.custom_minimum_size = Vector2(0.0, 48.0)
+	btn.add_theme_color_override(
+		"font_color",
+		UIConstants.ACCENT_GOLD_BRIGHT if primary else UIConstants.TEXT_PRIMARY,
+	)
+	btn.add_theme_font_size_override("font_size", 15)
+	var btn_style: StyleBoxFlat = StyleBoxFlat.new()
+	btn_style.bg_color = UIConstants.BG_TERTIARY
+	btn_style.corner_radius_top_left = 8
+	btn_style.corner_radius_top_right = 8
+	btn_style.corner_radius_bottom_left = 8
+	btn_style.corner_radius_bottom_right = 8
+	btn_style.border_width_left = 1
+	btn_style.border_width_right = 1
+	btn_style.border_width_top = 1
+	btn_style.border_width_bottom = 1
+	btn_style.border_color = UIConstants.ACCENT_GOLD_BRIGHT if primary else UIConstants.ACCENT_GOLD_DARK
+	btn.add_theme_stylebox_override("normal", btn_style)
+	return btn
 
 
 # ── Welcome Popup ──────────────────────────────────────────────────────────────

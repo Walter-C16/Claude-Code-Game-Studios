@@ -21,7 +21,7 @@ const LocalizationScript = preload("res://autoloads/localization.gd")
 
 ## Exact key count expected in the real res://i18n/en.json at time of LOC-001.
 ## Update this constant if keys are added/removed in a future story.
-const ENGLISH_TABLE_KEY_COUNT: int = 1794
+const ENGLISH_TABLE_KEY_COUNT: int = 1800
 
 ## Small fixture written to a temp file for the known-count test (AC3 variant).
 ## Using a fixture isolates the test from changes to the real en.json.

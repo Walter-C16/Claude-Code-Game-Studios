@@ -41,13 +41,22 @@ static var _data_loaded: bool = false
 ##   unlocked    (bool)    — true if the unlock_flag is set in GameStore
 ##   sort_order  (int)     — display ordering hint (lower = earlier)
 ##
-## Locked entries still appear in the array so the UI can show placeholders.
+## Locked entries still appear in the array so the UI can show placeholders,
+## but entries belonging to companions the player has never met are filtered
+## out entirely. This keeps the gallery curated — a demo player seeing only
+## Artemis-met will see only Artemis's row, not a wall of unreachable
+## "???" cells from unintroduced companions.
 ## The CG path and title are included — the UI layer is responsible for hiding
 ## them for locked entries per design/gdd/gallery.md Rule 3.
 static func get_all_entries() -> Array[Dictionary]:
 	_ensure_loaded()
 	var result: Array[Dictionary] = []
 	for raw: Dictionary in _entries:
+		# Hide entries whose companion hasn't been met yet. Story/special
+		# entries (no companion_id field) are always visible.
+		var companion_id: String = raw.get("companion_id", "") as String
+		if not companion_id.is_empty() and not GameStore.is_met(companion_id):
+			continue
 		result.append({
 			"id":         raw.get("id", ""),
 			"title_key":  raw.get("title_key", ""),

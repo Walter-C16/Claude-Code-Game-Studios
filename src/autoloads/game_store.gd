@@ -226,6 +226,14 @@ func set_met(id: String, value: bool) -> void:
 	_mark_dirty()
 	state_changed.emit("companion")
 
+## Returns true if the companion has been met at least once (via a story
+## `meet` effect or meet_companion call). False for unknown IDs and for
+## companions whose state has never been written.
+func is_met(id: String) -> bool:
+	if not _companion_states.has(id):
+		return false
+	return bool(_companion_states[id].get("met", false))
+
 
 ## Seeds the known_likes / known_dislikes arrays for a companion.
 ## Called by higher layers (e.g. StoryFlow after set_met) so GameStore

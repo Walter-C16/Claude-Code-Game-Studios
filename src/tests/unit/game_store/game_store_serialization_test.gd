@@ -731,6 +731,49 @@ func test_game_store_serialization_from_dict_extra_keys_ignored_flags_intact() -
 	assert_bool(store2.has_flag("valid_flag")).is_true()
 
 # ---------------------------------------------------------------------------
+# Regression — legacy saves from the pre-gacha-removal era
+# ---------------------------------------------------------------------------
+# These tests pin the load path against the 7 fields removed in commits
+# 2db2bc5 (gacha) and aa1992d (epithets). A save from that era must load
+# cleanly; the fields are ignored silently.
+
+func test_game_store_serialization_legacy_save_with_gacha_fields_loads_without_error() -> void:
+	# Arrange — build a dict that looks like a pre-removal save.
+	var store = _make_store()
+	store.add_gold(500)
+	var data: Dictionary = store.to_dict()
+	# Inject all 7 removed fields with realistic values.
+	data["companion_shards"] = {"artemis": 3, "hipolita": 5}
+	data["companion_epithets"] = {"artemis": 2, "hipolita": 4}
+	data["oracle_pulls_this_week"] = 12
+	data["week_start_unix"] = 1_714_000_000
+	data["forge_fragments"] = 7
+	data["weapon_tier"] = 3
+	data["amulet_tier"] = 2
+
+	# Act — load the legacy-shaped dict.
+	var store2 = _make_store()
+	store2.from_dict(data)
+
+	# Assert — no crash, valid fields still load correctly.
+	assert_int(store2.get_gold()).is_equal(500)
+
+func test_game_store_serialization_legacy_companion_epithets_do_not_grant_progression() -> void:
+	# Arrange — a legacy save claims Artemis was at Epithet VI. Post-removal,
+	# there's no concept of Epithet anymore — the loader must not resurrect
+	# it as a companion level or any other ghost field.
+	var store = _make_store()
+	var data: Dictionary = store.to_dict()
+	data["companion_epithets"] = {"artemis": 6}
+
+	# Act
+	var store2 = _make_store()
+	store2.from_dict(data)
+
+	# Assert — Artemis still defaults to level 1 (no migration path).
+	assert_int(store2.get_companion_level("artemis")).is_equal(1)
+
+# ---------------------------------------------------------------------------
 # Edge case — to_dict() returns copies, not live references
 # ---------------------------------------------------------------------------
 
