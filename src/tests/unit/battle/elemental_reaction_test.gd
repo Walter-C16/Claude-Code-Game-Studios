@@ -16,12 +16,12 @@ const ElementalReactionScript = preload("res://systems/battle/elemental_reaction
 
 # ── Happy-path combos ────────────────────────────────────────────────────────
 
-func test_elemental_reaction_fire_water_resolves_to_oracle_mist() -> void:
+func test_elemental_reaction_fire_water_resolves_to_mystic_mist() -> void:
 	# Act
 	var r: Dictionary = ElementalReactionScript.resolve("Fire", "Water")
 
 	# Assert
-	assert_str(r.get("name", "")).is_equal("Oracle Mist")
+	assert_str(r.get("name", "")).is_equal("Mystic Mist")
 	assert_str(r.get("effect", "")).is_equal("damage_buff_next")
 	assert_float(r.get("magnitude", 0.0)).is_equal_approx(50.0, 0.01)
 

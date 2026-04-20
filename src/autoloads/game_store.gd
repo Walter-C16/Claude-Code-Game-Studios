@@ -126,26 +126,6 @@ var _companion_xp: Dictionary = {}
 ## to 1. See design/quick-specs/companion-leveling.md.
 var _companion_levels: Dictionary = {}
 
-## Per-companion Bond Shard balance (gacha currency). Shards accumulate
-## toward the next Epithet threshold and are consumed on each unlock.
-## See design/quick-specs/oracle-gacha.md.
-var _companion_shards: Dictionary = {}
-
-## Per-companion highest-unlocked Epithet. 0 = not yet met via the Oracle,
-## 1..6 = stacking passive upgrades. Unset entries default to 0; the story
-## `meet` effect bumps a 0 → 1 at first unlock.
-var _companion_epithets: Dictionary = {}
-
-## Number of Oracle + Forge pulls the player has spent this week. Shared
-## across both gachas (the weekly cap is 30 combined). Resets when
-## `Time.get_unix_time_from_system()` crosses `_week_start_unix + 604800`.
-var _oracle_pulls_this_week: int = 0
-
-## Unix timestamp anchoring the current weekly pull window. Set to the
-## system time on the first pull of each cycle, then cycles forward by
-## 7 days (604800s) on reset.
-var _week_start_unix: int = 0
-
 ## Time of day — 4 periods cycling through the day. Advances after
 ## certain actions (visiting a location, completing a quest node, combat).
 ## 0 = morning, 1 = afternoon, 2 = evening, 3 = night. Wraps to 0 (new day).
@@ -153,16 +133,6 @@ var _time_of_day: int = 0
 
 ## Day counter — starts at 1, increments each time night wraps to morning.
 var _day_number: int = 1
-
-## Forge fragments — accumulated via the Forge gacha, consumed to tier-up
-## equipped items. 5 fragments per tier-up, max tier 5.
-## See design/quick-specs/forge-gacha.md.
-var _forge_fragments: int = 0
-
-## Equipped item tier (0-5). Resets to 0 when a new item is equipped.
-## Linear scaling: stat_bonus *= 1 + tier * 0.5
-var _weapon_tier: int = 0
-var _amulet_tier: int = 0
 
 # ---------------------------------------------------------------------------
 # Private State — Persistence (GS-003 will add deferred flush)
@@ -215,15 +185,8 @@ func _initialize_defaults() -> void:
 	_exploration_state = {}
 	_companion_xp = {}
 	_companion_levels = {}
-	_companion_shards = {}
-	_companion_epithets = {}
-	_oracle_pulls_this_week = 0
-	_week_start_unix = 0
 	_time_of_day = 0
 	_day_number = 1
-	_forge_fragments = 0
-	_weapon_tier = 0
-	_amulet_tier = 0
 	_counters = {}
 	_tavern_last_played = {}
 
@@ -532,11 +495,8 @@ func get_equipped_weapon() -> String:
 	return _equipped_weapon
 
 ## Sets the equipped weapon by item ID. Pass "" to clear the slot.
-## Resets the weapon tier to 0 on every equip change so the player must
-## re-invest fragments on the new item.
 func set_equipped_weapon(item_id: String) -> void:
 	_equipped_weapon = item_id
-	_weapon_tier = 0
 	_mark_dirty()
 	state_changed.emit("equipment")
 
@@ -545,10 +505,8 @@ func get_equipped_amulet() -> String:
 	return _equipped_amulet
 
 ## Sets the equipped amulet by item ID. Pass "" to clear the slot.
-## Resets the amulet tier to 0 on every equip change.
 func set_equipped_amulet(item_id: String) -> void:
 	_equipped_amulet = item_id
-	_amulet_tier = 0
 	_mark_dirty()
 	state_changed.emit("equipment")
 
@@ -626,6 +584,18 @@ func add_companion_xp(companion_id: String, amount: int) -> void:
 func get_companion_level(companion_id: String) -> int:
 	return int(_companion_levels.get(companion_id, 1))
 
+## Explicitly sets the combat level for [param companion_id], clamped to the
+## rank cap. Used by story events (narrative-driven level bumps) and by
+## tests that need a specific starting level. Normal gameplay should go
+## through [method level_up_companion] which enforces XP + gold costs.
+func set_companion_level(companion_id: String, level: int) -> void:
+	if companion_id.is_empty():
+		return
+	var cap: int = get_companion_level_cap(companion_id)
+	_companion_levels[companion_id] = clampi(level, 1, cap)
+	_mark_dirty()
+	state_changed.emit("companion_level")
+
 ## Returns the rank-specific level cap for [param companion_id]. Reads the
 ## companion's rank from CompanionRegistry and maps it through
 ## CompanionLevel.RANK_CAPS (B=60, A=70, S=90, SS=110).
@@ -685,67 +655,20 @@ func level_up_companion(companion_id: String) -> bool:
 	return true
 
 # ---------------------------------------------------------------------------
-# Public Getters / Setters — Oracle Gacha (Bond Shards + Epithets)
-# See design/quick-specs/oracle-gacha.md for the full system design.
+# Public Getters — Epithet tiers (derived from companion level)
 # ---------------------------------------------------------------------------
 
-## Returns the current Bond Shard balance for [param companion_id]. Default 0.
-func get_companion_shards(companion_id: String) -> int:
-	return int(_companion_shards.get(companion_id, 0))
-
-## Overwrites the shard balance. Callers should normally use `add_shards`;
-## this setter exists for the Oracle's level-up-style consumption path and
-## for save restoration.
-func set_companion_shards(companion_id: String, value: int) -> void:
-	_companion_shards[companion_id] = maxi(0, value)
-	_mark_dirty()
-	state_changed.emit("companion_shards")
-
-## Adds to the shard balance. Rejects non-positive amounts to keep shards
-## monotonic-on-add (the Oracle's roll path always grants a positive count).
-func add_companion_shards(companion_id: String, amount: int) -> void:
-	if amount <= 0:
-		return
-	var current: int = int(_companion_shards.get(companion_id, 0))
-	_companion_shards[companion_id] = current + amount
-	_mark_dirty()
-	state_changed.emit("companion_shards")
-
 ## Returns the current Epithet tier for [param companion_id]. 0 = not met,
-## 1..6 = unlocked tiers.
+## 1..6 = unlocked tiers. Derived from the companion's level via
+## [method CompanionLevel.epithet_for_level] — Epithets now come from
+## leveling, not from the old Oracle gacha (which has been removed).
 func get_companion_epithet(companion_id: String) -> int:
-	return int(_companion_epithets.get(companion_id, 0))
-
-## Sets the Epithet tier explicitly. Used by the Oracle unlock loop and by
-## story `meet` effects that bump 0 → 1 when the goddess joins via dialogue.
-func set_companion_epithet(companion_id: String, tier: int) -> void:
-	_companion_epithets[companion_id] = clampi(tier, 0, 6)
-	_mark_dirty()
-	state_changed.emit("companion_epithet")
-
-## Returns how many pulls the player has spent this week (shared between
-## Oracle and Forge gachas).
-func get_oracle_pulls_this_week() -> int:
-	return _oracle_pulls_this_week
-
-## Charges [param count] pulls against the weekly counter. No clamping —
-## the Oracle validates the budget upstream via can_afford helpers.
-func add_oracle_pulls(count: int) -> void:
-	if count <= 0:
-		return
-	_oracle_pulls_this_week += count
-	_mark_dirty()
-	state_changed.emit("oracle_pulls")
-
-## Returns the unix timestamp anchoring the current weekly reset window.
-func get_week_start_unix() -> int:
-	return _week_start_unix
-
-## Sets the window anchor. The Oracle calls this on the first pull of each
-## cycle to record when the window began.
-func set_week_start_unix(value: int) -> void:
-	_week_start_unix = value
-	_mark_dirty()
+	if companion_id.is_empty():
+		return 0
+	if not _companion_levels.has(companion_id):
+		return 0
+	var level: int = int(_companion_levels.get(companion_id, 1))
+	return CompanionLevel.epithet_for_level(level)
 
 ## Time of day constants matching the locations.json config.
 const TIME_MORNING: int = 0
@@ -780,87 +703,6 @@ func set_time_of_day(value: int) -> void:
 	_time_of_day = clampi(value, 0, 3)
 	_mark_dirty()
 	state_changed.emit("time_of_day")
-
-## Returns the current forge fragment balance.
-func get_forge_fragments() -> int:
-	return _forge_fragments
-
-## Adds [param amount] forge fragments. Rejects non-positive amounts.
-func add_forge_fragments(amount: int) -> void:
-	if amount <= 0:
-		return
-	_forge_fragments += amount
-	_mark_dirty()
-	state_changed.emit("forge_fragments")
-
-## Returns the current tier (0-5) for the equipped weapon or amulet.
-func get_equipment_tier(slot: String) -> int:
-	if slot == "weapon":
-		return _weapon_tier
-	elif slot == "amulet":
-		return _amulet_tier
-	return 0
-
-## Resets the tier for [param slot] to 0. Called when a new item is
-## equipped so the player has to re-invest fragments.
-func reset_equipment_tier(slot: String) -> void:
-	if slot == "weapon":
-		_weapon_tier = 0
-	elif slot == "amulet":
-		_amulet_tier = 0
-	_mark_dirty()
-	state_changed.emit("equipment_tier")
-
-## Spends 5 forge fragments to increase the equipped item's tier by 1.
-## Returns true on success. Fails if: no item equipped, already at max
-## tier (5), or not enough fragments.
-const TIER_UP_FRAGMENT_COST: int = 5
-const MAX_EQUIPMENT_TIER: int = 5
-
-func upgrade_equipment_tier(slot: String) -> bool:
-	var current_tier: int = get_equipment_tier(slot)
-	if current_tier >= MAX_EQUIPMENT_TIER:
-		return false
-	if _forge_fragments < TIER_UP_FRAGMENT_COST:
-		return false
-	# Check that something is actually equipped.
-	if slot == "weapon" and _equipped_weapon.is_empty():
-		return false
-	if slot == "amulet" and _equipped_amulet.is_empty():
-		return false
-	_forge_fragments -= TIER_UP_FRAGMENT_COST
-	if slot == "weapon":
-		_weapon_tier += 1
-	elif slot == "amulet":
-		_amulet_tier += 1
-	_mark_dirty()
-	state_changed.emit("forge_fragments")
-	state_changed.emit("equipment_tier")
-	return true
-
-## Returns the stat multiplier for a given tier. Linear: 1 + tier * 0.5.
-## Tier 0 = 1.0x (base), tier 5 = 3.5x.
-static func equipment_tier_multiplier(tier: int) -> float:
-	return 1.0 + float(clampi(tier, 0, MAX_EQUIPMENT_TIER)) * 0.5
-
-## Weekly reset tick — invoked by the Hub on entry and by the Oracle scene
-## on open. If the current system time is more than one week past
-## `_week_start_unix`, the counter resets and the anchor advances to now.
-## Called for its side effect; returns true if a reset actually happened.
-func tick_oracle_weekly_reset() -> bool:
-	var now: int = int(Time.get_unix_time_from_system())
-	if _week_start_unix == 0:
-		# First-ever tick — seed the window without clearing the counter.
-		_week_start_unix = now
-		_mark_dirty()
-		return false
-	if now - _week_start_unix < 604800:
-		return false
-	_oracle_pulls_this_week = 0
-	_week_start_unix = now
-	_mark_dirty()
-	state_changed.emit("oracle_pulls")
-	return true
 
 # ---------------------------------------------------------------------------
 # Public Getters — Counters (Achievements / Lifetime Stats)
@@ -925,15 +767,8 @@ func to_dict() -> Dictionary:
 		"exploration_state": _exploration_state.duplicate(),
 		"companion_xp": _companion_xp.duplicate(),
 		"companion_levels": _companion_levels.duplicate(),
-		"companion_shards": _companion_shards.duplicate(),
-		"companion_epithets": _companion_epithets.duplicate(),
-		"oracle_pulls_this_week": _oracle_pulls_this_week,
-		"week_start_unix": _week_start_unix,
 		"time_of_day": _time_of_day,
 		"day_number": _day_number,
-		"forge_fragments": _forge_fragments,
-		"weapon_tier": _weapon_tier,
-		"amulet_tier": _amulet_tier,
 		"counters": _counters.duplicate(),
 	}
 
@@ -1018,24 +853,9 @@ func from_dict(data: Dictionary) -> void:
 	for key: Variant in raw_levels:
 		_companion_levels[str(key)] = int(raw_levels[key])
 
-	# Oracle gacha — shards, epithets, and the shared weekly pull counter.
-	# Pre-Phase I saves have none of these fields; defaults are empty dicts
-	# and zero counters, which matches "player hasn't pulled yet".
-	_companion_shards = {}
-	var raw_shards: Dictionary = data.get("companion_shards", {})
-	for key: Variant in raw_shards:
-		_companion_shards[str(key)] = int(raw_shards[key])
-	_companion_epithets = {}
-	var raw_epithets: Dictionary = data.get("companion_epithets", {})
-	for key: Variant in raw_epithets:
-		_companion_epithets[str(key)] = int(raw_epithets[key])
-	_oracle_pulls_this_week = int(data.get("oracle_pulls_this_week", 0))
-	_week_start_unix = int(data.get("week_start_unix", 0))
+	# Time of day + day counter.
 	_time_of_day = int(data.get("time_of_day", 0))
 	_day_number = int(data.get("day_number", 1))
-	_forge_fragments = int(data.get("forge_fragments", 0))
-	_weapon_tier = int(data.get("weapon_tier", 0))
-	_amulet_tier = int(data.get("amulet_tier", 0))
 
 	# Active exploration missions. Same write-without-read bug as companion_xp
 	# had pre-Phase H — to_dict serializes this dict but from_dict never read

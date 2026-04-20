@@ -42,10 +42,6 @@ func _ready() -> void:
 	SettingsStore.settings_changed.connect(_on_settings_changed)
 	tree_exiting.connect(_disconnect_autoload_signals)
 
-	# Inject Oracle + Forge placeholder buttons into MoreTabs before the
-	# progressive unlock pass runs so they participate in the same gating.
-	_install_gacha_placeholders()
-
 	# Entrance animation: stagger all direct children from their edges.
 	await get_tree().process_frame
 	_animate_entrance()
@@ -57,8 +53,8 @@ func _ready() -> void:
 	if GameStore.has_flag("prologue_done") and not GameStore.has_flag("hub_welcomed"):
 		_show_welcome_popup()
 
-	# Show "Artemis joins your party" gacha splash once — after the player
-	# wakes up in her house (ch01_exposition_done) and returns to the Hub.
+	# Show "Artemis joins your party" splash once — after the player wakes up
+	# in her house (ch01_exposition_done) and returns to the Hub.
 	elif GameStore.has_flag("ch01_exposition_done") and not GameStore.has_flag("artemis_join_shown"):
 		call_deferred("_show_companion_join_splash", "artemis")
 	# Otherwise show the Hub tutorial once (after the welcome flow has run).
@@ -148,7 +144,7 @@ func _animate_entrance() -> void:
 ## Unlocks hub tabs progressively based on story flags.
 ## Tier 0 (start, pre-Artemis-house): Only STORY + SETTINGS
 ## Tier 1 (ch01_exposition_done — woke up in Artemis's house):
-##          + CAMP, DECK (gacha splash triggers this tier)
+##          + CAMP, DECK (companion join splash triggers this tier)
 ## Tier 2 (ch01_tavern_done — after the first tavern scene):
 ##          + ARENA button (rebranded to TAVERN for the tournament map)
 ## Tier 3 (ch01_complete): + EXPLORE, EQUIP, ABYSS
@@ -167,15 +163,9 @@ func _apply_progressive_unlock() -> void:
 		"ExploreBtn": 3,
 		"AbyssBtn": 3,
 		"EquipBtn": 3,
-		"OracleBtn": 3,
-		"ForgeBtn": 3,
 	}
 
-	# Names of buttons that exist purely as visual placeholders for systems
-	# that aren't implemented yet. They reach tier 3 (so they appear once the
-	# player is far enough into the story) but stay disabled regardless.
-	# Oracle went live in Phase I.c, Forge went live in Phase I.e. Both are
-	# now real navigation buttons — no placeholders remain.
+	# No placeholder-only buttons in the current tab set.
 	var placeholder_buttons: Array[String] = []
 
 	# Current player tier.
@@ -229,57 +219,7 @@ func _apply_progressive_unlock() -> void:
 					btn.modulate.a = 0.35
 
 
-# ── Gacha placeholder buttons ────────────────────────────────────────────────
-
-## Adds Oracle + Forge buttons to MoreTabs as visual placeholders. The actual
-## gacha systems (see `design/quick-specs/oracle-gacha.md` and
-## `design/quick-specs/forge-gacha.md`) ship in v2 — these buttons reserve the
-## navigation slots and signal "more is coming" without doing anything yet.
-## They participate in the progressive unlock pass via the `placeholder_buttons`
-## set in `_apply_progressive_unlock`.
-func _install_gacha_placeholders() -> void:
-	var more_tabs: Node = get_node_or_null("MoreTabs")
-	if more_tabs == null:
-		return
-	# Idempotent — bail out if a previous _ready already added them.
-	if more_tabs.get_node_or_null("OracleBtn") != null:
-		return
-
-	# Oracle went live in Phase I.c — it's a real navigation button now.
-	var oracle_btn: Button = _make_placeholder_tab_button(
-		"OracleBtn", Localization.get_text("HUB_TAB_ORACLE")
-	)
-	oracle_btn.tooltip_text = ""  # clear the "coming soon" hint
-	oracle_btn.pressed.connect(_on_oracle_pressed)
-	more_tabs.add_child(oracle_btn)
-
-	# Forge went live in Phase I.e — also a real navigation button now.
-	var forge_btn: Button = _make_placeholder_tab_button(
-		"ForgeBtn", Localization.get_text("HUB_TAB_FORGE")
-	)
-	forge_btn.tooltip_text = ""
-	forge_btn.pressed.connect(_on_forge_pressed)
-	more_tabs.add_child(forge_btn)
-
-
-## Builds a single MoreTabs button matching the look of the existing tabs.
-func _make_placeholder_tab_button(node_name: String, label_text: String) -> Button:
-	var btn: Button = Button.new()
-	btn.name = node_name
-	btn.text = label_text
-	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	btn.custom_minimum_size = Vector2(0.0, 52.0)
-	btn.add_theme_color_override("font_color", Color(0.667, 0.533, 0.333, 1.0))
-	btn.add_theme_font_size_override("font_size", 12)
-	btn.tooltip_text = Localization.get_text("HUB_TAB_COMING_SOON")
-	# Buttons start disabled; the unlock pass keeps them disabled because they
-	# are listed in `placeholder_buttons`. Setting it here means even an
-	# uninitialized state shows the disabled style on first frame.
-	btn.disabled = true
-	return btn
-
-
-# ── Companion Join Splash (Gacha-style) ───────────────────────────────────────
+# ── Companion Join Splash ────────────────────────────────────────────────────
 
 ## Shows a one-time fullscreen reveal when a major companion joins the party.
 ## Sets a {id}_join_shown flag so it never replays. Animates the portrait
@@ -568,14 +508,6 @@ func _on_story_pressed() -> void:
 
 func _on_camp_pressed() -> void:
 	SceneManager.change_scene(SceneManager.SceneId.COMPANION_ROOM)
-
-
-func _on_oracle_pressed() -> void:
-	SceneManager.change_scene(SceneManager.SceneId.ORACLE)
-
-
-func _on_forge_pressed() -> void:
-	SceneManager.change_scene(SceneManager.SceneId.FORGE)
 
 
 func _on_deck_pressed() -> void:

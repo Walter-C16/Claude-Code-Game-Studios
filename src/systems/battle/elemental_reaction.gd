@@ -20,7 +20,7 @@ extends RefCounted
 
 # ── Names ─────────────────────────────────────────────────────────────────────
 
-const REACTION_ORACLE_MIST: String   = "Oracle Mist"       ## Fire + Water
+const REACTION_MYSTIC_MIST: String   = "Mystic Mist"       ## Fire + Water
 const REACTION_CINDER_BLOOM: String  = "Cinder Bloom"      ## Fire + Earth
 const REACTION_SOLAR_FLARE: String   = "Solar Flare"       ## Fire + Lightning
 const REACTION_LIFE_SPRING: String   = "Life Spring"       ## Water + Earth
@@ -46,7 +46,7 @@ static func resolve(charged: String, incoming: String) -> Dictionary:
 	match pair:
 		"Fire|Water":
 			return {
-				"name": REACTION_ORACLE_MIST,
+				"name": REACTION_MYSTIC_MIST,
 				"effect": "damage_buff_next",
 				"magnitude": 50.0,    ## +50% on next attack
 				"duration": 1,

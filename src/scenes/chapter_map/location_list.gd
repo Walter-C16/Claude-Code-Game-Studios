@@ -156,7 +156,7 @@ func _refresh_time_display() -> void:
 	var time_key: String = "LOCATION_TIME_" + time_name.to_upper()
 	_time_label.text = Localization.get_text(time_key)
 	_day_label.text = Localization.get_text("LOCATION_DAY_LABEL") % GameStore.get_day_number()
-	_gold_label.text = "%d %s" % [GameStore.get_gold(), Localization.get_text("ORACLE_GOLD_LABEL")]
+	_gold_label.text = "%d %s" % [GameStore.get_gold(), Localization.get_text("UI_GOLD_LABEL")]
 	_token_label.text = ""
 	_token_label.visible = false
 

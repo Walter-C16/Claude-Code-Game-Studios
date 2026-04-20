@@ -157,12 +157,11 @@ func test_game_store_serialization_to_dict_has_exactly_eleven_top_level_keys() -
 	# Assert — expected top-level keys (grows as systems are added;
 	# count reflects the current shipping schema).
 	# Phase H added "companion_levels" for the manual level-up system.
-	# Phase I.a added "companion_shards", "companion_epithets",
-	# "oracle_pulls_this_week", "week_start_unix" for the Oracle gacha.
-	# Phase I.e added "forge_fragments" for the Forge gacha.
-	# Equipment tier-up added "weapon_tier" and "amulet_tier".
 	# Location system added "time_of_day" and "day_number".
-	assert_int(data.size()).is_equal(29)
+	# Gacha removal: dropped 7 fields (companion_shards, companion_epithets,
+	# oracle_pulls_this_week, week_start_unix, forge_fragments, weapon_tier,
+	# amulet_tier). Epithets are now derived from companion level.
+	assert_int(data.size()).is_equal(22)
 
 # ---------------------------------------------------------------------------
 # AC2 — from_dict() with missing "player_xp" → get_xp() returns 0 (default)

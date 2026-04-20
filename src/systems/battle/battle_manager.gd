@@ -139,7 +139,7 @@ func setup(party_ids: Array[String], enemy_ids: Array[String]) -> bool:
 	# Epithet bonuses — II (energy regen), IV (crit chance), V (special
 	# +1 hit). Tier III is handled inline when blessings are applied, and
 	# tier VI is handled inline when move effects apply (see _apply_effect).
-	# See design/quick-specs/oracle-gacha.md.
+	# Epithet tier is derived from companion level via CompanionLevel.epithet_for_level.
 	for combatant: Combatant in party:
 		_apply_epithet_bonuses(combatant)
 
@@ -349,7 +349,7 @@ func _resolve_hit(actor: Combatant, target: Combatant, move: BattleMove) -> Dict
 		var hm_amp: float = 1.0 + float(hm.get("magnitude", 0.5))
 		base_dmg = int(float(base_dmg) * hm_amp)
 
-	# damage_buff_next (Oracle Mist reaction buff) — consumed on this hit.
+	# damage_buff_next (Mist reaction buff) — consumed on this hit.
 	if actor.stats.active_effects.has("damage_buff_next"):
 		var db: Dictionary = actor.stats.active_effects["damage_buff_next"] as Dictionary
 		var db_pct: float = float(db.get("magnitude", 50.0)) / 100.0
@@ -747,7 +747,8 @@ func _max_slot_for_stage(stage: int) -> int:
 ## III is handled inline during blessings. Epithet VI is handled inline
 ## inside _apply_effect. This pass handles II, IV, and V.
 ##
-## See design/quick-specs/oracle-gacha.md for the tier table.
+## Tiers are auto-unlocked by companion level
+## (see CompanionLevel.EPITHET_LEVEL_THRESHOLDS).
 func _apply_epithet_bonuses(combatant: Combatant) -> void:
 	if combatant == null or combatant.stats == null:
 		return
@@ -843,19 +844,11 @@ func _apply_equipment_bonuses() -> void:
 	var weapon_chips: int = equip.get_weapon_chip_bonus()
 	var amulet_mult: float = equip.get_amulet_mult_bonus()
 
-	# Tier multiplier: 1.0 at tier 0, scaling to 3.5 at tier 5.
-	var weapon_tier_mult: float = GameStore.equipment_tier_multiplier(
-		GameStore.get_equipment_tier("weapon")
-	)
-	var amulet_tier_mult: float = GameStore.equipment_tier_multiplier(
-		GameStore.get_equipment_tier("amulet")
-	)
-
 	if weapon_chips > 0:
-		proto.stats.atk += int(float(weapon_chips / 2) * weapon_tier_mult)
+		proto.stats.atk += weapon_chips / 2
 	if amulet_mult > 0.0:
-		proto.stats.def_stat += int(amulet_mult * 3.0 * amulet_tier_mult)
-		proto.stats.max_hp += int(amulet_mult * 5.0 * amulet_tier_mult)
+		proto.stats.def_stat += int(amulet_mult * 3.0)
+		proto.stats.max_hp += int(amulet_mult * 5.0)
 		proto.stats.current_hp = proto.stats.max_hp
 
 

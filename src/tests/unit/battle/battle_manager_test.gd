@@ -272,12 +272,16 @@ func test_battle_manager_setup_stage_0_applies_zero_blessings() -> void:
 	assert_bool(bm.active_blessings.has("artemis")).is_false()
 
 
-# ── Epithet bonuses (Phase I.d) ──────────────────────────────────────────────
+# ── Epithet bonuses (derived from companion level) ───────────────────────────
+# Epithet tiers are auto-unlocked by level via
+# CompanionLevel.EPITHET_LEVEL_THRESHOLDS = [1, 10, 20, 35, 50, 65].
+# These tests set explicit levels via set_companion_level so the derived
+# tier matches the bonus under test.
 
 func test_battle_manager_epithet_ii_adds_bonus_energy_regen() -> void:
-	# Arrange — Artemis at Epithet II
+	# Arrange — Artemis at level 10 (threshold for Epithet II).
 	_reset_game_state()
-	GameStore.set_companion_epithet("artemis", 2)
+	GameStore.set_companion_level("artemis", 10)
 	var bm = BattleManagerScript.new()
 	bm.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
 
@@ -292,13 +296,12 @@ func test_battle_manager_epithet_ii_adds_bonus_energy_regen() -> void:
 
 
 func test_battle_manager_epithet_iv_adds_five_percent_crit() -> void:
-	# Arrange — compare a battle at Epithet III (which already unlocks
-	# blessing slots via the Epithet III relaxation) against Epithet IV
-	# on the same roster. The only stat that should change is crit_chance,
-	# which IV bumps by +5. This isolates the Epithet IV effect from the
-	# unrelated blessing bonuses that come with tier III's slot unlock.
+	# Compare level 34 (Epithet III) vs level 35 (Epithet IV). Both fall
+	# under the same crit-chance milestone bracket (milestones every 5
+	# levels), so the level-based crit bonus is identical. The +5 delta
+	# comes purely from the Epithet IV bonus.
 	_reset_game_state()
-	GameStore.set_companion_epithet("artemis", 3)
+	GameStore.set_companion_level("artemis", 34)
 	var bm_a = BattleManagerScript.new()
 	bm_a.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
 	var artemis_iii: Combatant = null
@@ -309,7 +312,7 @@ func test_battle_manager_epithet_iv_adds_five_percent_crit() -> void:
 	var crit_at_iii: float = artemis_iii.stats.crit_chance
 
 	_reset_game_state()
-	GameStore.set_companion_epithet("artemis", 4)
+	GameStore.set_companion_level("artemis", 35)
 	var bm_b = BattleManagerScript.new()
 	bm_b.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
 	var artemis_iv: Combatant = null
@@ -324,9 +327,9 @@ func test_battle_manager_epithet_iv_adds_five_percent_crit() -> void:
 
 
 func test_battle_manager_epithet_v_adds_one_hit_to_special() -> void:
-	# Arrange — Hippolyta at Epithet V
+	# Arrange — Hippolyta at level 50 (threshold for Epithet V).
 	_reset_game_state()
-	GameStore.set_companion_epithet("hipolita", 5)
+	GameStore.set_companion_level("hipolita", 50)
 	var bm = BattleManagerScript.new()
 	bm.setup(["protagonist", "hipolita"] as Array[String], ["forest_monster"] as Array[String])
 
@@ -343,11 +346,12 @@ func test_battle_manager_epithet_v_adds_one_hit_to_special() -> void:
 
 
 func test_battle_manager_epithet_iii_lifts_blessing_slot_cap() -> void:
-	# Arrange — Artemis at romance stage 1 (cap = 1 slot) but Epithet III
-	# forces the cap to 4, so more blessings should apply.
+	# Arrange — Artemis at romance stage 1 (cap = 1 slot) but level 20
+	# unlocks Epithet III which forces the blessing cap to 4, so more
+	# blessings should apply.
 	_reset_game_state()
 	CompanionState.set_relationship_level("artemis", 25)  # stage 1
-	GameStore.set_companion_epithet("artemis", 3)
+	GameStore.set_companion_level("artemis", 20)
 	var bm = BattleManagerScript.new()
 	bm.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
 
@@ -358,11 +362,11 @@ func test_battle_manager_epithet_iii_lifts_blessing_slot_cap() -> void:
 
 
 func test_battle_manager_epithet_vi_extends_effect_turns_left() -> void:
-	# Arrange — solo battle, force Artemis at Epithet VI, cast an ultimate
-	# that writes a turns_left field. We'll use the "guaranteed_crit_3_turns"
-	# path via a synthetic move.
+	# Arrange — solo battle, Artemis at level 65 (threshold for Epithet VI),
+	# cast an ultimate that writes a turns_left field. We'll use the
+	# "guaranteed_crit_3_turns" path via a synthetic move.
 	_reset_game_state()
-	GameStore.set_companion_epithet("artemis", 6)
+	GameStore.set_companion_level("artemis", 65)
 	var bm = BattleManagerScript.new()
 	bm.setup(["protagonist", "artemis"] as Array[String], ["forest_monster"] as Array[String])
 

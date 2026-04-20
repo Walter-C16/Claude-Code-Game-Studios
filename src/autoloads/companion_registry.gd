@@ -58,19 +58,15 @@ func meet_companion(id: String) -> void:
 	var dislikes: Array = profile.get("dislikes", []) as Array
 	GameStore.seed_companion_preferences(id, likes, dislikes)
 
-	# Oracle gacha — bump Epithet 0 → 1 on first meet so story-unlocked
-	# companions start their progression at Awakening. Already-unlocked
-	# goddesses (via the gacha path) stay at whatever tier they reached.
+	# Determine battle-readiness. Epithet tier is now derived from level
+	# (see CompanionLevel.epithet_for_level) so no explicit bump here —
+	# level 1 automatically corresponds to Epithet I.
 	var ctype: String = profile.get("type", "companion") as String
 	var is_battle: bool = ctype == "companion"
 	# Quest companions become battle-ready only after their quest_complete flag.
 	if ctype == "quest_companion":
 		var unlock_flag: String = profile.get("unlock_flag", id + "_quest_complete") as String
 		is_battle = GameStore.has_flag(unlock_flag)
-
-	if is_battle:
-		if GameStore.get_companion_epithet(id) == 0:
-			GameStore.set_companion_epithet(id, 1)
 
 	# Auto-join the active party if there's room — ONLY for battle
 	# companions (including quest_companions whose quest is done).
