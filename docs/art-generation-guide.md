@@ -475,7 +475,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### Design DNA
 
-Daphne is **gentle wildness** — an adult forest nymph who'd rather tend her garden than talk to strangers. Her design is grounded and warm but quietly provocative: a low-cut sundress with thin straps slipping off one shoulder, a short apron tied high under her chest pushing her breasts up, a bare midriff between the apron and dress, bare feet in the grass. She doesn't dress this way to seduce anyone — she lives alone in the woods and the dress is comfortable and cool. She's approachable, warm, and a little messy — dirt under her nails, leaves in her hair, a shy smile that's disarming precisely because it belongs to a voluptuous grown woman who still flinches at being noticed.
+Daphne is **gentle wildness** — an adult forest nymph who'd rather tend her garden than talk to strangers. Her design is grounded and warm but quietly provocative: a low-cut sundress with thin straps slipping off one shoulder, a short apron tied high under her chest, a bare midriff between the apron and dress, bare feet in the grass. She doesn't dress this way to seduce anyone — she lives alone in the woods and the dress is comfortable and cool. Her body is **pear-shaped** (small breasts, huge round ass, wide hips narrowing into a small waist) — her curves live below the belt, which the dress hugs tightly around her ass and hips. She's approachable, warm, and a little messy — dirt under her nails, leaves in her hair, a shy smile that's disarming precisely because it belongs to a grown woman who still flinches at being noticed.
 
 #### Color Triangle
 
@@ -506,7 +506,7 @@ The **woven herb basket** on her left hip and the leaves tangled in her hair. At
 - **Expression baseline**: Gentle half-smile directed at the ground, avoiding direct eye contact
 - **Distinguishing mark**: A spray of freckles across her nose and cheeks, like scattered seeds
 - **Skin**: Fair with warm undertone, flushed pink at cheeks and nose tips
-- **Body**: Mature feminine build, huge breasts with deep cleavage, wide womanly hips, soft curvy belly, thick shapely thighs — a grown woman's voluptuous body carried with shy posture
+- **Body**: Pear-shaped feminine build — small breasts, huge round ass, wide womanly hips flaring from a narrow waist, soft curvy belly, thick shapely thighs. Her curves live below the waist, not above
 
 #### Element Expression
 
@@ -520,15 +520,15 @@ shoulder-length wavy hair with leaves and small white flower tangled
 in, small flower crown woven in her hair, large warm moss-gold eyes
 slightly downcast, spray of freckles across nose cheeks and
 collarbones, fair pink-flushed skin, low-cut cream linen sundress with
-thin shoulder straps and plunging neckline deep cleavage, dress
-slipping off right shoulder, hand-embroidered wildflower at neckline
-and hem, short sage-green herb-stained apron tied loosely just under
-her chest with thin leather cord pushing breasts up, bare midriff,
-woven wicker basket overflowing with fresh herbs on left hip, bare
-feet with grass stains and earth, dirt under nails herb-stained green
-fingertips, mature feminine build huge breasts deep cleavage wide
-hips soft belly thick shapely thighs, fading green mystic leaf symbols
-on forearms collarbones chest and stomach, lazy floating golden pollen
+thin shoulder straps and scooped neckline, dress slipping off right
+shoulder, hand-embroidered wildflower at neckline and hem, short
+sage-green herb-stained apron tied loosely just under her chest with
+thin leather cord, bare midriff, woven wicker basket overflowing with
+fresh herbs on left hip, bare feet with grass stains and earth, dirt
+under nails herb-stained green fingertips, pear-shaped feminine build,
+small breasts, huge round ass, wide hips flaring from narrow waist,
+soft belly, thick shapely thighs, fading green mystic leaf symbols on
+forearms collarbones chest and stomach, lazy floating golden pollen
 motes around her.
 (shy half-smile:0.3), gentle downcast warm eyes, looking at viewer,
 cowboy shot,
@@ -547,7 +547,7 @@ masterpiece, best quality, highest quality, intricate details
 
 #### LoRA Training Anchors
 
-`darkolympus_daphne` — soft green wavy hair with leaves, small flower crown, freckles on nose cheeks and collarbones, moss-gold eyes, adult young woman, voluptuous mature figure (huge breasts deep cleavage, wide hips, soft belly, thick thighs), low-cut cream linen sundress with thin straps slipping off right shoulder, short sage herb-stained apron tied high under chest, bare midriff, woven herb basket at left hip, bare grass-stained feet, green mystic symbols on forearms collarbones chest and stomach, golden pollen motes
+`darkolympus_daphne` — soft green wavy hair with leaves, small flower crown, freckles on nose cheeks and collarbones, moss-gold eyes, adult young woman, pear-shaped figure (small breasts, huge round ass, wide hips narrow waist, soft belly, thick thighs), low-cut cream linen sundress with thin straps slipping off right shoulder, scooped neckline, short sage herb-stained apron tied high under chest, bare midriff, woven herb basket at left hip, bare grass-stained feet, green mystic symbols on forearms collarbones chest and stomach, golden pollen motes
 
 ---
 

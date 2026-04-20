@@ -206,14 +206,14 @@ masterpiece, best quality, highest quality, intricate details
 Smooth skinned shy forest nymph herbalist adult young woman with soft
 green shoulder-length wavy hair with small leaves and a white flower
 tangled in it, warm moss-gold eyes, wearing a low-cut cream linen
-sundress with thin shoulder straps and a plunging neckline showing
-deep cleavage and bare shoulders, dress slipping off her right
-shoulder, hand-embroidered wildflower patterns at the low neckline,
-short sage-green herb-stained apron tied loosely just under her chest
-with a thin leather cord pushing her breasts up, bare midriff visible
-between the apron and dress waist, a small flower crown woven in her
-hair. Her body features: mature feminine build, huge breasts with deep
-cleavage, wide womanly hips, soft curvy belly, dirt under her nails
+sundress with thin shoulder straps and a scooped neckline showing
+bare shoulders and collarbones, dress slipping off her right shoulder,
+hand-embroidered wildflower patterns at the neckline, short sage-green
+herb-stained apron tied loosely just under her chest with a thin
+leather cord, bare midriff visible between the apron and dress waist,
+a small flower crown woven in her hair. Her body features: pear-shaped
+feminine build, small breasts, huge round ass, wide womanly hips
+flaring out from a narrow waist, soft curvy belly, dirt under her nails
 and herb-stained green fingertips, fading soft green mystic leaf
 symbols along her forearms, collarbones, chest and stomach, dim golden
 pollen particles drift lazily around her. She has a spray of freckles
@@ -620,20 +620,21 @@ masterpiece, best quality, highest quality, intricate details
 Smooth skinned shy forest nymph herbalist adult young woman with soft
 green shoulder-length wavy hair with small leaves and a white flower
 tangled in it, warm moss-gold eyes, wearing a low-cut cream linen
-sundress with thin shoulder straps and a plunging neckline showing
-deep cleavage, dress slipping off her right shoulder, hand-embroidered
-wildflower patterns at the low neckline and hem, dress hiked up above
-her knees showing her thick thighs, short sage-green herb-stained apron
-tied loosely just under her chest with a thin leather cord pushing
-her breasts up, bare midriff visible between the apron and dress waist,
-small flower crown woven in her hair, woven wicker basket overflowing
-with herbs on her left hip, bare feet with grass stains and earth
-between toes. Her body features: mature feminine build, huge breasts
-with deep cleavage, wide womanly hips, soft curvy belly, thick
-shapely thighs, dirt under nails and herb-stained green fingertips,
-fading soft green mystic leaf symbols along her forearms, collarbones,
-chest and stomach, dim golden pollen particles drift lazily around her.
-She has a spray of freckles across her nose, cheeks and collarbones,
+sundress with thin shoulder straps and a scooped neckline, dress
+slipping off her right shoulder, hand-embroidered wildflower patterns
+at the neckline and hem, dress hiked up above her knees showing her
+thick shapely thighs, the dress hugging tightly around her huge round
+ass, short sage-green herb-stained apron tied loosely just under her
+chest with a thin leather cord, bare midriff visible between the apron
+and dress waist, small flower crown woven in her hair, woven wicker
+basket overflowing with herbs on her left hip, bare feet with grass
+stains and earth between toes. Her body features: pear-shaped feminine
+build, small breasts, huge round ass, wide womanly hips flaring out
+from a narrow waist, soft curvy belly, thick shapely thighs, dirt
+under nails and herb-stained green fingertips, fading soft green
+mystic leaf symbols along her forearms, collarbones, chest and
+stomach, dim golden pollen particles drift lazily around her. She
+has a spray of freckles across her nose, cheeks and collarbones,
 pink-flushed fair skin.
 (shy half-smile:0.3), gentle downcast warm eyes, looking at viewer,
 full body shot, standing pose, bare feet visible,
