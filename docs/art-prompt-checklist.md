@@ -211,18 +211,20 @@ bare shoulders and collarbones, dress slipping off her right shoulder,
 hand-embroidered wildflower patterns at the neckline, short sage-green
 herb-stained apron tied loosely just under her chest with a thin
 leather cord, bare midriff visible between the apron and dress waist,
-a small flower crown woven in her hair. Her body features: pear-shaped
-feminine build, small breasts, huge round ass, wide womanly hips
-flaring out from a narrow waist, soft curvy belly, dirt under her nails
-and herb-stained green fingertips, fading soft green mystic leaf
-symbols along her forearms, collarbones, chest and stomach, dim golden
-pollen particles drift lazily around her. She has a spray of freckles
-across her nose cheeks and collarbones, pink-flushed fair skin.
-(shy half-smile:0.3), gentle downcast warm eyes, looking at viewer,
-wide cowboy shot, shown from waist up, full upper body visible, arms
-and apron and herb basket clearly in frame, camera pulled back, space
-above her head,
-white background,
+the dress cinched at her narrow waist and clinging tightly around her
+wide flaring hips and huge round ass, a small flower crown woven in
+her hair. Her body features: pear-shaped feminine build, small
+breasts, huge round ass, wide womanly hips flaring out dramatically
+from a narrow waist, soft curvy belly, dirt under her nails and
+herb-stained green fingertips, fading soft green mystic leaf symbols
+along her forearms, collarbones, chest and stomach, dim golden pollen
+particles drift lazily around her. She has a spray of freckles across
+her nose cheeks and collarbones, pink-flushed fair skin.
+(shy half-smile:0.3), gentle downcast warm eyes, looking back over her
+shoulder at viewer, three-quarter rear view, hip cocked to one side,
+back arched slightly, wide cowboy shot framing her hips and ass
+prominently in the lower half of the frame, huge ass visible and
+emphasized, tight fabric across her ass, white background,
 masterpiece, best quality, highest quality, intricate details
 ```
 
@@ -619,25 +621,30 @@ masterpiece, best quality, highest quality, intricate details
 ```
 Smooth skinned shy forest nymph herbalist adult young woman with soft
 green shoulder-length wavy hair with small leaves and a white flower
-tangled in it, warm moss-gold eyes, wearing a low-cut cream linen
-sundress with thin shoulder straps and a scooped neckline, dress
+tangled in it, warm moss-gold eyes, wearing a short low-cut cream
+linen sundress with thin shoulder straps and a scooped neckline, dress
 slipping off her right shoulder, hand-embroidered wildflower patterns
-at the neckline and hem, dress hiked up above her knees showing her
-thick shapely thighs, the dress hugging tightly around her huge round
-ass, short sage-green herb-stained apron tied loosely just under her
-chest with a thin leather cord, bare midriff visible between the apron
-and dress waist, small flower crown woven in her hair, woven wicker
-basket overflowing with herbs on her left hip, bare feet with grass
+at the neckline and hem, the dress hem riding dangerously high on her
+thighs almost exposing the curve of her ass, the thin linen fabric
+stretched taut across her huge round ass showing every curve, short
+sage-green herb-stained apron tied loosely just under her chest with
+a thin leather cord, bare midriff visible between the apron and dress
+waist, small flower crown woven in her hair, woven wicker basket
+overflowing with herbs held against her left hip, bare feet with grass
 stains and earth between toes. Her body features: pear-shaped feminine
-build, small breasts, huge round ass, wide womanly hips flaring out
-from a narrow waist, soft curvy belly, thick shapely thighs, dirt
-under nails and herb-stained green fingertips, fading soft green
-mystic leaf symbols along her forearms, collarbones, chest and
-stomach, dim golden pollen particles drift lazily around her. She
-has a spray of freckles across her nose, cheeks and collarbones,
-pink-flushed fair skin.
-(shy half-smile:0.3), gentle downcast warm eyes, looking at viewer,
-full body shot, standing pose, bare feet visible,
+build, small breasts, huge round ass prominently emphasized, wide
+womanly hips flaring out dramatically from a narrow waist, soft curvy
+belly, thick shapely thighs, dirt under nails and herb-stained green
+fingertips, fading soft green mystic leaf symbols along her forearms,
+collarbones, chest and stomach, dim golden pollen particles drift
+lazily around her. She has a spray of freckles across her nose, cheeks
+and collarbones, pink-flushed fair skin.
+(shy half-smile:0.3), gentle downcast warm eyes, looking back over her
+shoulder at viewer, three-quarter rear view, back arched, hip popped
+out, one hand resting on her hip and the other holding the herb basket,
+weight shifted onto one leg, full body shot, standing contrapposto
+pose emphasizing her hip flare, bare feet visible, huge ass prominently
+displayed,
 white background,
 masterpiece, best quality, highest quality, intricate details
 ```
