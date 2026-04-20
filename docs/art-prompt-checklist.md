@@ -196,6 +196,12 @@ masterpiece, best quality, highest quality, intricate details
 
 ### Daphne — Cowboy Shot (6 images)
 
+> **Daphne negative additions**: `close-up, face close-up, extreme
+> close-up, portrait close-up, cropped, head shot` — her prompt has
+> heavy face/chest detail (freckles, cleavage, flowers, symbols) that
+> can trick the AI into zooming in. The explicit `wide cowboy shot`
+> anchors plus these negatives pull the camera back.
+
 ```
 Smooth skinned shy forest nymph herbalist adult young woman with soft
 green shoulder-length wavy hair with small leaves and a white flower
@@ -213,7 +219,9 @@ symbols along her forearms, collarbones, chest and stomach, dim golden
 pollen particles drift lazily around her. She has a spray of freckles
 across her nose cheeks and collarbones, pink-flushed fair skin.
 (shy half-smile:0.3), gentle downcast warm eyes, looking at viewer,
-cowboy shot,
+wide cowboy shot, shown from waist up, full upper body visible, arms
+and apron and herb basket clearly in frame, camera pulled back, space
+above her head,
 white background,
 masterpiece, best quality, highest quality, intricate details
 ```
