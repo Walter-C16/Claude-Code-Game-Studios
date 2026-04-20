@@ -203,7 +203,15 @@ func _make_tavern_card(tavern: Dictionary) -> Control:
 
 # ── Tavern Launch ─────────────────────────────────────────────────────────────
 
+## Re-entrancy guard — set the moment a tournament launch begins so a rapid
+## double-tap (common on mobile) can't fire two change_scene calls.
+var _launching_tavern: bool = false
+
 func _on_tavern_pressed(tavern: Dictionary) -> void:
+	if _launching_tavern:
+		return
+	_launching_tavern = true
+
 	# Tournament: 4 rounds played back-to-back. The first round's enemy is
 	# pulled from rounds[0]; combat.gd handles advancing to round 2/3/4
 	# after each victory. A defeat in any round ends the tournament with
@@ -211,6 +219,7 @@ func _on_tavern_pressed(tavern: Dictionary) -> void:
 	var rounds_raw: Array = tavern.get("rounds", []) as Array
 	if rounds_raw.is_empty():
 		push_warning("TavernMap: tavern %s has no rounds defined" % tavern.get("id", ""))
+		_launching_tavern = false
 		return
 	var rounds: Array[Dictionary] = []
 	for entry: Variant in rounds_raw:

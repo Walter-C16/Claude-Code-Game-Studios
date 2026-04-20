@@ -583,12 +583,15 @@ func _show_replace_party_picker(incoming_name: String) -> void:
 	body.add_theme_font_size_override("font_size", 13)
 	vbox.add_child(body)
 
-	# One button per current party member.
+	# One button per current party member. Each button is disabled on press
+	# so a rapid double-tap can't mutate the deck twice (which would leave
+	# the party with duplicates or drop the wrong companion).
 	for cid: String in GameStore.get_deck_companions():
 		var name: String = CompanionRegistry.get_profile(cid).get("display_name", cid) as String
 		var btn: Button = _make_action_button(name)
 		var captured: String = cid
 		btn.pressed.connect(func() -> void:
+			btn.disabled = true
 			var incoming_profile: Dictionary = CompanionRegistry.get_profile(_selected_id)
 			var incoming_value: int = int(incoming_profile.get("card_value", 0))
 			GameStore.remove_deck_companion(captured)

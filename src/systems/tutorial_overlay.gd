@@ -26,6 +26,10 @@ extends RefCounted
 static func show_once(parent: Control, flag_id: String, title_key: String, body_key: String) -> void:
 	if GameStore.has_flag(flag_id):
 		return
+	# Set the flag as soon as we commit to showing the overlay. If the player
+	# force-quits the app before tapping "Got it", the tutorial still counts
+	# as shown — otherwise it would re-trigger indefinitely on relaunch.
+	GameStore.set_flag(flag_id)
 	_build(parent, flag_id, title_key, body_key)
 
 
@@ -91,8 +95,9 @@ static func _build(parent: Control, flag_id: String, title_key: String, body_key
 	ok_btn.add_theme_color_override("font_color", UIConstants.TEXT_PRIMARY)
 	ok_btn.add_theme_font_size_override("font_size", 16)
 	ok_btn.add_theme_stylebox_override("normal", _make_button_style())
+	# Flag was already set in show_once() — this callback only needs to
+	# tear down the overlay nodes.
 	ok_btn.pressed.connect(func() -> void:
-		GameStore.set_flag(flag_id)
 		backdrop.queue_free()
 		panel.queue_free()
 	)

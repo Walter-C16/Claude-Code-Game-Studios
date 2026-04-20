@@ -743,9 +743,14 @@ func _calc_scaling_bonus(actor: Combatant, move: BattleMove) -> int:
 		"agi":
 			stat_value = float(actor.stats.agi)
 		"crit_chance":
-			stat_value = actor.stats.crit_chance
+			# Stored as a percentage (e.g. 10.0 = 10%). Divide by 100 so the
+			# scaling ratio operates on the fractional value, matching how
+			# the other stats (max_hp, atk, def, agi) are consumed.
+			stat_value = actor.stats.crit_chance / 100.0
 		"crit_damage":
-			stat_value = actor.stats.crit_damage
+			# Stored as a percentage (e.g. 150.0 = 150%). Divide by 100 so
+			# the scaling ratio doesn't multiply by ~150x by accident.
+			stat_value = actor.stats.crit_damage / 100.0
 	return maxi(0, int(stat_value * ratio))
 
 
