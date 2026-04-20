@@ -22,7 +22,9 @@ Leveling should be the "play the game more, get stronger" feedback loop that sit
 
 ## Solution
 
-Add a **manual level-up system** that uses the existing `_companion_xp` pool as a resource bank, a new `_companion_levels` storage, and a player-driven "Level Up" button. Leveling up requires BOTH enough banked XP AND enough gold — it is NOT automatic. Gold is the primary long-term sink; XP is earned and spent like a second currency. Stat bonuses apply in `BattleManager.setup()` between base stats and blessing layering. Cap 20, quadratic XP curve, small-per-level + milestone bonuses, protagonist scales the same way.
+Add a **manual level-up system** that uses the existing `_companion_xp` pool as a resource bank, a new `_companion_levels` storage, and a player-driven "Level Up" button. Leveling up requires BOTH enough banked XP AND enough gold — it is NOT automatic. Gold is the primary long-term sink; XP is earned and spent like a second currency. Stat bonuses apply in `BattleManager.setup()` between base stats and blessing layering.
+
+**Per-companion level cap depends on rank** (revised 2026-04): B=60, A=70, S=90, SS=110. Global `LEVEL_CAP` is 110 (the SS ceiling); individual companions cap lower via `CompanionLevel.level_cap_for_rank(rank)`. Quadratic XP curve, small-per-level + milestone bonuses, protagonist scales the same way.
 
 Lore framing: the goddesses are fallen and recovering — every fight and mission reignites a fraction of their divine power. Leveling isn't "training"; it's "remembering who they were".
 
@@ -31,7 +33,8 @@ Lore framing: the goddesses are fallen and recovering — every fight and missio
 ### XP needed to reach a level
 
 ```
-xp_total(level) = 25 * level * (level - 1)    # level ∈ [1, 20]
+xp_total(level) = 25 * level * (level - 1)    # level ∈ [1, LEVEL_CAP]
+# LEVEL_CAP is 110 globally; per-companion cap depends on rank.
 ```
 
 Derivation: start from `xp_needed_for_next(n) = 50 * n`, sum from 1 to L-1. Total is `25 * L * (L - 1)`.
@@ -225,7 +228,8 @@ After `apply_to_stats` bumps max_hp, `current_hp` is snapped to the new max — 
 
 | Knob | Default | Safe range | Effect |
 |---|---|---|---|
-| `LEVEL_CAP` | 20 | 10–30 | Hard ceiling on progression |
+| `LEVEL_CAP` | 110 | 60–150 | Global hard ceiling (SS rank) |
+| `RANK_CAPS` | B=60, A=70, S=90, SS=110 | per-rank | Per-companion ceiling — revised 2026-04 |
 | XP coefficient | 25 | 15–50 | Curve scale (higher = slower) |
 | `hp_per_level` | 6 | 3–12 | HP scaling rate |
 | `atk_per_level` | 1 | 1–3 | ATK scaling rate |
@@ -243,16 +247,16 @@ Every knob above lives in `src/systems/companion_level.gd` constants so designer
 - AC-LVL-01: `CompanionLevel.xp_to_level(0)` returns 1.
 - AC-LVL-02: `CompanionLevel.xp_to_level(50)` returns 2 (exact threshold).
 - AC-LVL-03: `CompanionLevel.xp_to_level(49)` returns 1 (one below threshold).
-- AC-LVL-04: `CompanionLevel.xp_to_level(100000)` returns 20 (far past cap, clamped).
-- AC-LVL-05: `xp_total_for_level(20) == 9500`.
+- AC-LVL-04: `CompanionLevel.xp_to_level(very_large_xp)` returns `LEVEL_CAP` (110), clamped.
+- AC-LVL-05: `xp_total_for_level(20) == 9500` (spot-check mid-curve).
 - AC-LVL-06: `hp_bonus_for_level(1) == 0`, `hp_bonus_for_level(20) == 114`.
 - AC-LVL-07: `apply_to_stats` mutates max_hp, atk, def_stat, agi, crit_chance, crit_damage.
 - AC-LVL-08: `BattleManager.setup` applies level bonuses before blessing bonuses (verified by test order).
 - AC-LVL-09: Combat victory grants 30 XP to each living party member + protagonist, 10 XP to KO'd members.
 - AC-LVL-10: Companion Room detail panel shows "Level X · Y / Z XP" text and a progress bar.
 - AC-LVL-11: Battle HUD actor name line shows "· Lv N".
-- AC-LVL-12: A companion at level 20 shows "MAX" instead of the XP bar.
-- AC-LVL-13: Unit test covers the XP curve for every level from 1 to 20 (parametric sweep).
+- AC-LVL-12: A companion at their rank cap (60/70/90/110) shows "MAX" instead of the XP bar.
+- AC-LVL-13: Unit test covers the XP curve at boundary points (1, 10, 50, rank caps).
 - AC-LVL-14: Battle unit tests still green (75+ → verify post-integration).
 - AC-LVL-15: Full test suite still green.
 
