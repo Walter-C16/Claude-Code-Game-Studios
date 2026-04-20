@@ -82,6 +82,3 @@ signal boss_encounter_started(enemy_id: String)
 
 ## Fired when a companion is revealed / met for the first time.
 signal companion_unlocked(companion_id: String)
-
-## Fired when midnight UTC day boundary resets tokens.
-signal midnight_reset

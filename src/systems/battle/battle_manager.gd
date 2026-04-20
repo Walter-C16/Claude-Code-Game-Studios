@@ -613,12 +613,10 @@ func _end_turn() -> void:
 	# Advance to next living combatant in the queue.
 	_advance_turn_pointer()
 
-	# Regen energy for the unit whose turn is starting. The per-combatant
-	# bonus_energy_regen field is kept as an escape hatch for future
-	# per-character perks; nothing currently sets it above 0.
+	# Regen energy for the unit whose turn is starting.
 	var next: Combatant = current_combatant()
 	if next != null and next.is_alive():
-		next.stats.add_energy(_energy_regen_per_turn + next.stats.bonus_energy_regen)
+		next.stats.add_energy(_energy_regen_per_turn)
 
 	_set_state(State.AWAIT_ACTION)
 	if next != null:
