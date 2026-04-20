@@ -37,9 +37,9 @@ var ai_profile: String = "aggressive"
 ## generous timer of any enemy on the field). Player units ignore this field.
 var turn_timer_seconds: int = 0
 
-## Per-combatant bonus added to the global energy regen each turn. Set
-## during BattleManager.setup based on Epithet II (Devotion) tier. Defaults
-## to 0 so non-upgraded units use the global regen only.
+## Per-combatant bonus added to the global energy regen each turn.
+## Defaults to 0 so units use the global regen only. Kept as an escape
+## hatch for future per-character energy perks; no callers currently.
 var bonus_energy_regen: int = 0
 
 # ── Runtime state ────────────────────────────────────────────────────────────

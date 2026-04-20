@@ -11,7 +11,7 @@ extends RefCounted
 ## single source of truth on GameStore._companion_xp.
 ##
 ## Layering in BattleManager.setup:
-##   base stats → level bonuses (this class) → blessings → Epithets (v2)
+##   base stats → level bonuses (this class) → blessings
 
 # ── Constants ────────────────────────────────────────────────────────────────
 
@@ -55,13 +55,6 @@ const CRIT_CHANCE_PER_MILESTONE: float = 1.0
 ## Crit damage grows by 5 percentage points every 10 levels.
 const CRIT_DMG_LEVELS_PER_POINT: int = 10
 const CRIT_DMG_PER_MILESTONE: float = 5.0
-
-## Epithet auto-unlock thresholds. Tier N requires the companion to reach
-## EPITHET_LEVEL_THRESHOLDS[N - 1]. Replaces the old Oracle gacha that spent
-## Bond Shards — Epithets now come from simply leveling the companion up.
-## Tier 6 requires level 65, which is reachable only by A/S/SS rank
-## companions (B rank caps at 60 → peaks at Tier 5 by design).
-const EPITHET_LEVEL_THRESHOLDS: Array[int] = [1, 10, 20, 35, 50, 65]
 
 
 # ── XP ↔ Level ────────────────────────────────────────────────────────────────
@@ -165,20 +158,3 @@ static func apply_to_stats(stats: BattleStats, level: int, growth_focus: String 
 				stats.def_stat += lvls / 2  # +1 every 2 levels (same as base rate — the HP is the real bonus)
 
 	stats.current_hp = stats.max_hp
-
-
-# ── Epithet thresholds ───────────────────────────────────────────────────────
-
-## Returns the highest Epithet tier unlocked for a companion at [param level].
-## 0 = not unlocked, 1..6 = earned tiers. Uses [code]EPITHET_LEVEL_THRESHOLDS[/code]
-## as the lookup table, so tier 1 unlocks the moment a companion joins and
-## each subsequent tier requires a level milestone.
-static func epithet_for_level(level: int) -> int:
-	var l: int = clampi(level, 1, LEVEL_CAP)
-	var tier: int = 0
-	for i: int in range(EPITHET_LEVEL_THRESHOLDS.size()):
-		if l >= EPITHET_LEVEL_THRESHOLDS[i]:
-			tier = i + 1
-		else:
-			break
-	return tier

@@ -102,21 +102,11 @@ Each character has exactly one charge source. This is the single most important 
 - AC-CBS-04: Hero's element shows the first companion's element on the battle HUD when a non-Hero ally is in slot 1.
 - AC-CBS-05: This document is updated in the same commit as any change to the JSON. PRs touching the JSON without touching this doc fail review.
 
-## Cross-reference: Epithet upgrades (Oracle gacha)
+## Historical note: Epithets (removed 2026-04)
 
-The base stats above are the **Epithet I baseline** — the values every companion has the moment she joins the party. Future Epithets unlocked through the Oracle gacha (`design/quick-specs/oracle-gacha.md`) layer additive modifiers on top:
+Earlier iterations layered **Epithet tiers (I–VI)** on top of the base stats — Epithet I was the join-the-party baseline and each subsequent tier granted passive combat bonuses (energy regen, crit chance, extra hit on special, +1 turn on buffs). Epithets were sourced from the Oracle gacha, then briefly from level thresholds, then removed entirely along with the gacha.
 
-| Epithet | Modifier |
-|---|---|
-| II — Devotion | +1 to per-turn Energy regen for this companion |
-| III — Vigil | Unlocks Battle Blessing slot 4 (otherwise gated by stage 4 romance) |
-| IV — Apotheosis | +5% base crit chance |
-| V — Communion | Special move gains +1 hit |
-| VI — Eternal | Ultimate move's effect duration +1 turn |
-
-The Epithet table should be applied in `BattleManager.setup()` AFTER the base stats are read from JSON and BEFORE blessings are layered on. Order matters: blessings expect to operate on a "final base" that already includes Epithet bonuses.
-
-When tuning base stats in this doc, remember that fully-Epithet-VI companions have non-trivial bonuses on top — don't tune base stats so high that the maxed version trivializes endgame content.
+Current tuning intent: **base stats + level bonuses + romance-gated blessings** are the only axes of combat power. Tune base stats so the level-capped, fully-blessed version is interesting but not oppressive; there is no longer an endgame multiplier on top.
 
 ## Open Questions
 

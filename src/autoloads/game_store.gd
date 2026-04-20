@@ -654,22 +654,6 @@ func level_up_companion(companion_id: String) -> bool:
 	state_changed.emit("companion_level")
 	return true
 
-# ---------------------------------------------------------------------------
-# Public Getters — Epithet tiers (derived from companion level)
-# ---------------------------------------------------------------------------
-
-## Returns the current Epithet tier for [param companion_id]. 0 = not met,
-## 1..6 = unlocked tiers. Derived from the companion's level via
-## [method CompanionLevel.epithet_for_level] — Epithets now come from
-## leveling, not from the old Oracle gacha (which has been removed).
-func get_companion_epithet(companion_id: String) -> int:
-	if companion_id.is_empty():
-		return 0
-	if not _companion_levels.has(companion_id):
-		return 0
-	var level: int = int(_companion_levels.get(companion_id, 1))
-	return CompanionLevel.epithet_for_level(level)
-
 ## Time of day constants matching the locations.json config.
 const TIME_MORNING: int = 0
 const TIME_AFTERNOON: int = 1

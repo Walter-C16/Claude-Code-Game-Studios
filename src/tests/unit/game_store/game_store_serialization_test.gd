@@ -158,9 +158,10 @@ func test_game_store_serialization_to_dict_has_exactly_eleven_top_level_keys() -
 	# count reflects the current shipping schema).
 	# Phase H added "companion_levels" for the manual level-up system.
 	# Location system added "time_of_day" and "day_number".
-	# Gacha removal: dropped 7 fields (companion_shards, companion_epithets,
-	# oracle_pulls_this_week, week_start_unix, forge_fragments, weapon_tier,
-	# amulet_tier). Epithets are now derived from companion level.
+	# Gacha + Epithet removal dropped 7 fields: companion_shards,
+	# companion_epithets, oracle_pulls_this_week, week_start_unix,
+	# forge_fragments, weapon_tier, amulet_tier. Epithets are gone
+	# entirely — level-only companion progression.
 	assert_int(data.size()).is_equal(22)
 
 # ---------------------------------------------------------------------------

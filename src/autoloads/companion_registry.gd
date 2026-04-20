@@ -58,9 +58,6 @@ func meet_companion(id: String) -> void:
 	var dislikes: Array = profile.get("dislikes", []) as Array
 	GameStore.seed_companion_preferences(id, likes, dislikes)
 
-	# Determine battle-readiness. Epithet tier is now derived from level
-	# (see CompanionLevel.epithet_for_level) so no explicit bump here —
-	# level 1 automatically corresponds to Epithet I.
 	var ctype: String = profile.get("type", "companion") as String
 	var is_battle: bool = ctype == "companion"
 	# Quest companions become battle-ready only after their quest_complete flag.

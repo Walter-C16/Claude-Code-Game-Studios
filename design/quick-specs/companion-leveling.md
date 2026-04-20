@@ -3,25 +3,26 @@
 > **Type**: Combat progression system — the "grindable" power axis
 > **Author**: game-designer
 > **Created**: 2026-04-15
-> **Cross refs**: design/quick-specs/companion-battle-stats.md (base stats level scales on top of), design/quick-specs/oracle-gacha.md (Epithets — orthogonal progression axis), design/gdd/companion-data.md (parent system), design/gdd/exploration.md (Rule 7 — existing XP source)
+> **Cross refs**: design/quick-specs/companion-battle-stats.md (base stats level scales on top of), design/gdd/companion-data.md (parent system), design/gdd/exploration.md (Rule 7 — existing XP source)
 
 ---
 
 ## Problem
 
-Dark Olympus has **three progression axes** for companions:
+Dark Olympus has **two progression axes** for companions:
 
 1. **Romance stage (0–4)** — earned by gifts / conversations. Unlocks blessings + intimacy.
-2. **Epithets (I–VI)** — earned by Oracle gacha Bond Shards. Unlocks passive battle bonuses. (Design-only in v1.)
-3. **Level (???)** — earned by XP from combat / exploration. Scales base stats.
+2. **Level (???)** — earned by XP from combat / exploration. Scales base stats.
 
-Axes 1 and 2 are designed and (partly) implemented. Axis 3 has only scaffolding: `GameStore._companion_xp` is a Dictionary that accepts `add_companion_xp(id, amount)` calls from the exploration system, but no calculation logic, no stat scaling, no UI, no level thresholds. Players grind XP with nothing to show for it.
+> **Historical note (2026-04):** A third axis (Epithets I–VI) was designed to live on top of the Oracle gacha. Both the Oracle/Forge gacha systems and the Epithet tier have been removed. Level is now the only mechanical power-axis; romance stays the narrative one.
 
-Leveling should be the "play the game more, get stronger" feedback loop that sits orthogonal to romance (narrative progression) and Epithets (gacha luck).
+Axis 1 is designed and implemented. Axis 2 had only scaffolding: `GameStore._companion_xp` is a Dictionary that accepts `add_companion_xp(id, amount)` calls from the exploration system, but no calculation logic, no stat scaling, no UI, no level thresholds. Players grind XP with nothing to show for it.
+
+Leveling should be the "play the game more, get stronger" feedback loop that sits orthogonal to romance (narrative progression).
 
 ## Solution
 
-Add a **manual level-up system** that uses the existing `_companion_xp` pool as a resource bank, a new `_companion_levels` storage, and a player-driven "Level Up" button. Leveling up requires BOTH enough banked XP AND enough gold — it is NOT automatic. Gold is the primary long-term sink; XP is earned and spent like a second currency. Stat bonuses apply in `BattleManager.setup()` between base stats and Epithet layering. Cap 20, quadratic XP curve, small-per-level + milestone bonuses, protagonist scales the same way.
+Add a **manual level-up system** that uses the existing `_companion_xp` pool as a resource bank, a new `_companion_levels` storage, and a player-driven "Level Up" button. Leveling up requires BOTH enough banked XP AND enough gold — it is NOT automatic. Gold is the primary long-term sink; XP is earned and spent like a second currency. Stat bonuses apply in `BattleManager.setup()` between base stats and blessing layering. Cap 20, quadratic XP curve, small-per-level + milestone bonuses, protagonist scales the same way.
 
 Lore framing: the goddesses are fallen and recovering — every fight and mission reignites a fraction of their divine power. Leveling isn't "training"; it's "remembering who they were".
 
@@ -74,7 +75,7 @@ gold_cost(current_level) = 25 * current_level    # level 1..19; 0 at cap
 | 15 → 16 | 375 | 3125 |
 | 19 → 20 | 475 | 4750 |
 
-**Total gold to max: 4750 per companion.** All 5 units = 23,750 gold. Combined with the Oracle gacha weekly cap and gift-items shop, gold remains meaningful throughout the campaign.
+**Total gold to max: 4750 per companion.** All 5 units = 23,750 gold. Combined with the gift-items shop, gold remains meaningful throughout the campaign.
 
 ### Manual level-up action
 
@@ -96,7 +97,7 @@ level_up_companion(id):
 
 ### Per-level stat bonuses
 
-Applied additively on top of base stats, before Epithets:
+Applied additively on top of base stats, before blessings:
 
 ```
 hp_bonus(level)          = (level - 1) * 6
@@ -169,10 +170,9 @@ static func apply_to_stats(stats: BattleStats, level: int) -> void
 
 ```
 1. Build combatant with base stats from character_battle_stats.json (includes current_hp = max_hp).
-2. _apply_level_bonuses(combatant)   # level scaling  (NEW — this spec)
+2. _apply_level_bonuses(combatant)   # level scaling  (this spec)
 3. _apply_blessings_to(combatant)    # romance-gated blessings
 4. _apply_gun_element()              # protagonist's socket element
-5. _apply_epithets_to(combatant)     # Oracle gacha bonuses  (v2 — oracle-gacha.md)
 ```
 
 Blessings come after levels so a "+4 ATK" blessing at stage 1 still feels meaningful against a leveled-up baseline.
@@ -247,7 +247,7 @@ Every knob above lives in `src/systems/companion_level.gd` constants so designer
 - AC-LVL-05: `xp_total_for_level(20) == 9500`.
 - AC-LVL-06: `hp_bonus_for_level(1) == 0`, `hp_bonus_for_level(20) == 114`.
 - AC-LVL-07: `apply_to_stats` mutates max_hp, atk, def_stat, agi, crit_chance, crit_damage.
-- AC-LVL-08: `BattleManager.setup` applies level bonuses before Epithet bonuses (verified by test order).
+- AC-LVL-08: `BattleManager.setup` applies level bonuses before blessing bonuses (verified by test order).
 - AC-LVL-09: Combat victory grants 30 XP to each living party member + protagonist, 10 XP to KO'd members.
 - AC-LVL-10: Companion Room detail panel shows "Level X · Y / Z XP" text and a progress bar.
 - AC-LVL-11: Battle HUD actor name line shows "· Lv N".
