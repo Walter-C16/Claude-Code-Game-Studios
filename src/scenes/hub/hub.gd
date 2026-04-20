@@ -359,11 +359,30 @@ func _show_companion_join_splash(companion_id: String) -> void:
 
 # ── End-of-Demo CTA ────────────────────────────────────────────────────────────
 
+## Opens an external URL using the platform-appropriate API. Godot 4.6's
+## OS.shell_open silently no-ops on the Web export; that would leave the
+## Patreon/itch.io buttons feeling broken. On Web we fall back to a
+## JavaScriptBridge call that opens a new tab.
+func _open_external_url(url: String) -> void:
+	if OS.get_name() == "Web":
+		if Engine.has_singleton("JavaScriptBridge"):
+			JavaScriptBridge.eval('window.open("%s", "_blank");' % url)
+		else:
+			push_warning("hub.gd: cannot open external URL on Web — JavaScriptBridge unavailable")
+	else:
+		OS.shell_open(url)
+
+
 ## Shown exactly once when the player returns to the Hub with `ch01_complete`
 ## set. This is the 0.0.1 itch.io demo's outro — a "thanks for playing" card
 ## that points the player at Patreon and the itch.io wishlist before they
 ## close the tab. Sets `demo_end_cta_shown` so subsequent Hub visits skip it.
 func _show_demo_end_cta() -> void:
+	# Set the shown flag IMMEDIATELY rather than in the continue-button
+	# callback. If the player closes the browser tab while the CTA is on
+	# screen, they won't see it again on relaunch (one-shot fire).
+	GameStore.set_flag("demo_end_cta_shown")
+
 	var backdrop: ColorRect = ColorRect.new()
 	backdrop.name = "DemoEndBackdrop"
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -423,17 +442,16 @@ func _show_demo_end_cta() -> void:
 	# Links row — Patreon (primary) + itch.io wishlist (secondary).
 	var patreon_btn: Button = _make_cta_button("DEMO_END_PATREON_BTN", true)
 	patreon_btn.pressed.connect(func() -> void:
-		OS.shell_open("https://www.patreon.com/darkolympus"))
+		_open_external_url("https://www.patreon.com/darkolympus"))
 	vbox.add_child(patreon_btn)
 
 	var wishlist_btn: Button = _make_cta_button("DEMO_END_WISHLIST_BTN", false)
 	wishlist_btn.pressed.connect(func() -> void:
-		OS.shell_open("https://darkolympus.itch.io/dark-olympus"))
+		_open_external_url("https://darkolympus.itch.io/dark-olympus"))
 	vbox.add_child(wishlist_btn)
 
 	var continue_btn: Button = _make_cta_button("DEMO_END_CONTINUE_BTN", false)
 	continue_btn.pressed.connect(func() -> void:
-		GameStore.set_flag("demo_end_cta_shown")
 		backdrop.queue_free()
 		panel.queue_free())
 	vbox.add_child(continue_btn)

@@ -18,15 +18,6 @@ extends RefCounted
 ## See: design/gdd/equipment.md
 ## Stories: STORY-EQUIP-001 through STORY-EQUIP-006
 
-# ── Signals ──────────────────────────────────────────────────────────────────
-
-## Emitted when an item is discarded due to full inventory.
-## [param item_name_key] is the display_name_key of the discarded item.
-signal inventory_full_discard(item_name_key: String)
-
-## Emitted when pending inventory reaches the warning threshold (cap - 1).
-signal inventory_near_full()
-
 # ── Constants ─────────────────────────────────────────────────────────────────
 
 const _ITEMS_PATH: String = "res://assets/data/equipment.json"
@@ -193,34 +184,19 @@ func generate_drop(is_boss: bool) -> Dictionary:
 	var rarity: String = _pick_rarity(is_boss)
 	return _random_item_by_rarity(rarity)
 
-## Returns a random item dict for the given [param rarity] tier.
-## Returns an empty Dictionary if no items of that rarity exist.
-func get_random_item_by_rarity(rarity: String) -> Dictionary:
-	return _random_item_by_rarity(rarity)
-
 # ── Public API — Pending Queue ────────────────────────────────────────────────
 
 ## Adds [param item_id] to the pending_equipment queue if space permits.
 ## If the queue is at capacity ([_config.PENDING_INVENTORY_CAP]) the item is
-## discarded and [signal inventory_full_discard] is emitted.
-## Emits [signal inventory_near_full] when the queue reaches cap - 1 after adding.
-## Returns true if the item was added, false if discarded.
+## discarded silently. Returns true if the item was added, false if discarded.
 func add_pending(item_id: String) -> bool:
 	var cap: int = _config.get("PENDING_INVENTORY_CAP", 5) as int
 	var pending: Array[String] = GameStore.get_pending_equipment()
 
 	if pending.size() >= cap:
-		var item: Dictionary = get_item(item_id)
-		var name_key: String = item.get("name_key", item_id) as String
-		inventory_full_discard.emit(name_key)
 		return false
 
 	GameStore.add_pending_equipment(item_id)
-
-	var new_size: int = GameStore.get_pending_equipment().size()
-	if new_size >= cap - 1:
-		inventory_near_full.emit()
-
 	return true
 
 ## Returns a copy of the pending_equipment Array[String] from GameStore.
