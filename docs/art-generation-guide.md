@@ -818,8 +818,8 @@ The **messy bun** and the **cream apron** over russet. At 64px, the warm round s
 - **Hair**: Auburn-copper, loose messy bun held with a wooden pin, strands falling seductively around her face and neck
 - **Eyes**: Warm honey-brown, crinkled at the corners — her smile is the reason half the village drinks at her tavern
 - **Expression baseline**: Sultry knowing grin, head slightly tilted, inviting you to sit close
-- **Distinguishing mark**: Ruddy permanently-flushed cheeks and nose (hearth fire), light sheen of sweat across her chest from the tavern heat
-- **Skin**: Warm tan with permanent flush, a few faint freckles on the nose bridge
+- **Distinguishing mark**: Ruddy permanently-flushed cheeks and nose (hearth fire)
+- **Skin**: Warm tan matte dry, with permanent flush and a few faint freckles on the nose bridge — **never render as wet/sweaty; keywords like "sweat" or "sheen" make the AI generate beer drops on her body**
 - **Body**: Voluptuous curvy build, huge breasts with deep cleavage, wide womanly hips, thick thighs
 
 #### Element Expression
@@ -832,15 +832,16 @@ Hearth glow: a warm amber light seems to emanate from around her, especially her
 Smooth skinned warm greek tavern keeper barmaid, auburn-copper loose
 messy bun with wooden pin and strands falling seductively around face
 and neck, warm honey-brown crinkled eyes, ruddy flushed cheeks and
-nose, warm tan skin with faint freckles and light sheen of sweat,
-voluptuous young woman mid 20s, low-cut russet-brown linen blouse with
-plunging neckline deep cleavage laced up the front with a half-undone
-leather cord, sleeves pushed off both shoulders showing collarbones,
-cream well-worn stained apron cinched tight at waist with leather sash
-emphasizing hourglass figure, short dark-brown skirt hiked above the
-knees, sturdy scuffed leather ankle boots, huge breasts with deep cleavage,
-wide hips, thick thighs, fading orange-amber mystic hearth-flame
-symbols on forearms and chest, warm amber hearth-glow particles.
+nose, warm tan matte dry skin with faint freckles, healthy warm
+complexion, voluptuous young woman mid 20s, low-cut russet-brown linen
+blouse with plunging neckline deep cleavage laced up the front with a
+half-undone leather cord, sleeves pushed off both shoulders showing
+collarbones, cream well-worn apron with faint fabric stains cinched
+tight at waist with leather sash emphasizing hourglass figure, short
+dark-brown skirt hiked above the knees, sturdy scuffed leather ankle
+boots, huge breasts with deep cleavage, wide hips, thick thighs,
+fading orange-amber mystic hearth-flame symbols on forearms and chest,
+warm amber hearth-glow particles.
 (sultry knowing grin:0.5), warm inviting half-lidded eyes, looking at
 viewer, cowboy shot,
 white background,

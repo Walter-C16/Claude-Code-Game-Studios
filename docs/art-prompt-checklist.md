@@ -339,6 +339,12 @@ masterpiece, best quality, highest quality, intricate details
 
 ### Lyra — Cowboy Shot (6 images)
 
+> **Lyra negative additions**: `wet, liquid drops, beer drops, mead
+> drops, sweat drops, wet body, wet breasts, wet skin, dripping
+> liquid, spilled drink, droplets on skin, water on body` — tavern
+> keywords were triggering the AI to generate beer/mead drops on her
+> body. Skin should look warm and dry.
+
 ```
 Smooth skinned warm greek tavern keeper barmaid with auburn-copper hair
 in a loose messy bun held with a wooden pin with strands falling
@@ -346,14 +352,15 @@ seductively around her face and neck, warm honey-brown eyes crinkled
 at the corners, wearing a low-cut russet-brown linen blouse with a
 wide plunging neckline showing deep cleavage and laced up the front
 with a leather cord half-undone, puffy sleeves pushed off both
-shoulders revealing collarbones, cream well-worn stained apron cinched
-tight at her waist with a leather sash emphasizing her hourglass
-figure. Her body features: voluptuous curvy build, huge breasts with
-deep visible cleavage, wide womanly hips, fading warm orange-amber mystic
-hearth-flame symbols along her forearms and across her chest, dim warm
-amber hearth-glow particles softly emanate around her. She has ruddy
-flushed cheeks and nose, faint freckles on nose bridge, warm tan skin
-with a light sheen of sweat from the tavern heat.
+shoulders revealing collarbones, cream well-worn apron with faint
+fabric stains cinched tight at her waist with a leather sash
+emphasizing her hourglass figure. Her body features: voluptuous curvy
+build, huge breasts with deep visible cleavage, wide womanly hips,
+fading warm orange-amber mystic hearth-flame symbols along her
+forearms and across her chest, dim warm amber hearth-glow particles
+softly emanate around her. She has ruddy flushed cheeks and nose,
+faint freckles on nose bridge, warm tan matte dry skin, healthy warm
+complexion.
 (sultry knowing grin:0.5), warm inviting half-lidded eyes, looking at
 viewer, cowboy shot,
 white background,
@@ -717,16 +724,16 @@ seductively around her face and neck, warm honey-brown eyes crinkled
 at the corners, wearing a low-cut russet-brown linen blouse with a
 wide plunging neckline showing deep cleavage and laced up the front
 with a leather cord half-undone, puffy sleeves pushed off both
-shoulders revealing collarbones, cream well-worn stained apron cinched
-tight at her waist with a leather sash emphasizing her hourglass
-figure, short dark-brown wool skirt hiked up above her knees showing
-her thighs, sturdy scuffed leather ankle boots. Her body features:
-voluptuous curvy build, huge breasts with deep visible cleavage, wide
-womanly hips, thick thighs, fading warm orange-amber mystic hearth-flame
-symbols along her forearms and across her chest, dim warm amber
-hearth-glow particles softly emanate around her. She has ruddy flushed
-cheeks and nose, faint freckles, warm tan skin with a light sheen of
-sweat.
+shoulders revealing collarbones, cream well-worn apron with faint
+fabric stains cinched tight at her waist with a leather sash
+emphasizing her hourglass figure, short dark-brown wool skirt hiked up
+above her knees showing her thighs, sturdy scuffed leather ankle
+boots. Her body features: voluptuous curvy build, huge breasts with
+deep visible cleavage, wide womanly hips, thick thighs, fading warm
+orange-amber mystic hearth-flame symbols along her forearms and across
+her chest, dim warm amber hearth-glow particles softly emanate around
+her. She has ruddy flushed cheeks and nose, faint freckles, warm tan
+matte dry skin, healthy warm complexion.
 (open friendly grin:0.5), warm welcoming crinkled eyes, looking at
 viewer, full body shot, standing pose, feet visible,
 white background,
